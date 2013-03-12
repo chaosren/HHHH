@@ -200,6 +200,7 @@ NDUIScrollViewContainer::NDUIScrollViewContainer()
 	m_bCenterAdjust = false;
 	m_bRecaclClientEventRect = false;
 	m_bIsBottomSpeedBar = false;
+	m_bBounce = false;
 }
 
 NDUIScrollViewContainer::~NDUIScrollViewContainer()
@@ -965,8 +966,17 @@ void NDUIScrollViewContainer::draw() //  m_fScrollDistance += speed; only to zer
 // 					s_fFanTan = s_fFanTan * 0.5f;
 // 					break;
 // 				}
+
 				s_fParam = 0.0f;
 				fMove = m_fScrollDistance;
+
+				if (m_fMaxScrollDistance > 10.0f)
+				{
+					m_fMaxScrollDistance *= 0.3f;
+					m_fScrollDistance = -m_fMaxScrollDistance + m_fScrollDistance;
+					break;
+				}
+
 				m_fScrollDistance = 0.0f;
 				//m_bIsViewScrolling	= false;
 				EnableViewToScroll(false);
@@ -984,7 +994,7 @@ void NDUIScrollViewContainer::draw() //  m_fScrollDistance += speed; only to zer
 				m_fScrollDistance = m_fScrollDistance - fMove;
 			}
 
-			s_fParam += 1.0f;
+			s_fParam += 2.0f;
 		}
 		else if (m_fScrollDistance < 0.0f)
 		{
@@ -998,6 +1008,14 @@ void NDUIScrollViewContainer::draw() //  m_fScrollDistance += speed; only to zer
 			if (m_fScrollDistance > -m_fScrollToCenterSpeed)
 			{
 				fMove = m_fScrollDistance;
+
+				if (m_fMaxScrollDistance > 50.0f)
+				{
+					m_fMaxScrollDistance *= 0.3f;
+					m_fScrollDistance = m_fMaxScrollDistance - m_fScrollDistance;
+					break;
+				}
+
 				m_fScrollDistance = 0.0f;
 				//m_bIsViewScrolling	= false;
 				EnableViewToScroll(false);
@@ -1016,7 +1034,7 @@ void NDUIScrollViewContainer::draw() //  m_fScrollDistance += speed; only to zer
 				m_fScrollDistance = m_fScrollDistance - fMove;
 			}
 
-			s_fParam += 1.0f;
+			s_fParam += 2.0f;
 		}
 		else
 		{
