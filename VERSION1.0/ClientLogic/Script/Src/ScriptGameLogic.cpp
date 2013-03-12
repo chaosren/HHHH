@@ -484,8 +484,11 @@ void SetSceneMusicNew(int idMusic)
 	}
 	
 	string strMusicPath = NDPath::GetSoundPath();
-	CCString* pstrMusicFile = CCString::stringWithFormat("%smusic_%d.ogg",
-		strMusicPath.c_str(),idMusic);
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
+	CCString* pstrMusicFile = CCString::stringWithFormat("%smusic_%d.aac", strMusicPath.c_str(),idMusic);
+#else
+	CCString* pstrMusicFile = CCString::stringWithFormat("%smusic_%d.ogg", strMusicPath.c_str(),idMusic);
+#endif
 	pkSimpleAudio->playBackgroundMusic(pstrMusicFile->getCString(),true);
 }
 
