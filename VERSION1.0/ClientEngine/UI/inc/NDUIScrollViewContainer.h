@@ -101,6 +101,7 @@ public:
 	
 private:
 	float					m_fScrollDistance;
+	float					m_fMaxScrollDistance;		///< 拉动的最大距离 @郭浩
 	float					m_fScrollToCenterSpeed;
 	bool					m_bIsViewScrolling;
 	UIScrollStyle			m_style;

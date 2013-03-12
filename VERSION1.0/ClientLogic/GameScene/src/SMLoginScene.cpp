@@ -336,19 +336,7 @@ void CSMLoginScene::OnTimer( OBJID idTag )
 		{
 		    //定义保存路径
 		    m_strUpdateURL = *kDeqUpdateUrl.begin();
-		    //m_savePath = [[NSString stringWithFormat:@"%s/update%d.zip", m_cachPath.c_str(), PackageCount] UTF8String];
-			//重新设置m_SavePath的值，保存本地的文件名与服务器上下载名保持一致
-			/*
-			char szUpdateURL[100] = {0};
-			snprintf(szUpdateURL,sizeof(szUpdateURL),"%s",m_strUpdateURL.c_str());
-			char* szTempFile = GetPathFileName(szUpdateURL,'/');
-			if (szTempFile)
-			{
-				m_strSavePath = m_strCachePath + szTempFile;
-			}
-			else
-				return;
-			*/
+
 		    m_pTimer->SetTimer( this, TAG_TIMER_UPDATE, 0.5f );
 		    StartDownload();
 		}

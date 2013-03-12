@@ -18,8 +18,6 @@
 
 IMPLEMENT_CLASS(CUIScrollView, CUIScroll)
 
-static float s_fFanTan = 0.0f;
-
 CUIScrollView::CUIScrollView()
 {
 	INC_NDOBJ_RTCLS
@@ -196,6 +194,7 @@ NDUIScrollViewContainer::NDUIScrollViewContainer()
 	m_pClientUINode = NULL;
 	m_sizeView = CCSizeMake(0, 0);
 	m_unBeginIndex = 0;
+	m_fScrollToCenterSpeed = 0.0f;
 	m_bCenterAdjust = false;
 	m_bRecaclClientEventRect = false;
 	m_bIsBottomSpeedBar = false;
@@ -272,16 +271,16 @@ void NDUIScrollViewContainer::AddView(CUIScrollView* view)
 		return;
 	}
 
-	size_t childsize = m_pClientUINode->GetChildren().size();
+	size_t kChildSize = m_pClientUINode->GetChildren().size();
 	CCRect kRect = view->GetFrameRect();
 	if (UIScrollStyleHorzontal == GetScrollStyle())
 	{
-		kRect.origin.x = childsize * GetViewLen();
+		kRect.origin.x = kChildSize * GetViewLen();
 		kRect.origin.y = 0;
 	}
 	else
 	{
-		kRect.origin.y = childsize * GetViewLen();
+		kRect.origin.y = kChildSize * GetViewLen();
 		kRect.origin.x = 0;
 	}
 	kRect.size = m_sizeView;
@@ -302,17 +301,17 @@ void NDUIScrollViewContainer::RemoveView(unsigned int uiIndex)
 		return;
 	}
 
-	size_t childsize = m_pClientUINode->GetChildren().size();
-	if (uiIndex >= childsize)
+	size_t uiChildSize = m_pClientUINode->GetChildren().size();
+	if (uiIndex >= uiChildSize)
 	{
 		return;
 	}
 
 	unsigned int nBeginIndex = 0;
-	if (uiIndex >= childsize - 1)
+	if (uiIndex >= uiChildSize - 1)
 	{
 		//最后一个view
-		nBeginIndex = childsize <= 1 ? 0 : childsize - 2;
+		nBeginIndex = uiChildSize <= 1 ? 0 : uiChildSize - 2;
 	}
 	else
 	{
@@ -350,11 +349,11 @@ void NDUIScrollViewContainer::RemoveView(unsigned int uiIndex)
 	 */
 
 	const std::vector<NDNode*>& children = m_pClientUINode->GetChildren();
-	childsize = m_pClientUINode->GetChildren().size();
+	uiChildSize = m_pClientUINode->GetChildren().size();
 
-	if (uiIndex < childsize)
+	if (uiIndex < uiChildSize)
 	{
-		for (size_t i = uiIndex; i < childsize; i++)
+		for (size_t i = uiIndex; i < uiChildSize; i++)
 		{
 			NDNode *child = children[i];
 			if (!child || !child->IsKindOfClass(RUNTIME_CLASS(CUIScrollView)))
@@ -362,22 +361,22 @@ void NDUIScrollViewContainer::RemoveView(unsigned int uiIndex)
 				continue;
 			}
 			CUIScrollView* view = (CUIScrollView*) child;
-			CCRect rect = view->GetFrameRect();
+			CCRect kRect = view->GetFrameRect();
 			if (UIScrollStyleHorzontal == GetScrollStyle())
 			{
-				rect.origin.x = i * GetViewLen();
+				kRect.origin.x = i * GetViewLen();
 			}
 			else
 			{
-				rect.origin.y = i * GetViewLen();
+				kRect.origin.y = i * GetViewLen();
 			}
-			view->SetFrameRect(rect);
+			view->SetFrameRect(kRect);
 		}
 	}
 
 	refrehClientSize();
 
-	if (0 != childsize)
+	if (0 != uiChildSize)
 	{
 		this->ScrollView(nBeginIndex);
 	}
@@ -537,14 +536,14 @@ unsigned int NDUIScrollViewContainer::ViewIndex(unsigned int uiViewId)
 
 	for (size_t i = 0; i < childsize; i++)
 	{
-		NDNode *child = children[i];
-		if (!child || !child->IsKindOfClass(RUNTIME_CLASS(CUIScrollView)))
+		NDNode* pkChild = children[i];
+		if (!pkChild || !pkChild->IsKindOfClass(RUNTIME_CLASS(CUIScrollView)))
 		{
 			continue;
 		}
-		CUIScrollView* view = (CUIScrollView*) child;
+		CUIScrollView* pkView = (CUIScrollView*) pkChild;
 
-		if (view->GetViewId() == uiViewId)
+		if (pkView->GetViewId() == uiViewId)
 		{
 			findIndex = i;
 			break;
@@ -753,7 +752,7 @@ void NDUIScrollViewContainer::ScrollView(unsigned int uiIndex,
 	else
 	{
 		m_fScrollDistance = fDistance;
-		s_fFanTan = m_fScrollDistance * 0.5f;
+		m_fMaxScrollDistance = fDistance;
 
 		EnableViewToScroll(true);
 	}
