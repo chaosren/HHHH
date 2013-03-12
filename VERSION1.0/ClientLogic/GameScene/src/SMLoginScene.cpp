@@ -472,7 +472,8 @@ void CSMLoginScene::ontimer_first_run()
 	}
 #endif
 
-#if CACHE_MODE == 1
+#if (CACHE_MODE == 1) && (CC_TARGET_PLATFORM != CC_PLATFORM_IOS)
+	//-----------------
 	if ( NDBeforeGameMgrObj.CheckFirstTimeRuning() )
 	{
 		CCLog( "@@ first time running!!!\r\n");
@@ -498,6 +499,7 @@ void CSMLoginScene::ontimer_first_run()
 		CloseWaitingAni();
 		OnProcessUpdate();
 	}
+	//-----------------
 #else
 	NDBeforeGameMgrObj.doNDSdkLogin();
 	CloseWaitingAni();
@@ -1366,10 +1368,10 @@ void CSMLoginScene::OnProcessUpdate()
 		StartEntry();
 		return;
 	}
-#else
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
-	//StartEntry();
-#endif
+
+	#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
+		StartEntry();
+	#endif
 #endif
 }
 

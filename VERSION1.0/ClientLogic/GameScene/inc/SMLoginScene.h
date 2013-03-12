@@ -71,7 +71,15 @@ public://NDUIDialogDelegate
 	
 private:
     virtual void OnTimer(OBJID idTag);
-	
+	void ontimer_update();
+	void ontimer_download_success();
+	void ontimer_unzip_success();
+	void ontimer_check_wifi();
+	void ontimer_check_copy();
+	void ontimer_first_run();
+	void ontimer_load_res_ok();
+	void ontimer_lazy_send_login_event();
+	void ontimer_check_update();
 public:
 	virtual void ReflashPercent( int percent, int pos, int filelen ); override
 	virtual void DidDownloadStatus(DownloadStatus status ); override
