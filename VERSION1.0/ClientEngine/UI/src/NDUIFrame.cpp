@@ -60,8 +60,8 @@ namespace NDEngine
 
 	void NDUIFrame::Make()
 	{
-		CCSize winSize = CCDirector::sharedDirector()->getWinSizeInPixels();
-		CCRect scrRect = GetScreenRect();
+		CCSize kWinSize = CCDirector::sharedDirector()->getWinSizeInPixels();
+		CCRect kSrcRect = GetScreenRect();
 
 		NDPicture* ptexpic = NDPicturePool::DefaultPool()->AddPicture( side_image->getCString());
 		m_tileLeftTop->setTexture(ptexpic->GetTexture());
@@ -75,14 +75,14 @@ namespace NDEngine
 			* m_tileLeftTop->getTexture()->getPixelsHigh()));
 
 		m_tileLeftTop->SetDrawRect(
-			CCRectMake(scrRect.origin.x, 
-						scrRect.origin.y,
+			CCRectMake(kSrcRect.origin.x, 
+						kSrcRect.origin.y,
 						m_tileLeftTop->getTexture()->getMaxS() * m_tileLeftTop->getTexture()->getPixelsWide(),
 						m_tileLeftTop->getTexture()->getMaxT() * m_tileLeftTop->getTexture()->getPixelsHigh())); //@android
 
 		m_tileLeftTop->setReverse(false);
 		m_tileLeftTop->setRotation(NDRotationEnumRotation0);
-		m_tileLeftTop->setMapSize(CCSizeMake(winSize.width, winSize.height));
+		m_tileLeftTop->setMapSize(CCSizeMake(kWinSize.width, kWinSize.height));
 		m_tileLeftTop->make();
 
 		NDPicture* ppic = NDPicturePool::DefaultPool()->AddPicture( side_image->getCString());
@@ -98,16 +98,16 @@ namespace NDEngine
 
 		m_tileRightTop->SetDrawRect(
 			CCRectMake(
-			scrRect.origin.x + scrRect.size.width
+			kSrcRect.origin.x + kSrcRect.size.width
 				- m_tileRightTop->getTexture()->getMaxT() 
 					* m_tileRightTop->getTexture()->getPixelsHigh(),
-			scrRect.origin.y,
+			kSrcRect.origin.y,
 			m_tileRightTop->getTexture()->getMaxT() * m_tileRightTop->getTexture()->getPixelsHigh(),
 			m_tileRightTop->getTexture()->getMaxS() * m_tileRightTop->getTexture()->getPixelsWide())); //@android
 
 		m_tileRightTop->setReverse(false);
 		m_tileRightTop->setRotation(NDRotationEnumRotation90);
-		m_tileRightTop->setMapSize(CCSizeMake(winSize.width, winSize.height));
+		m_tileRightTop->setMapSize(CCSizeMake(kWinSize.width, kWinSize.height));
 		m_tileRightTop->make();
 
 		NDPicture* pleftpic = NDPicturePool::DefaultPool()->AddPicture( side_image->getCString());
@@ -122,8 +122,8 @@ namespace NDEngine
 			* m_tileLeftBottom->getTexture()->getPixelsHigh()));
 
 		m_tileLeftBottom->SetDrawRect(
-			CCRectMake(scrRect.origin.x,
-			scrRect.origin.y + scrRect.size.height
+			CCRectMake(kSrcRect.origin.x,
+			kSrcRect.origin.y + kSrcRect.size.height
 				- m_tileLeftBottom->getTexture()->getMaxS()
 				* m_tileLeftBottom->getTexture()->getPixelsWide(),
 			m_tileLeftBottom->getTexture()->getMaxS()
@@ -133,7 +133,7 @@ namespace NDEngine
 
 		m_tileLeftBottom->setReverse(false);
 		m_tileLeftBottom->setRotation(NDRotationEnumRotation270);
-		m_tileLeftBottom->setMapSize(CCSizeMake(winSize.width, winSize.height));
+		m_tileLeftBottom->setMapSize(CCSizeMake(kWinSize.width, kWinSize.height));
 		m_tileLeftBottom->make();
 
 		NDPicture* prightpic = NDPicturePool::DefaultPool()->AddPicture(side_image->getCString());
@@ -149,10 +149,10 @@ namespace NDEngine
 
 		m_tileRightBottom->SetDrawRect(
 			CCRectMake(
-			scrRect.origin.x + scrRect.size.width
+			kSrcRect.origin.x + kSrcRect.size.width
 				- m_tileRightBottom->getTexture()->getMaxS()
 					* m_tileRightBottom->getTexture()->getPixelsWide(),
-			scrRect.origin.y + scrRect.size.height
+			kSrcRect.origin.y + kSrcRect.size.height
 				- m_tileRightBottom->getTexture()->getMaxT()
 					* m_tileRightBottom->getTexture()->getPixelsHigh(),
 			m_tileRightBottom->getTexture()->getMaxT()
@@ -162,7 +162,7 @@ namespace NDEngine
 
 		m_tileRightBottom->setReverse(false);
 		m_tileRightBottom->setRotation(NDRotationEnumRotation180);
-		m_tileRightBottom->setMapSize(CCSizeMake(winSize.width, winSize.height));
+		m_tileRightBottom->setMapSize(CCSizeMake(kWinSize.width, kWinSize.height));
 		m_tileRightBottom->make();
 	}
 

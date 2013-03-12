@@ -18,6 +18,8 @@
 
 IMPLEMENT_CLASS(CUIScrollView, CUIScroll)
 
+static float s_fParam = 0.0f;
+
 CUIScrollView::CUIScrollView()
 {
 	INC_NDOBJ_RTCLS
@@ -194,7 +196,7 @@ NDUIScrollViewContainer::NDUIScrollViewContainer()
 	m_pClientUINode = NULL;
 	m_sizeView = CCSizeMake(0, 0);
 	m_unBeginIndex = 0;
-	m_fScrollToCenterSpeed = 0.0f;
+	m_fMaxScrollDistance = 0.0f;
 	m_bCenterAdjust = false;
 	m_bRecaclClientEventRect = false;
 	m_bIsBottomSpeedBar = false;
@@ -937,7 +939,7 @@ void NDUIScrollViewContainer::draw() //  m_fScrollDistance += speed; only to zer
 		m_bRecaclClientEventRect = false;
 	}
 
-	if (!this->IsVisibled())
+	if (!IsVisibled())
 	{
 		return;
 	}
@@ -963,7 +965,7 @@ void NDUIScrollViewContainer::draw() //  m_fScrollDistance += speed; only to zer
 // 					s_fFanTan = s_fFanTan * 0.5f;
 // 					break;
 // 				}
-
+				s_fParam = 0.0f;
 				fMove = m_fScrollDistance;
 				m_fScrollDistance = 0.0f;
 				//m_bIsViewScrolling	= false;
@@ -972,9 +974,17 @@ void NDUIScrollViewContainer::draw() //  m_fScrollDistance += speed; only to zer
 			}
 			else
 			{
-				fMove = m_fScrollToCenterSpeed;
+				fMove = s_fParam;
+
+				if (fMove >= m_fScrollToCenterSpeed)
+				{
+					fMove = m_fScrollToCenterSpeed;
+				}
+
 				m_fScrollDistance = m_fScrollDistance - fMove;
 			}
+
+			s_fParam += 1.0f;
 		}
 		else if (m_fScrollDistance < 0.0f)
 		{
@@ -991,13 +1001,22 @@ void NDUIScrollViewContainer::draw() //  m_fScrollDistance += speed; only to zer
 				m_fScrollDistance = 0.0f;
 				//m_bIsViewScrolling	= false;
 				EnableViewToScroll(false);
+				s_fParam = 0.0f;
 				//SetBeginViewIndex(GetBeginIndex());
 			}
 			else
 			{
-				fMove = -m_fScrollToCenterSpeed;
+				fMove = -s_fParam;//-(m_fScrollToCenterSpeed + s_fParam);
+
+				if (fMove <= -m_fScrollToCenterSpeed)
+				{
+					fMove = -m_fScrollToCenterSpeed;
+				}
+
 				m_fScrollDistance = m_fScrollDistance - fMove;
 			}
+
+			s_fParam += 1.0f;
 		}
 		else
 		{
