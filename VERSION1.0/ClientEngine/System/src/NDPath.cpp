@@ -97,13 +97,21 @@ const string NDPath::GetCashesPath()
 {
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
      // NSError *error;
+#if 0
      NSString *path1 = [NSHomeDirectory()stringByAppendingPathComponent:@"Library"];
      NSString *CashesDirectory = [path1 stringByAppendingPathComponent:@"/Caches"];
      return std::string([CashesDirectory UTF8String]) +"/";
+#else
+    string path = std::string([[[NSBundle mainBundle] resourcePath] UTF8String]) + "/";
+    return path;
 #endif
+    
+#endif
+    
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
 	return "/sdcard/dhlj/";
 #endif
+
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
 	return "../../Bin/";
 #endif
