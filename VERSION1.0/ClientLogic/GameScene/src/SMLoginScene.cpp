@@ -473,7 +473,21 @@ void CSMLoginScene::ontimer_first_run()
 #endif
 
 #if (CACHE_MODE == 1)
-	//-----------------
+	this->ontimer_first_run_cache_mode();
+#else
+	this->ontimer_first_run_not_cache_mode();
+#endif
+}
+
+void CSMLoginScene::ontimer_first_run_not_cache_mode()
+{
+	NDBeforeGameMgrObj.doNDSdkLogin();
+	CloseWaitingAni();
+	OnProcessUpdate();
+}
+
+void CSMLoginScene::ontimer_first_run_cache_mode()
+{
 #if (CC_TARGET_PLATFORM != CC_PLATFORM_IOS)
 	if ( NDBeforeGameMgrObj.CheckFirstTimeRuning() )
 	{
@@ -486,9 +500,9 @@ void CSMLoginScene::ontimer_first_run()
 			m_pLabelPromtp->SetText( NDCommonCString2(SZ_FIRST_INSTALL).c_str() );
 			m_pLabelPromtp->SetVisible( true );
 			ShowWaitingAni();
-        #ifdef USE_MGSDK
+#ifdef USE_MGSDK
 			m_pLabelPromtp->SetVisible( false );//Mobage的版本暂将文字绘在背景图上
-        #endif
+#endif
 		}
 
 		m_pTimer->SetTimer( this, TAG_TIMER_CHECK_COPY, 0.5f );
@@ -500,22 +514,13 @@ void CSMLoginScene::ontimer_first_run()
 		CloseWaitingAni();
 		OnProcessUpdate();
 	}
-    
-#else //ios
-    CCImage::changeSystemFont(false);
-    NDBeforeGameMgrObj.doNDSdkLogin();
-    CloseWaitingAni();
-    OnProcessUpdate();    
-#endif
-	//-----------------
 
-#else // not cache mode
+#else //ios
+	CCImage::changeSystemFont(false);
 	NDBeforeGameMgrObj.doNDSdkLogin();
 	CloseWaitingAni();
-	OnProcessUpdate();
+	OnProcessUpdate();    
 #endif
-	//CreateUpdateUILayer();
-	//NDBeforeGameMgrObj.CheckClientVersion(SZ_UPDATE_URL);
 }
 
 void CSMLoginScene::ontimer_load_res_ok()
@@ -543,8 +548,6 @@ void CSMLoginScene::ontimer_load_res_ok()
 void CSMLoginScene::ontimer_lazy_send_login_event()
 {
 	CCLog( "@@ ontimer_lazy_send_login_event() \r\n" );
-
-	this->ontimer_lazy_send_login_event();
 
 	m_pTimer->KillTimer( this, TAG_TIMER_LAZY_SEND_LOGIN_EVENT );
 
