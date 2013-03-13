@@ -1897,7 +1897,7 @@ function p.OnEventEdu()
         
         
         --Vip判断
-        local bIsEdu = Is_EQUIP_EDU(selectRadio);    
+        local bIsEdu = Is_EQUIP_EDU(selectRadio);   
         if(not bIsEdu) then
             local nNeedVip = GetVipLevel_EQUIP_EDU(selectRadio);
             local sNeedName = GetDataBaseDataS("equip_edu_config",selectRadio,DB_EQUIP_EDU_CONFIG.NAME);
