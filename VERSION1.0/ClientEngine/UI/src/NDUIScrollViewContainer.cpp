@@ -190,7 +190,7 @@ NDUIScrollViewContainer::NDUIScrollViewContainer()
 {
 	INC_NDOBJ_RTCLS
 	m_fScrollDistance = 0.0f;
-	m_fScrollToCenterSpeed = 100.0f;
+	m_fScrollToCenterSpeed = 50.0f;
 	m_bIsViewScrolling = false;
 	m_style = UIScrollStyleHorzontal;
 	m_pClientUINode = NULL;
@@ -200,7 +200,7 @@ NDUIScrollViewContainer::NDUIScrollViewContainer()
 	m_bCenterAdjust = false;
 	m_bRecaclClientEventRect = false;
 	m_bIsBottomSpeedBar = false;
-	m_bBounce = false;
+	m_nBounceDir = 0;
 }
 
 NDUIScrollViewContainer::~NDUIScrollViewContainer()
@@ -755,7 +755,7 @@ void NDUIScrollViewContainer::ScrollView(unsigned int uiIndex,
 	else
 	{
 		m_fScrollDistance = fDistance;
-		m_fMaxScrollDistance = fDistance;
+		m_fMaxScrollDistance = abs(fDistance);
 
 		EnableViewToScroll(true);
 	}
@@ -954,95 +954,114 @@ void NDUIScrollViewContainer::draw() //  m_fScrollDistance += speed; only to zer
 
 	float fMove = 0.0f;
 
-	do 
+	if (0 != m_nBounceDir)
 	{
-		if (m_fScrollDistance > 0.0f)
+		s_fParam *= 0.5f;
+		
+		if (1 == m_nBounceDir)
 		{
-			if (m_fScrollDistance < m_fScrollToCenterSpeed)
-			{
-// 				if (s_fFanTan > m_fScrollToCenterSpeed)
-// 				{
-// 					m_fScrollDistance = -s_fFanTan;
-// 					s_fFanTan = s_fFanTan * 0.5f;
-// 					break;
-// 				}
-
-				s_fParam = 0.0f;
-				fMove = m_fScrollDistance;
-
-				if (m_fMaxScrollDistance > 10.0f)
-				{
-					m_fMaxScrollDistance *= 0.3f;
-					m_fScrollDistance = -m_fMaxScrollDistance + m_fScrollDistance;
-					break;
-				}
-
-				m_fScrollDistance = 0.0f;
-				//m_bIsViewScrolling	= false;
-				EnableViewToScroll(false);
-				//SetBeginViewIndex(GetBeginIndex());
-			}
-			else
-			{
-				fMove = s_fParam;
-
-				if (fMove >= m_fScrollToCenterSpeed)
-				{
-					fMove = m_fScrollToCenterSpeed;
-				}
-
-				m_fScrollDistance = m_fScrollDistance - fMove;
-			}
-
-			s_fParam += 2.0f;
-		}
-		else if (m_fScrollDistance < 0.0f)
-		{
-// 			if (s_fFanTan > -m_fScrollToCenterSpeed)
-// 			{
-// 				m_fScrollDistance = -s_fFanTan;
-// 				s_fFanTan = s_fFanTan * 0.5f;
-// 				break;
-// 			}
-
-			if (m_fScrollDistance > -m_fScrollToCenterSpeed)
-			{
-				fMove = m_fScrollDistance;
-
-				if (m_fMaxScrollDistance > 50.0f)
-				{
-					m_fMaxScrollDistance *= 0.3f;
-					m_fScrollDistance = m_fMaxScrollDistance - m_fScrollDistance;
-					break;
-				}
-
-				m_fScrollDistance = 0.0f;
-				//m_bIsViewScrolling	= false;
-				EnableViewToScroll(false);
-				s_fParam = 0.0f;
-				//SetBeginViewIndex(GetBeginIndex());
-			}
-			else
-			{
-				fMove = -s_fParam;//-(m_fScrollToCenterSpeed + s_fParam);
-
-				if (fMove <= -m_fScrollToCenterSpeed)
-				{
-					fMove = -m_fScrollToCenterSpeed;
-				}
-
-				m_fScrollDistance = m_fScrollDistance - fMove;
-			}
-
-			s_fParam += 2.0f;
+			fMove = s_fParam;
 		}
 		else
 		{
-			EnableViewToScroll(false);
-			//SetBeginViewIndex(GetBeginIndex());
-			//m_bIsViewScrolling	= false;
+			fMove = -s_fParam;
 		}
-	} while (false);
+
+		m_fScrollDistance -= fMove;
+
+		if (s_fParam <= 1.0f)
+		{
+			s_fParam = 0.0f;
+			m_nBounceDir = 0;
+		}
+	}
+	else
+	{
+		do 
+		{
+			if (m_fScrollDistance > 0.0f)
+			{
+				if (m_fScrollDistance < s_fParam)
+				{
+					// 				if (s_fFanTan > m_fScrollToCenterSpeed)
+					// 				{
+					// 					m_fScrollDistance = -s_fFanTan;
+					// 					s_fFanTan = s_fFanTan * 0.5f;
+					// 					break;
+					// 				}
+
+					fMove = m_fScrollDistance;
+
+					if (m_fMaxScrollDistance * 0.3f > 10.0f)
+					{
+						m_fMaxScrollDistance *= 0.3f;
+						m_nBounceDir = 1;
+						m_fScrollDistance = 0.0f;
+						break;
+					}
+
+					m_fScrollDistance = 0.0f;
+					//m_bIsViewScrolling	= false;
+					EnableViewToScroll(false);
+					//SetBeginViewIndex(GetBeginIndex());
+				}
+				else
+				{
+					fMove = s_fParam;
+
+					if (fMove >= m_fScrollToCenterSpeed)
+					{
+						fMove = m_fScrollToCenterSpeed;
+					}
+
+					m_fScrollDistance = m_fScrollDistance - fMove;
+				}
+
+				s_fParam += 2.0f;
+			}
+			else if (m_fScrollDistance < 0.0f)
+			{
+				// 			if (s_fFanTan > -m_fScrollToCenterSpeed)
+				// 			{
+				// 				m_fScrollDistance = -s_fFanTan;
+				// 				s_fFanTan = s_fFanTan * 0.5f;
+				// 				break;
+				// 			}
+
+				if (m_fScrollDistance > -s_fParam)
+				{
+					fMove = m_fScrollDistance;
+
+					if (m_fMaxScrollDistance * 0.3f > 10.0f)
+					{
+						m_fMaxScrollDistance *= 0.3f;
+						m_nBounceDir = 2;
+						m_fScrollDistance = 0.0f;
+						break;
+					}
+
+					m_fScrollDistance = 0.0f;
+					//m_bIsViewScrolling	= false;
+					EnableViewToScroll(false);
+					//SetBeginViewIndex(GetBeginIndex());
+				}
+				else
+				{
+					fMove = -s_fParam;//-(m_fScrollToCenterSpeed + s_fParam);
+
+					m_fScrollDistance = m_fScrollDistance - fMove;
+				}
+
+				s_fParam += 2.0f;
+			}
+			else
+			{
+				EnableViewToScroll(false);
+				//SetBeginViewIndex(GetBeginIndex());
+				//m_bIsViewScrolling	= false;
+			}
+		} while (false);
+	}
 
 	MoveClient(fMove);
 

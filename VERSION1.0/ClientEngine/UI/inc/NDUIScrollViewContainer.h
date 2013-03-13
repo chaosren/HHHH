@@ -111,7 +111,7 @@ private:
 	bool					m_bCenterAdjust;
 	bool					m_bIsBottomSpeedBar;
 	bool					m_bRecaclClientEventRect;
-	bool					m_bBounce;
+	int						m_nBounceDir;
 
 	CAutoLink<CUIScrollView> m_linkCurView;
 	
