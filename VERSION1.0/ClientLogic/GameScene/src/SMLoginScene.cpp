@@ -472,8 +472,9 @@ void CSMLoginScene::ontimer_first_run()
 	}
 #endif
 
-#if (CACHE_MODE == 1) && (CC_TARGET_PLATFORM != CC_PLATFORM_IOS)
+#if (CACHE_MODE == 1)
 	//-----------------
+#if (CC_TARGET_PLATFORM != CC_PLATFORM_IOS)
 	if ( NDBeforeGameMgrObj.CheckFirstTimeRuning() )
 	{
 		CCLog( "@@ first time running!!!\r\n");
@@ -485,9 +486,9 @@ void CSMLoginScene::ontimer_first_run()
 			m_pLabelPromtp->SetText( NDCommonCString2(SZ_FIRST_INSTALL).c_str() );
 			m_pLabelPromtp->SetVisible( true );
 			ShowWaitingAni();
-#ifdef USE_MGSDK
+        #ifdef USE_MGSDK
 			m_pLabelPromtp->SetVisible( false );//Mobage的版本暂将文字绘在背景图上
-#endif
+        #endif
 		}
 
 		m_pTimer->SetTimer( this, TAG_TIMER_CHECK_COPY, 0.5f );
@@ -499,8 +500,16 @@ void CSMLoginScene::ontimer_first_run()
 		CloseWaitingAni();
 		OnProcessUpdate();
 	}
+    
+#else //ios
+    CCImage::changeSystemFont(false);
+    NDBeforeGameMgrObj.doNDSdkLogin();
+    CloseWaitingAni();
+    OnProcessUpdate();    
+#endif
 	//-----------------
-#else
+
+#else // not cache mode
 	NDBeforeGameMgrObj.doNDSdkLogin();
 	CloseWaitingAni();
 	OnProcessUpdate();
@@ -1030,7 +1039,7 @@ void CSMLoginScene::OnMsg_ClientVersion(NDTransData& kData)
 
 void CSMLoginScene::OnEvent_LoginOKNormal( int iAccountID )
 {
-	CCLog( "@@login03: OnEvent_LoginOKNormal()\r\n" );
+	CCLog( "@@login03: OnEvent_LoginOKNormal(): %d\r\n", iAccountID );
 
 	m_iAccountID = iAccountID;
 #ifdef USE_MGSDK
@@ -1052,19 +1061,31 @@ void CSMLoginScene::OnEvent_LoginOKNormal( int iAccountID )
     StartEntry();
     clearSplash();
 #endif
+    
 #if UPDATE_ON == 1
+    #if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
+        if (m_iAccountID > 0)
+        {
+            CloseWaitingAni();
+            StartEntry();
+        }
+    #endif
 #endif
 }
 
 //---------------------------------------------------------------------------
 void CSMLoginScene::OnEvent_LoginOKGuest( int iAccountID )
 {
+    CCLog( "@@ OnEvent_LoginOKGuest()\r\n");
+    
 	OnEvent_LoginOKNormal( iAccountID );
 }
 
 //---------------------------------------------------------------------------
 void CSMLoginScene::OnEvent_LoginOKGuest2Normal( int iAccountID )
 {
+    CCLog( "@@ OnEvent_LoginOKGuest2Normal()\r\n");
+
 	OnEvent_LoginOKNormal( iAccountID );
 }
 
@@ -1191,7 +1212,7 @@ void CSMLoginScene::StartEntry()
     clearSplash();
 #endif
 
-	CCLOG( "@@ CSMLoginScene::StartEntry() -- done.\r\n" );
+	CCLog( "@@ CSMLoginScene::StartEntry() -- done.\r\n" );
 }
 
 //===========================================================================
@@ -1368,10 +1389,6 @@ void CSMLoginScene::OnProcessUpdate()
 		StartEntry();
 		return;
 	}
-
-	#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
-		StartEntry();
-	#endif
 #endif
 }
 

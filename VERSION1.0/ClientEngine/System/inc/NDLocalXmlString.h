@@ -20,7 +20,7 @@ using namespace std;
 class NDLocalXmlString
 {
 private:
-	NDLocalXmlString() {}
+	NDLocalXmlString() { bLoaded = false; }
 
 public:
 	static NDLocalXmlString& GetSingleton()
@@ -65,4 +65,5 @@ private:
 	typedef map<string, string>		MAP_DATA;
 	typedef map<string, string>::iterator ITER_MAP_DATA;
 	MAP_DATA mapData;
+    bool bLoaded;
 };

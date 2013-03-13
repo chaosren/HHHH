@@ -240,6 +240,8 @@ void ScriptMgr::update()
 
 void ScriptMgr::Load()
 {
+    if (m_bLoadLuaOK) return;
+    
 	CCLog("@@ ScriptMgr::Load()\r\n");
 
 	PROFILE_REGLUA();

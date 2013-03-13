@@ -45,15 +45,21 @@ const string NDLocalXmlString::GetCString(string szKeyName)
 
 bool NDLocalXmlString::LoadData()
 {
-	string strFile = NDEngine::NDPath::GetResPath("lyol.strings");
-	vector<string> vecLines;
-	if ( this->readLines( strFile, vecLines ) )
+    if (!bLoaded)
 	{
-		this->parseLines( vecLines );
-		//this->dump();
-		return true;
-	}
-	return false;
+        string strFile = NDEngine::NDPath::GetResPath("lyol.strings");
+        vector<string> vecLines;
+        if ( this->readLines( strFile, vecLines ) )
+        {
+            this->parseLines( vecLines );
+            //this->dump();
+            return true;
+        }
+        return false;
+        
+        bLoaded = true;
+    }
+    return true;
 }
 
 //========================================================================
