@@ -22,7 +22,7 @@ p.EventConfig = {};
 p.EventReward = {};  
 
 --活动数据是否下发标志
-p.NeedDownFlag = false;  
+p.NeedDownFlag = true;  
 
 
 p.RechargeState = { First = {Num = 0, Flag = 0,},

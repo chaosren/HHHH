@@ -124,14 +124,6 @@ CSMLoginScene* CSMLoginScene::Scene( bool bShowEntry /*= false*/  )
     pkScene->Initialization();
     pkScene->SetTag(SMLOGINSCENE_TAG);
 
-	///< 給湯自勤哥展示用法……
-// 	NDJsonReader kReader;
-// 	kReader.readJsonFile("assets/conf.json");
-// 
-// 	string strID = kReader.readData("app_id");
-
-	//LOGD("strID = %s",strID.c_str());
-    
 	if ( bShowEntry )
 	{
 		if (NDLocalXmlString::GetSingleton().LoadLoginString())
