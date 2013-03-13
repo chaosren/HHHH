@@ -18,8 +18,6 @@
 
 IMPLEMENT_CLASS(CUIScrollView, CUIScroll)
 
-static float s_fParam = 0.0f;
-
 CUIScrollView::CUIScrollView()
 {
 	INC_NDOBJ_RTCLS
@@ -956,22 +954,22 @@ void NDUIScrollViewContainer::draw() //  m_fScrollDistance += speed; only to zer
 
 	if (0 != m_nBounceDir)
 	{
-		s_fParam *= 0.5f;
+		m_fAcceleratedSpeed *= 0.5f;
 		
 		if (1 == m_nBounceDir)
 		{
-			fMove = s_fParam;
+			fMove = m_fAcceleratedSpeed;
 		}
 		else
 		{
-			fMove = -s_fParam;
+			fMove = -m_fAcceleratedSpeed;
 		}
 
 		m_fScrollDistance -= fMove;
 
-		if (s_fParam <= 1.0f)
+		if (m_fAcceleratedSpeed <= 1.0f)
 		{
-			s_fParam = 0.0f;
+			m_fAcceleratedSpeed = 0.0f;
 			m_nBounceDir = 0;
 		}
 	}
@@ -981,7 +979,7 @@ void NDUIScrollViewContainer::draw() //  m_fScrollDistance += speed; only to zer
 		{
 			if (m_fScrollDistance > 0.0f)
 			{
-				if (m_fScrollDistance < s_fParam)
+				if (m_fScrollDistance < m_fAcceleratedSpeed)
 				{
 					// 				if (s_fFanTan > m_fScrollToCenterSpeed)
 					// 				{
@@ -1007,7 +1005,7 @@ void NDUIScrollViewContainer::draw() //  m_fScrollDistance += speed; only to zer
 				}
 				else
 				{
-					fMove = s_fParam;
+					fMove = m_fAcceleratedSpeed;
 
 					if (fMove >= m_fScrollToCenterSpeed)
 					{
@@ -1017,7 +1015,7 @@ void NDUIScrollViewContainer::draw() //  m_fScrollDistance += speed; only to zer
 					m_fScrollDistance = m_fScrollDistance - fMove;
 				}
 
-				s_fParam += 2.0f;
+				m_fAcceleratedSpeed += 2.0f;
 			}
 			else if (m_fScrollDistance < 0.0f)
 			{
@@ -1028,7 +1026,7 @@ void NDUIScrollViewContainer::draw() //  m_fScrollDistance += speed; only to zer
 				// 				break;
 				// 			}
 
-				if (m_fScrollDistance > -s_fParam)
+				if (m_fScrollDistance > -m_fAcceleratedSpeed)
 				{
 					fMove = m_fScrollDistance;
 
@@ -1047,12 +1045,12 @@ void NDUIScrollViewContainer::draw() //  m_fScrollDistance += speed; only to zer
 				}
 				else
 				{
-					fMove = -s_fParam;//-(m_fScrollToCenterSpeed + s_fParam);
+					fMove = -m_fAcceleratedSpeed;//-(m_fScrollToCenterSpeed + s_fParam);
 
 					m_fScrollDistance = m_fScrollDistance - fMove;
 				}
 
-				s_fParam += 2.0f;
+				m_fAcceleratedSpeed += 2.0f;
 			}
 			else
 			{
