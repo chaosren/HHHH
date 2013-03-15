@@ -81,7 +81,7 @@ public:
 private:
 	CCSize m_kSize;
 	void NumberBits(unsigned int uiNumber, /*out*/
-			std::vector<unsigned int>& bits);
+			std::vector<unsigned int>& kBits);
 	unsigned int exp(unsigned int uiValue, unsigned int uiNumber);
 	unsigned int SetTitleRedNumber(bool bCleanUp, unsigned int uiNumber,
 			unsigned int uiInterval, unsigned int uiStartPosition);

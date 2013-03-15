@@ -437,22 +437,22 @@ unsigned int ImageNumber::exp(unsigned int value, unsigned int n)
 }
 
 void ImageNumber::NumberBits(unsigned int uiNumber,
-							 std::vector<unsigned int>& bits)
+							 std::vector<unsigned int>& kBits)
 {
-	bits.clear();
+	kBits.clear();
 	CCStringRef kStringNumber = CCString::stringWithFormat("%u", uiNumber);
 	unsigned int uiLength = kStringNumber->m_sString.length();
 
 	if (uiNumber == 0)
 	{
-		bits.push_back(0);
+		kBits.push_back(0);
 	}
 	else
 	{
 		for (int i = uiLength; i > 0; i--)
 		{
 			unsigned int v = (uiNumber / exp(10, i - 1)) % 10;
-			bits.push_back(v);
+			kBits.push_back(v);
 		}
 	}
 }
@@ -527,12 +527,12 @@ void ImageNumber::SetSmallRedTwoNumber(unsigned int uiNumber_1, unsigned int uiN
 
 	int nStartPosition = 0;
 
-	std::vector<unsigned int> bits;
+	std::vector<unsigned int> kBits;
 	// Êý×Ö1
-	NumberBits(uiNumber_1, bits);
-	for (unsigned int i = 0; i < bits.size(); i++)
+	NumberBits(uiNumber_1, kBits);
+	for (unsigned int i = 0; i < kBits.size(); i++)
 	{
-		unsigned int uiBit = bits.at(i);
+		unsigned int uiBit = kBits.at(i);
 		NDPicture* pkPicture = PictureNumber::SharedInstance()->SmallRed(uiBit);
 		if (pkPicture)
 		{
@@ -563,10 +563,10 @@ void ImageNumber::SetSmallRedTwoNumber(unsigned int uiNumber_1, unsigned int uiN
 		nStartPosition += pkPictureSlash->GetSize().width;
 	}
 
-	NumberBits(uiNumber_2, bits);
-	for (unsigned int i = 0; i < bits.size(); i++)
+	NumberBits(uiNumber_2, kBits);
+	for (unsigned int i = 0; i < kBits.size(); i++)
 	{
-		unsigned int bit = bits.at(i);
+		unsigned int bit = kBits.at(i);
 		NDPicture* pkPicture = PictureNumber::SharedInstance()->SmallRed(bit);
 		if (pkPicture)
 		{

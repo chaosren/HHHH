@@ -42,6 +42,7 @@ using namespace CocosDenshion;
 #include <jni.h>
 #include <android/log.h>
 #include "android/jni/JniHelper.h"
+#include "ImageNumber.h"
 
 #define  LOG_TAG    "DaHuaLongJiang"
 #define  LOGD(...)  __android_log_print(ANDROID_LOG_DEBUG,LOG_TAG,__VA_ARGS__)
@@ -124,13 +125,10 @@ CSMLoginScene* CSMLoginScene::Scene( bool bShowEntry /*= false*/  )
     pkScene->Initialization();
     pkScene->SetTag(SMLOGINSCENE_TAG);
 
-	///< 給湯自勤哥展示用法……
-// 	NDJsonReader kReader;
-// 	kReader.readJsonFile("assets/conf.json");
-// 
-// 	string strID = kReader.readData("app_id");
-
-	//LOGD("strID = %s",strID.c_str());
+	ImageNumber* pkImageNumber = new ImageNumber;
+	pkImageNumber->Initialization();
+	pkImageNumber->SetFrameRect(CCRectMake(16, 25, 40, 10));
+	pkImageNumber->SetSmallRedTwoNumber(100,false);
     
 	if ( bShowEntry )
 	{
@@ -149,6 +147,7 @@ CSMLoginScene* CSMLoginScene::Scene( bool bShowEntry /*= false*/  )
 		pkLayer->Initialization();
 		pkLayer->SetFrameRect(CCRectMake(0, 0, kWinSize.width, kWinSize.height));
 		pkScene->AddChild(pkLayer);
+		pkLayer->AddChild(pkImageNumber);
 		pkScene->m_pLayerOld = pkLayer;
 
 		NDPicturePool& kPool = *(NDPicturePool::DefaultPool());
@@ -177,8 +176,8 @@ CSMLoginScene* CSMLoginScene::Scene( bool bShowEntry /*= false*/  )
 			pkBackgroundImage->SetPicture(pkPicture, true);
         }
         
-        CCSize winSize = CCDirector::sharedDirector()->getWinSizeInPixels();
-        pkBackgroundImage->SetFrameRect( CCRectMake(0, 0, winSize.width, winSize.height ));
+        CCSize kWindowSize = CCDirector::sharedDirector()->getWinSizeInPixels();
+        pkBackgroundImage->SetFrameRect( CCRectMake(0, 0, kWindowSize.width, kWindowSize.height ));
         
         pkLayer->AddChild(pkBackgroundImage);
 #endif

@@ -1057,16 +1057,16 @@ void Fighter::drawHurtNumber()
 	bool bEraseHurtNum = false;
 
 	{
-		HurtNumber& hn = m_vHurtNum.at(0);
+		HurtNumber& kHurtNumber = m_vHurtNum.at(0);
 
 		//int w = GetNumBits(abs(hn.getHurtNum())) * 11;
 
-		if (hn.isNew())
+		if (kHurtNumber.isNew())
 		{
-			hn.beginAppear();
+			kHurtNumber.beginAppear();
 
 			// 初始化去血提示
-			if (hn.getHurtNumberY() > 0)
+			if (kHurtNumber.getHurtNumberY() > 0)
 			{
 				m_pkImgHurtNum = new ImageNumber;
 				m_pkImgHurtNum->Initialization();
@@ -1079,18 +1079,18 @@ void Fighter::drawHurtNumber()
 					m_pkCritImage->SetPicture(picBaoJi);
 					m_pkParent->AddChild(m_pkCritImage);*/
 
-					m_pkImgHurtNum->SetBigRedNumber(hn.getHurtNum(), false);
+					m_pkImgHurtNum->SetBigRedNumber(kHurtNumber.getHurtNum(), false);
 
 				}
 				else
 				{
-					if (hn.getHurtNum() > 0)
+					if (kHurtNumber.getHurtNum() > 0)
 					{ // 加血
-						m_pkImgHurtNum->SetSmallGreenNumber(hn.getHurtNum(), false);
+						m_pkImgHurtNum->SetSmallGreenNumber(kHurtNumber.getHurtNum(), false);
 					}
 					else
 					{ // 去血
-						m_pkImgHurtNum->SetSmallRedNumber(hn.getHurtNum(), false);
+						m_pkImgHurtNum->SetSmallRedNumber(kHurtNumber.getHurtNum(), false);
 					}
 				}
 
@@ -1098,7 +1098,7 @@ void Fighter::drawHurtNumber()
 			}
 		}
 
-		if (hn.getHurtNumberY() > 0)
+		if (kHurtNumber.getHurtNumberY() > 0)
 		{
 			if (m_bHardAtk)
 			{
@@ -1115,7 +1115,7 @@ void Fighter::drawHurtNumber()
 				if (m_pkImgHurtNum)
 				{
 					m_pkImgHurtNum->SetFrameRect(CCRectMake(m_nX - (m_pkImgHurtNum->GetNumberSize().width /2),
-						m_nY - m_nRoleInitialHeight- hn.getHurtNumberY()*20,//++Guosen 2012.6.29 固定位置起始 //this->y - m_role->GetHeight() - hn.getHurtNumberY()*20,// - bjH * 13 / 20,
+						m_nY - m_nRoleInitialHeight- kHurtNumber.getHurtNumberY()*20,//++Guosen 2012.6.29 固定位置起始 //this->y - m_role->GetHeight() - hn.getHurtNumberY()*20,// - bjH * 13 / 20,
 						m_pkImgHurtNum->GetNumberSize().width,
 						m_pkImgHurtNum->GetNumberSize().height));
 				}
@@ -1123,16 +1123,17 @@ void Fighter::drawHurtNumber()
 			}
 			else
 			{
-				if (m_pkImgHurtNum) {
+				if (m_pkImgHurtNum)
+				{
 					m_pkImgHurtNum->SetFrameRect(CCRectMake(m_nX - (m_pkImgHurtNum->GetNumberSize().width /2),
-						m_nY - m_nRoleInitialHeight- hn.getHurtNumberY()*10,//++Guosen 2012.6.29 固定位置起始 //this->y - m_role->GetHeight() - hn.getHurtNumberY()*20,
+						m_nY - m_nRoleInitialHeight- kHurtNumber.getHurtNumberY()*10,//++Guosen 2012.6.29 固定位置起始 //this->y - m_role->GetHeight() - hn.getHurtNumberY()*20,
 						m_pkImgHurtNum->GetNumberSize().width,
 						m_pkImgHurtNum->GetNumberSize().height));
 				}
 			}
 
-			hn.timeLost();
-			bEraseHurtNum = hn.isDisappear();
+			kHurtNumber.timeLost();
+			bEraseHurtNum = kHurtNumber.isDisappear();
 
 		}
 	}
@@ -1160,59 +1161,59 @@ void Fighter::drawHPMP()
 	{
 		return;
 	}
-	int drawx = m_pkRole->GetPosition().x;
-	int drawy = m_pkRole->GetPosition().y;
+	int nDrawX = m_pkRole->GetPosition().x;
+	int nDrawY = m_pkRole->GetPosition().y;
 
-	drawy -= m_nRoleInitialHeight;//++Guosen 2012.6.29 固定位置//drawy -= this->m_role->GetHeight();
+	nDrawY -= m_nRoleInitialHeight;//++Guosen 2012.6.29 固定位置//drawy -= this->m_role->GetHeight();
 
 	//战斗时血条的宽高
 	int iBarWidth	= HP_BAR_WIDTH;
 	int iBarHeight	= HP_BAR_HEIGHT;
-	int lifew = 0;
-	int manaw = 0;
+	int iLifeWidth = 0;
+	int iManaWidth = 0;
 
-	drawx -= iBarWidth >> 1;
+	nDrawX -= iBarWidth >> 1;
 	if (m_kInfo.nLifeMax == 0)
 	{
-		lifew = 0;
+		iLifeWidth = 0;
 	}
 	else
 	{
 		if (m_kInfo.nLife > m_kInfo.nLifeMax)
 		{
-			lifew = iBarWidth;
+			iLifeWidth = iBarWidth;
 		}
 		else
 		{
-			lifew = m_kInfo.nLife * ( (float)iBarWidth / (float)m_kInfo.nLifeMax );
+			iLifeWidth = m_kInfo.nLife * ( (float)iBarWidth / (float)m_kInfo.nLifeMax );
 		}
 
-		if (lifew == 0)
+		if (iLifeWidth == 0)
 		{
 			if (m_kInfo.nLife == 0)
 			{
-				lifew = 0;
+				iLifeWidth = 0;
 			}
 			else
 			{
-				lifew = 1;
+				iLifeWidth = 1;
 			}
 		}
 	}
 
 	if( m_kInfo.nLifeMax == 0 )
 	{
-		manaw = 0;
+		iManaWidth = 0;
 	}
 	else
 	{
 		if( m_kInfo.nMana > m_kInfo.nManaMax )
 		{
-			manaw = iBarWidth;
+			iManaWidth = iBarWidth;
 		}
 		else
 		{
-			manaw = m_kInfo.nMana * ( (float)iBarWidth / (float)m_kInfo.nManaMax );
+			iManaWidth = m_kInfo.nMana * ( (float)iBarWidth / (float)m_kInfo.nManaMax );
 		}
 	}
 
@@ -1222,16 +1223,16 @@ void Fighter::drawHPMP()
 	//DrawRecttangle( CCRectMake(drawx, drawy - iBarHeight - 2, lifew, iBarHeight ), ccc4(237, 83, 15, 255) );
 	if ( m_pMPBar )
 	{
-		m_pMPBar->SetFrameRect( CCRectMake(drawx, drawy, iBarWidth, iBarHeight) );
+		m_pMPBar->SetFrameRect( CCRectMake(nDrawX, nDrawY, iBarWidth, iBarHeight) );
 		m_pMPBar->SetStart( 0 );
-		m_pMPBar->SetProcess( manaw );
+		m_pMPBar->SetProcess( iManaWidth );
 		m_pMPBar->SetTotal( iBarWidth );
 	}
 	if ( m_pHPBar )
 	{
-		m_pHPBar->SetFrameRect( CCRectMake(drawx, drawy - iBarHeight - 2, iBarWidth, iBarHeight) );
+		m_pHPBar->SetFrameRect( CCRectMake(nDrawX, nDrawY - iBarHeight - 2, iBarWidth, iBarHeight) );
 		m_pHPBar->SetStart( 0 );
-		m_pHPBar->SetProcess( lifew );
+		m_pHPBar->SetProcess( iLifeWidth );
 		m_pHPBar->SetTotal( iBarWidth );
 	}
 }
@@ -1260,52 +1261,6 @@ int Fighter::getAPasStatus()
 	return result;
 }
 
-// 0-add, 1-remove
-/*void Fighter::handleStatusPersist(int type, int dwdata) {
- int skillId = dwdata / 100;
- string str = "";
- switch (skillId) {
- case 111201:// 穿心剑
- case 131201:// 割裂
- str = "滴血";
- break;
- case 111202:// 破甲箭
- str = "破防";
- break;
- case 111102:// 火云刀
- case 121003:// 地狱鬼火
- str = "燃烧";
- break;
- case 111001:// 狮吼功
- str = "攻UP";
- break;
- case 111002:// 盾墙术
- str = "防UP";
- break;
- case 131402:// 一箭封喉
- str = "减速";
- break;
- case 131202:// 钝化
- str = "降敏";
- break;
- case 131001:// 隐遁
- str = "隐遁";
- break;
- case 121005:// 恢复
- str = "恢复";
- break;
- case 121006:// 神之祝福
- str = "神祝";
- break;
-
- }
- if (type == 0) {
- m_setStatusPersist.insert(str);
- } else if (type == 1) {
- m_setStatusPersist.erase(str);
- }
- }*/
-
 void Fighter::removeAStatusAniGroup(FighterStatus* status)
 {
 
@@ -1331,49 +1286,10 @@ void Fighter::removeAStatusAniGroup(FighterStatus* status)
 void Fighter::setWillBeAtk(bool bSet)
 {
 	m_bWillBeAttack = bSet;
-
-	if (bSet)
-	{
-//		NDPicture* pic = m_parent->GetBojiPic();
-//		bool bReverse = m_kInfo.group == BATTLE_GROUP_ATTACK;
-//		pic->SetReverse(bReverse);
-//		
-//		CCRect rect = CCRectMake(x + m_role->GetWidth() / 2 + 5,
-//					 y - 15,
-//					 pic->GetSize().width,
-//					 pic->GetSize().height);
-//		
-//		if (bReverse) {
-//			rect.origin.x = rect.origin.x - m_role->GetWidth() - 10;
-//		}
-//		
-//		if (!m_imgBoji) {
-//			m_imgBoji = new NDUIImage;
-//			m_imgBoji->Initialization();
-//			m_parent->AddChild(m_imgBoji);
-//		}
-//		m_imgBoji->SetPicture(pic);
-//		m_imgBoji->SetFrameRect(rect);
-
-	}
-	else
-	{
-//		if (m_imgBoji) {
-//			m_imgBoji->RemoveFromParent(true);
-//			m_imgBoji = NULL;
-//		}
-	}
 }
 
 void Fighter::addAStatus(FighterStatus* fs)
 {
-//	if (!fs) {
-//		return;
-//	}
-
-//	int idSub = (fs.m_LastEffectID / 10000) % 1000;
-
-//	NDAnimationGroup* effect;
 	if (fs->m_nLastEffectID == 404)
 	{
 		// 隐身特殊处理
