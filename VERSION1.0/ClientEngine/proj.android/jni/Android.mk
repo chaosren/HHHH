@@ -119,6 +119,7 @@ LOCAL_SRC_FILES := \
 ../../Utility/src/NDVideoEventListener.cpp \
 ../../Utility/src/NDVideoMgr.cpp \
 ../../Utility/src/NDJsonReader.cpp \
+../../Utility/src/NDScrollImageNumber.cpp \
 ../../TempClass/NDUITableLayer.cpp \
 ../../Performance.cpp
 
