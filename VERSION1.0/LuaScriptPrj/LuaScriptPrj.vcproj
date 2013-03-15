@@ -656,6 +656,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\Bin\SimplifiedChineseRes\res\Script\MainUI\Buff.lua"
+				>
+			</File>
+			<File
 				RelativePath="..\Bin\SimplifiedChineseRes\res\Script\MainUI\CheckOtherPlayerBtn.lua"
 				>
 			</File>
@@ -1835,6 +1839,22 @@
 			</File>
 			<File
 				RelativePath="..\Bin\SimplifiedChineseRes\res\UI\VIPgift_2_L.ini"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="TreasureHunt"
+			>
+			<File
+				RelativePath="..\Bin\SimplifiedChineseRes\res\Script\TreasureHunt\define.lua"
+				>
+			</File>
+			<File
+				RelativePath="..\Bin\SimplifiedChineseRes\res\Script\TreasureHunt\MsgTreasureHunt.lua"
+				>
+			</File>
+			<File
+				RelativePath="..\Bin\SimplifiedChineseRes\res\Script\TreasureHunt\TreasureHunt.lua"
 				>
 			</File>
 		</Filter>

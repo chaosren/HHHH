@@ -1855,9 +1855,10 @@ DB_VIP_CONFIG=
     ENHANCE_CRIT_FLAG       =13,    --是否开启暴击功能
     ENHANCE_REDUCE_PECENT   =14,    --节约强化费的百分比
     FIGHT_AUTO              =15,    --自动战斗（boss战，大乱斗等自动战斗开启）
-    DESTINY_BAG_NUM         =16,    --
-    DESTINY_CALL_QIMEN      =17,    --
-    DESTINY_ASTROLOGY_AUTO  =18,    --
+    DESTINY_BAG_NUM         =16,    --道法背包容量
+    DESTINY_CALL_QIMEN      =17,    --激活奇门遁甲总次数
+    DESTINY_ASTROLOGY_AUTO  =18,    --是否可一键占星
+    DESTINY_SELECT_AYTO = 19, --自动占星
 
 };
 
