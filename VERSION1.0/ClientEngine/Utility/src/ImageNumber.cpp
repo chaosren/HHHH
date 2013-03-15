@@ -131,28 +131,28 @@ PictureNumber* PictureNumber::SharedInstance()
 	return PictureNumber_SharedInstance;
 }
 
-NDPicture* PictureNumber::TitleGoldNumber(unsigned int number)
+NDPicture* PictureNumber::TitleGoldNumber(unsigned int uiNumber)
 {
-	if (number >= sizeof(m_picTitleGlod) / sizeof(m_picTitleGlod[0]))
+	if (uiNumber >= sizeof(m_picTitleGlod) / sizeof(m_picTitleGlod[0]))
 	{
 		return NULL;
 	}
 
-	if (!m_picTitleGlod[number])
+	if (!m_picTitleGlod[uiNumber])
 	{
-		m_picTitleGlod[number] = NDPicturePool::DefaultPool()->AddPicture(
+		m_picTitleGlod[uiNumber] = NDPicturePool::DefaultPool()->AddPicture(
 			title_image);
-		int idx = number - 1;
+		int nIDx = uiNumber - 1;
 
-		if (idx == -1)
+		if (nIDx == -1)
 		{
-			idx = 9;
+			nIDx = 9;
 		}
 
-		m_picTitleGlod[number]->Cut(CCRectMake(120 + idx * 20,
+		m_picTitleGlod[uiNumber]->Cut(CCRectMake(120 + nIDx * 20,
 			24,GetTitleGoldNumberSize().width, GetTitleGoldNumberSize().height));
 	}
-	return m_picTitleGlod[number];
+	return m_picTitleGlod[uiNumber];
 }
 
 NDPicture* PictureNumber::TitleRedNumber(unsigned int number)
@@ -372,21 +372,21 @@ unsigned int ImageNumber::SetTitleRedNumber(bool cleanUp, unsigned int number,
 
 	for (unsigned int i = 0; i < bits.size(); i++)
 	{
-		unsigned int bit = bits.at(i);
-		NDPicture* pkPicture = PictureNumber::SharedInstance()->TitleRedNumber(bit);
+		unsigned int uiBit = bits.at(i);
+		NDPicture* pkPicture = PictureNumber::SharedInstance()->TitleRedNumber(uiBit);
 		if (pkPicture)
 		{
-			NDUIImage* image = new NDUIImage();
-			image->Initialization();
-			image->SetPicture(pkPicture);
-			image->SetFrameRect(
+			NDUIImage* pkImage = new NDUIImage();
+			pkImage->Initialization();
+			pkImage->SetPicture(pkPicture);
+			pkImage->SetFrameRect(
 				CCRectMake(
 				startPos
 				+ i
 				* PictureNumber::SharedInstance()->GetTitleRedNumberSize().width
 				+ interval, 0, pkPicture->GetSize().width,
 				pkPicture->GetSize().height));
-			this->AddChild(image);
+			this->AddChild(pkImage);
 		}
 	}
 

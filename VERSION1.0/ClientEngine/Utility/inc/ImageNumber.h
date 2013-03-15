@@ -19,7 +19,7 @@ class PictureNumber
 public:
 	static PictureNumber* SharedInstance();
 	//number must between 0 and 9
-	NDPicture* TitleGoldNumber(unsigned int number);
+	NDPicture* TitleGoldNumber(unsigned int uiNumber);
 	CCSize GetTitleGoldNumberSize();
 
 	NDPicture* TitleRedNumber(unsigned int number);
