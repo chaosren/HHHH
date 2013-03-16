@@ -139,12 +139,13 @@ function p.LoadUI( nCurrPetId )
     
     MsgRealize.mUIListener = p.processNet;
     
+    --[[
     --**影藏一键卖出按钮
     local btn = GetButton(layer, TAG_FAST_SELL);
     if(btn) then
         btn:SetVisible(false);
     end
-    
+    ]]
     
     --判断一键占星是否显示为灰色
     local nVipRank = GetRoleBasicDataN(GetPlayerId(),USER_ATTR.USER_ATTR_VIP_RANK);
@@ -534,7 +535,7 @@ function p.OnUIEvent(uiNode, uiEventType, param)
             LogInfo("chh_02");
             ShowLoadBar();
             MsgRealize.sendPickUpAll();
-        elseif(tag == TAG_FAST_SELL) then       -- 一键出售
+        elseif(tag == TAG_FAST_SELL) then       -- 自动占星
             
             local nVipRank = GetRoleBasicDataN(GetPlayerId(),USER_ATTR.USER_ATTR_VIP_RANK);
             local nRequestVipRank = GetRequestVipLevel(DB_VIP_CONFIG.DESTINY_SELECT_AYTO);

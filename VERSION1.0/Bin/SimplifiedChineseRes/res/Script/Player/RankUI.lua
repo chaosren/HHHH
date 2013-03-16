@@ -54,6 +54,9 @@ p.TagPropLabels = {
 
 p.RandInfo  = {};            --军衔信息
 
+local TAG_DESC_LAYER = 9989;
+local TAG_DESC_BTN  = 74;
+
 function p.LoadUI()
 --------------------获得游戏主场景------------------------------------------
     local scene = GetSMGameScene();	
@@ -88,6 +91,26 @@ function p.LoadUI()
     animate:ChangeSprite(szAniPath.."jiantx03.spr");
     
     
+     
+-----------------初始化军衔说明层----------------------------------
+    local layerDesc = createNDUILayer();
+	if layerDesc == nil then
+		return false;
+	end
+	layerDesc:Init();
+	layerDesc:SetTag(TAG_DESC_LAYER );
+	layerDesc:SetFrameRect(RectFullScreenUILayer);
+    layerDesc:SetVisible(false);
+	layer:AddChild(layerDesc);
+    
+    local uiLoad = createNDUILoad();
+	if nil == uiLoad then
+		layerDesc:Free();
+		return false;
+	end
+
+	uiLoad:Load("Rank_L.ini", layerDesc, p.OnUIEventDesc, 0, 0);
+    
     
 -------------------------------初始化数据------------------------------------    
     p.initData(); 
@@ -109,8 +132,12 @@ function p.LoadUI()
     return true;
 end
 
-
-
+function p.GetRankDescLayer()
+    local scene = GetSMGameScene();
+	local layer = GetUiLayer(scene, NMAINSCENECHILDTAG.RankUI);
+    local layerDesc = GetUiLayer(layer, TAG_DESC_LAYER);
+    return layerDesc;
+end
 -----------------------------UI层的事件处理---------------------------------
 function p.OnUIEvent(uiNode, uiEventType, param)
 	local tag = uiNode:GetTag();
@@ -121,6 +148,9 @@ function p.OnUIEvent(uiNode, uiEventType, param)
 			CloseUI(NMAINSCENECHILDTAG.RankUI);
         elseif (p.TagUpgrade == tag) then
 			p.randUpgrade();
+        elseif (TAG_DESC_BTN == tag ) then
+            local layer = p.GetRankDescLayer();
+            layer:SetVisible(true);
         end
         
     elseif uiEventType == NUIEventType.TE_TOUCH_SC_VIEW_IN_BEGIN then
@@ -129,6 +159,17 @@ function p.OnUIEvent(uiNode, uiEventType, param)
             local scene = GetSMGameScene();
             local layer = GetUiLayer(scene, NMAINSCENECHILDTAG.RankUI);
             --p.setArrow(layer,p.GetListContainer());
+        end
+	end
+	return true;
+end
+
+function p.OnUIEventDesc(uiNode, uiEventType, param)
+    local tag = uiNode:GetTag();
+	if uiEventType == NUIEventType.TE_TOUCH_BTN_CLICK then
+		if p.TagClose == tag then                           
+            local layer = p.GetRankDescLayer();
+            layer:SetVisible(false);
         end
 	end
 	return true;

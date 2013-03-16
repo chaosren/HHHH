@@ -125,6 +125,7 @@ tVipInfo[6][3] = GetTxtPri("PLAYER_T48")
 tVipInfo[6][4] = GetTxtPri("PLAYER_T49")
 tVipInfo[6][5] = GetTxtPri("PLAYER_T50")
 tVipInfo[6][6] = GetTxtPri("PLAYER_T51")
+tVipInfo[6][7] = GetTxtPri("PLAYER_T511")
 
 tVipInfo[7][1] = GetTxtPri("PLAYER_T53")
 tVipInfo[7][2] = GetTxtPri("PUIA_T17")      --添加多语言
