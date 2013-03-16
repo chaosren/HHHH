@@ -14,11 +14,14 @@
 #define _UI_EDIT_H_ZJH_
 
 #include "NDPicture.h"
-#include "CommonInput.h"
 #include "NDUINode.h"
 #include "NDUILabel.h"
 #include "NDDirector.h"
 #include "CCIMEDelegate.h"
+
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
+#include "CommonInput.h"
+#endif
 
 using namespace NDEngine;
 

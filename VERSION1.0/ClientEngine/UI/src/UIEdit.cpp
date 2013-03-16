@@ -9,13 +9,15 @@
 
 #include "UIEdit.h"
 #include "ScriptUI.h"
-#include "IphoneInput.h"
 #include "NDDirector.h"
 #include "NDUtil.h"
 #include "define.h"
 //#include "I_Analyst.h"
 #include "ObjectTracker.h"
 #include "UsePointPls.h"
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
+#include "IphoneInput.h"
+#endif
 
 CUIEdit* CUIEdit::g_pCurUIEdit = NULL;
 
