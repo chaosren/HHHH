@@ -11,9 +11,9 @@
 #define _IPHONE_INPUT_H_ZJH_
 
 #include "CommonInput.h"
-//#import <Foundation/Foundation.h>
+#import <Foundation/Foundation.h>
 
-//@class NSIphoneInput;
+@class NSIphoneInput;
 
 class CIphoneInput :
 public IPlatformInput
@@ -42,7 +42,7 @@ public:
     
 private:
 	CInputBase*			m_inputCommon;
-	//NSIphoneInput*		m_inputIphone;
+	NSIphoneInput*		m_inputIphone;
 	bool				m_bAutoAdjust;
 	bool				m_bInputState;
 	unsigned int        m_usLengthLimit;

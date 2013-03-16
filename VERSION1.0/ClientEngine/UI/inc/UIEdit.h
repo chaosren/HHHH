@@ -25,7 +25,11 @@ using namespace NDEngine;
 #define TEXT_LEFT_BORDER	(5*RESOURCE_SCALE)	//输入框左边距设置
 #define TEST_TEXT			"测"				//测试文字用于取文字大小
 
-#define WITH_NEW_IME 1							//是否启用新的输入法机制
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
+    #define WITH_NEW_IME 0
+#else
+    #define WITH_NEW_IME 1							//是否启用新的输入法机制
+#endif
 #define WITH_OLD_IME (!WITH_NEW_IME)
 
 
@@ -106,6 +110,11 @@ public:
 
 protected:
 	void draw(); 
+#if WITH_NEW_IME
+	void draw_new_ime(); //for android & win32
+#else
+	void draw_old_ime(); //for ios
+#endif
 	void SetVisible(bool visible); 
 	bool OnClick(NDObject* object); 
 
