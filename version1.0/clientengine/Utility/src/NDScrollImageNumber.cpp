@@ -5,7 +5,9 @@ NS_NDENGINE_BGN
 
 IMPLEMENT_CLASS(NDScrollImageNumber,NDObject)
 
-NDScrollImageNumber::NDScrollImageNumber()
+NDScrollImageNumber::NDScrollImageNumber():
+m_fScrollTime(5.0f),
+m_nScrollNumber(0)
 {
 
 }
@@ -16,7 +18,17 @@ NDScrollImageNumber::~NDScrollImageNumber()
 }
 
 bool NDScrollImageNumber::SetScrollNumber( int uiNumber,FontType eType,
+										  float fSecond,
 										  bool bWithSign /*= false*/ )
+{
+	m_nScrollNumber = uiNumber;
+	m_eFontType = eType;
+	m_fScrollTime = fSecond;
+
+	return true;
+}
+
+void NDScrollImageNumber::draw()
 {
 	RemoveAllChildren(true);
 
@@ -25,7 +37,7 @@ bool NDScrollImageNumber::SetScrollNumber( int uiNumber,FontType eType,
 	if (bWithSign) // ÏÔÊ¾·ûºÅ
 	{
 		int nPicIndex = 11;
-		if (uiNumber > 0)
+		if (m_nScrollNumber > 0)
 		{
 			nPicIndex = 11;
 		}
@@ -49,10 +61,10 @@ bool NDScrollImageNumber::SetScrollNumber( int uiNumber,FontType eType,
 		}
 	}
 
-	uiNumber = abs(uiNumber);
+	m_nScrollNumber = abs(m_nScrollNumber);
 
 	std::vector<unsigned int> kBits;
-	NumberBits(uiNumber, kBits);
+	NumberBits(m_nScrollNumber, kBits);
 
 	for (unsigned int i = 0; i < kBits.size(); i++)
 	{
@@ -77,7 +89,7 @@ bool NDScrollImageNumber::SetScrollNumber( int uiNumber,FontType eType,
 		* PictureNumber::SharedInstance()->GetSmallRedSize().width;
 	m_kSize.height = PictureNumber::SharedInstance()->GetSmallRedSize().height;
 
-	return true;
+	ImageNumber::draw();
 }
 
 NS_NDENGINE_END

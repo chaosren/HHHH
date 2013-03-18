@@ -28,9 +28,14 @@ public:
 	NDScrollImageNumber();
 	virtual ~NDScrollImageNumber();
 
-	bool SetScrollNumber(int uiNumber,FontType eType,bool bWithSign = false);
+	virtual void draw();
+
+	bool SetScrollNumber(int uiNumber,float fSecond,FontType eType,bool bWithSign = false);
 
 protected:
+
+	CC_SYNTHESIZE(float,m_fScrollTime,ScrollTime);
+	CC_SYNTHESIZE(int,m_nScrollNumber,ScrollNumber);			///< 每一位（个位百位千位）从0到9的时间 @郭浩
 
 	FontType m_eFontType;
 
