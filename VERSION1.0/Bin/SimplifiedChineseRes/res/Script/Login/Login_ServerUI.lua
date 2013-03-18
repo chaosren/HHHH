@@ -741,8 +741,8 @@ end
 
 
 function p.GetNotice()
-    local record = SqliteConfig.SelectNotice(1);
-    ActivityNoticeUI.ShowUI(record.VER);
+    --local record = SqliteConfig.SelectNotice(1);
+    --ActivityNoticeUI.ShowUI(record.VER);
 end
 
 --踢人
