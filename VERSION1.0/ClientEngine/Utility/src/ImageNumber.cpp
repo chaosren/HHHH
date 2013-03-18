@@ -9,20 +9,20 @@
 //#define title_image ([[NSString stringWithFormat:@"%s", NDPath::GetImgPath("titles.png")] UTF8String])
 
 //小号红色数字图形文件，数字的宽，高
-#define SMALL_RED_NUMBER_FIGURE_IMAG		"Res00/uiNumber/SmallRedFigure.png"
+#define SMALL_RED_NUMBER_FIGURE_IMAG		"Res00/Number/SmallRedFigure.png"
 #define SMALL_RED_NUMBER_FIGURE_SIZE_W		32
 #define SMALL_RED_NUMBER_FIGURE_SIZE_H		38
 //小号绿色数字图形文件，数字的宽，高
-#define SMALL_GREEN_NUMBER_FIGURE_IMAG		"Res00/uiNumber/SmallGreenFigure.png"
+#define SMALL_GREEN_NUMBER_FIGURE_IMAG		"Res00/Number/SmallGreenFigure.png"
 #define SMALL_GREEN_NUMBER_FIGURE_SIZE_W	32
 #define SMALL_GREEN_NUMBER_FIGURE_SIZE_H	38
 
 //大号红色数字图形文件，数字的宽，高
-#define BIG_RED_NUMBER_FIGURE_IMAG			"Res00/uiNumber/BigRedFigure.png"
+#define BIG_RED_NUMBER_FIGURE_IMAG			"Res00/Number/BigRedFigure.png"
 #define BIG_RED_NUMBER_FIGURE_SIZE_W		64
 #define BIG_RED_NUMBER_FIGURE_SIZE_H		76
 //大号绿色数字图形文件，数字的宽，高
-#define BIG_GREEN_NUMBER_FIGURE_IMAG		"Res00/uiNumber/BigGreenFigure.png"
+#define BIG_GREEN_NUMBER_FIGURE_IMAG		"Res00/Number/BigGreenFigure.png"
 #define BIG_GREEN_NUMBER_FIGURE_SIZE_W		64
 #define BIG_GREEN_NUMBER_FIGURE_SIZE_H		76
 

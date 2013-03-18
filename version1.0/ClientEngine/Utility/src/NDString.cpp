@@ -127,8 +127,7 @@ NDString& NDString::operator=(const char* str)
 	return (*this);
 }
 
-NDString&
-NDString::operator=(const NDString& data)
+NDString& NDString::operator=(const NDString& data)
 {
 	if (this != &data)
 	{
@@ -138,8 +137,7 @@ NDString::operator=(const NDString& data)
 	return (*this);
 }
 
-const char*
-NDString::getData() const
+const char* NDString::getData() const
 {
 	return buf.c_str();
 }

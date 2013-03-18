@@ -35,6 +35,7 @@ public:
 	NDPicture* SmallRed(unsigned int index);
 	NDPicture* SmallGreen(unsigned int index);
 	NDPicture* SmallGold(unsigned int index);
+
 	CCSize GetBigRedSize();
 	CCSize GetSmallWhiteSize();
 	CCSize GetSmallRedSize();
@@ -78,13 +79,15 @@ public:
 	void Initialization();
 	CCSize GetNumberSize();
 
-private:
-	CCSize m_kSize;
 	void NumberBits(unsigned int uiNumber, /*out*/
-			std::vector<unsigned int>& kBits);
+		std::vector<unsigned int>& kBits);
 	unsigned int exp(unsigned int uiValue, unsigned int uiNumber);
 	unsigned int SetTitleRedNumber(bool bCleanUp, unsigned int uiNumber,
-			unsigned int uiInterval, unsigned int uiStartPosition);
+		unsigned int uiInterval, unsigned int uiStartPosition);
+
+	CCSize m_kSize;
+
+private:
 };
 
 #endif

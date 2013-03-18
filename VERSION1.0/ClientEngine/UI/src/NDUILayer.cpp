@@ -117,7 +117,7 @@ NDUILayer::~NDUILayer()
 {
 	DEC_NDOBJ_RTCLS
 
-	CC_SAFE_RELEASE_NULL (m_pkBackgroudTexture);
+	CC_SAFE_RELEASE_NULL(m_pkBackgroudTexture);
 
 	if (m_bClearOnFree)
 	{
@@ -138,7 +138,7 @@ NDUILayer::~NDUILayer()
 		m_pkLongTouchTimer = NULL;
 	}
 
-	if(this == m_pkLayerPress && !CanDispatchEvent())
+	if (this == m_pkLayerPress && !CanDispatchEvent())
 	{
 		EndDispatchEvent();
 	}
@@ -148,12 +148,12 @@ void NDUILayer::Initialization()
 {
 	m_ccNode = new NDBaseLayer;
 
-	NDBaseLayer *layer = (NDBaseLayer *) m_ccNode;
-	layer->SetUILayer(this);
-	layer->setTouchEnabled(true);
-	layer->setDebugName( m_strDebugName.c_str() );
+	NDBaseLayer* pkLayer = (NDBaseLayer *) m_ccNode;
+	pkLayer->SetUILayer(this);
+	pkLayer->setTouchEnabled(true);
+	pkLayer->setDebugName(m_strDebugName.c_str());
 
-	SetFrameRect(CCRectZero);
+	SetFrameRect (CCRectZero);
 }
 void NDUILayer::SetTouchEnabled(bool bEnabled)
 {
@@ -180,7 +180,7 @@ void NDUILayer::SetDragOverEnabled(bool bEnabled)
 
 void NDUILayer::OnCanceledTouch()
 {
-	if (this == m_pkLayerPress && !CanDispatchEvent()) 
+	if (this == m_pkLayerPress && !CanDispatchEvent())
 	{
 		EndDispatchEvent();
 	}
@@ -193,7 +193,7 @@ void NDUILayer::SetBackgroundImage(const char* imageFile)
 	{
 		return;
 	}
-    
+
 	//m_pkBackgroudTexture = new CCTexture2D;
 	m_pkBackgroudTexture = CCTexture2D::create();
 
@@ -202,7 +202,7 @@ void NDUILayer::SetBackgroundImage(const char* imageFile)
 	image.initWithImageFile(imageFile);
 	m_pkBackgroudTexture->initWithImage(&image);
 #else
-    m_pkBackgroudTexture->initWithPalettePNG(imageFile);
+	m_pkBackgroudTexture->initWithPalettePNG(imageFile);
 #endif
 }
 
@@ -259,58 +259,53 @@ NDUINode* NDUILayer::GetFocus()
 
 void NDUILayer::draw()
 {
-	if (!isDrawEnabled()) return;
+	if (!isDrawEnabled())
+	{
+		return;
+	}
 
 	NDUINode::draw();
 
 	if (IsVisibled())
 	{
-//			if (m_focusNode == NULL)
-//				if (GetChildren().size() > 0)
-//					m_focusNode = (NDUINode*)GetChildren().at(0);
-
-		bool focus = false;
+		bool bFocus = false;
 
 		if (m_pkPicFocus && GetParent()
 				&& GetParent()->IsKindOfClass(RUNTIME_CLASS(NDUILayer)))
 		{
-			NDUILayer *layer = ((NDUILayer*) (GetParent()));
-			if (layer->GetFocus() == this)
-				focus = true;
+			NDUILayer* pkUILayer = ((NDUILayer*) (GetParent()));
+			if (pkUILayer->GetFocus() == this)
+			{
+				bFocus = true;
+			}
 		}
 
-		CCRect scrRect = GetScreenRect();
+		CCRect kSrcRect = GetScreenRect();
 
-		NDPicture* pic =
-				focus ? (m_pkPicFocus == NULL ? m_pkPic : m_pkPicFocus) : m_pkPic;
+		NDPicture* pkPicture =
+				bFocus ? (m_pkPicFocus == NULL ? m_pkPic : m_pkPicFocus) : m_pkPic;
 
-		if (pic)
+		if (pkPicture)
 		{
-			DrawSetup( kCCShader_PositionColor );
-			DrawRecttangle(scrRect, m_kBackgroudColor);
+			DrawSetup (kCCShader_PositionColor);
+			DrawRecttangle(kSrcRect, m_kBackgroudColor);
 
-			pic->DrawInRect(scrRect);
+			pkPicture->DrawInRect(kSrcRect);
 		}
 		else
 		{
-// 			ccColor4B kColor =
-// 			{ 0 };
-// 
-// 			m_kBackgroudColor = kColor;
-			DrawSetup( kCCShader_PositionColor );
+			DrawSetup (kCCShader_PositionColor);
 			//DrawRecttangle(scrRect, m_kBackgroudColor);
 			//++修正坐标和尺寸，Guosen 2012.12.4
-			ConvertUtil::convertToPointCoord( scrRect );
-			CCRect tRect = CCRectMake(scrRect.origin.x,SCREEN2GL_Y(scrRect.origin.y)-scrRect.size.height,scrRect.size.width,scrRect.size.height);
+			ConvertUtil::convertToPointCoord(kSrcRect);
+			CCRect tRect = CCRectMake(kSrcRect.origin.x,
+					SCREEN2GL_Y(kSrcRect.origin.y) - kSrcRect.size.height,
+					kSrcRect.size.width, kSrcRect.size.height);
 			DrawRecttangle(tRect, m_kBackgroudColor);
-			
+
 			if (m_pkBackgroudTexture)
 			{
-				//glDisableClientState(GL_COLOR_ARRAY);
-
-				m_pkBackgroudTexture->drawInRect(scrRect);
-
-				//glEnableClientState(GL_COLOR_ARRAY);
+				m_pkBackgroudTexture->drawInRect(kSrcRect);
 			}
 		}
 	}
@@ -338,13 +333,10 @@ bool NDUILayer::IsVisibled()
 
 bool NDUILayer::UITouchBegin(NDTouch* touch)
 {
-//		if (!canDispatchEvent()) 
-//		{
-//			return false;
-//		}
-
-	if(ms_bPressing)
+	if (ms_bPressing)
+	{
 		return false;
+	}
 
 	StartDispatchEvent();
 
@@ -363,7 +355,9 @@ bool NDUILayer::UITouchBegin(NDTouch* touch)
 void NDUILayer::UITouchEnd(NDTouch* touch)
 {
 	if (m_pkLongTouchTimer)
+	{
 		m_pkLongTouchTimer->KillTimer(this, LONG_TOUCH_TIMER_TAG);
+	}
 
 	if (TouchEnd(touch))
 	{
@@ -393,7 +387,6 @@ void NDUILayer::UITouchMoved(NDTouch* touch)
 	if (TouchMoved(touch))
 	{
 	}
-	//	m_layerMoved = false;
 }
 
 bool NDUILayer::UITouchDoubleClick(NDTouch* touch)
@@ -411,15 +404,11 @@ bool NDUILayer::TouchBegin(NDTouch* touch)
 	m_bDispatchTouchEndEvent = true;
 	m_kBeginTouch = touch->GetLocation();
 
-// 	CCRect kRect(m_kBeginTouch.x - 20,m_kBeginTouch.y - 20,40,40);
-// 	ccColor4B kColor = {100,100,100,255};
-// 	DrawRecttangle(kRect,kColor);
-
 	if (cocos2d::CCRect::CCRectContainsPoint(GetScreenRect(), m_kBeginTouch)
 			&& IsVisibled() && EventEnabled())
 	{
 		m_bTouchDwon = true;
-		DispatchTouchBeginEvent(m_kBeginTouch);
+		DispatchTouchBeginEvent (m_kBeginTouch);
 
 		if (m_bDispatchBtnClickByPressDown)
 		{
@@ -521,16 +510,18 @@ bool NDUILayer::TouchEnd(NDTouch* touch)
 				}
 			}
 
-			if(node && node->IsKindOfClass(RUNTIME_CLASS(NDScene)))
+			if (node && node->IsKindOfClass(RUNTIME_CLASS(NDScene)))
 			{
 				const std::vector<NDNode *>& childs = node->GetChildren();
 				std::vector<NDNode *>::const_iterator it = childs.begin();
-				for(; it != childs.end(); it++)
+				for (; it != childs.end(); it++)
 				{
 					NDNode* node = *it;
-					if(node && node->IsKindOfClass(RUNTIME_CLASS(NDUILayer)))
+					if (node && node->IsKindOfClass(RUNTIME_CLASS(NDUILayer)))
 					{
-						if(((NDUILayer *)node)->DispatchDragInEvent(m_pkTouchedNode, m_kBeginTouch, m_kEndTouch, m_bLongTouch, true))
+						if (((NDUILayer *) node)->DispatchDragInEvent(
+								m_pkTouchedNode, m_kBeginTouch, m_kEndTouch,
+								m_bLongTouch, true))
 						{
 							return true;
 						}
@@ -569,12 +560,11 @@ bool NDUILayer::TouchMoved(NDTouch* touch)
 	{
 		//如果点在按钮上则允许抖动容错，否则不容错（任何微小移动都视为拖动）
 		if ((!m_bLongTouch)
-			&& this->IsTouchOnButton( kMoveTouch )
-			&& ccpDistanceSQ( m_kBeginTouch, kMoveTouch ) < MOVE_ERROR*MOVE_ERROR )
-		{
-			return true; //consume it.
+				&& this->IsTouchOnButton(
+						kMoveTouch) && ccpDistanceSQ( m_kBeginTouch, kMoveTouch ) < MOVE_ERROR*MOVE_ERROR){
+				return true; //consume it.
+			}
 		}
-	}
 
 	if (m_pkTouchedNode && m_bDispatchTouchEndEvent)
 	{
@@ -599,7 +589,8 @@ bool NDUILayer::TouchMoved(NDTouch* touch)
 		nodeFrame = RectAdd(nodeFrame, 2);
 
 		if (!m_bLayerMoved
-				&& (cocos2d::CCRect::CCRectContainsPoint(nodeFrame, kMoveTouch) || m_bDragOutFlag))
+				&& (cocos2d::CCRect::CCRectContainsPoint(nodeFrame, kMoveTouch)
+						|| m_bDragOutFlag))
 		{
 			if (m_pkLongTouchTimer)
 				m_pkLongTouchTimer->KillTimer(this, LONG_TOUCH_TIMER_TAG);
@@ -640,7 +631,7 @@ bool NDUILayer::TouchDoubleClick(NDTouch* touch)
 	if (cocos2d::CCRect::CCRectContainsPoint(GetScreenRect(), m_kBeginTouch)
 			&& IsVisibled() && EventEnabled())
 	{
-		DispatchTouchDoubleClickEvent(m_kBeginTouch);
+		DispatchTouchDoubleClickEvent (m_kBeginTouch);
 
 		return true;
 	}
@@ -661,11 +652,11 @@ bool NDUILayer::DispatchTouchBeginEvent(CCPoint beginTouch)
 
 		//NDUINode* uiNode = (NDUINode*) GetChildren().at(i);//--Guosen 2012.11.21
 		NDNode * pNode = GetChildren().at(i);
-		if ( !pNode->IsKindOfClass( RUNTIME_CLASS(NDUINode) ) )
+		if (!pNode->IsKindOfClass(RUNTIME_CLASS(NDUINode)))
 		{
 			continue;
 		}
-		NDUINode* uiNode = (NDUINode*)pNode;
+		NDUINode* uiNode = (NDUINode*) pNode;
 
 		//un visibled node dont accept event
 		if (!uiNode->IsVisibled())
@@ -692,18 +683,19 @@ bool NDUILayer::DispatchTouchBeginEvent(CCPoint beginTouch)
 		}
 
 		//** chh 2012-07-21 **//
-		if(uiNode->IsKindOfClass(RUNTIME_CLASS(NDUIImage)))
+		if (uiNode->IsKindOfClass(RUNTIME_CLASS(NDUIImage)))
 		{
 			continue;
 		}
 
 		//touch event deal.....
-		CCRect nodeFrame = uiNode->GetBoundRect();//uiNode->GetScreenRect();
+		CCRect nodeFrame = uiNode->GetBoundRect(); //uiNode->GetScreenRect();
 
 		if (cocos2d::CCRect::CCRectContainsPoint(nodeFrame, beginTouch))
 		{
 			//按钮点击优化：按下时直接响应单击事件
-			if (TryDispatchToButton(uiNode)) return false; //discard.
+			if (TryDispatchToButton(uiNode))
+				return false; //discard.
 
 			//NDUILayer need dispatch event
 			if (uiNode->IsKindOfClass(RUNTIME_CLASS(NDUILayer)))
@@ -716,7 +708,7 @@ bool NDUILayer::DispatchTouchBeginEvent(CCPoint beginTouch)
 			}
 
 			//按钮播放音效
-			if(uiNode->IsKindOfClass(RUNTIME_CLASS(NDUIButton)))
+			if (uiNode->IsKindOfClass(RUNTIME_CLASS(NDUIButton)))
 			{
 				//
 			}
@@ -747,11 +739,11 @@ bool NDUILayer::DispatchTouchEndEvent(CCPoint beginTouch, CCPoint endTouch)
 
 		//NDUINode* uiNode = (NDUINode*) GetChildren().at(i);//--Guosen 2012.11.21
 		NDNode * pNode = GetChildren().at(i);
-		if ( !pNode->IsKindOfClass( RUNTIME_CLASS(NDUINode) ) )
+		if (!pNode->IsKindOfClass(RUNTIME_CLASS(NDUINode)))
 		{
 			continue;
 		}
-		NDUINode* uiNode = (NDUINode*)pNode;
+		NDUINode* uiNode = (NDUINode*) pNode;
 
 		//un visibled node dont accept event
 		if (!uiNode->IsVisibled())
@@ -937,12 +929,12 @@ bool NDUILayer::DispatchTouchEndEvent(CCPoint beginTouch, CCPoint endTouch)
 // 						uiText->OnTextClick(endTouch);
 // 						return false;
 // 					}
-					else if (uiNode->IsKindOfClass(RUNTIME_CLASS(CUIChatText)))
-					{
-						CUIChatText *uiText = (CUIChatText *)uiNode;
-						uiText->OnTextClick(endTouch);
-						return false;
-					}
+				else if (uiNode->IsKindOfClass(RUNTIME_CLASS(CUIChatText)))
+				{
+					CUIChatText *uiText = (CUIChatText *) uiNode;
+					uiText->OnTextClick(endTouch);
+					return false;
+				}
 // 					else if (uiNode->IsKindOfClass(RUNTIME_CLASS(NDUIVerticalScrollBar)))
 // 					{
 // 						NDUIVerticalScrollBar* scrollBar = (NDUIVerticalScrollBar*)uiNode;
@@ -978,11 +970,11 @@ bool NDUILayer::DispatchTouchDoubleClickEvent(CCPoint beginTouch)
 
 		//NDUINode* uiNode = (NDUINode*) GetChildren().at(i);//--Guosen 2012.11.21
 		NDNode * pNode = GetChildren().at(i);
-		if ( !pNode->IsKindOfClass( RUNTIME_CLASS(NDUINode) ) )
+		if (!pNode->IsKindOfClass(RUNTIME_CLASS(NDUINode)))
 		{
 			continue;
 		}
-		NDUINode* uiNode = (NDUINode*)pNode;
+		NDUINode* uiNode = (NDUINode*) pNode;
 
 		//un visibled node dont accept event
 		if (!uiNode->IsVisibled())
@@ -1118,15 +1110,15 @@ void NDUILayer::OnTimer(OBJID tag)
 	}
 	else if (m_pLazyDeleteTimer && tag == LAZY_DELETE_TIMER_TAG) //@lazydel
 	{
-		m_pLazyDeleteTimer->KillTimer( this, tag );
-		this->RemoveFromParent( true );
+		m_pLazyDeleteTimer->KillTimer(this, tag);
+		this->RemoveFromParent(true);
 	}
 }
 
 void NDUILayer::lazyDelete() //@lazydel
 {
 	if (m_pLazyDeleteTimer)
-		m_pLazyDeleteTimer->SetTimer(this, LAZY_DELETE_TIMER_TAG, 0.1f); 
+		m_pLazyDeleteTimer->SetTimer(this, LAZY_DELETE_TIMER_TAG, 0.1f);
 }
 
 bool NDUILayer::DispatchLongTouchClickEvent(CCPoint beginTouch,
@@ -1147,11 +1139,11 @@ bool NDUILayer::DispatchLongTouchClickEvent(CCPoint beginTouch,
 
 		//NDUINode* uiNode = (NDUINode*) GetChildren().at(i);//--Guosen 2012.11.21
 		NDNode * pNode = GetChildren().at(i);
-		if ( !pNode->IsKindOfClass( RUNTIME_CLASS(NDUINode) ) )
+		if (!pNode->IsKindOfClass(RUNTIME_CLASS(NDUINode)))
 		{
 			continue;
 		}
-		NDUINode* uiNode = (NDUINode*)pNode;
+		NDUINode* uiNode = (NDUINode*) pNode;
 
 		//un visibled node dont accept event
 		if (!uiNode->IsVisibled())
@@ -1338,7 +1330,8 @@ bool NDUILayer::DispatchDragOutEvent(CCPoint beginTouch, CCPoint moveTouch,
 
 //		if (cocos2d::CCRect::CCRectContainsPoint(nodeFrame, beginTouch)) 
 //		{
-	if (cocos2d::CCRect::CCRectContainsPoint(nodeFrame, moveTouch) || m_bDragOutFlag)
+	if (cocos2d::CCRect::CCRectContainsPoint(nodeFrame, moveTouch)
+			|| m_bDragOutFlag)
 	{
 //				//NDUILayer need dispatch event
 //				if (uiNode->IsKindOfClass(RUNTIME_CLASS(NDUILayer))) 
@@ -1424,7 +1417,9 @@ bool NDUILayer::DispatchDragOutCompleteEvent(CCPoint beginTouch,
 				dynamic_cast<NDUIButtonDelegate*>(uiNode->GetDelegate());
 		if (delegate
 				&& delegate->OnButtonDragOutComplete((NDUIButton*) uiNode,
-						endTouch, !cocos2d::CCRect::CCRectContainsPoint(nodeFrame, endTouch)))
+						endTouch,
+						!cocos2d::CCRect::CCRectContainsPoint(nodeFrame,
+								endTouch)))
 		{
 			return true;
 		}
@@ -1451,11 +1446,11 @@ bool NDUILayer::DispatchDragInEvent(NDUINode* dragOutNode, CCPoint beginTouch,
 
 		//NDUINode* uiNode = (NDUINode*) GetChildren().at(i);//--Guosen 2012.11.21
 		NDNode * pNode = GetChildren().at(i);
-		if ( !pNode->IsKindOfClass( RUNTIME_CLASS(NDUINode) ) )
+		if (!pNode->IsKindOfClass(RUNTIME_CLASS(NDUINode)))
 		{
 			continue;
 		}
-		NDUINode* uiNode = (NDUINode*)pNode;
+		NDUINode* uiNode = (NDUINode*) pNode;
 
 		//un visibled node dont accept event
 		if (!uiNode->IsVisibled())
@@ -1549,7 +1544,8 @@ bool NDUILayer::DispatchDragOverEvent(CCPoint beginTouch, CCPoint moveTouch,
 		CCRect nodeFrame = m_pkDragOverNode->GetScreenRect();
 		nodeFrame = RectAdd(nodeFrame, 2);
 
-		bool isInRange = cocos2d::CCRect::CCRectContainsPoint(nodeFrame, moveTouch);
+		bool isInRange = cocos2d::CCRect::CCRectContainsPoint(nodeFrame,
+				moveTouch);
 		if (m_pkDragOverNode->IsKindOfClass(RUNTIME_CLASS(NDUIButton)))
 		{
 			NDUIButtonDelegate* delegate =
@@ -1570,11 +1566,11 @@ bool NDUILayer::DispatchDragOverEvent(CCPoint beginTouch, CCPoint moveTouch,
 
 		//NDUINode* uiNode = (NDUINode*) GetChildren().at(i);//--Guosen 2012.11.21
 		NDNode * pNode = GetChildren().at(i);
-		if ( !pNode->IsKindOfClass( RUNTIME_CLASS(NDUINode) ) )
+		if (!pNode->IsKindOfClass(RUNTIME_CLASS(NDUINode)))
 		{
 			continue;
 		}
-		NDUINode* uiNode = (NDUINode*)pNode;
+		NDUINode* uiNode = (NDUINode*) pNode;
 
 		//un visibled node dont accept event
 		if (!uiNode->IsVisibled())
@@ -1668,11 +1664,11 @@ bool NDUILayer::DispatchLayerMoveEvent(CCPoint beginPoint, NDTouch *moveTouch)
 
 		//NDUINode* uiNode = (NDUINode*) GetChildren().at(i);//--Guosen 2012.11.21
 		NDNode * pNode = GetChildren().at(i);
-		if ( !pNode->IsKindOfClass( RUNTIME_CLASS(NDUINode) ) )
+		if (!pNode->IsKindOfClass(RUNTIME_CLASS(NDUINode)))
 		{
 			continue;
 		}
-		NDUINode* uiNode = (NDUINode*)pNode;
+		NDUINode* uiNode = (NDUINode*) pNode;
 
 		//un visibled node dont accept event
 		if (!uiNode->IsVisibled())
@@ -1709,7 +1705,8 @@ bool NDUILayer::DispatchLayerMoveEvent(CCPoint beginPoint, NDTouch *moveTouch)
 		nodeFrame = RectAdd(nodeFrame, 2);
 
 		if (cocos2d::CCRect::CCRectContainsPoint(nodeFrame, beginPoint)
-				&& cocos2d::CCRect::CCRectContainsPoint(nodeFrame, moveTouch->GetLocation()))
+				&& cocos2d::CCRect::CCRectContainsPoint(nodeFrame,
+						moveTouch->GetLocation()))
 		{
 			//set focus
 			//m_focusNode = uiNode;
@@ -1749,30 +1746,30 @@ bool NDUILayer::DispatchLayerMoveEvent(CCPoint beginPoint, NDTouch *moveTouch)
 
 	//tmpVertical = tmpVertical > 0.0f ? tmpVertical : -tmpVertical;
 
- 	if(m_bIsHVContainer)
- 	{
- 		NDNode *pNode = GetParent()->GetParent();
- 		if(pNode->IsKindOfClass(RUNTIME_CLASS(CUIScrollViewContainerM)))
- 		{
- 			CUIScrollViewContainerM *svc = (CUIScrollViewContainerM*)pNode;
+	if (m_bIsHVContainer)
+	{
+		NDNode *pNode = GetParent()->GetParent();
+		if (pNode->IsKindOfClass(RUNTIME_CLASS(CUIScrollViewContainerM)))
+		{
+			CUIScrollViewContainerM *svc = (CUIScrollViewContainerM*) pNode;
 
 // 			if(0 == m_nIsHVFirstTemp)
 // 			{
-				if(fabs(horizontal) > fabs((vertical)))
-				{
-					m_nIsHVFirstTemp = 1;
-				}
-				else
-				{
-					m_nIsHVFirstTemp = 2;
-				}
-/*			}*/
+			if (fabs(horizontal) > fabs((vertical)))
+			{
+				m_nIsHVFirstTemp = 1;
+			}
+			else
+			{
+				m_nIsHVFirstTemp = 2;
+			}
+			/*			}*/
 
-			if(m_nIsHVFirstTemp == 1)
+			if (m_nIsHVFirstTemp == 1)
 			{
 				svc->OnScrollViewMove(this, 0, horizontal);
 			}
-			else if(m_nIsHVFirstTemp == 2)
+			else if (m_nIsHVFirstTemp == 2)
 			{
 				svc->OnScrollViewMove(this, vertical, 0);
 			}
@@ -1881,15 +1878,15 @@ bool NDUILayer::CanDispatchEvent()
 }
 void NDUILayer::StartDispatchEvent()
 {
-	ms_bPressing  = true;
-	
+	ms_bPressing = true;
+
 	m_pkLayerPress = this;
 }
 
 void NDUILayer::EndDispatchEvent()
 {
 	ms_bPressing = false;
-	
+
 	m_pkLayerPress = NULL;
 }
 
@@ -1900,7 +1897,8 @@ bool NDUILayer::IsTouchDown()
 
 void NDUILayer::debugDraw()
 {
-	if (!NDDebugOpt::getDrawDebugEnabled()) return;
+	if (!NDDebugOpt::getDrawDebugEnabled())
+		return;
 
 	CCRect rc = GetFrameRect();
 	float l = rc.origin.x;
@@ -1909,12 +1907,14 @@ void NDUILayer::debugDraw()
 	float b = t + rc.size.height;
 
 	const float pad = 0.25f;
-	l += pad; r -= pad;
-	t += pad; b -= pad;
+	l += pad;
+	r -= pad;
+	t += pad;
+	b -= pad;
 
-	if (m_bPopupDlg) 
+	if (m_bPopupDlg)
 	{
-		ccDrawColor4F(0,0,0,1); //black for popup
+		ccDrawColor4F(0, 0, 0, 1); //black for popup
 	}
 	else
 	{
@@ -1922,14 +1922,14 @@ void NDUILayer::debugDraw()
 		if (layer)
 		{
 			if (layer->getSubPriority() == 0)
-				ccDrawColor4F(1,1,1,1); //white for bringToTop
+				ccDrawColor4F(1, 1, 1, 1); //white for bringToTop
 			else
-				ccDrawColor4F(0.5,0.5,0.5,1);//gray for default
+				ccDrawColor4F(0.5, 0.5, 0.5, 1); //gray for default
 		}
 	}
 
 	glLineWidth(2);
-	ccDrawRect( ccp(l,t), ccp(r,b));
+	ccDrawRect(ccp(l, t), ccp(r, b));
 
 #if 0
 	glLineWidth(1);
@@ -1941,9 +1941,7 @@ void NDUILayer::debugDraw()
 //@priority
 ND_LAYER_PRIORITY NDUILayer::getPriority()
 {
-	return m_bPopupDlg
-		? E_LAYER_PRIORITY_POPUPDLG
-		: E_LAYER_PRIORITY_UILAYER;
+	return m_bPopupDlg ? E_LAYER_PRIORITY_POPUPDLG : E_LAYER_PRIORITY_UILAYER;
 }
 
 //@priority
@@ -1979,38 +1977,41 @@ const char* NDUILayer::getDebugName()
 	}
 }
 
-void NDUILayer::setDebugName( const char* inName )
+void NDUILayer::setDebugName(const char* inName)
 {
-	if (!inName) return;
+	if (!inName)
+		return;
 
 	m_strDebugName = inName;
 
 	if (m_ccNode)
 	{
 		NDBaseLayer *layer = (NDBaseLayer *) m_ccNode;
-		layer->setDebugName( m_strDebugName.c_str() );
+		layer->setDebugName(m_strDebugName.c_str());
 	}
 }
 
 //防手抖（触摸屏很难准确单击，一般都会有像素移动）
-bool NDUILayer::isTouchMoved( const int errorPixels )
+bool NDUILayer::isTouchMoved(const int errorPixels)
 {
 	if (m_bTouchMoved)
 	{
-		if (ccpDistanceSQ( m_kBeginTouch, m_kEndTouch ) >= errorPixels*errorPixels)
+		if (ccpDistanceSQ(m_kBeginTouch, m_kEndTouch)
+				>= errorPixels * errorPixels)
 			return true;
 	}
 	return false;
 }
 
 //按下按钮等同点击
-bool NDUILayer::TryDispatchToButton( NDUINode* uiNode )
+bool NDUILayer::TryDispatchToButton(NDUINode* uiNode)
 {
-	if( uiNode && PRESSDOWN_BTN_EQ_CLICK 
-		&& uiNode->IsKindOfClass(RUNTIME_CLASS(NDUIButton))
-		&& stricmp( uiNode->GetRuntimeClass()->className, "NDUIButton") == 0)
+	if (uiNode && PRESSDOWN_BTN_EQ_CLICK
+			&& uiNode->IsKindOfClass(RUNTIME_CLASS(NDUIButton))
+			&& stricmp(uiNode->GetRuntimeClass()->className, "NDUIButton") == 0)
 	{
-		do {
+		do
+		{
 			if (((NDUIButton*) uiNode)->IsGray())
 			{
 				break;
@@ -2018,7 +2019,7 @@ bool NDUILayer::TryDispatchToButton( NDUINode* uiNode )
 			uiNode->DispatchClickOfViewr(uiNode);
 
 			NDUIButtonDelegate* delegate =
-				dynamic_cast<NDUIButtonDelegate*>(uiNode->GetDelegate());
+					dynamic_cast<NDUIButtonDelegate*>(uiNode->GetDelegate());
 
 			if (delegate)
 			{
@@ -2044,7 +2045,7 @@ bool NDUILayer::TryDispatchToButton( NDUINode* uiNode )
 		m_bTouchMoved = false;
 		m_bDragOutFlag = false;
 		m_bLayerMoved = false;
-		m_kMoveTouch = ccp(0,0);
+		m_kMoveTouch = ccp(0, 0);
 		m_bTouchDwon = false;
 		ms_bPressing = false;
 
@@ -2057,7 +2058,7 @@ bool NDUILayer::TryDispatchToButton( NDUINode* uiNode )
 }
 
 //是否触摸在按钮上（或者编辑框）
-bool NDUILayer::IsTouchOnButton( const CCPoint& touch )
+bool NDUILayer::IsTouchOnButton(const CCPoint& touch)
 {
 	if (!IsVisibled())
 	{
@@ -2067,22 +2068,23 @@ bool NDUILayer::IsTouchOnButton( const CCPoint& touch )
 	for (int i = GetChildren().size() - 1; i >= 0; i--)
 	{
 		NDNode * pNode = GetChildren().at(i);
-		if ( !pNode ) continue;
+		if (!pNode)
+			continue;
 
-		if (pNode->IsKindOfClass( RUNTIME_CLASS(NDUINode)))
+		if (pNode->IsKindOfClass(RUNTIME_CLASS(NDUINode)))
 		{
-			NDUINode* uiNode = (NDUINode*)pNode;
+			NDUINode* uiNode = (NDUINode*) pNode;
 
 			if (uiNode->IsVisibled() && uiNode->EventEnabled())
 			{
-				if (uiNode->IsKindOfClass(RUNTIME_CLASS(NDUIButton)) 
-					|| pNode->IsKindOfClass( RUNTIME_CLASS(CUIEdit))
-					|| pNode->IsKindOfClass( RUNTIME_CLASS(NDUICheckBox))
-					|| pNode->IsKindOfClass( RUNTIME_CLASS(CUICheckBox))
-					|| pNode->IsKindOfClass( RUNTIME_CLASS(CUIHyperlinkButton))
-					|| pNode->IsKindOfClass( RUNTIME_CLASS(CUIHyperlinkText))
-					|| pNode->IsKindOfClass( RUNTIME_CLASS(CUIChatText))
-					)
+				if (uiNode->IsKindOfClass(RUNTIME_CLASS(NDUIButton))
+						|| pNode->IsKindOfClass(RUNTIME_CLASS(CUIEdit))
+						|| pNode->IsKindOfClass(RUNTIME_CLASS(NDUICheckBox))
+						|| pNode->IsKindOfClass(RUNTIME_CLASS(CUICheckBox))
+						|| pNode->IsKindOfClass(
+								RUNTIME_CLASS(CUIHyperlinkButton))
+						|| pNode->IsKindOfClass(RUNTIME_CLASS(CUIHyperlinkText))
+						|| pNode->IsKindOfClass(RUNTIME_CLASS(CUIChatText)))
 				{
 					CCRect nodeFrame = uiNode->GetBoundRect();
 

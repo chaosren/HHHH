@@ -36,6 +36,8 @@
 #include "NDJsonReader.h"
 #include "../CocosDenshion/include/SimpleAudioEngine.h"
 
+#include "NDScrollImageNumber.h"
+
 using namespace CocosDenshion;
 
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
@@ -125,10 +127,10 @@ CSMLoginScene* CSMLoginScene::Scene( bool bShowEntry /*= false*/  )
     pkScene->Initialization();
     pkScene->SetTag(SMLOGINSCENE_TAG);
 
-	ImageNumber* pkImageNumber = new ImageNumber;
+	NDScrollImageNumber* pkImageNumber = new NDScrollImageNumber;
 	pkImageNumber->Initialization();
 	pkImageNumber->SetFrameRect(CCRectMake(16, 25, 40, 10));
-	pkImageNumber->SetSmallRedTwoNumber(100,false);
+	pkImageNumber->SetSmallRedNumber(1000,false);
     
 	if ( bShowEntry )
 	{
@@ -147,7 +149,7 @@ CSMLoginScene* CSMLoginScene::Scene( bool bShowEntry /*= false*/  )
 		pkLayer->Initialization();
 		pkLayer->SetFrameRect(CCRectMake(0, 0, kWinSize.width, kWinSize.height));
 		pkScene->AddChild(pkLayer);
-		pkLayer->AddChild(pkImageNumber);
+		pkScene->AddChild(pkImageNumber,100);
 		pkScene->m_pLayerOld = pkLayer;
 
 		NDPicturePool& kPool = *(NDPicturePool::DefaultPool());
@@ -228,9 +230,8 @@ void CSMLoginScene::Initialization(void)
 	NDScene::Initialization();
 	//m_doucumentPath = NDPath::GetDocumentPath();
 	m_strCachePath = NDPath::GetCashesPath();
-	//m_strSavePath = m_strCachePath + "update.zip";
-	//m_resPath = NDPath::GetResPath();
-	PackageCount = 0;
+
+	m_nPackageCount = 0;
 	m_pTimer = new NDTimer();
 }
 
@@ -265,29 +266,10 @@ void notifyProcess(int nPercent)
 //===========================================================================
 void CSMLoginScene::OnTimer( OBJID idTag )
 {
-	/*
-	static bool bFirst = true;
-
-	if (bFirst)
-	{
-		LOGD("Entry First OnTimer");
-		//idTag = TAG_TIMER_UPDATE;
-		bFirst = false;
-	}
-   */
 	if ( idTag == TAG_TIMER_UPDATE ) 
 	{
 		LOGD("TAG_TIMER_UPDATE process entry");
-        /*
-		if ( !rename( m_strSavePath.c_str(), m_strSavePath.c_str() ) )
-		{
-			if ( remove( m_strSavePath.c_str() ) )
-			{ 
-				m_pTimer->KillTimer(this, TAG_TIMER_UPDATE);
-				return;
-			}
-		}
-		*/
+
         //重新设置m_SavePath的值，保存本地的文件名与服务器上下载名保持一致
 		char szUpdateURL[100] = {0};
 		snprintf(szUpdateURL,sizeof(szUpdateURL),"%s",m_strUpdateURL.c_str());
@@ -297,7 +279,10 @@ void CSMLoginScene::OnTimer( OBJID idTag )
 			m_strSavePath = m_strCachePath + szTempFile;
         }
 		else
+		{
 			return;
+		}
+
 		LOGD("m_strUpdateURL is %s,m_strSavePath is %s",m_strUpdateURL.c_str(),m_strSavePath.c_str());
         
 		FromUrl(m_strUpdateURL.c_str());
@@ -329,7 +314,7 @@ void CSMLoginScene::OnTimer( OBJID idTag )
 			m_CurDownNum++;
 		}
 
-		PackageCount++;
+		m_nPackageCount++;
 		//查找下载队列
 		if (kDeqUpdateUrl.size() > 0)
 		{

@@ -32,13 +32,10 @@ void AutoPathTip::work(std::string des)
 	}
 	else
 	{
-		//kStringStream << NDCommonCString("AutoPathTipGo2") << "[";
 	}
 	
 	kStringStream << des << "] ";
-	
-	//Chat::DefaultChat()->AddMessage(ChatTypeSystem, ss.str().c_str());
-	
+
 	m_strDes = des;
 	
 	m_bWork = true;
@@ -51,22 +48,12 @@ bool AutoPathTip::IsWorking()
 
 void AutoPathTip::Arrive()
 {
-	//Chat::DefaultChat()->AddMessage(ChatTypeSystem, NDCommonCString("AutoPathTipTo"));
-	
 	NDPlayer& kPlayer = NDPlayer::defaultHero();
 	NDNpc* kNPC = kPlayer.GetFocusNpc();
 
 	if (kNPC && kNPC->GetType() != 6) 
 	{
 		kPlayer.SendNpcInteractionMessage(kNPC->m_nID);
-//		if (npc->IsDirectOnTalk()) 
-//		{
-			//npc³¯ÏòÐÞ¸Ä	
-//			if (player.GetPosition().x > npc->GetPosition().x) 
-//				npc->DirectRight(true);	
-//			else 
-//				npc->DirectRight(false);
-//		}
 	}
 	
 	m_bWork = false;
@@ -74,8 +61,5 @@ void AutoPathTip::Arrive()
 
 void AutoPathTip::Stop()
 {
-	//if (m_bWork)
-		//Chat::DefaultChat()->AddMessage(ChatTypeSystem, NDCommonCString("AutoPathTipBreak"));
-	
 	m_bWork = false;
 }

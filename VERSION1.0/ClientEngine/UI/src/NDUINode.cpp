@@ -249,7 +249,10 @@ namespace NDEngine
 	
 	void NDUINode::draw()
 	{	
-		if (!isDrawEnabled()) return;
+		if (!isDrawEnabled())
+		{
+			return;
+		}
 
 		NDNode::draw();
 
@@ -276,14 +279,14 @@ namespace NDEngine
 		}
 
 		// check screen rect changed.
-		CCRect scrRect = this->GetScreenRect();
-		if (scrRect.origin.x != m_kScrRectCache.origin.x 
-			|| scrRect.origin.y != m_kScrRectCache.origin.y 
-			|| scrRect.size.width != m_kScrRectCache.size.width 
-			|| scrRect.size.height != m_kScrRectCache.size.height) 
+		CCRect kSrcRect = this->GetScreenRect();
+		if (kSrcRect.origin.x != m_kScrRectCache.origin.x 
+			|| kSrcRect.origin.y != m_kScrRectCache.origin.y 
+			|| kSrcRect.size.width != m_kScrRectCache.size.width 
+			|| kSrcRect.size.height != m_kScrRectCache.size.height) 
 		{
-			this->OnFrameRectChange(m_kScrRectCache, scrRect);
-			m_kScrRectCache = scrRect;
+			OnFrameRectChange(m_kScrRectCache, kSrcRect);
+			m_kScrRectCache = kSrcRect;
 		}
 	}
 	
@@ -389,7 +392,9 @@ namespace NDEngine
 			default:
 				break;
 		}
-		printf("Change From[%f][%f] To [%f][%f] Step[%f]",m_kFrameRect.origin.x,m_kFrameRect.origin.y,rect.origin.x,rect.origin.y, m_fStep);
+		printf("Change From[%f][%f] To [%f][%f] Step[%f]",
+			m_kFrameRect.origin.x,m_kFrameRect.origin.y,
+			rect.origin.x,rect.origin.y, m_fStep);
 	}
 
 	bool NDUINode::isDrawEnabled()

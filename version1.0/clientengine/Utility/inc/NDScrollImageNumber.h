@@ -19,10 +19,21 @@ class NDScrollImageNumber:
 
 public:
 
+	typedef enum __tagFontType
+	{
+		Font_SmallRed,
+		Font_MaxCount
+	}FontType;
+
 	NDScrollImageNumber();
 	virtual ~NDScrollImageNumber();
 
+	bool SetScrollNumber(int uiNumber,FontType eType,bool bWithSign = false);
+
 protected:
+
+	FontType m_eFontType;
+
 private:
 };
 
