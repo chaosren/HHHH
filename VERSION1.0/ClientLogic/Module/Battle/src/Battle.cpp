@@ -362,57 +362,19 @@ BattleUILayer::BattleUILayer(Byte btType)
 
 void BattleUILayer::CloseChatInput()
 {
-	//if (NULL != m_chatDelegate.tfChat.subviews) {
-	//	[m_chatDelegate.tfChat removeFromSuperview];
-	//}
 }
 
 BattleUILayer::~BattleUILayer()
 {
 	DEC_NDOBJ_RTCLS
-	//	if (m_imgTurn) {
-	//		m_imgTurn->RemoveFromParent(false);
-	//		SAFE_DELETE(m_imgTurn);
-	//	}
-	//	if (m_imgTimer) {
-	//		m_imgTimer->RemoveFromParent(false);
-	//		SAFE_DELETE(m_imgTimer);
-	//	}
-	//	if (m_imgQuickTalkBg) {
-	//		m_imgQuickTalkBg->RemoveFromParent(false);
-	//		SAFE_DELETE(m_imgQuickTalkBg);
-	//	}
-	//	if (m_tlQuickTalk) {
-	//		m_tlQuickTalk->RemoveFromParent(false);
-	//		SAFE_DELETE(m_tlQuickTalk);
-	//	}
-	//	if (m_imgChat) {
-	//		m_imgChat->RemoveFromParent(false);
-	//		SAFE_DELETE(m_imgChat);
-	//	}
-	//	if (m_btnSendChat) {
-	//		m_btnSendChat->RemoveFromParent(false);
-	//		SAFE_DELETE(m_btnSendChat);
-	//	}
 
 	CloseChatInput();
 
-	//[m_chatDelegate release];
 	if (eraseInOutEffect)
 	{
 		NDEraseInOutEffect *eioEffect = eraseInOutEffect.Pointer();
 		SAFE_DELETE_NODE(eioEffect);
 	}
-	//CC_SAFE_DELETE (m_picActionWordDef);
-	//CC_SAFE_DELETE (m_picActionWordDodge);
-	//CC_SAFE_DELETE (m_picActionWordFlee);
-	//CC_SAFE_DELETE (m_battleBg);
-
-	//	SAFE_DELETE(m_picTalk);
-	//	SAFE_DELETE(m_picQuickTalk);
-	//	SAFE_DELETE(m_picAuto);
-	//	SAFE_DELETE(m_picAutoCancel);
-	//	SAFE_DELETE(m_picLeave);
 
 	// 设置战斗状态
 	NDPlayer::defaultHero().UpdateState(USERSTATE_FIGHTING, false);
@@ -423,59 +385,17 @@ BattleUILayer::~BattleUILayer()
 	{
 		m_dlgBattleResult->RemoveFromParent(true);
 	}
-	
-	//	if(m_orignalMapId!=NDMapMgrObj.m_iMapID){
-	//		NDMapMgrObj.loadSceneByMapID(m_orignalMapId);
-	//		NDMapMgrObj.AddAllNpcToMap();
-	//		NDMapMgrObj.AddAllMonsterToMap();
-	//	}
 
-	NDDirector* director = NDDirector::DefaultDirector();
-//	director->PopScene(true);
-	
-	GameScene* gameScene = (GameScene*) director->GetRunningScene();
+	NDDirector* pkDirector = NDDirector::DefaultDirector();
+	GameScene* pkGameScene = (GameScene*) pkDirector->GetRunningScene();
+	NDMapLayer* pkMapLayer = NDMapMgrObj.getMapLayerOfScene(pkGameScene);
 
-	NDMapLayer* mapLayer = NDMapMgrObj.getMapLayerOfScene(gameScene);
-	if (mapLayer) 
+	if (pkMapLayer)
 	{
-		//		mapLayer->SetScreenCenter(m_orignalPos);
-		//mapLayer->SetBattleBackground(false);//不在此设置非战斗背景播放其他非战斗元素(NPC==)--Guosen 2012.7.5
-		//mapLayer->replaceMapData(sceneMapId, sceneCenterX, sceneCenterY);//不在此还原地图--Guosen 2012.7.5
-		//ScriptMgrObj.excuteLuaFunc("SetUIVisible", "",0);//不在此显示UI--Guosen 2012.7.2
 		int theId=NDMapMgrObj.GetMotherMapID();
-		//if(theId/100000000==9){
-		//ScriptMgrObj.excuteLuaFunc("showDynMapUI", "",0);
-		//}else{
-		//ScriptMgrObj.excuteLuaFunc("showCityMapUI", "",0);
-		//}
-		//		mapLayer->AddChild(&(NDPlayer::defaultHero()));
 	}
 
-	gameScene->OnBattleEnd();
-	//	if (m_btnLeave) {
-	//		RemoveChild(m_btnLeave, false);
-	//		SAFE_DELETE(m_btnLeave);
-	//	}
-
-	//	if (m_battleOpt) {
-	//		RemoveChild(m_battleOpt, false);
-	//		SAFE_DELETE(m_battleOpt);
-	//	}
-	//	if (m_eudemonOpt) {
-	//		RemoveChild(m_eudemonOpt, false);
-	//		SAFE_DELETE(m_eudemonOpt);
-	//	}
-
-	//	SAFE_DELETE(m_picWhoAmI);
-	//	SAFE_DELETE(m_picLingPai);
-	//CC_SAFE_DELETE (m_picBaoJi);
-
-	//	if (s_bAuto) {
-	//		RemoveChild(m_lbAuto, false);
-	//		RemoveChild(m_imgAutoCount, false);
-	//		SAFE_DELETE(m_imgAutoCount);
-	//		SAFE_DELETE(m_lbAuto);
-	//	}
+	pkGameScene->OnBattleEnd();
 
 	ReleaseCommandList();
 
@@ -513,11 +433,6 @@ BattleUILayer::~BattleUILayer()
 			}
 		}
 	}
-
-// 	if (player.IsInState(USERSTATE_BF_WAIT_RELIVE))
-// 	{
-// 		BattleFieldRelive::Show();
-// 	}
 	
 	if (m_rewardContent.size() > 2)
 	{
@@ -561,69 +476,45 @@ void BattleUILayer::OnDialogClose(NDUIDialog* dialog)
 		m_dlgBattleResult->SetDelegate(NULL);
 		m_dlgBattleResult = NULL;
 		BattleMgrObj.quitBattle();
-		//	} else if (m_dlgHint == dialog) {
-		//		m_dlgHint = NULL;
-		//		switch (m_battleStatus) {
-		//			case BS_USE_ITEM_MENU:
-		//			case BS_USER_SKILL_MENU:
-		//				m_battleStatus = BS_USER_MENU;
-		//				//AddChild(m_battleOpt);
-		//				break;
-		//			case BS_EUDEMON_SKILL_MENU:
-		//				m_battleStatus = BS_EUDEMON_MENU;
-		//				//AddChild(m_eudemonOpt);
-		//				break;
-		//			default:
-		//				break;
-		//		}
 	}
 }
 
 void BattleUILayer::AddFighter(Fighter* f)
 {
-	if (!f) return;
+	if (!f)
+	{
+		return;
+	}
 
-	BATTLE_GROUP group = f->GetGroup();
-	NDBaseRole* role = f->GetRole();
-	if (!role)
+	BATTLE_GROUP kBattleGroup = f->GetGroup();
+	NDBaseRole* pkRole = f->GetRole();
+
+	if (!pkRole)
 	{
 		CC_SAFE_DELETE(f);
 		return;
 	}
 
-	AddChild(role);
-	if (role->IsKindOfClass(RUNTIME_CLASS(NDPlayer)))
+	AddChild(pkRole);
+	if (pkRole->IsKindOfClass(RUNTIME_CLASS(NDPlayer)))
 	{
-		//		m_playerHead->SetBattlePlayer(f);
-		m_ourGroup = group;
+		m_ourGroup = kBattleGroup;
 	}
 
-	//	if (role->IsKindOfClass(RUNTIME_CLASS(NDBattlePet))) {
-	//		if (f->m_kInfo.line == BATTLE_LINE_FRONT && f->m_kInfo.posIdx == 0) { // 玩家战宠
-	//			if (NULL == m_petHead) {
-	//				m_petHead = new PetHead;
-	//				m_petHead->Initialization(f);
-	//				AddChild(m_petHead);
-	//			}
-	//		}
-	//	}
-
-	if (BATTLE_GROUP_DEFENCE == group)
+	if (BATTLE_GROUP_DEFENCE == kBattleGroup)
 	{
-		role->m_bFaceRight = false;
+		pkRole->m_bFaceRight = false;
 		m_vDefencer.push_back(f);
 	}
 	else
 	{
-		role->m_bFaceRight = true;
+		pkRole->m_bFaceRight = true;
 		m_vAttaker.push_back(f);
 	}
 
 	f->setPosition(m_teamAmout);
 	f->showFighterName(true);
-	//	if (f->m_kInfo.bRoleMonster) {
-	//		role->m_faceRight = !role->m_faceRight;
-	//	}
+
 
 	battleStandAction(*f);
 }
@@ -633,8 +524,7 @@ void BattleUILayer::clearHighlight()
 	RemoveChild(TAG_LINGPAI, true);
 	RemoveChild(TAG_NAME, true);
 	clearAllWillBeAtk();
-	//if (m_highlightFighter)
-	//		m_highlightFighter->setWillBeAtk(false);
+
 	m_highlightFighter = NULL;
 }
 
@@ -643,11 +533,6 @@ void BattleUILayer::CloseViewStatus()
 	RemoveChild(TAG_VIEW_FIGHTER_STATUS, true);
 	clearHighlight();
 
-	//	if (m_dlgHint) {
-	//		m_dlgHint->RemoveFromParent(true);
-	//		m_dlgHint = NULL;
-	//	}
-
 	if (m_dlgStatus)
 	{
 		m_dlgStatus->RemoveFromParent(true);
@@ -655,209 +540,16 @@ void BattleUILayer::CloseViewStatus()
 	}
 }
 
-//void BattleUILayer::CloseSkillMenu()
-//{
-//	if (m_dlgHint) {
-//		m_dlgHint->RemoveFromParent(true);
-//		m_dlgHint = NULL;
-//	} else if (m_skillOpt) {
-//		RemoveChild(m_skillOpt, true);
-//		m_skillOpt = NULL;
-//		RemoveChild(TAG_SKILL_MEMO, true);
-//	}
-//}
-
-//void BattleUILayer::CloseItemMenu()
-//{
-//	if (m_dlgHint) {
-//		m_dlgHint->RemoveFromParent(true);
-//		m_dlgHint = NULL;
-//	} else if (m_itemOpt) {
-//		m_mapUseItem.clear();
-//		RemoveChild(m_itemOpt, true);
-//		m_itemOpt = NULL;
-//	}
-//}
-
 void BattleUILayer::ShowQuickChat(bool bShow)
 {
-	//	if (bShow) {
-	//		AddChild(m_imgQuickTalkBg);
-	//		AddChild(m_tlQuickTalk);
-	//		m_layerBtnQuitTalk->SetFrameRect(CCRectMake(35, 136, 48, 20));
-	//	} else {
-	//		RemoveChild(m_imgQuickTalkBg, false);
-	//		RemoveChild(m_tlQuickTalk, false);
-	//		m_layerBtnQuitTalk->SetFrameRect(CCRectMake(35, 300, 48, 20));
-	//	}
 }
 
 void BattleUILayer::ShowChatTextField(bool bShow)
 {
-	//	if (m_bShowChatTextField == bShow) {
-	//		return;
-	//	}
-	//	
-	//	m_bShowChatTextField = bShow;
-	//	
-	//	if (m_bShowChatTextField) {
-	//		AddChild(m_imgChat);
-	//		AddChild(m_btnSendChat);
-	//		
-	//		if (NULL == m_chatDelegate.tfChat) {
-	//			UITextField* tfChat = [[UITextField alloc] init];
-	//			tfChat.transform = CGAffineTransformMakeRotation(3.141592f/2.0f);
-	//			tfChat.frame = CCRectMake(290.0f, 54.0f, 25.0f, 326.0f);
-	//			tfChat.textColor = [UIColor whiteColor];
-	//			tfChat.returnKeyType = UIReturnKeyDone;
-	//			tfChat.delegate = m_chatDelegate;
-	//			m_chatDelegate.tfChat = tfChat;
-	//			[tfChat release];
-	//		}
-	//		
-	//		if (NULL == [m_chatDelegate.tfChat superview]) {
-	//			[[[CCDirector sharedDirector] openGLView] addSubview:m_chatDelegate.tfChat];
-	//		}
-	//	} else {
-	//		RemoveChild(m_imgChat, false);
-	//		RemoveChild(m_btnSendChat, false);
-	//		[m_chatDelegate.tfChat removeFromSuperview];
-	//	}
 }
 
 void BattleUILayer::OnButtonClick(NDUIButton* button)
 {
-	//	if (button == m_btnLeave) {
-	//		if (m_bWatch) {
-	//			ShowProgressBar;
-	//			NDTransData bao(_MSG_BATTLEACT);
-	//			bao << BATTLE_ACT_LEAVE << Byte(0) << Byte(0);
-	//			// SEND_DATA(bao);
-	//			return;
-	//		}
-	//		
-	//	} else if (button == m_btnAuto) {
-	//		if (s_bAuto) {
-	//			stopAuto();
-	//		} else {
-	//			OnBtnAuto(m_battleStatus < BS_SET_FIGHTER);
-	//		}
-	//		
-	//		/*switch (m_battleStatus) {
-	//			case BS_USER_MENU:
-	//			case BS_EUDEMON_MENU:
-	//			{
-	//				stopAuto();
-	//				VEC_FIGHTER& enemyList = GetEnemySideList();
-	//				for (VEC_FIGHTER_IT it = enemyList.begin(); it != enemyList.end(); it++) {
-	//					if ((*it)->isVisiable()) {
-	//						if (m_battleStatus == BS_EUDEMON_MENU) {
-	//							m_battleStatus = BS_CHOOSE_VIEW_FIGHTER_STATUS_PET;
-	//							RemoveChild(m_eudemonOpt, false);
-	//						} else {
-	//							m_battleStatus = BS_CHOOSE_VIEW_FIGHTER_STATUS;
-	//							RemoveChild(m_battleOpt, false);
-	//						}
-	//						
-	//						HighlightFighter(*it);
-	//						
-	//						CCSize size = CCDirector::sharedDirector()->getWinSizeInPixels();
-	//						NDUILabel* lbViewFighter = new NDUILabel;
-	//						lbViewFighter->Initialization();
-	//						lbViewFighter->SetText(TEXT_VIEW_STATUS);
-	//						lbViewFighter->SetFontColor(ccc4(255, 255, 255, 255));
-	//						CCSize sizeText = getStringSize(TEXT_VIEW_STATUS, 15);
-	//						lbViewFighter->SetTag(TAG_VIEW_FIGHTER_STATUS);
-	//						lbViewFighter->SetFrameRect(CCRectMake((size.width - sizeText.width) / 2
-	//										       , 260, sizeText.width, sizeText.height));
-	//						AddChild(lbViewFighter);
-	//						return;
-	//					}
-	//				}
-	//			}
-	//				break;
-	//			case BS_CHOOSE_VIEW_FIGHTER_STATUS:
-	//				CloseViewStatus();
-	//				AddChild(m_battleOpt);
-	//				m_battleStatus = BS_USER_MENU;
-	//				break;
-	//			case BS_CHOOSE_VIEW_FIGHTER_STATUS_PET:
-	//				CloseViewStatus();
-	//				AddChild(m_eudemonOpt);
-	//				m_battleStatus = BS_EUDEMON_MENU;
-	//				break;
-	//			case BS_USE_ITEM_MENU:
-	//				CloseItemMenu();
-	//				m_battleStatus = BS_USER_MENU;
-	//				AddChild(m_battleOpt);
-	//				break;
-	//			case BS_EUDEMON_USE_ITEM_MENU:
-	//				CloseItemMenu();
-	//				m_battleStatus = BS_EUDEMON_MENU;
-	//				AddChild(m_eudemonOpt);
-	//				break;
-	//			case BS_USER_SKILL_MENU:
-	//				CloseSkillMenu();
-	//				m_battleStatus = BS_USER_MENU;
-	//				AddChild(m_battleOpt);
-	//				break;
-	//			case BS_EUDEMON_SKILL_MENU:
-	//				CloseSkillMenu();
-	//				m_battleStatus = BS_EUDEMON_MENU;
-	//				AddChild(m_eudemonOpt);
-	//				break;
-	//			case BS_CHOOSE_ENEMY_CATCH:
-	//			case BS_CHOOSE_ENEMY_PHY_ATK:
-	//			case BS_CHOOSE_ENEMY_MAG_ATK:
-	//			case BS_CHOOSE_OUR_SIDE_MAG_ATK:
-	//				clearHighlight();
-	//				AddChild(m_battleOpt);
-	//				m_battleStatus = BS_USER_MENU;
-	//				break;
-	//			case BS_CHOOSE_OUR_SIDE_USE_ITEM_USER:
-	//				clearHighlight();
-	//				OnBtnUseItem(BS_USE_ITEM_MENU);
-	//				break;
-	//			case BS_CHOOSE_OUR_SIDE_USE_ITEM_EUDEMON:
-	//				clearHighlight();
-	//				OnBtnUseItem(BS_EUDEMON_USE_ITEM_MENU);
-	//				break;
-	//			case BS_CHOOSE_ENEMY_PHY_ATK_EUDEMON:
-	//			case BS_CHOOSE_ENEMY_MAG_ATK_EUDEMON:
-	//			case BS_CHOOSE_OUR_SIDE_MAG_ATK_EUDEMON:
-	//				clearHighlight();
-	//				AddChild(m_eudemonOpt);
-	//				m_battleStatus = BS_EUDEMON_MENU;
-	//				break;
-	//			default:
-	//				break;
-	//		}*/
-	//	} else if (button == m_btnTalk) 
-	//	{
-	//		//ChatRecordManager::DefaultManager()->Show();
-	//		// 直接显示聊天输入框
-	//		//ShowChatTextField(!m_bShowChatTextField);
-	//		NewChatScene::DefaultManager()->Show();
-	//	} else if (button == m_btnQuickTalk) {
-	//		// 快捷聊天
-	//		ShowQuickChat(m_imgQuickTalkBg->GetParent() == NULL);
-	//		
-	//	} else if (button == m_btnSendChat) {
-	//		NSString msg = m_chatDelegate.tfChat.text;
-	//		if ([msg length] > 0) {
-	//			ChatInput::SendChatDataToServer(ChatTypeSection, [msg UTF8String]);
-	//			m_chatDelegate.tfChat.text = @"";
-	//			string speaker = NDPlayer::defaultHero().m_name;
-	//			speaker += "：";
-	//			Chat::DefaultChat()->AddMessage(ChatTypeSection, [msg UTF8String], speaker.c_str());
-	//		}
-	//	}
-	//	else if (button == m_btnCancleAutoFight)
-	//	{
-	//		//取消自动战斗
-	//		RemoveCancleAutoFightButton();
-	//		s_bAuto = false;
-	//	}
 }
 
 void BattleUILayer::Initialization(int action)
@@ -890,7 +582,6 @@ void BattleUILayer::Initialization(int action)
 
 	if (ms_bAuto)
 	{
-		//RemoveChild(m_battleOpt, false);
 		m_timer.SetTimer(this, TIMER_AUTOFIGHT, 0.5f);
 	}
 }
@@ -899,126 +590,12 @@ void BattleUILayer::InitEudemonOpt()
 {
 	// 有战宠
 	getMainEudemon();
-
-	/*if (getMainEudemon()) {
-	 CCSize winSize = CCDirector::sharedDirector()->getWinSizeInPixels();
-	 m_eudemonOpt = new NDUITableLayer;
-	 m_eudemonOpt->Initialization();
-	 m_eudemonOpt->VisibleSectionTitles(false);
-	 m_eudemonOpt->SetFrameRect(CCRectMake((winSize.width / 2) - 30, winSize.height / 2 - 115, 60, TEXT_BTN_HEIGHT * 5));
-	 NDDataSource *ds = new NDDataSource;
-	 NDSection *sec = new NDSection;
-	 
-	 // 攻击
-	 NDUIButton *attack = new NDUIButton;
-	 attack->Initialization();
-	 attack->SetTag(BTN_EUD_ATK);
-	 attack->SetTitle("攻  击");
-	 attack->SetFocusColor(ccc4(253, 253, 253, 255));
-	 sec->AddCell(attack);
-	 
-	 // 物品
-	 NDUIButton  *btnUseItem = new NDUIButton;
-	 btnUseItem->Initialization();
-	 btnUseItem->SetTitle("物  品");
-	 btnUseItem->SetTag(BTN_EUD_ITEM);
-	 btnUseItem->SetFocusColor(ccc4(253, 253, 253, 255));
-	 sec->AddCell(btnUseItem);
-	 
-	 NDUIButton *skill = new NDUIButton;
-	 skill->Initialization();
-	 skill->SetTag(BTN_EUD_SKILL);
-	 skill->SetTitle("技  能");
-	 skill->SetFocusColor(ccc4(253, 253, 253, 255));
-	 sec->AddCell(skill);
-	 
-	 NDUIButton *def = new NDUIButton;
-	 def->Initialization();
-	 def->SetTag(BTN_EUD_DEF);
-	 def->SetTitle("防  御");
-	 def->SetFocusColor(ccc4(253, 253, 253, 255));
-	 sec->AddCell(def);
-	 
-	 NDUIButton *flee = new NDUIButton;
-	 flee->Initialization();
-	 flee->SetTag(BTN_EUD_FLEE);
-	 flee->SetTitle("逃  跑");
-	 flee->SetFocusColor(ccc4(253, 253, 253, 255));
-	 sec->AddCell(flee);
-	 
-	 sec->SetFocusOnCell(0);
-	 
-	 ds->AddSection(sec);
-	 m_eudemonOpt->SetDelegate(this);
-	 m_eudemonOpt->SetDataSource(ds);
-	 }*/
 }
 
-/*void BattleUILayer::OnTableLayerCellFocused(NDUITableLayer* table, NDUINode* cell, unsigned int cellIndex, NDSection* section)
- {
- if (m_skillOpt == table) {
- // 技能说明
- NDUIMemo* skillMemo = (NDUIMemo*)GetChild(TAG_SKILL_MEMO);
- 
- if (m_battleStatus == BS_USER_SKILL_MENU) {
- m_curBattleAction->btAction = BATTLE_ACT_MAG_ATK;
- s_lastTurnActionUser.btAction = BATTLE_ACT_MAG_ATK;
- s_lastTurnActionUser.vData.clear();
- 
- SET_BATTLE_SKILL_LIST_IT itSkill = m_setBattleSkillList.begin();
- size_t n = 0;
- for (; n < cellIndex; n++) {
- itSkill++;
- }
- 
- if (n < m_setBattleSkillList.size()) {
- m_curBattleAction->vData.push_back(*itSkill);
- s_lastTurnActionUser.vData.push_back(*itSkill);
- s_lastTurnActionUser.vData.push_back(0);
- }
- BattleSkill* skill = BattleMgrObj.GetBattleSkill(*itSkill);
- if (!skill) {
- return;
- }
- 
- if (skillMemo) {
- skillMemo->SetText(skill->getSimpleDes(true).c_str());
- }
- } else if (m_battleStatus == BS_EUDEMON_SKILL_MENU) {
- 
- NDBattlePet* pet = NDPlayer::defaultHero().battlepet;
- NDAsssert(pet != NULL);
- SET_BATTLE_SKILL_LIST petBattleSkillList = pet->GetSkillList(SKILL_TYPE_ATTACK);
- 
- m_curBattleAction->btAction = BATTLE_ACT_PET_MAG_ATK;
- 
- s_lastTurnActionEudemon.btAction = BATTLE_ACT_PET_MAG_ATK;
- s_lastTurnActionEudemon.vData.clear();
- 
- SET_BATTLE_SKILL_LIST_IT itSkill = petBattleSkillList.begin();
- size_t n = 0;
- for (; n < cellIndex; n++) {
- itSkill++;
- }
- 
- if (n < petBattleSkillList.size()) {
- m_curBattleAction->vData.push_back(*itSkill);
- s_lastTurnActionEudemon.vData.push_back(*itSkill);
- s_lastTurnActionEudemon.vData.push_back(0);
- }
- BattleSkill* skill = BattleMgrObj.GetBattleSkill(*itSkill);
- if (!skill) {
- return;
- }
- 
- if (skillMemo) {
- skillMemo->SetText(skill->getSimpleDes(true).c_str());
- }
- }
- }
- }*/
-
-void BattleUILayer::OnTableLayerCellSelected(NDUITableLayer* table, NDUINode* cell, unsigned int cellIndex, NDSection* section)
+void BattleUILayer::OnTableLayerCellSelected(NDUITableLayer* table,
+											 NDUINode* cell,
+											 unsigned int cellIndex,
+											 NDSection* section)
 {
 
 }
@@ -1030,31 +607,10 @@ void BattleUILayer::processBattleSkillList(NDTransData& data, int len)
 
 void BattleUILayer::OnBtnCatch()
 {
-	//m_battleOpt->RemoveFromParent(false);
-//	setBattleStatus(BS_CHOOSE_ENEMY_CATCH);
-//	
-//	if (ItemMgrObj.IsBagFull()) {
-//		Chat::DefaultChat()->AddMessage(ChatTypeSystem,NDCommonCString("BagFullCantCatch"));
-//		return;
-//	}
-//	
-//	VEC_FIGHTER& enemyList = GetEnemySideList();
-//	Fighter* f;
-//	for (size_t i = 0; i < enemyList.size(); i++) {
-//		f = enemyList.at(i);
-//		if (f->isCatchable()) {
-//			HighlightFighter(f);
-//			return;
-//		}
-//	}
-//	
-//	Chat::DefaultChat()->AddMessage(ChatTypeSystem, NDCommonCString("CantCatch"));
 }
 
 void BattleUILayer::OnBtnDefence()
 {
-	//m_battleOpt->RemoveFromParent(false);
-
 	ms_kLastTurnActionUser.btAction = BATTLE_ACT_PHY_DEF;
 
 	BattleAction actioin(BATTLE_ACT_PHY_DEF);
@@ -1063,193 +619,37 @@ void BattleUILayer::OnBtnDefence()
 
 void BattleUILayer::OnBtnRun()
 {
-	//m_battleOpt->RemoveFromParent(false);
-
 	BattleAction actioin(BATTLE_ACT_ESCAPE);
 	SendBattleAction(actioin);
 }
 
-/*void BattleUILayer::OnEudemonSkill()
- {
- m_battleStatus = BS_EUDEMON_SKILL_MENU;
- RemoveChild(m_eudemonOpt, false);
- 
- // 获取宠物技能
- NDBattlePet* pet = NDPlayer::defaultHero().battlepet;
- if (!pet) {
- return;
- }
- 
- SET_BATTLE_SKILL_LIST& petSkillList = pet->GetSkillList(SKILL_TYPE_ATTACK);
- if (petSkillList.size() <= 0) {
- m_dlgHint = new NDUIDialog;
- m_dlgHint->Initialization();
- m_dlgHint->SetDelegate(this);
- m_dlgHint->Show(NULL, "本回合无可用技能", NULL, NULL);
- return;
- }
- 
- // 打开技能列表
- NDAsssert (m_skillOpt == NULL);
- 
- CCSize winSize = CCDirector::sharedDirector()->getWinSizeInPixels();
- int height = 0;
- 
- m_skillOpt = new NDUITableLayer;
- m_skillOpt->Initialization();
- m_skillOpt->VisibleSectionTitles(false);
- 
- NDDataSource *ds = new NDDataSource;
- NDSection *sec = new NDSection;
- 
- BattleMgr& bm = BattleMgrObj;
- BattleSkill* bs = NULL;
- 
- SET_BATTLE_SKILL_LIST_IT itSkill = petSkillList.begin();
- BattleSkill* firstSkill = bm.GetBattleSkill(*itSkill);
- for (; itSkill != petSkillList.end(); itSkill++) {
- bs = bm.GetBattleSkill(*itSkill);
- if (!bs) {
- continue;
- }
- height += TEXT_BTN_HEIGHT;
- 
- NDUIButton *skill = new NDUIButton;
- skill->Initialization();
- skill->SetFocusColor(ccc4(253, 253, 253, 255));
- skill->SetTitle(bs->getName().c_str());
- sec->AddCell(skill);
- }
- 
- sec->SetFocusOnCell(0);
- 
- if (height > 120) {
- height = 120;
- }
- 
- ds->AddSection(sec);
- m_skillOpt->SetDelegate(this);
- m_skillOpt->SetDataSource(ds);
- m_skillOpt->SetFrameRect(CCRectMake((winSize.width / 2) - 80, winSize.height / 2, 160, height));
- AddChild(m_skillOpt);
- 
- // 技能说明
- NDUIMemo* skillMemo = new NDUIMemo();
- skillMemo->Initialization();
- skillMemo->SetTag(TAG_SKILL_MEMO);
- skillMemo->SetBackgroundColor(ccc4(228, 219, 169, 255));
- skillMemo->SetText(firstSkill->getSimpleDes(true).c_str());
- skillMemo->SetFrameRect(CCRectMake((winSize.width / 2) - 80, 30, 160, winSize.height / 2 - 35));
- AddChild(skillMemo);
- }*/
-
 void BattleUILayer::OnEudemonAttack()
 {
-//	if (BS_CHOOSE_ENEMY_PHY_ATK_EUDEMON == m_battleStatus) {
-//		return;
-//	}
-//	
-//	//m_eudemonOpt->RemoveFromParent(false);
-//	setBattleStatus(BS_CHOOSE_ENEMY_PHY_ATK_EUDEMON);
-//	//	m_fighterRight->SetFoucusByIndex(3);
-//	//	m_fighterLeft->defocus();
-//	//	m_fighterBottom->defocus();
-//	
-//	m_curBattleAction->btAction = BATTLE_ACT_PET_PHY_ATK;
-//	m_curBattleAction->vData.clear();
-//	
-//	VEC_FIGHTER& enemyList = GetEnemySideList();
-//	
-//	Fighter* f;
-//	for (size_t i = 0; i < enemyList.size(); i++) {
-//		f = enemyList.at(i);
-//		if (f->isVisiable()) {
-//			s_lastTurnActionEudemon.btAction = BATTLE_ACT_PET_PHY_ATK;
-//			s_lastTurnActionEudemon.vData.clear();
-//			HighlightFighter(f);
-//			return;
-//		}
-//	}
 }
 
 void BattleUILayer::OnBtnAttack()
 {
-//	if (m_battleStatus == BS_CHOOSE_ENEMY_PHY_ATK) {
-//		return;
-//	}
-//	
-//	//m_battleOpt->RemoveFromParent(false);
-//	setBattleStatus(BS_CHOOSE_ENEMY_PHY_ATK);
-//	//	m_fighterRight->SetFoucusByIndex(3);
-//	//	m_fighterLeft->defocus();
-//	//	m_fighterBottom->defocus();
-//	
-//	m_curBattleAction->btAction = BATTLE_ACT_PHY_ATK;
-//	m_curBattleAction->vData.clear();
-//	
-//	VEC_FIGHTER& enemyList = GetEnemySideList();
-//	
-//	Fighter* f;
-//	for (size_t i = 0; i < enemyList.size(); i++) {
-//		f = enemyList.at(i);
-//		if (f->isVisiable()) {
-//			s_lastTurnActionUser.btAction = BATTLE_ACT_PHY_ATK;
-//			HighlightFighter(f);
-//			return;
-//		}
-//	}
 }
 
 void BattleUILayer::stopAuto()
 {
 	if (ms_bAuto)
 	{
-		//		m_timer.KillTimer(this, TIMER_AUTOCOUNT);
-		//		RemoveChild(m_lbAuto, false);
-		//		RemoveChild(m_imgAutoCount, false);
-		//		SAFE_DELETE(m_lbAuto);
-		//		SAFE_DELETE(m_imgAutoCount);
-		//		m_autoCount = AUTO_COUNT;
 		ms_bAuto = false;
-		//		m_btnAuto->SetImage(m_picAuto);
 	}
 }
 
 void BattleUILayer::SetAutoCount()
 {
-	//	m_lbAuto = new NDUILabel;
-	//	m_lbAuto->Initialization();
-	//	m_lbAuto->SetText("自动");
-	//	m_lbAuto->SetFontColor(ccc4(255, 255, 255, 255));
-	//	CCSize sizeText = getStringSize("自动", 15);
-	//	m_lbAuto->SetFrameRect(CCRectMake(2, 2, sizeText.width, sizeText.height));
-	//	AddChild(m_lbAuto);
-	//	
-	//	m_imgAutoCount = new ImageNumber();
-	//	m_imgAutoCount->Initialization();
-	//	m_imgAutoCount->SetBigRedNumber(m_autoCount, false);
-	//	m_imgAutoCount->SetFrameRect(CCRectMake(40, 2, m_imgAutoCount->GetNumberSize().width, m_imgAutoCount->GetNumberSize().height));
-	//	AddChild(m_imgAutoCount);
-	//	
-	//	m_timer.SetTimer(this, TIMER_AUTOCOUNT, 1);
 }
 
 void BattleUILayer::OnBtnAuto(bool bSendAction)
 {
-	//RemoveChild(m_battleOpt, false);
-
-	//CreateCancleAutoFightButton();
-
 	m_autoCount = 0;
 
 	if (!ms_bAuto)
 	{
 		ms_bAuto = true;
-		//SetAutoCount();
-		//		m_btnAuto->SetImage(m_picAutoCancel);
-		//		m_fighterRight->SetShrink(true);
-		//		m_fighterLeft->SetShrink(true);
-		//		m_fighterBottom->SetShrink(true);
 	}
 
 	if (!bSendAction)
@@ -1322,61 +722,44 @@ void BattleUILayer::OnBtnAuto(bool bSendAction)
 
 void BattleUILayer::HighlightFighter(Fighter* f)
 {
-	if (!f) return;
+	if (!f)
+	{
+		return;
+	}
+
 	m_highlightFighter = f;
 
-	NDUILabel *name = (NDUILabel*) GetChild(TAG_NAME);
-	NDUIImage *lingpai = (NDUIImage*) GetChild(TAG_LINGPAI);
+	NDUILabel* pkNameLabel = (NDUILabel*) GetChild(TAG_NAME);
+	NDUIImage* pkCommandCardLabel = (NDUIImage*) GetChild(TAG_LINGPAI);
 
-	NDBaseRole* role = f->GetRole();
-	CCPoint pt = CCPointMake(f->getX(), f->getY());
+	NDBaseRole* pkRole = f->GetRole();
+	CCPoint kPoint = CCPointMake(f->getX(), f->getY());
 
-	if (!lingpai)
+	if (!pkCommandCardLabel)
 	{
-		//		lingpai = new NDUIImage;
-		//		lingpai->Initialization();
-		//		lingpai->SetTag(TAG_LINGPAI);
-		//		lingpai->SetPicture(m_picBoji);
-		//		AddChild(lingpai);
 	}
 
-	//	if (m_picBoji) m_picBoji->SetReverse(f->GetGroup() == BATTLE_GROUP_DEFENCE);
-	//	
-	//	CCRect rect = CCRectMake(f->getX() + role->GetWidth() / 2 + 5,
-	//							 f->getY() - 15,
-	//							 m_picBoji->GetSize().width,
-	//							 m_picBoji->GetSize().height);
-	//							 
-	//	if (f->GetGroup() == BATTLE_GROUP_DEFENCE) {
-	//		rect.origin.x = rect.origin.x - role->GetWidth() - 10;
-	//	}
-	//	
-	//	lingpai->SetFrameRect(rect);
-
-	//CCRect frameLingpai = lingpai->GetFrameRect();
-	if (!name)
+	if (!pkNameLabel)
 	{
-		name = new NDUILabel;
-		name->SetFontColor(ccc4(255, 255, 255, 255));
-		name->Initialization();
-		name->SetTag(TAG_NAME);
-		AddChild(name);
+		pkNameLabel = new NDUILabel;
+		pkNameLabel->SetFontColor(ccc4(255, 255, 255, 255));
+		pkNameLabel->Initialization();
+		pkNameLabel->SetTag(TAG_NAME);
+		AddChild(pkNameLabel);
 	}
 
-	std::stringstream ss;
-	ss << role->GetName() << "Lv" << role->m_nLevel;
+	std::stringstream kStringStream;
+	kStringStream << pkRole->GetName() << "Lv" << pkRole->m_nLevel;
 
-	name->SetText(ss.str().c_str());
-	CCSize sizeName = getStringSize(ss.str().c_str(), 15);
+	pkNameLabel->SetText(kStringStream.str().c_str());
+	CCSize kNameSize = getStringSize(kStringStream.str().c_str(), 15);
 
-	name->SetFrameRect(
-			CCRectMake(pt.x - sizeName.width / 2,
-					pt.y - role->getGravityY() - sizeName.height,
-					sizeName.width, sizeName.height));
+	pkNameLabel->SetFrameRect(
+			CCRectMake(kPoint.x - kNameSize.width / 2,
+					kPoint.y - pkRole->getGravityY() - kNameSize.height,
+					kNameSize.width, kNameSize.height));
 
-	setWillBeAtk(getHighlightList());
-
-	//f->setWillBeAtk(true);	
+	setWillBeAtk(getHighlightList());	
 }
 
 void BattleUILayer::OnTimer(OBJID tag)
@@ -1395,8 +778,6 @@ void BattleUILayer::OnTimer(OBJID tag)
 					m_timeLeft--;
 					stringstream ss;
 					ss << m_timeLeft;
-					//					m_lbTimer->SetText(ss.str().c_str());
-					//m_imgTimer->SetBigRedNumber(m_timeLeft, false);
 				}
 			}
 			else
@@ -1406,8 +787,6 @@ void BattleUILayer::OnTimer(OBJID tag)
 					m_timeLeft--;
 					stringstream ss;
 					ss << m_timeLeft;
-					//					m_lbTimer->SetText(ss.str().c_str());
-					//m_imgTimer->SetBigRedNumber(m_timeLeft, false);
 				}
 			}
 		}
@@ -1416,16 +795,7 @@ void BattleUILayer::OnTimer(OBJID tag)
 	{
 		BattleMgrObj.quitBattle();
 	}
-	//	else if (tag == TIMER_AUTOCOUNT) 
-	//	{
-	//		if (m_autoCount > 0) {
-	//			m_autoCount--;
-	//			m_imgAutoCount->SetBigRedNumber(m_autoCount, false);
-	//			if (m_autoCount == 0) {
-	//				OnBtnAuto();
-	//			}
-	//		}
-	//	}
+
 	else if (tag == TIMER_AUTOFIGHT)
 	{
 		OnBtnAuto(true);
@@ -1443,67 +813,24 @@ void BattleUILayer::Init()
 	dieAniGroup=NULL;
 	m_bChatTextFieldShouldShow = false;
 
-	//	m_imgTurn = NULL;
-	//	m_imgTimer = NULL;
-	//	m_imgQuickTalkBg = NULL;
-	//	m_tlQuickTalk = NULL;
-	
 	m_orignalMapId = 0;
 	m_nLastSkillPageUser = 0;
 	m_nLastSkillPageEudemon = 0;
 	
-	//m_chatDelegate = [[ChatTextFieldDelegate alloc] init];
 	m_bShowChatTextField = false;
 	
-	//	m_imgChat = NULL;
-	//	m_btnSendChat = NULL;
 	m_mapLayer = NULL;
 	m_bSendCurTurnUserAction = false;
 
 	//m_btnCancleAutoFight = NULL;
 
 	m_dlgStatus = NULL;
-	theActor = NULL;
-	theTarget = NULL;
 	m_bWatch = false;
 	
-	//m_battleOpt = NULL;
-	//	m_playerHead = NULL;
-	//	m_petHead = NULL;
 	m_battleBg = NULL;
-	
-	//m_eudemonOpt = NULL;
-
-	//--Guosen 2012.6.28//不显示动作名称（防御，逃跑，闪避），也就不加载图形文件
-	//m_picActionWordDef = new NDPicture;
-	//m_picActionWordDef->Initialization(NDPath::GetImgPath("actionWord.png"));
-	//m_picActionWordDef->Cut(CCRectMake(0.0f, 0.0f, 37.0f, 18.0f));
-	//m_picActionWordFlee = new NDPicture;
-	//m_picActionWordDodge = new NDPicture;
-	//m_picActionWordDodge->Initialization(NDPath::GetImgPath("actionWord.png"));
-	//m_picActionWordDodge->Cut(CCRectMake(0.0f, 18.0f, 37.0f, 18.0f));
-	//m_picActionWordFlee->Initialization(NDPath::GetImgPath("actionWord.png"));
-	//m_picActionWordFlee->Cut(CCRectMake(0.0f, 36.0f, 37.0f, 18.0f));
-	//--
-
-	//	m_picTalk = NULL;
-	//	m_picQuickTalk = NULL;
-	//	m_picAuto = NULL;
-	//	m_picAutoCancel = NULL;
-	//	m_picLeave = NULL;
-	//	
-	//	m_btnTalk = NULL;
-	//	m_btnQuickTalk = NULL;
-	//	m_layerBtnQuitTalk = NULL;
-	//	m_btnAuto = NULL;
-	//	m_btnLeave = NULL;
 
 	m_curBattleAction = new BattleAction(BATTLE_ACT_PHY_ATK);
-	
-	//	m_dlgHint = NULL;
-	//	m_itemOpt = NULL;
-	//	m_skillOpt = NULL;
-	
+
 	m_autoCount = AUTO_COUNT;
 	
 	//m_lbAuto = NULL;
@@ -1518,27 +845,16 @@ void BattleUILayer::Init()
 	m_ourGroup = BATTLE_GROUP_ATTACK;
 	m_turn = 0;
 
-	//	m_lbTurnTitle = NULL;
-	//	m_lbTurn = NULL;
-	//	m_lbTimerTitle = NULL;
-	//	m_lbTimer = NULL;
-	//m_imgTurn = NULL;
 	m_timeLeft = 30;
 
-	//	m_picWhoAmI = NULL;
-	//	m_imgWhoAmI = NULL;
 	m_mainFighter = NULL;
 	m_battleStatus = BS_BATTLE_WAIT;
 
-	//	m_picLingPai = NULL;
 	m_highlightFighter = NULL;
 	m_timeLeftMax = 29;
 	m_actionFighterPoint = 0;
 	m_foreBattleStatus = 0;
 	watchBattle = false;
-
-// 	m_picBaoJi = new NDPicture;
-// 	m_picBaoJi->Initialization(NDPath::GetImgPath("bo.png").c_str());
 
 	m_defaultActionUser = BATTLE_ACT_PHY_ATK;
 	m_pkDefaultTargetUser = NULL;
@@ -1550,11 +866,6 @@ void BattleUILayer::Init()
 
 	m_bTurnStart = true;
 	m_bTurnStartPet = false;
-
-	// 战斗快捷栏
-	//	m_fighterBottom = NULL;
-	//	m_fighterLeft = NULL;
-	//	m_fighterRight = NULL;
 
 	m_bShrinkRight = false;
 	m_bShrinkLeft = false;
@@ -1614,37 +925,28 @@ bool BattleUILayer::TouchEnd(NDTouch* touch)
 		}
 	}
 
-	Fighter* f = GetTouchedFighter(GetOurSideList(), touch->GetLocation());
-	if (!f)
+	Fighter* pkFighter = GetTouchedFighter(GetOurSideList(), touch->GetLocation());
+	if (!pkFighter)
 	{
-		f = GetTouchedFighter(GetEnemySideList(), touch->GetLocation());
+		pkFighter = GetTouchedFighter(GetEnemySideList(), touch->GetLocation());
 	}
 
-	if (f)
+	if (pkFighter)
 	{
 		NDLog("touch fighter");
-		if (currentShowFighter > 0)
+		if (m_nCurrentShowFigher > 0)
 		{
 			BaseScriptMgrObj.excuteLuaFunc("CloseFighterInfo", "FighterInfo", 0);
 		}
-		currentShowFighter = f->m_kInfo.idObj;
+		m_nCurrentShowFigher = pkFighter->m_kInfo.idObj;
 
-		//int nLevel = 0;
-		//if ( f->m_kInfo.fighterType == FIGHTER_TYPE_PET )
-		//{
-		//    nLevel = ScriptDBObj.GetN( "pet_config", f->m_kInfo.idType, DB_PET_CONFIG_SKILL );
-		//}
-		//else if( f->m_kInfo.fighterType == FIGHTER_TYPE_MONSTER )
-		//{
-		//    nLevel = ScriptDBObj.GetN( "monstertype", f->m_kInfo.idType, DB_MONSTERTYPE_LEVEL );
-		//}
-		BaseScriptMgrObj.excuteLuaFunc("LoadUI", "FighterInfo", f->getOriginX(),
-			f->getOriginY());
+		BaseScriptMgrObj.excuteLuaFunc("LoadUI", "FighterInfo", pkFighter->getOriginX(),
+			pkFighter->getOriginY());
 
-		std::string skillName = "";
-		if (f->m_kInfo.skillId > 0)
+		std::string strSkillName = "";
+		if (pkFighter->m_kInfo.skillId > 0)
 		{
-			skillName = ScriptDBObj.GetS("skill_config", f->m_kInfo.skillId,
+			strSkillName = ScriptDBObj.GetS("skill_config", pkFighter->m_kInfo.skillId,
 				DB_SKILL_CONFIG_NAME);
 
 		}
@@ -1654,137 +956,14 @@ bool BattleUILayer::TouchEnd(NDTouch* touch)
 		}
 		
 		BaseScriptMgrObj.excuteLuaFunc<bool>("SetFighterInfo", "FighterInfo",
-			f->GetRole()->GetName(), skillName, f->m_kInfo.level);
+			pkFighter->GetRole()->GetName(), strSkillName, pkFighter->m_kInfo.level);
 
 		BaseScriptMgrObj.excuteLuaFunc("UpdateHp", "FighterInfo",
-			f->m_kInfo.nLife, f->m_kInfo.nLifeMax);
+			pkFighter->m_kInfo.nLife, pkFighter->m_kInfo.nLifeMax);
 		BaseScriptMgrObj.excuteLuaFunc("UpdateMp", "FighterInfo",
-			f->m_kInfo.nMana, f->m_kInfo.nManaMax);
+			pkFighter->m_kInfo.nMana, pkFighter->m_kInfo.nManaMax);
 	}
 
-	//	switch (m_battleStatus)
-	//	{
-	//		case BS_CHOOSE_VIEW_FIGHTER_STATUS:
-	//		case BS_CHOOSE_VIEW_FIGHTER_STATUS_PET:
-	//		{
-	//			Fighter* f = GetTouchedFighter(GetEnemySideList(), touch->GetLocation());
-	//			if (!f) {
-	//				f = GetTouchedFighter(GetOurSideList(), touch->GetLocation());
-	//			}
-	//			
-	//			if (f) {
-	//				if (m_highlightFighter != f) {
-	//					HighlightFighter(f);
-	//					break;
-	//				}
-	//			}
-	//			
-	//			if (m_highlightFighter) {
-	//				m_dlgStatus = new StatusDialog;
-	//				m_dlgStatus->Initialization(m_highlightFighter);
-	//				m_dlgStatus->SetFrameRect(CCRectMake(0, 0, CCDirector::sharedDirector()->getWinSizeInPixels().width,
-	//													 CCDirector::sharedDirector()->getWinSizeInPixels().height));
-	//				AddChild(m_dlgStatus);
-	//			}
-	//		}
-	//			break;
-	//		case BS_CHOOSE_ENEMY_PHY_ATK:
-	//		case BS_CHOOSE_ENEMY_PHY_ATK_EUDEMON:
-	//		case BS_CHOOSE_ENEMY_MAG_ATK:
-	//		case BS_CHOOSE_ENEMY_MAG_ATK_EUDEMON:
-	//		{
-	//			Fighter* f = GetTouchedFighter(GetEnemySideList(), touch->GetLocation());
-	//			if (f)
-	//			{
-	//				if (m_highlightFighter == f)
-	//				{
-	//					// 发送攻击指令
-	//					m_curBattleAction->vData.push_back(m_highlightFighter->m_kInfo.idObj);
-	//					SendBattleAction(*m_curBattleAction);
-	//				}
-	//				else
-	//				{
-	//					if (m_battleStatus == BS_CHOOSE_ENEMY_PHY_ATK || m_battleStatus == BS_CHOOSE_ENEMY_MAG_ATK) {
-	//						m_defaultTargetUser = f;
-	//					} else {
-	//						m_defaultTargetEudemon = f;
-	//					}
-	//					HighlightFighter(f);
-	//				}
-	//			} else {
-	//				if (m_highlightFighter) {
-	//					// 发送攻击指令
-	//					m_curBattleAction->vData.push_back(m_highlightFighter->m_kInfo.idObj);
-	//					SendBattleAction(*m_curBattleAction);
-	//				}
-	//			}
-	//			
-	//		}
-	//			break;
-	//		case BS_CHOOSE_ENEMY_CATCH:
-	//		{
-	//			Fighter* f = GetTouchedFighter(GetEnemySideList(), touch->GetLocation());
-	//			if (f)
-	//			{
-	//				if (f->isCatchable()) {
-	//					// 发送捕捉指令
-	//					BattleAction actioin(BATTLE_ACT_CATCH);
-	//					actioin.vData.push_back(f->m_kInfo.idObj);
-	//					SendBattleAction(actioin);
-	//				} else {
-	//					Chat::DefaultChat()->AddMessage(ChatTypeSystem, NDCommonCString("DestCantCatch"));
-	//				}
-	//				
-	//			} else {
-	//				if (m_highlightFighter) {
-	//					// 发送捕捉指令
-	//					BattleAction actioin(BATTLE_ACT_CATCH);
-	//					actioin.vData.push_back(m_highlightFighter->m_kInfo.idObj);
-	//					SendBattleAction(actioin);
-	//				}
-	//			}
-	//			
-	//		}
-	//			break;
-	//		case BS_CHOOSE_OUR_SIDE_USE_ITEM_USER:
-	//		case BS_CHOOSE_OUR_SIDE_USE_ITEM_EUDEMON:
-	//		case BS_CHOOSE_OUR_SIDE_MAG_ATK:
-	//		case BS_CHOOSE_OUR_SIDE_MAG_ATK_EUDEMON:
-	//		{
-	//			Fighter* f = GetTouchedFighter(GetOurSideList(), touch->GetLocation());
-	//			if (f)
-	//			{
-	//				if (m_highlightFighter == f)
-	//				{
-	//					m_curBattleAction->vData.push_back(m_highlightFighter->m_kInfo.idObj);
-	//					SendBattleAction(*m_curBattleAction);
-	//				}
-	//				else
-	//				{
-	//					if (m_battleStatus == BS_CHOOSE_OUR_SIDE_MAG_ATK) {
-	//						m_defaultTargetUser = f;
-	//					} else if (m_battleStatus == BS_CHOOSE_OUR_SIDE_MAG_ATK_EUDEMON) {
-	//						m_defaultTargetEudemon = f;
-	//					}
-	//					HighlightFighter(f);
-	//				}
-	//			} else {
-	//				if (m_highlightFighter) {
-	//					m_curBattleAction->vData.push_back(m_highlightFighter->m_kInfo.idObj);
-	//					SendBattleAction(*m_curBattleAction);
-	//				}
-	//			}
-	//		}
-	//			break;
-	//		case BS_CHOOSE_SELF_MAG_ATK:
-	//		case BS_CHOOSE_SELF_MAG_ATK_EUDEMON:
-	//			if (m_highlightFighter) {
-	//				m_curBattleAction->vData.push_back(m_highlightFighter->m_kInfo.idObj);
-	//				SendBattleAction(*m_curBattleAction);
-	//			}
-	//		default:
-	//			break;
-	//	}
 	return true;
 }
 
@@ -1832,55 +1011,21 @@ void BattleUILayer::SendBattleAction(const BattleAction& action)
 		}
 	}
 
-	// 有宠物，且非自动战斗
-//	if (m_mainEudemon && m_mainEudemon->isAlive() &&
-//	    !m_mainEudemon->isEscape() && !s_bAuto) {
-//		switch (m_battleStatus) {
-//			case BS_USER_MENU:
-//			case BS_USER_SKILL_MENU:
-//			case BS_CHOOSE_ENEMY_PHY_ATK:
-//			case BS_CHOOSE_ENEMY_CATCH:
-//			case BS_CHOOSE_OUR_SIDE_USE_ITEM_USER:
-//			case BS_CHOOSE_ENEMY_MAG_ATK:
-//			case BS_CHOOSE_OUR_SIDE_MAG_ATK:
-//				//m_battleStatus = BS_EUDEMON_MENU;
-//				//AddChild(m_eudemonOpt);
-//				m_bSendCurTurnUserAction = true;
-//				m_bTurnStartPet = true;
-//				return;
-//			default:
-//				//RemoveChild(m_eudemonOpt, false);
-//				break;
-//		}
-//	}
-
 	setBattleStatus (BS_WAITING_SERVER_MESSAGE);
-
-	//	m_fighterRight->SetShrink(true);
-	//	m_fighterLeft->SetShrink(true);
-	//	m_fighterBottom->SetShrink(true);
-	//	
-	//	m_fighterRight->SetGray(true);
-	//	m_fighterLeft->SetGray(true);
-	//	m_fighterBottom->SetGray(true);
 }
 
 void BattleUILayer::setBattleMap(int mapId, int posX, int posY)
 {
-	//	m_orignalMapId=NDMapMgrObj.m_iMapID;
-	//	m_orignalPos=NDMapMgrObj.getMapLayerOfScene(NDDirector::DefaultDirector()->GetRunningScene())->GetScreenCenter();
-	//	NDMapMgrObj.ClearNpc();
-	//	NDMapMgrObj.ClearMonster();
-	//	NDMapMgrObj.ClearGP();
+	NDMapLayer* pkMapLayer = NDMapMgrObj.
+		getMapLayerOfScene(NDDirector::DefaultDirector()->GetRunningScene());
 
-	NDMapLayer* mapLayer = NDMapMgrObj.getMapLayerOfScene(NDDirector::DefaultDirector()->GetRunningScene());
-	if(mapLayer)
+	if(pkMapLayer)
 	{
-		sceneMapId = mapLayer->GetMapIndex();
-		sceneCenterX = mapLayer->GetScreenCenter().x;
-		sceneCenterY = mapLayer->GetScreenCenter().y;
-		mapLayer->SetBattleBackground(true);
-		mapLayer->replaceMapData(mapId, posX, posY);
+		sceneMapId = pkMapLayer->GetMapIndex();
+		sceneCenterX = pkMapLayer->GetScreenCenter().x;
+		sceneCenterY = pkMapLayer->GetScreenCenter().y;
+		pkMapLayer->SetBattleBackground(true);
+		pkMapLayer->replaceMapData(mapId, posX, posY);
 
 		//mapLayer->SetNeedShowBackground(false);
 	}
@@ -1893,38 +1038,32 @@ void BattleUILayer::drawSubAniGroup()
 	for (VEC_SUB_ANI_GROUP_IT it = m_vSubAniGroup.begin();
 			it != m_vSubAniGroup.end(); it++)
 	{
-		NDSubAniGroup* sag = *it;
-		if (!sag) continue;
+		NDSubAniGroup* pkSag = *it;
+		if (!pkSag) continue;
 
-		NDSprite* role = sag->role;
-		if (!role) continue;
+		NDSprite* pkRole = pkSag->role;
 
-// 		if (!(sag->isCanStart))
-// 		{
-// 			sag->isCanStart = true;
-// 		}
-// 		if (!(sag->isCanStart))
-// 		{
-// 			continue;
-// 		}
-
-		if(sag->startFrame>0)
+		if (!pkRole)
 		{
-			sag->startFrame--;
+			continue;
+		}
+
+		if(pkSag->startFrame>0)
+		{
+			pkSag->startFrame--;
 			continue;
 		}
 
 		//NDLog("draw subanigroup");
-		sag->bComplete = role->DrawSubAnimation(*sag);
-		if (sag->bComplete)
+		pkSag->bComplete = pkRole->DrawSubAnimation(*pkSag);
+		if (pkSag->bComplete)
 		{
-/*			NDLog("subanigroup complete");*/
 			bErase = true;
-			if (sag->isFromOut)
+			if (pkSag->isFromOut)
 			{
-				CC_SAFE_RELEASE_NULL(sag->aniGroup);
+				CC_SAFE_RELEASE_NULL(pkSag->aniGroup);
 			}
-			CC_SAFE_RELEASE_NULL(sag->frameRec);
+			CC_SAFE_RELEASE_NULL(pkSag->frameRec);
 		}
 	}
 
@@ -1932,10 +1071,10 @@ void BattleUILayer::drawSubAniGroup()
 	{
 		for (int i = 0; i < m_vSubAniGroup.size(); i++)
 		{
-			NDSubAniGroup* sag = m_vSubAniGroup[i];
-			if (sag && sag->bComplete)
+			NDSubAniGroup* pkSubAniGroup = m_vSubAniGroup[i];
+			if (pkSubAniGroup && pkSubAniGroup->bComplete)
 			{
-				delete sag;
+				delete pkSubAniGroup;
 				m_vSubAniGroup.erase( m_vSubAniGroup.begin() + i );
 				break;;
 			}
@@ -1985,7 +1124,6 @@ void BattleUILayer::drawFighter()
 			f->updatePos();
 			f->draw();
 			//--Guosen 2012.6.28//不显示动作名称（防御，逃跑，闪避）
-			//f->drawActionWord();
 		}
 	}
 
@@ -1997,16 +1135,8 @@ void BattleUILayer::drawFighter()
 			f->updatePos();
 			f->draw();
 			//--Guosen 2012.6.28//不显示动作名称（防御，逃跑，闪避）
-			//f->drawActionWord();
 		}
 	}
-
-	//	if (m_mainFighter && !watchBattle)
-	//	{
-	//		NDBaseRole* role = m_mainFighter->GetRole();
-	//		CCPoint pt = role->GetPosition();
-	//		m_imgWhoAmI->SetFrameRect(CCRectMake(pt.x - 6, pt.y - role->GetHeight(), m_picWhoAmI->GetSize().width, m_picWhoAmI->GetSize().height));
-	//	}
 }
 
 void BattleUILayer::draw()
@@ -2019,60 +1149,17 @@ void BattleUILayer::draw()
 	if (!IsVisibled())
 	{
 		SetVisible(true);
-		//		NDMapLayer* mapLayer = NDMapMgrObj.getMapLayerOfScene(NDDirector::DefaultDirector()->GetRunningScene());
-		//		mapLayer->SetBattleBackground(true);
-		//		mapLayer->SetNeedShowBackground(false);
 	}
 
 	NDDirector::DefaultDirector()->EnableDispatchEvent(true);
-	//	
-	//	if(m_mapLayer){
-	//		m_mapLayer->draw();
-	//	}
-
-	//	m_battleBg->draw();
-
-	//if (eraseInOutEffect->isChangeComplete())
 	battleRefresh();
 
 	// 绘制参战单位
 	drawFighter();
 
-	//	if (!eraseInOutEffect->isChangeComplete()) {
-	//		return;
-	//	}
-
 	// 绘制去血
 	drawAllFighterHurtNumber();
-
-//	switch (m_battleStatus) {
-//		case BS_CHOOSE_ENEMY_PHY_ATK_EUDEMON:
-//		case BS_CHOOSE_ENEMY_PHY_ATK:
-//		case BS_CHOOSE_ENEMY_CATCH:
-//		case BS_CHOOSE_OUR_SIDE_USE_ITEM_USER:
-//		case BS_CHOOSE_OUR_SIDE_USE_ITEM_EUDEMON:
-//		case BS_CHOOSE_ENEMY_MAG_ATK:
-//			if (m_highlightFighter) {
-//				m_highlightFighter->drawHPMP();
-//			}
-//			break;
-//		default:
-//			break;
-//	}
-
 	drawSubAniGroup();
-
-	//	if (m_mainFighter && m_battleOpt) 
-	//	{
-	//		m_battleOpt->SetVisible(!m_mainFighter->isEscape());
-	//	}
-	//	
-	//	if (m_mainEudemon && m_eudemonOpt) 
-	//	{
-	//		m_eudemonOpt->SetVisible(!m_mainEudemon->isEscape());
-	//	}
-
-	//	NDUILayer::draw();
 }
 
 Fighter* BattleUILayer::GetMainUser()
@@ -3031,7 +2118,7 @@ void BattleUILayer::ShowPas()
 	//showBattleComplete();
 	// 退出战斗,地图逻辑处理
 
-	if (currentShowFighter > 0)
+	if (m_nCurrentShowFigher > 0)
 	{
 		ScriptMgrObj.excuteLuaFunc("CloseFighterInfo","FighterInfo",0);
 	}
