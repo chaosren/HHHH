@@ -130,7 +130,7 @@ CSMLoginScene* CSMLoginScene::Scene( bool bShowEntry /*= false*/  )
 	NDScrollImageNumber* pkImageNumber = new NDScrollImageNumber;
 	pkImageNumber->Initialization();
 	pkImageNumber->SetFrameRect(CCRectMake(16, 25, 40, 10));
-	pkImageNumber->SetSmallRedNumber(1000,false);
+	pkImageNumber->SetScrollNumber(55123,1.0,NDScrollImageNumber::Font_SmallRed);
     
 	if ( bShowEntry )
 	{

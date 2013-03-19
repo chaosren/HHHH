@@ -27,6 +27,9 @@ public:
 		Font_MaxCount
 	}FontType;
 
+	typedef vector<NDPicture*> PictureVector;
+	typedef vector<PictureVector> DoublePictureVector;
+
 	NDScrollImageNumber();
 	virtual ~NDScrollImageNumber();
 
@@ -40,8 +43,14 @@ protected:
 	CC_SYNTHESIZE(int,m_nScrollNumber,ScrollNumber);			///< 每一位（个位百位千位）从0到9的时间 @郭浩
 
 	CC_SYNTHESIZE_READONLY(vector<unsigned int>,m_kBits,Bits);
+	CC_SYNTHESIZE_READONLY(bool,m_bIsRenderingNumber,IsRenderingNumber);
+	CC_SYNTHESIZE_READONLY(unsigned int,m_uiCurrentIndex,CurrentIndex);
+	CC_SYNTHESIZE_READONLY(DoublePictureVector,m_kDoublePicVector,DoublePictureVector);
+	CC_SYNTHESIZE_READONLY(cc_timeval,m_kLastUpdateTimeVal,LastUpdateTime);
 
 	FontType m_eFontType;
+	vector<unsigned int> m_kCurrentBits;
+	int m_nCurrentBit;
 
 private:
 };
