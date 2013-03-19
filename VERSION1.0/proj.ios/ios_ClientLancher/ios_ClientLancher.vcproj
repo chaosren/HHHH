@@ -114,6 +114,22 @@
 	<References>
 	</References>
 	<Files>
+		<Filter
+			Name="IME"
+			>
+			<File
+				RelativePath="..\..\ClientEngine\Platform\inc\CommonInput.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\ClientEngine\Platform\src\IphoneInput.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\ClientEngine\Platform\inc\IphoneInput.h"
+				>
+			</File>
+		</Filter>
 		<File
 			RelativePath="..\..\clientlancher\proj.ios\dhlj\AppController.h"
 			>

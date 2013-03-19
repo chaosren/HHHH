@@ -104,7 +104,6 @@ LOCAL_SRC_FILES := \
 ../../DataTrans/src/NDMessageCenter.cpp \
 ../../DataTrans/src/NDSocket.cpp \
 ../../DataTrans/src/NDTransData.cpp \
-../../Platform/src/IphoneInput.cpp \
 ../../Utility/src/Des.cpp \
 ../../Utility/src/MD5checksum.cpp \
 ../../Utility/src/NDConsole.cpp \
