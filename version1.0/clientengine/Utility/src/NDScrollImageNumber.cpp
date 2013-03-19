@@ -17,13 +17,16 @@ NDScrollImageNumber::~NDScrollImageNumber()
 
 }
 
-bool NDScrollImageNumber::SetScrollNumber( int uiNumber,FontType eType,
+bool NDScrollImageNumber::SetScrollNumber(int uiNumber,
 										  float fSecond,
-										  bool bWithSign /*= false*/ )
+										  FontType eType,
+										  bool bWithSign )
 {
 	m_nScrollNumber = uiNumber;
 	m_eFontType = eType;
 	m_fScrollTime = fSecond;
+
+	NumberBits(m_nScrollNumber, m_kBits);
 
 	return true;
 }
@@ -33,33 +36,6 @@ void NDScrollImageNumber::draw()
 	RemoveAllChildren(true);
 
 	int nStartPosition = 0;
-
-	if (bWithSign) // ÏÔÊ¾·ûºÅ
-	{
-		int nPicIndex = 11;
-		if (m_nScrollNumber > 0)
-		{
-			nPicIndex = 11;
-		}
-		else
-		{
-			nPicIndex = 12;
-		}
-
-		NDPicture* pkPicSign = PictureNumber::SharedInstance()->SmallRed(
-			nPicIndex);
-		if (pkPicSign)
-		{
-			NDUIImage* pkImage = new NDUIImage();
-			pkImage->Initialization();
-			pkImage->SetPicture(pkPicSign);
-			pkImage->SetFrameRect(
-				CCRectMake(nStartPosition, 0, pkPicSign->GetSize().width,
-				pkPicSign->GetSize().height));
-			AddChild(pkImage);
-			nStartPosition += pkPicSign->GetSize().width;
-		}
-	}
 
 	m_nScrollNumber = abs(m_nScrollNumber);
 
