@@ -508,12 +508,12 @@ function p.OnUIEvent(uiNode, uiEventType, param)
         
         LogInfo("登录服务器名:[%s],ip:[%s],port:[%d]",sServerName,sServerIp,nServerPort);
         
-        if p.LoginUiUpdate then
+       -- if p.LoginUiUpdate then
 			--检测当前是否有版本更新
-			p.SendDataToCheckVision();
-		 else
+			--p.SendDataToCheckVision();
+		-- else
 			p.LoginGame(sServerName,sServerIp,nServerPort);
-		 end
+		-- end
 	end
 	return true;
 end
@@ -598,8 +598,8 @@ p.IsShow = false;
 function p.ProcessServerList(netdatas)
 	LogInfo("receive_serverlist");
     if(p.IsShow) then
-        p.GetNotice();
-        p.IsShow = false;
+        --p.GetNotice();
+        --p.IsShow = false;
     end
     
     local record = {};
@@ -786,16 +786,18 @@ RegisterGlobalEventHandler( GLOBALEVENT.GE_LOGIN_GAME,"Login_ServerUI.LoginGame"
 
 --向世界服务器发送数据请求版本验证
 function p.SendDataToCheckVision()
+--[[
 	local WorldSerIp = GetGameConfig("world_server_ip");
 	local WorldSerPort = GetWorldServerPort();
 	
 	LoginUICheckClientVersion(WorldSerIp, WorldSerPort);
 	--LogInfo( "LogSerUI CheckVision WorldSerIp = %s, WorldSerPort = %d", WorldSerIp, WorldSerPort);
+	]]
 end
 
 --服务器列表更新版本后登入
 function p.LoguiLoginGame()
-   p.LoginGame(p.SerName, p.SerIp, p.SerPort);
+   --p.LoginGame(p.SerName, p.SerIp, p.SerPort);
 end
 
 
