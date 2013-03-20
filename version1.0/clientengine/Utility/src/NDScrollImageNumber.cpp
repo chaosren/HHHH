@@ -7,13 +7,13 @@ IMPLEMENT_CLASS(NDScrollImageNumber,NDObject)
 
 NDScrollImageNumber::NDScrollImageNumber():
 m_fScrollTime(5.0f),
-m_nScrollNumber(0),
+m_nScrollTimeEveryBit(0),
 m_uiCurrentIndex(0),
 m_bIsRenderingNumber(false),
 m_nCurrentBit(0)
 {
 	memset(&m_kLastUpdateTimeVal,0,sizeof(cc_timeval));
-	m_kCurrentBits.push_back(0);
+	//m_kCurrentBits.push_back(0);
 }
 
 NDScrollImageNumber::~NDScrollImageNumber()
@@ -26,7 +26,7 @@ bool NDScrollImageNumber::SetScrollNumber(int uiNumber,
 										  FontType eType,
 										  bool bWithSign )
 {
-	m_nScrollNumber = uiNumber;
+	m_nScrollTimeEveryBit = uiNumber;
 	m_eFontType = eType;
 	m_fScrollTime = fSecond;
 
@@ -34,7 +34,7 @@ bool NDScrollImageNumber::SetScrollNumber(int uiNumber,
 	CCTime kTime;
 	kTime.gettimeofdayCocos2d(&m_kLastUpdateTimeVal,0);
 
-	NumberBits(m_nScrollNumber, m_kBits);
+	NumberBits(m_nScrollTimeEveryBit, m_kBits);
 	m_nCurrentBit = m_kBits.size();
 
 	for (unsigned int uiIndex = 0;uiIndex < m_kBits.size();uiIndex++)
@@ -66,7 +66,7 @@ void NDScrollImageNumber::draw()
 
 	s_nDelta++;
 
-	if (s_nDelta % 4 != 0)
+	if (s_nDelta % 2 != 0)
 	{
 		return;
 	}
@@ -89,7 +89,12 @@ void NDScrollImageNumber::draw()
 
 	int nStartPosition = 500;
 
-	m_nScrollNumber = abs(m_nScrollNumber);
+	if (m_kCurrentBits.size() == 0)
+	{
+		m_kCurrentBits.push_back(0);
+	}
+
+	m_nScrollTimeEveryBit = abs(m_nScrollTimeEveryBit);
 
 	for (unsigned int i = 0; i < m_kCurrentBits.size(); i++)
 	{

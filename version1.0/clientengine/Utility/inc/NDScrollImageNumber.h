@@ -1,6 +1,13 @@
-/*
-*
-*/
+//
+//  NDClassFactory.h
+//  NDClassFactory
+//
+//  Copyright 2010 (网龙)DeNA. All rights reserved.
+//	
+//	@author 郭浩
+//
+//	－－介绍－－
+//	變化數字效果是基於普通圖片數字效果製作而成。
 
 #ifndef NDSCROLLIMAGENUMBER_H
 #define NDSCROLLIMAGENUMBER_H
@@ -40,7 +47,7 @@ public:
 protected:
 
 	CC_SYNTHESIZE(float,m_fScrollTime,ScrollTime);
-	CC_SYNTHESIZE(int,m_nScrollNumber,ScrollNumber);			///< 每一位（个位百位千位）从0到9的时间 @郭浩
+	CC_SYNTHESIZE(int,m_nScrollTimeEveryBit,ScrollTimeEveryBit);			///< 每一位（个位百位千位）从0到9的时间 @郭浩
 
 	CC_SYNTHESIZE_READONLY(vector<unsigned int>,m_kBits,Bits);
 	CC_SYNTHESIZE_READONLY(bool,m_bIsRenderingNumber,IsRenderingNumber);
