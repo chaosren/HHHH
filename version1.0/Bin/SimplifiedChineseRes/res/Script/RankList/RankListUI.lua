@@ -53,7 +53,8 @@ function p.TimeTimer()
     if(layer) then
         local label = GetLabel(layer, TAG_TIME);
         if(label) then
-            local m = nTimeSeconds / 60;
+            local h = nTimeSeconds / 3600;
+            local m = nTimeSeconds % 3600 / 60;
             local s = nTimeSeconds % 60;
             if(nTimeSeconds <= 0) then
                 m = 0;
@@ -61,7 +62,7 @@ function p.TimeTimer()
                 MsgRankList.SendGetListInfoMsg(MsgRankList.RANKING_ACT.ACT_REFRESHTIME);
                 MsgRankList.SendGetListInfoMsg(p.RankType);
             end
-            label:SetText(string.format("%d:%02d",m,s));
+            label:SetText(string.format("%02d:%02d:%02d",h,m,s));
         end
     end
 end

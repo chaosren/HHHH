@@ -598,8 +598,8 @@ p.IsShow = false;
 function p.ProcessServerList(netdatas)
 	LogInfo("receive_serverlist");
     if(p.IsShow) then
-        --p.GetNotice();
-        --p.IsShow = false;
+        p.GetNotice();
+        p.IsShow = false;
     end
     
     local record = {};
@@ -741,8 +741,8 @@ end
 
 
 function p.GetNotice()
-    --local record = SqliteConfig.SelectNotice(1);
-    --ActivityNoticeUI.ShowUI(record.VER);
+    local record = SqliteConfig.SelectNotice(1);
+    ActivityNoticeUI.ShowUI(record.VER);
 end
 
 --踢人

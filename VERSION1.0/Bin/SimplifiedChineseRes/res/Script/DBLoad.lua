@@ -44,6 +44,7 @@ LoadDataBaseTable("giftpack_config","giftpack_configTable");
 --** chh 2012-7-14 **--
 LoadDataBaseTable("guide_config","guide_configTable");
 LoadDataBaseTable("vip_config","vip_configTable");
+LoadDataBaseTable("vip_static_config","vip_static_configTable");
 
 --** chh 2012-10-09 **--
 LoadDataBaseTable("event_activity","event_activityTable");

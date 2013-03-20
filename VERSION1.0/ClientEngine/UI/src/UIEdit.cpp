@@ -588,7 +588,7 @@ bool CUIEdit::hasLineFeed(const char* p) const
 	return false;
 }
 
-bool CUIEdit::replaceLineFeedWithSpace(const char* p) const
+bool CUIEdit::replaceLineFeedWithSpace(char* p) const
 {
 	bool modified = false;
 	while (*p != '\0')

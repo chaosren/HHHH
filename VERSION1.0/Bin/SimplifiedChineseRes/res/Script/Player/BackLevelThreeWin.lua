@@ -486,7 +486,8 @@ function p.ShowUIProp(nItemId, nCurrPetId)
     local nItemType	= Item.GetItemInfoN(nItemId, Item.ITEM_TYPE);
     local nType = ItemFunc.GetPropType(nItemType);
     
-    if(nType == 1 or nType == 4 or nType == 5 or nType == 6  or nType == 7) then
+
+    if(nType == 1 or nType == 4 or nType == 5 or nType == 6 or nType == 7 or  nType == 8) then
         btn:SetVisible(true);
     else
         btn:SetVisible(false);
@@ -838,11 +839,9 @@ function p.OnUIEventProp(uiNode, uiEventType, param)
         	LogInfo("qbw glid id"..nItemId);
             
             
-            
-            
-            
-            
             local nType = ItemFunc.GetPropType(nItemType);
+            
+            
             
             if(nType == 1) then     --礼包使用
                 
@@ -907,6 +906,29 @@ function p.OnUIEventProp(uiNode, uiEventType, param)
            elseif nType == 7 then	--斗地主道具
             	local count = Item.GetItemInfoN(nItemId, Item.ITEM_AMOUNT);
             	p.nTagId = CommonDlgNew.ShowInputDlg(GetTxtPri("PLAYER_T3"), p.OnUIEventUseNum, {nItemId}, count, 2);               
+
+                
+            elseif(nType == 8) then     --武将卡使用
+                
+                --使用等级限制
+                local nPlayerId     = GetPlayerId();
+                local nPetId        = RolePetFunc.GetMainPetId(nPlayerId);
+                --判断宠物等级是否到达物品要求等级
+                if(p.equipMinimumLevel(nPetId, nItemId) == false) then
+                    return;
+                end
+                
+                --人员上限限制
+                local nRank = _G.GetRoleBasicDataN(nPlayerId, USER_ATTR.USER_ATTR_RANK);
+                local nTot = GetDataBaseDataN("rank_config",nRank,DB_RANK.MAX_OWN_PET);
+                local nAlert = #RolePetUser.GetPetListPlayer(nPlayerId);
+                if(nAlert>=nTot) then
+                    CommonDlgNew.ShowYesDlg(GetTxtPri("MarCount"));
+                    return true;
+                end
+                
+                ShowLoadBar();
+                MsgItem.SendUseItem(nItemId,1,0);
             end
             
             

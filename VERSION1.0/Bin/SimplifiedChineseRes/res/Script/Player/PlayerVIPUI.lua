@@ -24,6 +24,8 @@ local ID_VIP_CTRL_BUTTON_3						= 3;
 local ID_VIP_CTRL_PICTURE_2						= 2;
 local ID_VIP_CTRL_PICTURE_1						= 1;
 
+local ID_VIP_CTRL_BUTTON_129					= 129;
+
 local ID_BTN_AGIOTAGE							= 89;	-- 兑换金币
 local ID_LABEL_GOLD_COIN						= 49;	-- 金币数量
 
@@ -93,13 +95,15 @@ tVipInfo[1][4] = GetTxtPri("PUIA_T9")--添加多语言
 tVipInfo[2][1] = GetTxtPri("PLAYER_T24")
 tVipInfo[2][2] = GetTxtPri("PLAYER_T25")
 tVipInfo[2][3] = GetTxtPri("PLAYER_T26")
-tVipInfo[2][4] = GetTxtPri("PUIA_T10")--添加多语言
+tVipInfo[2][4] = GetTxtPri("PUIA_T10")
+tVipInfo[2][5] = GetTxtPri("PLAYER_T2611")
 
 tVipInfo[3][1] = GetTxtPri("PLAYER_T28")
 tVipInfo[3][2] = GetTxtPri("PUIA_T11")--添加多语言
 tVipInfo[3][3] = GetTxtPri("PLAYER_T29")
 tVipInfo[3][4] = GetTxtPri("PLAYER_T30")
 tVipInfo[3][5] = GetTxtPri("PLAYER_T31")
+tVipInfo[3][6] = GetTxtPri("PLAYER_T3111")
 
 tVipInfo[4][1] = GetTxtPri("PLAYER_T33")
 tVipInfo[4][2] = GetTxtPri("PLAYER_T34")
@@ -261,7 +265,9 @@ function p.OnUIEventBg(uiNode, uiEventType, param)
 		elseif tag == ID_VIP_CTRL_BUTTON_MONEY then
             doGoToMobageVipPage();
 
-
+        elseif tag == ID_VIP_CTRL_BUTTON_129 then
+            p.ShowInputBox();
+            
 		elseif tag == ID_VIP_CTRL_BUTTON_15 then	
 			p.OnClickBuyMilOrderBtn();
 		elseif ( tag == ID_BTN_AGIOTAGE ) then
@@ -272,6 +278,22 @@ function p.OnUIEventBg(uiNode, uiEventType, param)
 			p.LoadUIVIPDesc(nVipLev);
 		end	
 	end
+end
+
+--激活碼
+function p.ShowInputBox()
+    CommonDlgNew.ShowInputDlg(GetTxtPri("RLUI_T6"), p.OnUIEventUseNum, nil, GetTxtPri("RLUI_T7"),10);
+end
+
+function p.OnUIEventUseNum(nEventType, param, val)
+    if(CommonDlgNew.BtnOk == nEventType) then
+        LogInfo("p.OnUIEventUseNum val:[%s]",val);
+        if( val == nil or val=="" ) then
+            CommonDlgNew.ShowYesDlg(GetTxtPri("RLUI_T11"));
+            return;
+        end
+        MsgRankList.SendGetListInfoMsg(MsgRankList.RANKING_ACT.ATC_ACTIVITY_CODE, val);
+    end
 end
 
 function p.OnUIEventSVC(uiNode, uiEventType, param)
