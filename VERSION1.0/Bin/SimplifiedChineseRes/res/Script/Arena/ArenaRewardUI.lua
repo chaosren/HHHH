@@ -221,9 +221,9 @@ function p.SetResult(result,money,repute,soph,emoney)
         local bg	= GetImage(layer,ID_FIGHTEVALUATE_CTRL_PICTURE_STATE);
         local pool	= DefaultPicPool();
 		if result ==1 then --战斗胜利
-			bg:SetPicture(pool:AddPicture(GetSMImgPath("battle/battle_icon3.png"), false), true);
+			bg:SetPicture(pool:AddPicture(GetSMImg00Path("battle/battle_icon3.png"), false), true);
 		elseif result ==0 then --战斗失败
-			bg:SetPicture(pool:AddPicture(GetSMImgPath("battle/battle_icon2.png"), false), true);
+			bg:SetPicture(pool:AddPicture(GetSMImg00Path("battle/battle_icon2.png"), false), true);
 		end
 
     elseif 7 == ArenaUI.isInChallenge then
@@ -312,6 +312,8 @@ function p.CloseBattle()
     local scene = GetSMGameScene();
     CloseBattle();
 	BattleUI_Title.CloseUI();--
+	BattleMapCtrl.CloseUI();
+	
     if scene~= nil then
         scene:RemoveChildByTag(NMAINSCENECHILDTAG.ArenaRewardUI,true);
         return true;

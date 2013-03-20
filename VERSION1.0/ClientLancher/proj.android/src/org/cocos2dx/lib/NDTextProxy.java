@@ -342,7 +342,7 @@ public class NDTextProxy
 				int r = bytesColor[0] & 0xff;
 				int g = bytesColor[1] & 0xff;
 				int b = bytesColor[2] & 0xff;
-				int cr = Color.rgb( g, b, r ); //reverse order
+				int cr = Color.rgb( r, g, b );
 
 				parseFlag.isColor = true;
 				parseFlag.newColor = cr;

@@ -117,7 +117,9 @@ void CUIChatText::SetContent_WithNDBitmap(int speakerID, int channel, const char
 	}
 
 	//
-	NDUILabel* label = CreateLabel( strTotalText.c_str(), fontSizelua, color, 0 );
+	//NDUILabel* label = CreateLabel( strTotalText.c_str(), fontSizelua, color, 0 );
+	NDUIColorLabel* label = CreateColorLabel( strTotalText.c_str(), fontSizelua, color, 0 );
+	
 	if (label)
 	{
 		AddChild( label );
@@ -249,18 +251,6 @@ void CUIChatText::SetContent(int speakerID, int channel, const char* speaker,
 			continue;
 		}
 
-// 		char word[4] =
-// 		{ 0x00 };
-// 		if ((unsigned char) *text < 0x80)
-// 		{
-// 			memcpy(word, text, 1);
-// 			text++;
-// 		}
-// 		else
-// 		{
-// 			memcpy(word, text, 3);
-// 			text += 3;
-// 		}
 		char* word = UTF8::getNextChar( text );
 		if (!word) break;
 
@@ -428,6 +418,27 @@ NDUIImage* CUIChatText::CreateFaceImage(const char* strIndex)
 		}
 	}
 	return result;
+}
+
+NDUIColorLabel* CUIChatText::CreateColorLabel(const char* utf8_text, unsigned int fontSize, ccColor4B color, int idItem/* = 0*/)
+{
+	if (!utf8_text || !utf8_text[0]) return NULL;
+
+	NDUIColorLabel* label = NULL;
+	if (utf8_text) 
+	{
+		CCSize textSize = getStringSize(utf8_text, fontSize*FONT_SCALE); 
+
+		label = new NDUIColorLabel();
+		label->Initialization();
+		label->SetRenderTimes(1);
+		label->SetText(utf8_text);
+		label->SetTag(idItem);
+		label->SetFontSize(fontSize); //Label内部自适应比例.
+		label->SetFontColor(color);
+		label->SetFrameRect(CCRectMake(0, 0, textSize.width, textSize.height));
+	}
+	return label;
 }
 
 NDUILabel* CUIChatText::CreateLabel(const char* utf8_text, unsigned int fontSize, ccColor4B color, int idItem/* = 0*/)

@@ -61,6 +61,8 @@ function p.LoadUI()
     --设置关闭音效
    	local closeBtn=GetButton(layer,  p.TagClose);
    	closeBtn:SetSoundEffect(Music.SoundEffect.CLOSEBTN);
+    
+    p.refreshMoney();
 end
 
 function p.refreshBtn()
@@ -240,4 +242,35 @@ function p.refresh()
     
 end
 
+local TAG_E_TMONEY      = 243;  --
+local TAG_E_TEMONEY     = 242;  --
+local TAG_E_TJIANHUN    = 245;  --
+local TAG_E_TSHENWAN    = 247;  --
+
+--刷新金钱
+function p.refreshMoney()
+    LogInfo("p.refreshMoney BEGIN");
+    local nPlayerId     = GetPlayerId();
+    local scene = GetSMGameScene();
+    if(scene == nil) then
+        return;
+    end
+    local layer = GetUiLayer(scene, NMAINSCENECHILDTAG.Fete);
+    if(layer == nil) then
+        return;
+    end
+    
+    local nmoney        = MoneyFormat(GetRoleBasicDataN(nPlayerId,USER_ATTR.USER_ATTR_MONEY));
+    local ngmoney        = GetRoleBasicDataN(nPlayerId,USER_ATTR.USER_ATTR_EMONEY).."";
+    
+    local njh        = GetRoleBasicDataN(nPlayerId,USER_ATTR.USER_ATTR_SOPH).."";
+    local nsw        = GetRoleBasicDataN(nPlayerId,USER_ATTR.USER_ATTR_REPUTE).."";
+    
+    _G.SetLabel(layer, TAG_E_TMONEY, nmoney);
+    _G.SetLabel(layer, TAG_E_TEMONEY, ngmoney);
+    _G.SetLabel(layer, TAG_E_TJIANHUN, njh);
+    _G.SetLabel(layer, TAG_E_TSHENWAN, nsw);
+end
+
+GameDataEvent.Register(GAMEDATAEVENT.USERATTR,"Fete.refreshMoney",p.refreshMoney);
 RegisterNetMsgHandler(NMSG_Type._MSG_SACRIFICE_INFO_LIST, "p.processSacrificeList", p.processSacrificeList);

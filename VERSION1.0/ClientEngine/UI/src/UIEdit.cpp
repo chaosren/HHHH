@@ -9,13 +9,14 @@
 
 #include "UIEdit.h"
 #include "ScriptUI.h"
-#include "IphoneInput.h"
 #include "NDDirector.h"
 #include "NDUtil.h"
 #include "define.h"
-//#include "I_Analyst.h"
 #include "ObjectTracker.h"
 #include "UsePointPls.h"
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
+#include "IphoneInput.h"
+#endif
 
 CUIEdit* CUIEdit::g_pCurUIEdit = NULL;
 
@@ -83,22 +84,6 @@ CUIEdit::~CUIEdit()
 void CUIEdit::OnTextChanged()
 {
 	if (!m_lbText) return;
-
-// 	int strCount = m_strText.length();
-// 	if(strCount > m_curStrCount)
-// 	{
-// 		m_curInputCount++;
-// 	}
-// 	else if(strCount < m_curStrCount)
-// 	{
-// 		m_curInputCount--;
-// 		if(m_curInputCount < 0)
-// 			m_curInputCount = 0;
-// 	}
-// 	m_curStrCount = strCount;
-// 
-// 	if(m_curInputCount > m_nMaxLen)
-// 		return;
 		
 	string labelText = "";
 	if (IsPassword())
@@ -143,47 +128,6 @@ void CUIEdit::SetTextAlignment(int alignment)
 //设置文本
 void CUIEdit::SetText(const char* pszText)
 {
-// 	CCLog( "@@ CUIEdit::SetText() text=%s\r\n", pszText);
-// 
-// 	std::string	tmpStr = pszText ? pszText : "";//这个是=
-// 
-// 	for (int i = 0; i < 2; i++)
-// 	{
-// 		int len = tmpStr.length();
-// 		if (len > 0)
-// 		{
-// 			const char c = tmpStr[len - 1];
-// 			if (c == '\r' || c == '\n')
-// 			{
-// 				tmpStr.erase( tmpStr.end() - 1 );
-// 			}
-// 		}
-// 	}
-// 
-// 	int inputCount = 0;
-// 	const char *tmpPointer = tmpStr.c_str();
-// 	while (*tmpPointer != '\0')
-// 	{
-// 		if ((unsigned char) *tmpPointer < 0x80)
-// 		{
-// 			tmpPointer++;
-// 			inputCount++;
-// 		}
-// 		else
-// 		{
-// 			tmpPointer += 3;
-// 			inputCount++;
-// 		}
-// 	}
-// 
-// 	CCLog( "@@ CUIEdit::SetText() inputCount=%d \r\n", inputCount);
-// 	CCLog( "@@ CUIEdit::SetText() m_nMaxLen=%d \r\n", m_nMaxLen);
-// 
-// 	if(inputCount > m_nMaxLen)
-// 		return;
-// 
-// 	m_strText = tmpStr;
-
 	m_strText = pszText ? pszText : "";
 
 #if WITH_OLD_IME
@@ -277,18 +221,9 @@ void CUIEdit::SetShowTextFontSize(int nFontSize)
 	}
 }
 
-void CUIEdit::draw()
-{
-    //TICK_ANALYST(ANALYST_CUIEdit);
-	NDUINode::draw();
-	
-	if (!this->IsVisibled())
-	{
-		return;
-	}
-		
 #if WITH_NEW_IME
-	
+void CUIEdit::draw_new_ime() //for android & win32
+{
 	NDPicture* pic = m_picImage;
 	if (m_bIMEOpen && m_picFocusImage)
 	{
@@ -304,54 +239,77 @@ void CUIEdit::draw()
 	{
 		m_lbText->draw();
 	}
-#endif
-
+}
+#endif //WITH_NEW_IME
 
 #if WITH_OLD_IME
+void CUIEdit::draw_old_ime() //for ios
+{
+	CCRect scrRect;
+
 	if (m_pPlatformInput)
 	{
-        //** chh 2012-06-19 **//
-        CCRect scrRect = m_lbText->GetFrameRect();
-        CCSize textSize = getStringSize(TEST_TEXT,m_lbText->GetFontSize());
-        int HBorder = (this->GetScreenRect().size.height-textSize.height)/2;
-        
-        
-		m_pPlatformInput->SetFrame(scrRect.origin.x, scrRect.origin.y+HBorder, scrRect.size.width, scrRect.size.height);
+		//** chh 2012-06-19 **//
+		scrRect = m_lbText->GetFrameRect();
+		CCSize textSize = getStringSize(TEST_TEXT,m_lbText->GetFontSize());
+		int HBorder = (this->GetScreenRect().size.height-textSize.height)/2;
+		m_pPlatformInput->SetFrame(scrRect.origin.x, scrRect.origin.y+HBorder, 
+									scrRect.size.width, scrRect.size.height);
 	}
+
 	if (m_bRecacl && m_pPlatformInput)
 	{
 		m_pPlatformInput->SetText(m_strText.c_str());
 		m_pPlatformInput->EnableSafe(m_bPassword);
 		m_pPlatformInput->EnableAutoAdjust(m_bEnableAjdustView);
-		m_pPlatformInput->SetStyleNone();
-		m_bRecacl	= false;
+//		m_pPlatformInput->SetStyleNone();
+		m_bRecacl = false;
 	}
-	
+
 	NDPicture* pic = m_picImage;
-	
+
 	if (m_pPlatformInput && m_pPlatformInput->IsInputState() && m_picFocusImage)
 	{
 		pic	= m_picFocusImage;
 	}
-	
+
 	if (pic)
 	{
 		pic->DrawInRect(scrRect);
 	}
+
+#if 0
 	if (m_pPlatformInput && !m_pPlatformInput->IsShow() && m_lbText)
 	{
-		CCRect rectText		= m_lbText->GetScreenRect();
+		CCRect rectText	= m_lbText->GetScreenRect();
 		if (!CompareEqualFloat(rectText.origin.x, scrRect.origin.x) || 
 			!CompareEqualFloat(rectText.origin.y, scrRect.origin.y))
 		{
-            CCRect rect = scrRect;
-            rect.origin.x += TEXT_LEFT_BORDER;
-            m_lbText->SetFrameRect(rect);
+			CCRect rect = scrRect;
+			rect.origin.x += TEXT_LEFT_BORDER;
+			m_lbText->SetFrameRect(rect);
 		}
-        //m_lbText->SetFrameRect(scrRect);
+		//m_lbText->SetFrameRect(scrRect);
 		m_lbText->draw();
 	}
+#endif
+}
 #endif //WITH_OLD_IME
+
+void CUIEdit::draw()
+{
+	NDUINode::draw();
+	
+	if (!this->IsVisibled())
+	{
+		return;
+	}
+		
+#if WITH_NEW_IME
+	this->draw_new_ime();
+#else
+	this->draw_old_ime();
+#endif 
 }
 
 //设置控件是否可见
@@ -609,20 +567,8 @@ bool CUIEdit::canDetachWithIME()
 	//return CCIMEDelegate::canDetachWithIME();
 }
 
-void CUIEdit::insertText(const char * text, int len)
+bool CUIEdit::hasLineFeed(const char* p) const
 {
-	CCLog( "@@ CUIEdit::insertText() text=%s\r\n", text);
-	CCLog( "@@ CUIEdit::insertText() length=%d \r\n", len);
-
-	bool enterDown = false;
-
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
-	m_strText += text ? text : "";
-#else
-	std::string	tmpStr = text ? text : "";//这个是=
-
-	//检测换行
-	char *p = (char*)tmpStr.c_str();
 	while (*p != '\0')
 	{
 		if ((unsigned char) *p < 0x80)
@@ -630,8 +576,7 @@ void CUIEdit::insertText(const char * text, int len)
 			const char c = *p;
 			if (c == '\r' || c == '\n')
 			{
-				enterDown = true;
-				break;
+				return true;
 			}
 			p++;
 		}
@@ -640,9 +585,12 @@ void CUIEdit::insertText(const char * text, int len)
 			p += 3;
 		}
 	}
+	return false;
+}
 
-	//替换换行为空格
-	p = (char*)tmpStr.c_str();
+bool CUIEdit::replaceLineFeedWithSpace(char* p) const
+{
+	bool modified = false;
 	while (*p != '\0')
 	{
 		if ((unsigned char) *p < 0x80)
@@ -651,6 +599,7 @@ void CUIEdit::insertText(const char * text, int len)
 			if (c == '\r' || c == '\n')
 			{
 				*p = ' ';
+				modified = true;
 			}
 			p++;
 		}
@@ -659,38 +608,53 @@ void CUIEdit::insertText(const char * text, int len)
 			p += 3;
 		}
 	}
+	return modified;
+}
 
-// 	//删除末尾的换行
-// 	for (int i = 0; i < 2; i++)
-// 	{
-// 		int len = tmpStr.length();
-// 		if (len > 0)
-// 		{
-// 			const char c = tmpStr[len - 1];
-// 			if (c == '\r' || c == '\n')
-// 			{
-// 				tmpStr.erase( tmpStr.end() - 1 );
-// 				enterDown = true;
-// 			}
-// 		}
-// 	}
-
-	//计算字符个数
-	int inputCount = 0;
-	const char *tmpPointer = tmpStr.c_str();
-	while (*tmpPointer != '\0')
+int	CUIEdit::calcStringLen(const char* p) const
+{
+	int charCount = 0;
+	while (*p != '\0')
 	{
-		if ((unsigned char) *tmpPointer < 0x80)
+		if ((unsigned char) *p < 0x80)
 		{
-			tmpPointer++;
-			inputCount++;
+			p++;
+			charCount++;
 		}
 		else
 		{
-			tmpPointer += 3;
-			inputCount++;
+			p += 3;
+			charCount++;
 		}
 	}
+	return charCount;
+}
+
+void CUIEdit::insertText(const char * text, int len)
+{
+	CCLog( "@@ CUIEdit::insertText() text=%s\r\n", text);
+	CCLog( "@@ CUIEdit::insertText() length=%d \r\n", len);
+
+	bool enterDown = false;
+
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32) || (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
+	m_strText += text ? text : "";
+    enterDown = (text[0] == '\r' || text[0] == '\n');
+#else
+	std::string	tmpStr = text ? text : "";//这个是=
+
+	//检测换行
+	char *p = (char*)tmpStr.c_str();
+	enterDown = this->hasLineFeed(p);
+
+	//替换换行为空格
+	p = (char*)tmpStr.c_str();
+	this->replaceLineFeedWithSpace(p);
+
+	//计算字符个数
+	p = (char*)tmpStr.c_str();
+	int inputCount = this->calcStringLen(p);
+
 	//CCLog( "@@ CUIEdit::insertText() inputCount=%d \r\n", inputCount);
 	//CCLog( "@@ CUIEdit::insertText() m_nMaxLen=%d \r\n", m_nMaxLen);
 

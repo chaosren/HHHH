@@ -642,10 +642,6 @@
 					>
 				</File>
 				<File
-					RelativePath="..\UI\inc\NDBitmapMacro.h"
-					>
-				</File>
-				<File
 					RelativePath="..\UI\inc\NDScrollLayer.h"
 					>
 				</File>
@@ -667,6 +663,10 @@
 				</File>
 				<File
 					RelativePath="..\UI\inc\NDUICheckBox.h"
+					>
+				</File>
+				<File
+					RelativePath="..\UI\inc\NDUIColorLabel.h"
 					>
 				</File>
 				<File
@@ -811,6 +811,10 @@
 				</File>
 				<File
 					RelativePath="..\UI\src\NDUICheckBox.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\UI\src\NDUIColorLabel.cpp"
 					>
 				</File>
 				<File
@@ -1247,22 +1251,10 @@
 			<Filter
 				Name="inc"
 				>
-				<File
-					RelativePath="..\Platform\inc\CommonInput.h"
-					>
-				</File>
-				<File
-					RelativePath="..\Platform\inc\IphoneInput.h"
-					>
-				</File>
 			</Filter>
 			<Filter
 				Name="src"
 				>
-				<File
-					RelativePath="..\Platform\src\IphoneInput.cpp"
-					>
-				</File>
 			</Filter>
 		</Filter>
 		<Filter

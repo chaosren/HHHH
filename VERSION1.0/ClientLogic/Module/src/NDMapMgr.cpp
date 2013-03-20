@@ -5203,7 +5203,11 @@ void NDMapMgr::LoadMapMusic()
 	}
 
 	CCString* pstrMusicPath = CCString::create(NDPath::GetSoundPath());
-	CCString* pstrMusicFile = CCString::stringWithFormat("%smusic_%d.ogg",pstrMusicPath->getCString(),nMusicID);
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
+	CCString* pstrMusicFile = CCString::stringWithFormat("%smusic_%d.aac",pstrMusicPath->getCString(),nMusicID);
+#else
+	CCString* pstrMusicFile = CCString::stringWithFormat("%smusic_%d.ogg",pstrMusicPath->getCString(),nMusicID);	
+#endif
 	pkSimpleAudio->playBackgroundMusic(pstrMusicFile->getCString(),true);
 }
 

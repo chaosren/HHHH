@@ -139,26 +139,25 @@ function p.LoadUI( nCurrPetId )
     
     MsgRealize.mUIListener = p.processNet;
     
+    --[[
     --**影藏一键卖出按钮
     local btn = GetButton(layer, TAG_FAST_SELL);
     if(btn) then
         btn:SetVisible(false);
     end
-    
+    ]]
     
     --判断一键占星是否显示为灰色
-    local nVipRank = GetRoleBasicDataN(GetPlayerId(),USER_ATTR.USER_ATTR_VIP_RANK);
-    local nRequestVipRank = GetRequestVipLevel(DB_VIP_CONFIG.DESTINY_ASTROLOGY_AUTO);
-    LogInfo("nVipRank:[%d],nRequestVipRank:[%d]",nVipRank,nRequestVipRank);
-    if(nRequestVipRank>nVipRank) then
+    
+    local nVip,nLevel,bVip,bLevel = GetVipLevel2(DB_VIP_STATUC_VALUE.DESTINY_ASTROLOGY_AUTO);
+    if(not (bVip or bLevel)) then
         local btn = GetButton(layer,TAG_FAST_DESTINY);
         btn:SetImage(nil);
         btn:SetTouchDownImage(nil);
     end
     
-    
-    local bIsOpen = GetVipIsOpen(DB_VIP_CONFIG.DESTINY_SELECT_AYTO);
-    if(bIsOpen == false) then
+    local nVip,nLevel,bVip,bLevel = GetVipLevel2(DB_VIP_STATUC_VALUE.DESTINY_SELECT_AYTO);
+    if(not (bVip or bLevel)) then
         local btn = GetButton(layer, TAG_FAST_SELL);
         btn:SetImage(nil);
         btn:SetTouchDownImage(nil);
@@ -401,7 +400,6 @@ function p.CreateDescLayer()
 	uiLoad:Free();
     
     local containter = RecursiveSVC(layer_info, {TAG_CONTAINER_DESC});
-    containter:RemoveAllView();
     containter:EnableScrollBar(true);
     local size = containter:GetFrameRect().size;
     containter:SetViewSize(CGSizeMake(size.w,14*CoordScaleY));
@@ -474,11 +472,9 @@ function p.OnUIEvent(uiNode, uiEventType, param)
             end
             
             --vip等级判断
-            local nVipRank = GetRoleBasicDataN(GetPlayerId(),USER_ATTR.USER_ATTR_VIP_RANK);
-            local nRequestVipRank = GetRequestVipLevel(DB_VIP_CONFIG.DESTINY_ASTROLOGY_AUTO);
-            LogInfo("nVipRank:[%d],nRequestVipRank:[%d]",nVipRank,nRequestVipRank);
-            if(nRequestVipRank>nVipRank) then
-                CommonDlgNew.ShowYesDlg(string.format(GetTxtPri("DU_T12"),nRequestVipRank));
+            local nVip,nLevel,bVip,bLevel = GetVipLevel2(DB_VIP_STATUC_VALUE.DESTINY_ASTROLOGY_AUTO);
+            if(not (bVip or bLevel)) then
+                CommonDlgNew.ShowYesDlg(string.format(GetTxtPri("DU_T12"),nVip));
                 return true;
             end
             
@@ -494,6 +490,8 @@ function p.OnUIEvent(uiNode, uiEventType, param)
             
             
             local nNeedMoney = GetDataBaseDataN("daofa_config",npc_id,DB_DAOFA_CONFIG.REQ_MONEY);
+            
+
             
             if(p.IsNotMoney(nNeedMoney) == false) then
                 return true;
@@ -534,13 +532,10 @@ function p.OnUIEvent(uiNode, uiEventType, param)
             LogInfo("chh_02");
             ShowLoadBar();
             MsgRealize.sendPickUpAll();
-        elseif(tag == TAG_FAST_SELL) then       -- 一键出售
-            
-            local nVipRank = GetRoleBasicDataN(GetPlayerId(),USER_ATTR.USER_ATTR_VIP_RANK);
-            local nRequestVipRank = GetRequestVipLevel(DB_VIP_CONFIG.DESTINY_SELECT_AYTO);
-            LogInfo("nVipRank:[%d],nRequestVipRank:[%d]",nVipRank,nRequestVipRank);
-            if(nRequestVipRank>nVipRank) then
-                CommonDlgNew.ShowYesDlg(string.format(GetTxtPri("DU_T30"),nRequestVipRank));
+        elseif(tag == TAG_FAST_SELL) then       -- 自动占星
+            local nVip,nLevel,bVip,bLevel = GetVipLevel2(DB_VIP_STATUC_VALUE.DESTINY_SELECT_AYTO);
+            if(not (bVip or bLevel)) then
+                CommonDlgNew.ShowYesDlg(string.format(GetTxtPri("DU_T30"),nVip));
                 return true;
             end
             

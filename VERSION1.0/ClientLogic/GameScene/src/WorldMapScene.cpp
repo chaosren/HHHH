@@ -397,7 +397,7 @@ void WorldMapLayer::SetCenterAtPos(CCPoint pos)
 		posCenter.y /= fScaleFactor;
 	}
 
-	m_ccNode->setPosition(posCenter);
+	m_pkCCNode->setPosition(posCenter);
 }
 
 //ºÍNDMapLayer::ConvertToMapPoint()Ò»Ñù

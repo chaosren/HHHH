@@ -28,10 +28,11 @@ p.RANKING_ACT = {
     ACT_EMONEY      = 7,    --金币排名
     ACT_ELITE_STAGE = 8,    --精英副本
     ACT_REFRESHTIME = 9,    --剩余刷新时间
+    ATC_ACTIVITY_CODE = 10, --激活码获取礼包接口
 }
 p.Action = p.RANKING_ACT.ACT_NONE;
 
-function p.SendGetListInfoMsg( nRankingAct )
+function p.SendGetListInfoMsg( nRankingAct, val )
     LogInfo("p.SendGetListInfoMsg nRankingAct:[%d]",nRankingAct);
     ShowLoadBar();
     local netdata = createNDTransData(NMSG_Type._MSG_RANKING);
@@ -39,6 +40,9 @@ function p.SendGetListInfoMsg( nRankingAct )
         return false;
     end
     netdata:WriteByte(nRankingAct);
+    if( CheckS(val) ) then
+        netdata:WriteStr(val);
+    end
     SendMsg(netdata);
     netdata:Free();
     return true;
@@ -52,6 +56,19 @@ function p.ProcessGetListInfo(netdata)
         local nTime = netdata:ReadInt();
         LogInfo("p.ProcessGetListInfo ACT_REFRESHTIME:[%d]",nTime);
         RankListUI.RefreshTime(nTime);
+        return;
+    elseif(nAction == p.RANKING_ACT.ATC_ACTIVITY_CODE) then
+        local nStatus = netdata:ReadInt();
+        if(nStatus == 0) then
+            CommonDlgNew.ShowYesDlg(GetTxtPri("RLUI_T8"));
+        elseif(nStatus == 1) then
+            CommonDlgNew.ShowYesDlg(GetTxtPri("RLUI_T9"));
+        elseif(nStatus == 2) then
+            CommonDlgNew.ShowYesDlg(GetTxtPri("RLUI_T10"));
+        elseif(nStatus == 3) then
+            CommonDlgNew.ShowYesDlg(GetTxtPri("RLUI_T12"));
+        end
+        CloseLoadBar();
         return;
     end
     

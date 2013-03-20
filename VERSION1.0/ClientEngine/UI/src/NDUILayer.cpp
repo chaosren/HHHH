@@ -146,20 +146,20 @@ NDUILayer::~NDUILayer()
 
 void NDUILayer::Initialization()
 {
-	m_ccNode = new NDBaseLayer;
+	m_pkCCNode = new NDBaseLayer;
 
-	NDBaseLayer* pkLayer = (NDBaseLayer *) m_ccNode;
+	NDBaseLayer *pkLayer = (NDBaseLayer *) m_pkCCNode;
 	pkLayer->SetUILayer(this);
 	pkLayer->setTouchEnabled(true);
-	pkLayer->setDebugName(m_strDebugName.c_str());
+	pkLayer->setDebugName( m_strDebugName.c_str() );
 
 	SetFrameRect (CCRectZero);
 }
 void NDUILayer::SetTouchEnabled(bool bEnabled)
 {
-	NDAsssert(m_ccNode != NULL);
+	NDAsssert(m_pkCCNode != NULL);
 
-	NDBaseLayer *layer = (NDBaseLayer *) m_ccNode;
+	NDBaseLayer *layer = (NDBaseLayer *) m_pkCCNode;
 	layer->setTouchEnabled(bEnabled);
 }
 
@@ -1918,7 +1918,7 @@ void NDUILayer::debugDraw()
 	}
 	else
 	{
-		NDBaseLayer *layer = (NDBaseLayer *) m_ccNode;
+		NDBaseLayer *layer = (NDBaseLayer *) m_pkCCNode;
 		if (layer)
 		{
 			if (layer->getSubPriority() == 0)
@@ -1947,9 +1947,9 @@ ND_LAYER_PRIORITY NDUILayer::getPriority()
 //@priority
 void NDUILayer::bringToTop()
 {
-	if (m_ccNode)
+	if (m_pkCCNode)
 	{
-		NDBaseLayer *layer = (NDBaseLayer *) m_ccNode;
+		NDBaseLayer *layer = (NDBaseLayer *) m_pkCCNode;
 		layer->bringToTop();
 	}
 }
@@ -1957,18 +1957,18 @@ void NDUILayer::bringToTop()
 //@priority
 void NDUILayer::bringToBottom()
 {
-	if (m_ccNode)
+	if (m_pkCCNode)
 	{
-		NDBaseLayer *layer = (NDBaseLayer *) m_ccNode;
+		NDBaseLayer *layer = (NDBaseLayer *) m_pkCCNode;
 		layer->bringToBottom();
 	}
 }
 
 const char* NDUILayer::getDebugName()
 {
-	if (m_ccNode)
+	if (m_pkCCNode)
 	{
-		NDBaseLayer *layer = (NDBaseLayer *) m_ccNode;
+		NDBaseLayer *layer = (NDBaseLayer *) m_pkCCNode;
 		return layer->getDebugName();
 	}
 	else
@@ -1984,10 +1984,10 @@ void NDUILayer::setDebugName(const char* inName)
 
 	m_strDebugName = inName;
 
-	if (m_ccNode)
+	if (m_pkCCNode)
 	{
-		NDBaseLayer *layer = (NDBaseLayer *) m_ccNode;
-		layer->setDebugName(m_strDebugName.c_str());
+		NDBaseLayer *layer = (NDBaseLayer *) m_pkCCNode;
+		layer->setDebugName( m_strDebugName.c_str() );
 	}
 }
 

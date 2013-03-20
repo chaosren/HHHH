@@ -137,7 +137,7 @@ end
 
 function p.processRealizeOp(netdata)
     LogInfo("p.processRealizeOp");
-    
+    CloseLoadBar();
     local nQmdjCount = netdata:ReadInt();
     local nFreeCount = netdata:ReadInt();
     p.nQmdjCount = nQmdjCount;
@@ -146,7 +146,6 @@ function p.processRealizeOp(netdata)
     
     DestinyFeteUI.LoadUI(p.nCurrPetId);
     DestinyUI.Close();
-    CloseLoadBar();
 end
 
 --获得占星NPC列表

@@ -45,6 +45,10 @@ function p.LoadUI( nActivityId )
     ArenaUI.isInChallenge = 3;
     p.nActivityId = nActivityId;
     
+    if(p.GetCurrLayer()) then
+        return;
+    end
+    
 --------------------获得游戏主场景------------------------------------------
     local scene = GetSMGameScene();	
 	if scene == nil then
@@ -150,11 +154,12 @@ function p.OnUIEvent(uiNode, uiEventType, param)
             local pCheckAuto = ConverToCheckBox( uiNode );
             if pCheckAuto:IsSelect() then
                 
-                local bFightAuto = GetVipIsOpen(DB_VIP_CONFIG.FIGHT_AUTO);
+                local nVip,nLevel,bVip,bLevel = GetVipLevel2(DB_VIP_STATUC_VALUE.FIGHT_AUTO);
+                LogInfo("nVip:[%d],nLevel:[%d]",nVip,nLevel);
+                local bFightAuto = bVip or bLevel;
                 if( not bFightAuto ) then
                     pCheckAuto:SetSelect( false );
-                    
-                    CommonDlgNew.ShowYesDlg(string.format(GetTxtPri("BB2_T4"),GetGetVipLevel_FIGHT_AUTO()), nil, nil, 2);
+                    CommonDlgNew.ShowYesDlg(string.format(GetTxtPri("BB2_T4"),nVip), nil, nil, 2);
                 end
             end
         end

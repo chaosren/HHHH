@@ -1837,29 +1837,45 @@ DB_ACHIEVEMENT_CONFIG=
     DESCRIBE               =6,
 };
 
+
 DB_VIP_CONFIG= 
 {
     ID                      =0,
     EMONEY                  =1,     --升级VIP需要的金币
     LEVY_NUM                =2,     --征收次数
     STAMINA_NUM             =3,     --军令够买上线
-    BATCH_LEVY              =4,     --是否可以批量征收
-    EQUIP_EDU               =5,     --装备的洗炼类型
-    INS_CLEARUP_CLEARTIME   =6,     --是否有副本扫荡时间
-    TRAIN_PET               =7,     --武将培养类型
-    ENHANCE_CLEARTIME       =8,     --是否有强化冷却时间
-    SPORTS_CHALLENGE_NUM    =9,     --竞技场挑战次数
-    ELITE_MAP_RESET_NUM     =10,    --精英副本重置数量
-    BATTLE_FAST_FLAG        =11,    --快速战斗
-    BAG_NUM                 =12,    --背包
-    ENHANCE_CRIT_FLAG       =13,    --是否开启暴击功能
-    ENHANCE_REDUCE_PECENT   =14,    --节约强化费的百分比
-    FIGHT_AUTO              =15,    --自动战斗（boss战，大乱斗等自动战斗开启）
-    DESTINY_BAG_NUM         =16,    --
-    DESTINY_CALL_QIMEN      =17,    --
-    DESTINY_ASTROLOGY_AUTO  =18,    --
-
+    SPORTS_CHALLENGE_NUM    =4,     --竞技场挑战次数
+    ELITE_MAP_RESET_NUM     =5,    --精英副本重置数量
+    BAG_NUM                 =6,    --背包
+    ENHANCE_REDUCE_PECENT   =7,    --节约强化费的百分比
+    DESTINY_BAG_NUM         =8,    --道法背包容量
+    DESTINY_CALL_QIMEN      =9,    --激活奇门遁甲总次数
 };
+DB_VIP_STATUC_COFIG         = {
+    ID  = 0,
+    VIP = 1,
+    LEVLE = 2,
+    COMMENT = 3,
+}
+
+DB_VIP_STATUC_VALUE         = {
+    BATCH_LEVY              =1,     --是否可以批量征收
+    EQUIP_EDU_1             =2,     --装备的洗炼类型
+    EQUIP_EDU_2             =3,     --装备的洗炼类型
+    EQUIP_EDU_3             =4,     --装备的洗炼类型
+    INS_CLEARUP_CLEARTIME   =5,     --是否有副本扫荡时间
+    TRAIN_PET_1               =6,     --武将培养类型
+    TRAIN_PET_2               =7,     --武将培养类型
+    TRAIN_PET_3               =8,     --武将培养类型
+    TRAIN_PET_4               =9,     --武将培养类型
+    ENHANCE_CLEARTIME       =10,     --是否有强化冷却时间
+    BATTLE_FAST_FLAG        =11,    --快速战斗
+    ENHANCE_CRIT_FLAG       =12,    --是否开启暴击功能
+    FIGHT_AUTO              =13,    --自动战斗（boss战，大乱斗等自动战斗开启）
+    DESTINY_ASTROLOGY_AUTO  =14,    --是否可一键占星
+    DESTINY_SELECT_AYTO     =15,    --自动占星
+}
+
 
 DB_VIP_CONFIG_EQUIP_EDU = {
     NORMAL      = 1,        --正常洗炼
