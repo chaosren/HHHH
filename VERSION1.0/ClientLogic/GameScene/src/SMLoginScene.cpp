@@ -1194,6 +1194,7 @@ void CSMLoginScene::StartEntry()
     
 	if(m_iAccountID != 0) 
 	{
+		CCImage::changeSystemFont(false);
         NDBeforeGameMgrObj.SetLoginTry(false);
         ScriptMgrPtr->excuteLuaFunc( "ShowUI", "Entry", m_iAccountID );
     }
