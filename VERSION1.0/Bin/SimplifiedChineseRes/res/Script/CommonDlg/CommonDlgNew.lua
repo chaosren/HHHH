@@ -402,12 +402,17 @@ function p.ShowInputDlg(tip, callback, param, nDefault, nMaxLength)
         inputBox:SetMaxLength(10);
     end
     
-    
-    if(not CheckN(nDefault)) then
-        nDefault = 1;
+    if(CheckN(nDefault)) then
+        inputBox:SetText(nDefault.."");
+    else
+        if(CheckS(nDefault)) then
+            local desc = GetLabel(layer,4);
+            desc:SetText(nDefault);
+        else
+            inputBox:SetText("1");
+        end
     end
     
-    inputBox:SetText(nDefault.."");
     
     if(callback) then
         tCallBackList[nTag] = {};

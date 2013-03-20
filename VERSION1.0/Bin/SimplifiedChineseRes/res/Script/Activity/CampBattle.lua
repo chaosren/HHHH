@@ -98,6 +98,7 @@ local tState = {
 
 local bIfAutoJoinNextBattle = tState.LOSEOutBattle; 
 
+
 --[INDEX] ={玩家名字,玩家阵营(1 攻击,2 防御),玩家是否入场(1是 0否),玩家id}
 local tPlayerList ={}
 local g_nPlayerListHead = 1;
@@ -107,7 +108,6 @@ local MAX_PLAYER_NUM_PER_PAGE = 8;
 local MAX_REPORT_NUM_PER_PAGE = 3;
 
 local g_FailWaitTime = 15;	--失败时等待时间
-
 
 --玩家名字表
 local tPlayerName = {}
@@ -176,7 +176,7 @@ end
 
 --加载每日签到主界面
 function p.LoadUI( nActivityId )
-    --MsgLogin.EnterChaosBattle(nActivityId);
+    MsgLogin.EnterChaosBattle(nActivityId);
 	--p.TestInitList();
 	--40级以下返回
 	local nRoleId =  GetPlayerId();
@@ -340,11 +340,20 @@ function p.LoadUI( nActivityId )
 	Emoneybtn:SetVisible(false);
 	--]]
 	
-	--屏蔽自动参战
-	local labelAutoFight = RecursiveLabel(layer, {29});
-	local checkBoxAutoFight=RecursiveCheckBox(layer,{ID_SCUFFLE_CTRL_CHECK_BUTTON_31});
-	labelAutoFight:SetVisible(false);
-	checkBoxAutoFight:SetVisible(false);
+	--vip3以下且80级以下屏蔽自动参战
+	--获取玩家的等级
+    local nPlayerId     = GetPlayerId();
+    local mainpetid 	= RolePetUser.GetMainPetId(nPlayerId);
+    local nLev			= SafeS2N( RolePetFunc.GetPropDesc(mainpetid, PET_ATTR.PET_ATTR_LEVEL));
+    
+	local nPlayerId = GetPlayerId();
+	local vipLevel = GetRoleBasicDataN(nPlayerId,USER_ATTR.USER_ATTR_VIP_RANK);
+	if vipLevel < 3 and nLev < 80 then
+		local labelAutoFight = RecursiveLabel(layer, {29});
+		local checkBoxAutoFight=RecursiveCheckBox(layer,{ID_SCUFFLE_CTRL_CHECK_BUTTON_31});
+		labelAutoFight:SetVisible(false);
+		checkBoxAutoFight:SetVisible(false);
+	end
 
 	
 	
@@ -479,6 +488,9 @@ function p.TimerTick(tag)
 			
 			
 			else
+				
+				p.AutoFight();
+				
 				LogInfo("qboy99 ccc:");
 				UnRegisterTimer(p.TimerTag);
 				p.TimerTag = nil;
@@ -1223,11 +1235,12 @@ GetTxtPri("CB2_T3911"),
 GetTxtPri("CB2_T4011"),
 GetTxtPri("CB2_T4111"),
 
-
 GetTxtPri("CB2_T33"),
 GetTxtPri("CB2_T34"),
 GetTxtPri("CB2_T35"),
 GetTxtPri("CB2_T351"),
+GetTxtPri("CB2_T35111"),
+GetTxtPri("CB2_T35112"),
 GetTxtPri("CB2_T352"),
 GetTxtPri("CB2_T4211"),
 GetTxtPri("CB2_T4311"),
@@ -1531,7 +1544,7 @@ function p.OnUIEventTip(uiNode, uiEventType, param)
 end
 
 function p.CloseUI()
-    --MsgLogin.LeaveChaosBattle();
+    MsgLogin.LeaveChaosBattle();
 	if p.ActivityState == 3 then
 		CloseUI(NMAINSCENECHILDTAG.CampBattle);	
 		return;

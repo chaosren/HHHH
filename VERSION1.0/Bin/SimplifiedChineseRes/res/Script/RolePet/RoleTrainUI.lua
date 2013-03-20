@@ -62,6 +62,7 @@ local tTrainInfo = {
 	{ 20, GetTxtPri("RTUI_T3"), 4, GetTxtPri("RTUI_T7"), 100 },
 	{ 50, GetTxtPri("RTUI_T4"), 8, GetTxtPri("RTUI_T8"), 150 },
 };
+local tTrainInfo = nil;
 
 
 ---------------------------------------------------
@@ -90,6 +91,45 @@ p.nEndMoment			= nil;	-- 结束时刻（开始时刻+需要时间）
 ---------------------------------------------------
 -- 进入训练界面
 function p.LoadUI( nChosenPetID)
+
+    local nVip1 = GetVipLevel2(DB_VIP_STATUC_VALUE.TRAIN_PET_1);
+    local nVip2,nLevel2,bVip2,bLevel2 = GetVipLevel2(DB_VIP_STATUC_VALUE.TRAIN_PET_2);
+    local nVip3,nLevel3,bVip3,bLevel3 = GetVipLevel2(DB_VIP_STATUC_VALUE.TRAIN_PET_3);
+    local nVip4,nLevel4,bVip4,bLevel4 = GetVipLevel2(DB_VIP_STATUC_VALUE.TRAIN_PET_4);
+    
+    if(bVip2 or bLevel2) then
+        bVip2 = 0;
+    else
+        bVip2 = nVip2;
+    end
+    
+    if(bVip3 or bLevel3) then
+        bVip3 = 0;
+    else
+        bVip3 = nVip3;
+    end
+    
+    if(bVip4 or bLevel4) then
+        bVip4 = 0;
+    else
+        bVip4 = nVip4;
+    end
+
+
+    local sV2 = string.format("消耗10金幣，該武將可獲得24小時白金訓練經驗；若是上陣武將在訓練時間內通關副本或完成任務獲得經驗將增加50%s。需VIP%d。","%",nVip2);
+    local sV3 = string.format("消耗20金幣，該武將可獲得24小時金鑽訓練經驗；若是上陣武將在訓練時間內通關副本或完成任務獲得經驗將增加100%s。需VIP%d。","%",nVip3);
+    local sV4 = string.format("消耗50金幣，該武將可獲得24小時至尊訓練經驗；若是上陣武將在訓練時間內通關副本或完成任務獲得經驗將增加150%s。需VIP%d。","%",nVip4)
+    
+    
+    tTrainInfo = {
+        { 5, "消耗5金幣，該武將可獲得24小時高級訓練經驗；若是上陣武將在訓練時間內通關副本或完成任務獲得經驗將增加20%。", nVip1, "高級訓練進行中……", 20 },
+        { 10,sV2, bVip2, "白金訓練進行中……", 40 },
+        { 20,sV3, bVip3, "金鑽訓練進行中……", 60 },
+        { 50,sV4,bVip4, "至尊訓練进進中……", 100 },
+    };
+
+
+
 	--LogInfo( "RoleTrainUI: LoadUI()" );
 	--local scene = GetSMGameScene();
 	if ( nChosenPetID == nil) then
