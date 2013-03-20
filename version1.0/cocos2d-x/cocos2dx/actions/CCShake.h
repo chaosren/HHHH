@@ -1,6 +1,13 @@
-/*
-*
-*/
+//
+//  NDClassFactory.h
+//  NDClassFactory
+//
+//  Copyright 2010 (网龙)DeNA. All rights reserved.
+//	
+//	@author 郭浩
+//
+//	－－介绍－－
+//	動作特效，抖動效果
 
 #ifndef CCSHAKE_H
 #define CCSHAKE_H

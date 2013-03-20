@@ -127,9 +127,9 @@ CSMLoginScene* CSMLoginScene::Scene( bool bShowEntry /*= false*/  )
 	pkScene->Initialization();
 	pkScene->SetTag(SMLOGINSCENE_TAG);
 
-	CCShake* pkShake = CCShake::create(10.0f,10.0f);
-
-	pkScene->getCCNode()->runAction(pkShake);
+// 	CCShake* pkShake = CCShake::create(10.0f,10.0f);
+// 
+// 	pkScene->getCCNode()->runAction(pkShake);
 
 	if ( bShowEntry )
 	{
