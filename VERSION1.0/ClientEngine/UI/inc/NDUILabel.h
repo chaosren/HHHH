@@ -99,40 +99,40 @@ public:
 		CCSize GetTextureSize() { if (m_texture) return m_texture->getContentSizeInPixels(); return CCSizeZero; }
 		void SetHasFontBoderColor(bool bIsBorder){m_bHasFontBoderColor = bIsBorder;};
 	public:
-		void draw(); override		
+		virtual void draw(); override
 		void OnFrameRectChange(CCRect srcRect, CCRect dstRect); override
 		
 protected:
 	void preDraw();
 	void postDraw();
-	void debugDraw();
+	virtual void debugDraw();
 	void MakeTexture();
 	void MakeCoordinates();
 	void MakeVertices();
 	friend class NDUIButton;
 		
-	private:
-		std::string m_strText;
-		cocos2d::ccColor4B m_kColor;
-		unsigned int m_uiFontSize;
-		unsigned int m_uiRenderTimes;
-		LabelTextAlignment m_eTextAlignment;
-		CCRect m_kCutRect;
-		
-		bool m_bNeedMakeTex;
-		bool m_bNeedMakeCoo;
-		bool m_bNeedMakeVer;
-		
-		bool m_bHasFontBoderColor;
-		cocos2d::ccColor4B m_kColorFontBoder;
-		
-		cocos2d::CCTexture2D* m_texture;
-		GLfloat m_pfVertices[12];
-		GLfloat m_pfVerticesBoder[12];
-		GLfloat m_pfCoordinates[8];
-		GLbyte m_pbColors[16];
-		CCRect m_cutRect;
-		GLbyte m_pbColorsBorder[16];
+protected:
+	std::string m_strText;
+	cocos2d::ccColor4B m_kColor;
+	unsigned int m_uiFontSize;
+	unsigned int m_uiRenderTimes;
+	LabelTextAlignment m_eTextAlignment;
+	CCRect m_kCutRect;
+	
+	bool m_bNeedMakeTex;
+	bool m_bNeedMakeCoo;
+	bool m_bNeedMakeVer;
+	
+	bool m_bHasFontBoderColor;
+	cocos2d::ccColor4B m_kColorFontBoder;
+	
+	cocos2d::CCTexture2D* m_texture;
+	GLfloat m_pfVertices[12];
+	GLfloat m_pfVerticesBoder[12];
+	GLfloat m_pfCoordinates[8];
+	GLbyte m_pbColors[16];
+	CCRect m_cutRect;
+	GLbyte m_pbColorsBorder[16];
 };
 
 NS_NDENGINE_END

@@ -145,7 +145,7 @@ protected:
 
 private:
 	bool	hasLineFeed(const char* p) const;
-	bool	replaceLineFeedWithSpace(const char* p) const;
+	bool	replaceLineFeedWithSpace(char* p) const;
 	int		calcStringLen(const char* p) const;
 };
 

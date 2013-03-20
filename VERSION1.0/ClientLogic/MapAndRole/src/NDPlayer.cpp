@@ -42,6 +42,8 @@
 #include "Task.h"
 #include "NDDebugOpt.h"
 #include "ObjectTracker.h"
+#include "NDUIColorLabel.h"
+#include "StringConvert.h"
 
 NS_NDENGINE_BGN
 
@@ -1364,6 +1366,34 @@ void NDPlayer::DrawNameLabel(bool bDraw)
 {
 	NDManualRole::DrawNameLabel(bDraw);
 	DrawTest_NDBitmap();
+	DrawTest_ColorLabel();
+}
+
+//@ndbitmap 测试代码
+void NDPlayer::DrawTest_ColorLabel()
+{
+#if 0
+	const char* utf8_text = CONVERT_GBK_TO_UTF8( "正在与<cff0000jack/e聊天" );
+
+	static NDUIColorLabel* s_label = NULL;
+	if (!s_label)
+	{
+		s_label = new NDUIColorLabel;
+		s_label->Initialization(); 
+		s_label->SetFontSize(12); 
+		s_label->SetFontColor( ccc4(0,0,0,255));
+		s_label->SetText( utf8_text );
+	}
+
+	if (s_label)
+	{
+		CCSize stringSize = getStringSize( s_label->GetText().c_str(), s_label->GetFontSize() * FONT_SCALE );
+		CCPoint pt = ccpAdd( this->getHeadPos(), ccp(0, -50));
+
+		s_label->SetFrameRect(CCRectMake(pt.x, pt.y, stringSize.width*2, stringSize.height));
+		s_label->draw();
+	}
+#endif
 }
 
 //@ndbitmap 测试代码

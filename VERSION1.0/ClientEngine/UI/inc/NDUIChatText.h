@@ -9,6 +9,7 @@
 #include "NDUILayer.h"
 #include "NDUIImage.h"
 #include "NDUILabel.h"
+#include "NDUIColorLabel.h"
 #include "AutoLink.h"
 #include <list>
 #include "NDBitmapMacro.h"
@@ -38,36 +39,36 @@ enum ColorTag{
 	QUALITY_GOLDEN,
 };
 
-namespace NDEngine
+////////////////////////////////////////////////////////
+NS_NDENGINE_BGN
+
+typedef enum
 {
+	ChatNone,			//无规则，默认
+	ChatSpeaker,		//发言者
+	ChatFace,			//表情规则
+	ChatItem,			//物品规则
+	ChatColor,			//颜色规则
+	ChatRole,			//玩家
+}ChatTextType;
 
-	typedef enum
+typedef struct CHAT_NODE
+{
+	bool hasBreak;
+	NDUINode* uiNode;
+	ChatTextType textType;
+	int content_id;
+	std::string content_str;
+
+	CHAT_NODE(bool brk, NDUINode* node, ChatTextType type,int cid,std::string text)
 	{
-		ChatNone,			//无规则，默认
-		ChatSpeaker,		//发言者
-		ChatFace,			//表情规则
-		ChatItem,			//物品规则
-		ChatColor,			//颜色规则
-		ChatRole,			//玩家
-	}ChatTextType;
-
-	typedef struct CHAT_NODE
-	{
-		bool hasBreak;
-		NDUINode* uiNode;
-		ChatTextType textType;
-		int content_id;
-		std::string content_str;
-
-		CHAT_NODE(bool brk, NDUINode* node, ChatTextType type,int cid,std::string text)
-		{
-			hasBreak = brk;
-			uiNode = node;
-			textType=type;
-			content_id=cid;
-			content_str=text;
-		}
-	}ChatNode;
+		hasBreak = brk;
+		uiNode = node;
+		textType=type;
+		content_id=cid;
+		content_str=text;
+	}
+}ChatNode;
 
 
 class CUIChatText: public NDUINode
@@ -110,7 +111,9 @@ protected:
 //		bool TouchEnd(NDTouch* touch); override
 
 private:
-	NDUILabel* CreateLabel(const char* text, unsigned int fontSize, ccColor4B color, int idItem/* = 0*/);
+	NDUILabel* CreateLabel(const char* utf8_text, unsigned int fontSize, ccColor4B color, int idItem/* = 0*/);
+	NDUIColorLabel* CreateColorLabel(const char* utf8_text, unsigned int fontSize, ccColor4B color, int idItem/* = 0*/);
+
 	//解析规则尾部
 	bool AnalysisRuleEnd(const char*& text, ChatTextType type);
 	//解析规则头部
@@ -128,4 +131,5 @@ protected:
 	bool CanDestroyOnRemoveAllChildren(NDNode* pNode);override
 
 };
-}
+
+NS_NDENGINE_END
