@@ -14,9 +14,9 @@
 #import <Foundation/Foundation.h>
 
 @class NSIphoneInput;
+@class UITextField;
 
-class CIphoneInput :
-public IPlatformInput
+class CIphoneInput : public IPlatformInput
 {
 public:
 	CIphoneInput();
@@ -41,14 +41,17 @@ public:
 	virtual void SetFontSize(int nFontSize);
     
 private:
-	CInputBase*			m_inputCommon;
-	NSIphoneInput*		m_inputIphone;
+	CInputBase*			m_inputDelegate;
+	NSIphoneInput*		m_textFieldWrapper;
 	bool				m_bAutoAdjust;
 	bool				m_bInputState;
 	unsigned int        m_usLengthLimit;
 	bool				m_bShow;
 public:
 	void SetInputState(bool bSet);
+private:
+    virtual void initTextField();
+	UITextField* getTextField() const;
 };
 
 #endif // _IPHONE_INPUT_H_ZJH_

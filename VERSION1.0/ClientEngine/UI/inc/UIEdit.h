@@ -142,6 +142,11 @@ protected:
 	bool OnInputTextChange	(CInputBase* base, const char* inputString); 
     void OnInputFinish		(CInputBase* base); 
 #endif
+
+private:
+	bool	hasLineFeed(const char* p) const;
+	bool	replaceLineFeedWithSpace(const char* p) const;
+	int		calcStringLen(const char* p) const;
 };
 
 #endif // _UI_EDIT_H_ZJH_
