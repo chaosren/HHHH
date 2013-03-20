@@ -20,6 +20,14 @@
 
 using namespace NDEngine;
 
+
+////////////////////////////////////////////////////////////////////////////////
+//
+//                  @interface: NSIphoneInput
+//
+////////////////////////////////////////////////////////////////////////////////
+
+
 //static CGFloat s_fMove	= 0.0f;
 @interface NSIphoneInput : NSObject <UITextFieldDelegate>
 {
@@ -32,9 +40,9 @@ using namespace NDEngine;
 
 @property(nonatomic, retain) UITextField* tfContent;
 
-- (void)SetIphoneInput:(CIphoneInput*) input;
-- (void)AutoAdjust:(BOOL) bAuto;
--(void) orientationChanged:(NSNotification *)notification;
+-(void)SetIphoneInput:(CIphoneInput*) input;
+-(void)AutoAdjust:(BOOL) bAuto;
+-(void)orientationChanged:(NSNotification *)notification;
 -(void)KeyBoardWillShow:(NSNotification*)notification;
 -(void)keyBoardWasHidden:(NSNotification*)notification;
 -(void)ChangeView:(float) fMove;
@@ -47,20 +55,24 @@ using namespace NDEngine;
 
 -(id) init
 {
-	if( (self=[super init]) ) {
+	if( (self=[super init]) ) 
+	{
 		tfContent			= nil;
 		_iphoneInput		= NULL;
 		_bAutoAjust			= false;
 		_fKeyBoardHeight	= 162.0f;//216.0f;
 		//_fMove				= 0.0f;
+	
 		[[NSNotificationCenter defaultCenter] addObserver:self 
 												 selector:@selector(KeyBoardWillShow:)
 													 name:UIKeyboardWillShowNotification
 												   object:nil];
+
 		[[NSNotificationCenter defaultCenter] addObserver:self 
 												 selector:@selector(orientationChanged:) 
 													 name:UIDeviceOrientationDidChangeNotification 
 												   object:nil];
+
 		[[NSNotificationCenter defaultCenter] addObserver:self
 												 selector:@selector(keyBoardWasHidden:) 
 													 name:UIKeyboardDidHideNotification
@@ -69,7 +81,10 @@ using namespace NDEngine;
         float version = [[[UIDevice currentDevice] systemVersion] floatValue];
         if (version >= 5.0) 
 		{
-            [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(KeyBoardWillShow:) name:UIKeyboardWillChangeFrameNotification object:nil];
+            [[NSNotificationCenter defaultCenter] addObserver:self 
+													 selector:@selector(KeyBoardWillShow:) 
+													     name:UIKeyboardWillChangeFrameNotification 
+													   object:nil];
         }
 #endif
 	}
@@ -82,12 +97,15 @@ using namespace NDEngine;
 	[[NSNotificationCenter defaultCenter] removeObserver:self 
 													name:UIDeviceOrientationDidChangeNotification 
 												  object:nil];
+
 	[[NSNotificationCenter defaultCenter] removeObserver:self 
 													name:UIKeyboardWillShowNotification 
 												  object:nil];
+
 	[[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:UIKeyboardDidHideNotification
                                                   object:nil];
+
 #ifdef __IPHONE_5_0
 	float version = [[[UIDevice currentDevice] systemVersion] floatValue];
 	if (version >= 5.0) 
@@ -105,22 +123,23 @@ using namespace NDEngine;
 }
 
 -(void) orientationChanged:(NSNotification *)notification
-{	
-	if (tfContent == nil) 
+{
+#if 0
+	if (tfContent == nil)
 	{
 		return;
 	}
 	CGAffineTransform t = tfContent.transform;
 	UIDeviceOrientation orientation = [[UIDevice currentDevice]orientation];
-//    ccDeviceOrientation cor = (ccDeviceOrientation)orientation;
+
 	BOOL bChangeKeyBoardPlace	= FALSE;
-//    if (cor == (ccDeviceOrientation)UIDeviceOrientationLandscapeLeft)
+
     if (orientation == UIDeviceOrientationLandscapeLeft)
     {
         tfContent.transform = CGAffineTransformRotate(t, 3.141592f);
 		bChangeKeyBoardPlace	= TRUE;
     }
-//    if (cor == (ccDeviceOrientation)UIDeviceOrientationLandscapeRight)
+
     if (orientation == UIDeviceOrientationLandscapeRight)
 	{
         tfContent.transform		= CGAffineTransformRotate(t, 3.141592f);
@@ -130,21 +149,23 @@ using namespace NDEngine;
 	{
 		[tfContent resignFirstResponder];
 	}
+#endif
 }
+
 -(void)KeyBoardWillShow:(NSNotification*)notification
 {
 	if (nil == tfContent || NO == [tfContent isFirstResponder])
 	{
 		return;
 	}
+
 	NSDictionary* info	= [notification userInfo];
 	CGSize kbSize		= [[info objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue].size;
 	_fKeyBoardHeight	= kbSize.width;
 	CGRect bounds	= tfContent.frame;
     
-//	ccDeviceOrientation cor = [[CCDirector sharedDirector] deviceOrientation];
     UIDeviceOrientation orientation = [[UIDevice currentDevice] orientation];
-//	if ((ccDeviceOrientation)UIDeviceOrientationLandscapeLeft == cor)
+
     if (UIDeviceOrientationLandscapeLeft == orientation)
 	{
 		CGRect rectScr	= [[UIScreen mainScreen] bounds];
@@ -153,7 +174,6 @@ using namespace NDEngine;
 			[self ChangeView: bounds.origin.x - _fKeyBoardHeight];
 		}
 	}
-//	else if ((ccDeviceOrientation)UIDeviceOrientationLandscapeRight == cor)
     else if (UIDeviceOrientationLandscapeRight == orientation)
 	{
 		CGRect rectScr	= [[UIScreen mainScreen] bounds];
@@ -173,14 +193,15 @@ using namespace NDEngine;
 	}
 	[self ChangeView: 0.0f];
 }
+
 - (void)textFieldDidBeginEditing:(UITextField *)textField
 {
 	if (_bAutoAjust && tfContent)
 	{
 		CGRect bounds	= tfContent.frame;
-//		ccDeviceOrientation cor = [[CCDirector sharedDirector] deviceOrientation];
+
         UIDeviceOrientation orientation = [[UIDevice currentDevice] orientation];
-//		if ((ccDeviceOrientation)UIDeviceOrientationLandscapeLeft == cor)
+
         if (UIDeviceOrientationLandscapeLeft == orientation)
 		{
             if (bounds.origin.x < _fKeyBoardHeight)
@@ -188,7 +209,6 @@ using namespace NDEngine;
                 [self ChangeView: bounds.origin.x - _fKeyBoardHeight];
 			}
 		}
-//		else if ((ccDeviceOrientation)UIDeviceOrientationLandscapeRight == cor)
         else if (UIDeviceOrientationLandscapeRight == orientation)
 		{
 			CGRect rectScr	= [[UIScreen mainScreen] bounds];
@@ -205,6 +225,7 @@ using namespace NDEngine;
 		_iphoneInput->SetInputState(true);
 	}
 }
+
 - (BOOL)textFieldShouldEndEditing:(UITextField *)textField
 {
     return YES;
@@ -246,14 +267,9 @@ using namespace NDEngine;
 	return YES;
 }
 
-- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range 
+													   replacementString:(NSString *)string
 {
-	/*
-	 NSUInteger len = [string length] + [[textField text] length] - range.length;
-	 if (len > MAX_CHAT_INPUT) {
-	 return NO;
-	 }
-	 */
 	if (_iphoneInput)
 	{
 		CInputBase* input = _iphoneInput->GetInputDelegate();
@@ -295,10 +311,18 @@ using namespace NDEngine;
 
 @end
 
+
+
+////////////////////////////////////////////////////////////////////////////////
+//
+//                  CIphoneInput
+//
+////////////////////////////////////////////////////////////////////////////////
+
 CIphoneInput::CIphoneInput()
 {
-	m_inputCommon	= NULL;
-	m_inputIphone	= NULL;
+	m_inputDelegate	= NULL;
+	m_textFieldWrapper	= NULL;
 	m_bAutoAdjust	= false;
 	m_bInputState	= false;
 	m_bShow			= false;
@@ -306,22 +330,41 @@ CIphoneInput::CIphoneInput()
 
 CIphoneInput::~CIphoneInput()
 {
-	//if (m_inputIphone.tfContent && m_inputIphone.tfContent.superview)
     if (m_bShow)
 	{
-		[m_inputIphone.tfContent resignFirstResponder];
-		[m_inputIphone.tfContent removeFromSuperview];
+		[m_textFieldWrapper.tfContent resignFirstResponder];
+		[m_textFieldWrapper.tfContent removeFromSuperview];
 	}
-	[m_inputIphone release];
+	[m_textFieldWrapper release];
+}
+
+UITextField* CIphoneInput::getTextField() const
+{
+	return m_textFieldWrapper ? m_textFieldWrapper.tfContent : NULL;
 }
 
 void CIphoneInput::Init()
 {
-	m_inputIphone	= [[NSIphoneInput alloc] init];
-	UITextField* tf = [[UITextField alloc] init];
-	//tf.borderStyle = UITextBorderStyleRoundedRect;
-	tf.clearButtonMode = UITextFieldViewModeWhileEditing;
+	m_textFieldWrapper	= [[NSIphoneInput alloc] init];
+
+    this->initTextField();
     
+	[m_textFieldWrapper SetIphoneInput:this];
+	
+    [[EAGLView sharedEGLView] addSubview : m_textFieldWrapper.tfContent];
+}
+
+void CIphoneInput::initTextField()
+{
+    // init text field
+	UITextField* tf = [[UITextField alloc] init];
+	tf.borderStyle = UITextBorderStyleRoundedRect;
+	tf.clearButtonMode = UITextFieldViewModeWhileEditing;
+	tf.textColor = [UIColor blackColor];
+	tf.returnKeyType = UIReturnKeyDone;
+	tf.delegate = m_textFieldWrapper;
+
+
 	/*
      ccDeviceOrientation cor = [[CCDirector sharedDirector] deviceOrientation];
      if ((ccDeviceOrientation)UIDeviceOrientationLandscapeLeft == cor)
@@ -332,35 +375,28 @@ void CIphoneInput::Init()
      {
      tf.transform = CGAffineTransformMakeRotation(-3.141592f/2.0f);
      }*/
-	
-	tf.textColor = [UIColor blueColor];
-	tf.returnKeyType = UIReturnKeyDone;
-	tf.delegate = m_inputIphone;
-	[m_inputIphone SetIphoneInput:this];
-	m_inputIphone.tfContent	=  tf;
-
-	//[[[CCDirector sharedDirector] openGLView] addSubview:m_inputIphone.tfContent];
-    [[EAGLView sharedEGLView] addSubview : m_inputIphone.tfContent];
-	[tf release];
+    
+    m_textFieldWrapper.tfContent	=  tf;
+    
+    [tf release];
 }
 
 void CIphoneInput::Show()
 {
-	if (m_inputIphone.tfContent && nil == m_inputIphone.tfContent.superview)
+	if (m_textFieldWrapper.tfContent && nil == m_textFieldWrapper.tfContent.superview)
 	{
-		//[[[CCDirector sharedDirector] openGLView] addSubview:m_inputIphone.tfContent];
-        [[EAGLView sharedEGLView] addSubview : m_inputIphone.tfContent];
-		[m_inputIphone.tfContent becomeFirstResponder];
+        [[EAGLView sharedEGLView] addSubview : m_textFieldWrapper.tfContent];
+		[m_textFieldWrapper.tfContent becomeFirstResponder];
 	}
 	m_bShow		= true;
 }
 
 void CIphoneInput::Hide()
 {
-	if (m_inputIphone.tfContent && nil != m_inputIphone.tfContent.superview)
+	if (m_textFieldWrapper.tfContent && nil != m_textFieldWrapper.tfContent.superview)
 	{
-		[m_inputIphone.tfContent resignFirstResponder];
-		[m_inputIphone.tfContent removeFromSuperview];
+		[m_textFieldWrapper.tfContent resignFirstResponder];
+		[m_textFieldWrapper.tfContent removeFromSuperview];
 	}
 	m_bShow		= false;
 }
@@ -371,73 +407,63 @@ bool CIphoneInput::IsShow()
 }
 void CIphoneInput::SetFrame(float fX, float fY, float fW, float fH)
 {
-//	NDDirector& director	= *(NDDirector::DefaultDirector());
-//	CGSize winsize = director.GetWinPoint();
-    CCSize winsize = CCDirector::sharedDirector()->getWinSize();
+    CCSize winsize = CCDirector::sharedDirector()->getWinSize(); // in points
     float fScale	= RESOURCE_SCALE;
 	
-	//if (director.IsEnableRetinaDisplay())
+	// convert pixel into points
     if (CCDirector::sharedDirector()->getOpenGLView()->isRetinaEnabled())
 	{
-		/*
-		float fScale	= RESOURCE_SCALE;
-		float fScaleY	= RESOURCE_SCALE;
-		
-		fX	/= fScale;
-		fY	/= fScaleY;
-		fW	/= fScale;
-		fH	/= fScaleY;
-		*/
 		fX	/= fScale;
 		fY	/= fScale;
 		fW	/= fScale;
 		fH	/= fScale;
 	}
 	
-	
-	if (m_inputIphone && m_inputIphone.tfContent)
+#if 0
+	if (m_textFieldWrapper && m_textFieldWrapper.tfContent)
 	{
-//		ccDeviceOrientation cor = [[CCDirector sharedDirector] deviceOrientation];
         UIDeviceOrientation orientation = [[UIDevice currentDevice]orientation];
-//		if ((ccDeviceOrientation)UIDeviceOrientationLandscapeLeft == cor)
+        
         if (UIDeviceOrientationLandscapeLeft == orientation)
 		{
-            m_inputIphone.tfContent.frame	= CGRectMake(winsize.height - fY - fH, fX, fH, fW);
-			m_inputIphone.tfContent.transform = CGAffineTransformMakeRotation(3.141592f/2.0f);
+            m_textFieldWrapper.tfContent.frame	= CGRectMake(winsize.height - fY - fH, fX, fH, fW);
+			m_textFieldWrapper.tfContent.transform = CGAffineTransformMakeRotation(3.141592f/2.0f);
 		}
-//		else if ((ccDeviceOrientation)UIDeviceOrientationLandscapeRight == cor)
         else if (UIDeviceOrientationLandscapeRight == orientation)
 		{
-			m_inputIphone.tfContent.frame	= CGRectMake(fY, winsize.width - fX - fW, fH, fW);
-			m_inputIphone.tfContent.transform = CGAffineTransformMakeRotation(-3.141592f/2.0f);
+			m_textFieldWrapper.tfContent.frame	= CGRectMake(fY, winsize.width - fX - fW, fH, fW);
+			m_textFieldWrapper.tfContent.transform = CGAffineTransformMakeRotation(-3.141592f/2.0f);
 		}
 	}
+#else
+    m_textFieldWrapper.tfContent.frame	= CGRectMake(0, 0, winsize.width, 30);
+#endif
 }
 
 void CIphoneInput::SetInputDelegate(CInputBase* input)
 {
-	m_inputCommon	= input;
+	m_inputDelegate = input;
 }
 
 CInputBase* CIphoneInput::GetInputDelegate()
 {
-	return m_inputCommon;
+	return m_inputDelegate;
 }
 
 void CIphoneInput::SetText(const char* text)
 {
-	if (m_inputIphone && m_inputIphone.tfContent)
+	if (m_textFieldWrapper && m_textFieldWrapper.tfContent)
 	{
 		NSString *content = [NSString stringWithUTF8String:(text == NULL ? "" : text)];
-		m_inputIphone.tfContent.text = content;
+		m_textFieldWrapper.tfContent.text = content;
 	}
 }
 
 const char* CIphoneInput::GetText()
 {
-	if (m_inputIphone && m_inputIphone.tfContent && m_inputIphone.tfContent.text)
+	if (m_textFieldWrapper && m_textFieldWrapper.tfContent && m_textFieldWrapper.tfContent.text)
 	{
-		return [m_inputIphone.tfContent.text UTF8String];
+		return [m_textFieldWrapper.tfContent.text UTF8String];
 	}
 	
 	return "";
@@ -445,17 +471,17 @@ const char* CIphoneInput::GetText()
 
 void CIphoneInput::EnableSafe(bool bEnable)
 {
-	if (m_inputIphone && m_inputIphone.tfContent)
+	if (m_textFieldWrapper && m_textFieldWrapper.tfContent)
 	{
-		m_inputIphone.tfContent.secureTextEntry = bEnable;
+		m_textFieldWrapper.tfContent.secureTextEntry = bEnable;
 	}
 }
 
 void CIphoneInput::EnableAutoAdjust(bool bEnable)
 {
-	if (m_inputIphone && m_inputIphone)
+	if (m_textFieldWrapper && m_textFieldWrapper)
 	{
-		[m_inputIphone AutoAdjust:bEnable];
+		[m_textFieldWrapper AutoAdjust:bEnable];
 	}
 	
 	m_bAutoAdjust	= bEnable;
@@ -468,23 +494,25 @@ bool CIphoneInput::IsInputState()
 
 void CIphoneInput::SetStyleNone()
 {
-	if (m_inputIphone && m_inputIphone.tfContent)
+	if (m_textFieldWrapper && m_textFieldWrapper.tfContent)
 	{
-		m_inputIphone.tfContent.borderStyle = UITextBorderStyleNone;
+		m_textFieldWrapper.tfContent.borderStyle = UITextBorderStyleNone;
 	}
 }
 void CIphoneInput::SetTextColor(float fR, float fG, float fB, float fA)
 {
-	if (m_inputIphone && m_inputIphone.tfContent)
+	if (m_textFieldWrapper && m_textFieldWrapper.tfContent)
 	{
-		m_inputIphone.tfContent.textColor = [UIColor colorWithRed:fR green:fB blue:fB alpha:fA];
-	}	
+        //alwasy black color
+		m_textFieldWrapper.tfContent.textColor = //[UIColor colorWithRed:fR green:fB blue:fB alpha:fA];
+                                                [UIColor blackColor];
+	}
 }
 void CIphoneInput::SetFontSize(int nFontSize)
 {
-	if (m_inputIphone && m_inputIphone.tfContent)
+	if (m_textFieldWrapper && m_textFieldWrapper.tfContent)
 	{
-		m_inputIphone.tfContent.font = [UIFont systemFontOfSize:nFontSize];
+		m_textFieldWrapper.tfContent.font = [UIFont systemFontOfSize:nFontSize*RESOURCE_SCALE];
 	}
 }
 void CIphoneInput::SetInputState(bool bSet)
