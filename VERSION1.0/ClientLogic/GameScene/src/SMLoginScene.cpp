@@ -182,7 +182,7 @@ CSMLoginScene* CSMLoginScene::Scene( bool bShowEntry /*= false*/  )
         pkBackgroundImage->SetFrameRect( CCRectMake(0, 0, winSize.width, winSize.height ));
         
         pkLayer->AddChild(pkBackgroundImage);
-#endif
+#endif //(CC_TARGET_PLATFORM != CC_PLATFORM_ANDROID)
 
 		CCLog( "@@login01: open CSMLoginScene\r\n" );
 		
@@ -1199,6 +1199,7 @@ void CSMLoginScene::StartEntry()
     
 	if(m_iAccountID != 0) 
 	{
+		CCImage::changeSystemFont(false);
         NDBeforeGameMgrObj.SetLoginTry(false);
         ScriptMgrPtr->excuteLuaFunc( "ShowUI", "Entry", m_iAccountID );
     }

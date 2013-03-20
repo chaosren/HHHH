@@ -221,7 +221,10 @@ function p.OnUIEvent(uiNode, uiEventType, param)
                 DailyAction.LoadUI(); 
             end
             return ture;        
-
+        elseif TOOL_BTN[9].Tag == tag then          --名人堂
+            _G.CloseMainUI();
+            RankListUI.LoadUI();
+            return ture;  
         elseif ID_MAINUI_BTN_NEW_EMAIL == tag then          -- 新邮件
             _G.CloseMainUI();
             EmailList.LoadUI();
@@ -445,7 +448,7 @@ function p.AdjustToolPos()
     local btnOL = GetButton(topBarLayer,TOOL_BTN[7].Tag);
     local btnDailyAct = GetButton(topBarLayer,TOOL_BTN[8].Tag);
     local btnRankList = GetButton(topBarLayer,TOOL_BTN[9].Tag);
-    btnRankList:SetVisible(false);
+    --btnRankList:SetVisible(false);
     
     
     local btns = {};
@@ -477,6 +480,10 @@ function p.AdjustToolPos()
      if(btnDailyAct:IsVisibled()) then
         table.insert(btns, btnDailyAct);
     end   
+    
+    if(btnRankList:IsVisibled()) then
+        table.insert(btns, btnRankList);
+    end
        
     for i,v in ipairs(btns) do
         local rect = TOOL_BTN[i].Rect;

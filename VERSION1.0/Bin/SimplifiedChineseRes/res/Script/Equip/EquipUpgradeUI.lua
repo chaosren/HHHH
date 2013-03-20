@@ -642,8 +642,12 @@ function p.RefreshEachView()
     if(layer == nil) then
         return;
     end
-    local bIsEnHanceOpen = GetVipIsOpen(DB_VIP_CONFIG.ENHANCE_CLEARTIME);
-    local nCritFlag = GetVipIsOpen(DB_VIP_CONFIG.ENHANCE_CRIT_FLAG);
+    local nVip,nLevel,bVip,bLevel = GetVipLevel2(DB_VIP_STATUC_VALUE.ENHANCE_CLEARTIME);
+    local bIsEnHanceOpen = bVip or bLevel;
+    
+    local nVip,nLevel,bVip,bLevel = GetVipLevel2(DB_VIP_STATUC_VALUE.ENHANCE_CRIT_FLAG);
+    local nCritFlag = bVip or bLevel;
+    
     local nReducePecent = GetVipVal(DB_VIP_CONFIG.ENHANCE_REDUCE_PECENT);
     
     local strangLayer = p.GetLayerByTag(p.TAG.STRENGTHEN);
@@ -700,8 +704,9 @@ function p.RefreshEachView()
     local l_VipTipPlatinum = GetLabel(baptizeLayer,TAG_VIP_PLATINUM);
     local l_VipExtreme = GetLabel(baptizeLayer,TAG_VIP_EXTREME);
     
-    local bIsPlatinum = Is_EQUIP_EDU(BaptizeType.Coin);    
-    if(bIsPlatinum) then
+    
+    local nVip,nLevel,bVip,bLevel = GetVipLevel2(DB_VIP_STATUC_VALUE.EQUIP_EDU_2);
+    if(bVip or bLevel) then
         r_Platinum:SetVisible(true);
         l_Platinum:SetVisible(true);
         l_VipTipPlatinum:SetVisible(false);
@@ -711,9 +716,8 @@ function p.RefreshEachView()
         l_VipTipPlatinum:SetVisible(true);
     end
     
-    
-    local bIsExtreme = Is_EQUIP_EDU(BaptizeType.Extreme);
-    if(bIsExtreme) then
+    local nVip,nLevel,bVip,bLevel = GetVipLevel2(DB_VIP_STATUC_VALUE.EQUIP_EDU_3);
+    if(bVip or bLevel) then
         r_Extreme:SetVisible(true);
         l_Extreme:SetVisible(true);
         l_VipExtreme:SetVisible(false);
@@ -1732,7 +1736,8 @@ function p.OnProcessTimer(nTag)
     end
     
     
-    local bIsEnHanceOpen = GetVipIsOpen(DB_VIP_CONFIG.ENHANCE_CLEARTIME);
+    local nVip,nLevel,bVip,bLevel = GetVipLevel2(DB_VIP_STATUC_VALUE.ENHANCE_CLEARTIME);
+    local bIsEnHanceOpen = bVip or bLevel;
     if(bIsEnHanceOpen) then
         UnRegisterTimer(p.TimerHander);
         p.TimerHander = nil;
@@ -1896,8 +1901,20 @@ function p.OnEventEdu()
         local nPrice = GetDataBaseDataN("equip_edu_config",selectRadio,DB_EQUIP_EDU_CONFIG.PRICE);
         
         
+        
         --Vip判断
-        local bIsEdu = Is_EQUIP_EDU(selectRadio);   
+        --local bIsEdu = Is_EQUIP_EDU(selectRadio);    
+        
+        
+        local bIsEdu = true;
+        if(selectRadio == BaptizeType.Coin) then
+            local nVip,nLevel,bVip,bLevel = GetVipLevel2(DB_VIP_STATUC_VALUE.EQUIP_EDU_2);
+            bIsEdu = bVip or bLevel;
+        elseif(selectRadio == BaptizeType.Extreme) then
+            local nVip,nLevel,bVip,bLevel = GetVipLevel2(DB_VIP_STATUC_VALUE.EQUIP_EDU_3);
+            bIsEdu = bVip or bLevel;
+        end
+        
         if(not bIsEdu) then
             local nNeedVip = GetVipLevel_EQUIP_EDU(selectRadio);
             local sNeedName = GetDataBaseDataS("equip_edu_config",selectRadio,DB_EQUIP_EDU_CONFIG.NAME);
@@ -2094,7 +2111,7 @@ function p.OnUIEventUnMosaic(uiNode, uiEventType, param)
     if uiEventType == NUIEventType.TE_TOUCH_BTN_CLICK then
     
         if tag == TAG_M_GEM_EQUIP then
-            return;
+            return true;
         elseif( tag == TAG_GEM_UNALLGEM ) then
             local btAttrAmount = Item.GetItemInfoN(p.nItemIdTemp, Item.ITEM_GEN_NUM);
             LogInfo("ch btAttrAmount:[%d]",btAttrAmount);

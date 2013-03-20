@@ -312,6 +312,8 @@ function p.CloseBattle()
     local scene = GetSMGameScene();
     CloseBattle();
 	BattleUI_Title.CloseUI();--
+	BattleMapCtrl.CloseUI();
+	
     if scene~= nil then
         scene:RemoveChildByTag(NMAINSCENECHILDTAG.ArenaRewardUI,true);
         return true;

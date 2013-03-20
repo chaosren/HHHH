@@ -21,7 +21,7 @@ public class NDBitmap {
 	//开关：是否启用NDBitmap的Java端开关
 	public static boolean isEnabled()
 	{
-		return false;
+		return true;
 		/*
 		if (true) return true;//@del
 		if (s_enableNDBitmapCache == -1)
@@ -96,8 +96,9 @@ public class NDBitmap {
 				{
 					if (objChar.bLineFeed) continue;
 					
-					paint.setAlpha(0xff);
+					//paint.setAlpha(0xff);
 					paint.setColor( objChar.color );
+					//paint.setColor( Color.RED );
 					
 					// check x constraint and y constraint (NOTE: when single line, don't check y constraint)
 					if (
@@ -156,7 +157,7 @@ public class NDBitmap {
 		log("NDBitmap.getStringSize() - leave");
 		return "";
 	}
-	
+
 	public static void test()
 	{
 		if (false)
