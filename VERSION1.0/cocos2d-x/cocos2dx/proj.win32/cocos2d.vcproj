@@ -684,6 +684,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\platform\NDBitmapMacro.h"
+				>
+			</File>
+			<File
 				RelativePath="..\platform\platform.cpp"
 				>
 			</File>

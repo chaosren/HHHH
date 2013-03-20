@@ -107,7 +107,7 @@ void NDUIColorLabel::draw()
 
 void NDUIColorLabel::debugDraw()
 {
-	//if (!NDDebugOpt::getDrawDebugEnabled()) return;
+	if (!NDDebugOpt::getDrawDebugEnabled()) return;
 
 	glLineWidth(1);
 	ccDrawColor4F(1,0,0,1);
