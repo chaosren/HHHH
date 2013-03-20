@@ -35,6 +35,7 @@
 #include "StringConvert.h"
 #include "NDJsonReader.h"
 #include "../CocosDenshion/include/SimpleAudioEngine.h"
+#include "CCShake.h"
 
 using namespace CocosDenshion;
 
@@ -123,8 +124,12 @@ CSMLoginScene* CSMLoginScene::Scene( bool bShowEntry /*= false*/  )
 	CCLog( "@@ CSMLoginScene::Scene( bShowEntry=%d ) \r\n", int(bShowEntry));
 
 	CSMLoginScene* pkScene = new CSMLoginScene;
-    pkScene->Initialization();
-    pkScene->SetTag(SMLOGINSCENE_TAG);
+	pkScene->Initialization();
+	pkScene->SetTag(SMLOGINSCENE_TAG);
+
+	CCShake* pkShake = CCShake::create(10.0f,10.0f);
+
+	pkScene->getCCNode()->runAction(pkShake);
 
 	if ( bShowEntry )
 	{

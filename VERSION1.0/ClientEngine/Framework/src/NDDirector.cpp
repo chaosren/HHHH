@@ -122,7 +122,7 @@ void NDDirector::SetTransitionScene(NDScene *scene, TransitionSceneType type)
 
 	m_eTransitionSceneType = type;
 
-	m_pkDirector->pushScene(CCTransitionFade::transitionWithDuration(1.2f, (CCScene *)scene->m_ccNode));
+	m_pkDirector->pushScene(CCTransitionFade::transitionWithDuration(1.2f, (CCScene *)scene->getCCNode()));
 	//[m_director pushScene:[CCTransitionFadeTR transitionWithDuration:1.2f scene:(CCScene *)scene->m_ccNode]];
 
 	/*
@@ -155,9 +155,9 @@ void NDDirector::RunScene(NDScene* scene)
 
 	m_kScenesStack.push_back(scene);
 
-	LOGD("ready to runwithscene,scene->m_ccNode value is %d",(int)(scene->m_ccNode));
+	LOGD("ready to runwithscene,scene->m_ccNode value is %d",(int)(scene->m_pkCCNode));
 
-	m_pkDirector->runWithScene((CCScene *) scene->m_ccNode);
+	m_pkDirector->runWithScene((CCScene *) scene->getCCNode());
 }
 
 void NDDirector::ReplaceScene(NDScene* pkScene, bool bAnimate/*=false*/)
@@ -188,7 +188,7 @@ void NDDirector::ReplaceScene(NDScene* pkScene, bool bAnimate/*=false*/)
 	
 	BeforeDirectorPushScene(pkScene);
 	m_kScenesStack.push_back(pkScene);
-	m_pkDirector->replaceScene((CCScene *) pkScene->m_ccNode);
+	m_pkDirector->replaceScene((CCScene *) pkScene->getCCNode());
 	//RunScene(pkScene);
 	AfterDirectorPushScene(pkScene);
 
@@ -207,7 +207,7 @@ void NDDirector::PushScene(NDScene* scene, bool bAnimate/*=false*/)
 	this->BeforeDirectorPushScene(scene);
 
 	m_kScenesStack.push_back(scene);
-	m_pkDirector->pushScene((CCScene *) scene->m_ccNode);
+	m_pkDirector->pushScene((CCScene *) scene->getCCNode());
 
 	this->AfterDirectorPushScene(scene);
 

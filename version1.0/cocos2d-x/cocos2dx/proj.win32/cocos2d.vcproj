@@ -427,6 +427,14 @@
 				RelativePath="..\actions\CCActionTween.h"
 				>
 			</File>
+			<File
+				RelativePath="..\actions\CCShake.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\actions\CCShake.h"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="include"

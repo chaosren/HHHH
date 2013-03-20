@@ -210,7 +210,7 @@ void NDMapLayer::replaceMapData(int mapId, int center_x, int center_y)
 		CCSize kWinSize = CCDirector::sharedDirector()->getWinSizeInPixels();
 		m_kScreenCenter = ccp(kWinSize.width / 2,
 				GetContentSize().height - kWinSize.height / 2);
-		m_ccNode->setPosition(0, 0);
+		m_pkCCNode->setPosition(0, 0);
 
 		/*
 		 m_texMap = [[CCTexture2D alloc] initWithContentSize:winSize];
@@ -232,9 +232,9 @@ void NDMapLayer::Initialization(const char* mapFile)
 {
 	NDLayer::Initialization();
 
-	if (m_ccNode)
+	if (m_pkCCNode)
 	{
-		((NDBaseLayer*)m_ccNode)->setDebugName( "NDMapLayer" );
+		((NDBaseLayer*)m_pkCCNode)->setDebugName( "NDMapLayer" );
 	}
 
 	SetTouchEnabled(true);
@@ -255,7 +255,7 @@ void NDMapLayer::Initialization(const char* mapFile)
 	CCSize kWinSize = CCDirector::sharedDirector()->getWinSizeInPixels();
 	m_kScreenCenter = ccp(kWinSize.width / 2,
 			GetContentSize().height - kWinSize.height / 2);
-	m_ccNode->setPosition(0, 0);
+	m_pkCCNode->setPosition(0, 0);
 
 	g_pMapLayer = this;
 }
@@ -1036,7 +1036,7 @@ void NDMapLayer::SetPosition(CCPoint kPosition)
 	//m_ccNode->setPositionInPixels(kPosition);
 	const float fScale = CCDirector::sharedDirector()->getContentScaleFactor(); //@check
 	kPosition.x /= fScale; kPosition.y /= fScale;
-	m_ccNode->setPosition(kPosition);
+	m_pkCCNode->setPosition(kPosition);
 }
 
 bool NDMapLayer::SetScreenCenter(CCPoint kPoint)

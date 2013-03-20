@@ -9,15 +9,17 @@
 
 #include "UIEdit.h"
 #include "ScriptUI.h"
+
+#ifdef __APPLE__
+#include "IphoneInput.h"
+#endif
+
 #include "NDDirector.h"
 #include "NDUtil.h"
 #include "define.h"
 //#include "I_Analyst.h"
 #include "ObjectTracker.h"
 #include "UsePointPls.h"
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
-#include "IphoneInput.h"
-#endif
 
 CUIEdit* CUIEdit::g_pCurUIEdit = NULL;
 
@@ -279,9 +281,18 @@ void CUIEdit::SetShowTextFontSize(int nFontSize)
 	}
 }
 
-#if WITH_NEW_IME
-void CUIEdit::draw_new_ime() //for android & win32
+void CUIEdit::draw()
 {
+    //TICK_ANALYST(ANALYST_CUIEdit);
+	NDUINode::draw();
+	
+	if (!this->IsVisibled())
+	{
+		return;
+	}
+		
+#if WITH_NEW_IME
+	
 	NDPicture* pic = m_picImage;
 	if (m_bIMEOpen && m_picFocusImage)
 	{
@@ -297,76 +308,54 @@ void CUIEdit::draw_new_ime() //for android & win32
 	{
 		m_lbText->draw();
 	}
-}
-#endif //WITH_NEW_IME
+#endif
+
 
 #if WITH_OLD_IME
-void CUIEdit::draw_old_ime() //for ios
-{
-	CCRect scrRect;
-
 	if (m_pPlatformInput)
 	{
-		//** chh 2012-06-19 **//
-		scrRect = m_lbText->GetFrameRect();
-		CCSize textSize = getStringSize(TEST_TEXT,m_lbText->GetFontSize());
-		int HBorder = (this->GetScreenRect().size.height-textSize.height)/2;
-		m_pPlatformInput->SetFrame(scrRect.origin.x, scrRect.origin.y+HBorder, 
-									scrRect.size.width, scrRect.size.height);
+        //** chh 2012-06-19 **//
+        CCRect scrRect = m_lbText->GetFrameRect();
+        CCSize textSize = getStringSize(TEST_TEXT,m_lbText->GetFontSize());
+        int HBorder = (this->GetScreenRect().size.height-textSize.height)/2;
+        
+        
+		m_pPlatformInput->SetFrame(scrRect.origin.x, scrRect.origin.y+HBorder, scrRect.size.width, scrRect.size.height);
 	}
-
 	if (m_bRecacl && m_pPlatformInput)
 	{
 		m_pPlatformInput->SetText(m_strText.c_str());
 		m_pPlatformInput->EnableSafe(m_bPassword);
 		m_pPlatformInput->EnableAutoAdjust(m_bEnableAjdustView);
 		m_pPlatformInput->SetStyleNone();
-		m_bRecacl = false;
+		m_bRecacl	= false;
 	}
-
+	
 	NDPicture* pic = m_picImage;
-
+	
 	if (m_pPlatformInput && m_pPlatformInput->IsInputState() && m_picFocusImage)
 	{
 		pic	= m_picFocusImage;
 	}
-
+	
 	if (pic)
 	{
 		pic->DrawInRect(scrRect);
 	}
-
 	if (m_pPlatformInput && !m_pPlatformInput->IsShow() && m_lbText)
 	{
-		CCRect rectText	= m_lbText->GetScreenRect();
+		CCRect rectText		= m_lbText->GetScreenRect();
 		if (!CompareEqualFloat(rectText.origin.x, scrRect.origin.x) || 
 			!CompareEqualFloat(rectText.origin.y, scrRect.origin.y))
 		{
-			CCRect rect = scrRect;
-			rect.origin.x += TEXT_LEFT_BORDER;
-			m_lbText->SetFrameRect(rect);
+            CCRect rect = scrRect;
+            rect.origin.x += TEXT_LEFT_BORDER;
+            m_lbText->SetFrameRect(rect);
 		}
-		//m_lbText->SetFrameRect(scrRect);
+        //m_lbText->SetFrameRect(scrRect);
 		m_lbText->draw();
 	}
-}
 #endif //WITH_OLD_IME
-
-void CUIEdit::draw()
-{
-    //TICK_ANALYST(ANALYST_CUIEdit);
-	NDUINode::draw();
-	
-	if (!this->IsVisibled())
-	{
-		return;
-	}
-		
-#if WITH_NEW_IME
-	this->draw_new_ime();
-#else
-	this->draw_old_ime();
-#endif 
 }
 
 //设置控件是否可见
@@ -631,9 +620,8 @@ void CUIEdit::insertText(const char * text, int len)
 
 	bool enterDown = false;
 
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32) || (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
 	m_strText += text ? text : "";
-    enterDown = (text[0] == '\r' || text[0] == '\n');
 #else
 	std::string	tmpStr = text ? text : "";//这个是=
 
