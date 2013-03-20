@@ -176,7 +176,7 @@ end
 
 --加载每日签到主界面
 function p.LoadUI( nActivityId )
-    MsgLogin.EnterChaosBattle(nActivityId);
+    --MsgLogin.EnterChaosBattle(nActivityId);
 	--p.TestInitList();
 	--40级以下返回
 	local nRoleId =  GetPlayerId();
@@ -1531,7 +1531,7 @@ function p.OnUIEventTip(uiNode, uiEventType, param)
 end
 
 function p.CloseUI()
-    MsgLogin.LeaveChaosBattle();
+    --MsgLogin.LeaveChaosBattle();
 	if p.ActivityState == 3 then
 		CloseUI(NMAINSCENECHILDTAG.CampBattle);	
 		return;
