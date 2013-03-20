@@ -11,13 +11,15 @@
 		2085E89F16D635EB009DFA2E /* NDUIListHorz.h in Headers */ = {isa = PBXBuildFile; fileRef = 2085E89C16D635EB009DFA2E /* NDUIListHorz.h */; };
 		2085E8A016D635EB009DFA2E /* NDUIListVert.h in Headers */ = {isa = PBXBuildFile; fileRef = 2085E89D16D635EB009DFA2E /* NDUIListVert.h */; };
 		2085E8A116D635EB009DFA2E /* NDUIScrollViewContainer.h in Headers */ = {isa = PBXBuildFile; fileRef = 2085E89E16D635EB009DFA2E /* NDUIScrollViewContainer.h */; };
-		2085E8A316D635F7009DFA2E /* NDBitmapMacro.h in Headers */ = {isa = PBXBuildFile; fileRef = 2085E8A216D635F7009DFA2E /* NDBitmapMacro.h */; };
 		2085E8A616D636D4009DFA2E /* NDUIListHorz.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2085E8A416D636D4009DFA2E /* NDUIListHorz.cpp */; };
 		2085E8A716D636D4009DFA2E /* NDUIListVert.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2085E8A516D636D4009DFA2E /* NDUIListVert.cpp */; };
 		20A59CF016D74E930008DBD0 /* NDControlHelp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 20A59CEF16D74E930008DBD0 /* NDControlHelp.cpp */; };
 		20A59D0816D753C80008DBD0 /* json_reader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 20A59CD216D727240008DBD0 /* json_reader.cpp */; };
 		20A59D0916D753C80008DBD0 /* json_value.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 20A59CD316D727240008DBD0 /* json_value.cpp */; };
 		20A59D0B16D753C80008DBD0 /* json_writer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 20A59CD516D727240008DBD0 /* json_writer.cpp */; };
+		20BBCE1E16F9DB8E004E898C /* NDUIColorLabel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 20BBCE1D16F9DB8E004E898C /* NDUIColorLabel.cpp */; };
+		20BBCE2116F9DC8E004E898C /* NDUIColorLabel.h in Headers */ = {isa = PBXBuildFile; fileRef = 20BBCE2016F9DC8E004E898C /* NDUIColorLabel.h */; };
+		20BBCE2216F9DCB9004E898C /* NDUIColorLabel.h in Headers */ = {isa = PBXBuildFile; fileRef = 20BBCE2016F9DC8E004E898C /* NDUIColorLabel.h */; };
 		20E23701169169A1008FB048 /* TextureList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 20E236FF169169A1008FB048 /* TextureList.cpp */; };
 		20E2370B16916DFB008FB048 /* cpLog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 20E2370316916DFB008FB048 /* cpLog.cpp */; };
 		20E2370C16916DFB008FB048 /* KCondition.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 20E2370416916DFB008FB048 /* KCondition.cpp */; };
@@ -1148,7 +1150,6 @@
 		2085E89C16D635EB009DFA2E /* NDUIListHorz.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NDUIListHorz.h; sourceTree = "<group>"; };
 		2085E89D16D635EB009DFA2E /* NDUIListVert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NDUIListVert.h; sourceTree = "<group>"; };
 		2085E89E16D635EB009DFA2E /* NDUIScrollViewContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NDUIScrollViewContainer.h; sourceTree = "<group>"; };
-		2085E8A216D635F7009DFA2E /* NDBitmapMacro.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NDBitmapMacro.h; sourceTree = "<group>"; };
 		2085E8A416D636D4009DFA2E /* NDUIListHorz.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NDUIListHorz.cpp; sourceTree = "<group>"; };
 		2085E8A516D636D4009DFA2E /* NDUIListVert.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NDUIListVert.cpp; sourceTree = "<group>"; };
 		20A59CD216D727240008DBD0 /* json_reader.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; name = json_reader.cpp; path = ../../Json/src/json_reader.cpp; sourceTree = "<group>"; };
@@ -1164,6 +1165,9 @@
 		20A59CE416D727800008DBD0 /* writer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = writer.h; path = ../../Json/inc/writer.h; sourceTree = "<group>"; };
 		20A59CEF16D74E930008DBD0 /* NDControlHelp.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; path = NDControlHelp.cpp; sourceTree = "<group>"; };
 		20A59D0516D753880008DBD0 /* libJson.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libJson.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		20BBCE1D16F9DB8E004E898C /* NDUIColorLabel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NDUIColorLabel.cpp; sourceTree = "<group>"; };
+		20BBCE2016F9DC8E004E898C /* NDUIColorLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NDUIColorLabel.h; sourceTree = "<group>"; };
+		20BBCE2316F9DD16004E898C /* NDBitmapMacro.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NDBitmapMacro.h; sourceTree = "<group>"; };
 		20E236FF169169A1008FB048 /* TextureList.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TextureList.cpp; sourceTree = "<group>"; };
 		20E23700169169A1008FB048 /* TextureList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextureList.h; sourceTree = "<group>"; };
 		20E2370316916DFB008FB048 /* cpLog.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = cpLog.cpp; sourceTree = "<group>"; };
@@ -2801,7 +2805,6 @@
 				5AEA3B5B1687F9BD00456B97 /* NDUIHyperlink.h */,
 				5AEA3B5C1687F9BD00456B97 /* NDUIMovableLayer.h */,
 				5AEA3B5D1687F9BD00456B97 /* NDUIScroll.h */,
-				2085E8A216D635F7009DFA2E /* NDBitmapMacro.h */,
 				5AEA3B5E1687F9BD00456B97 /* NDUIScrollContainerExpand.h */,
 				5AEA3B5F1687F9BD00456B97 /* NDUIScrollViewExpand.h */,
 				5AEA3B601687F9BD00456B97 /* NDUIScrollViewMulHand.h */,
@@ -2823,6 +2826,7 @@
 				5A1B3F9A164AB5C100C94D7F /* NDUIFrame.h */,
 				5A1B3F9B164AB5C100C94D7F /* NDUIImage.h */,
 				5A1B3F9C164AB5C100C94D7F /* NDUILabel.h */,
+				20BBCE2016F9DC8E004E898C /* NDUIColorLabel.h */,
 				5A1B3F9E164AB5C100C94D7F /* NDUILayer.h */,
 				5A1B3F9F164AB5C100C94D7F /* NDUIMemo.h */,
 				5A1B3FA0164AB5C100C94D7F /* NDUIMenuLayer.h */,
@@ -2879,6 +2883,7 @@
 				5A1B3FD1164AB5C100C94D7F /* NDUIFrame.cpp */,
 				5A1B3FD2164AB5C100C94D7F /* NDUIImage.cpp */,
 				5A1B3FD3164AB5C100C94D7F /* NDUILabel.cpp */,
+				20BBCE1D16F9DB8E004E898C /* NDUIColorLabel.cpp */,
 				5A1B3FD4164AB5C100C94D7F /* NDUILayer.cpp */,
 				5A1B3FD5164AB5C100C94D7F /* NDUINode.cpp */,
 				5A1B3FD6164AB5C100C94D7F /* NDUIOptionButton.cpp */,
@@ -4420,6 +4425,7 @@
 			children = (
 				5AEA3B871688003800456B97 /* StringConvert.h */,
 				5AEA3B881688003800456B97 /* StringConvert.cpp */,
+				20BBCE2316F9DD16004E898C /* NDBitmapMacro.h */,
 				5A3FBC58165279D0002166DD /* CCAccelerometerDelegate.h */,
 				5A3FBC59165279D0002166DD /* CCApplicationProtocol.h */,
 				5A3FBC5A165279D0002166DD /* CCCommon.h */,
@@ -5490,7 +5496,7 @@
 				2085E89F16D635EB009DFA2E /* NDUIListHorz.h in Headers */,
 				2085E8A016D635EB009DFA2E /* NDUIListVert.h in Headers */,
 				2085E8A116D635EB009DFA2E /* NDUIScrollViewContainer.h in Headers */,
-				2085E8A316D635F7009DFA2E /* NDBitmapMacro.h in Headers */,
+				20BBCE2116F9DC8E004E898C /* NDUIColorLabel.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5498,6 +5504,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				20BBCE2216F9DCB9004E898C /* NDUIColorLabel.h in Headers */,
 				5A1B47F9164ABC9800C94D7F /* Battle.h in Headers */,
 				5A1B47FA164ABC9800C94D7F /* BattleFieldData.h in Headers */,
 				5A1B47FB164ABC9800C94D7F /* BattleFieldScene.h in Headers */,
@@ -6170,6 +6177,7 @@
 				2085E8A716D636D4009DFA2E /* NDUIListVert.cpp in Sources */,
 				20E5B2C816D7184D00C1DFC6 /* NDJsonReader.cpp in Sources */,
 				20A59CF016D74E930008DBD0 /* NDControlHelp.cpp in Sources */,
+				20BBCE1E16F9DB8E004E898C /* NDUIColorLabel.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
