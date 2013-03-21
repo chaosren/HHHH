@@ -29,6 +29,7 @@ THE SOFTWARE.
 #include "platform/CCPlatformMacros.h"
 #include "platform/CCImage.h"
 #include "jni/JniHelper.h"
+#include "platform/NDBitmapMacro.h"
 
 #include <android/log.h>
 #include <string.h>
@@ -162,7 +163,6 @@ public:
 			//@ndbitmap
 			//说明：若使用NDBitmap机制则不需要改变字体：使用同一种字体，原先低端机的字符间距问题通过修正解决，详见NDSpecialCharWidth.java
 			//		若未使用NDBitmap机制，则沿用原来改字体的方式解决字符宽度问题.
-			const int WITH_NDBITMAP = 0;
 			if (!WITH_NDBITMAP)
 			{
 				pFontName = FONT_UTIL::changeFontName( pFontName, jstrText );
@@ -185,7 +185,11 @@ public:
     // ARGB -> RGBA
     unsigned int swapAlpha(unsigned int value)
     {
+#if 0 //ND_MOD @ndbitmap
         return ((value << 8 & 0xffffff00) | (value >> 24 & 0x000000ff));
+#else
+		return value;
+#endif
     }
 
 public:

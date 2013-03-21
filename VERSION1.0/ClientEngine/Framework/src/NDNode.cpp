@@ -28,7 +28,7 @@ m_nPosy(-1)
 	INC_NDOBJ_RTCLS
 
 	m_pkParent = NULL;
-	m_ccNode = NULL;
+	m_pkCCNode = NULL;
 	m_bDrawEnabled = true;
 	m_nParam1 = 0;
 	m_nParam2 = 0;
@@ -46,7 +46,7 @@ NDNode::~NDNode()
 	{
 		this->RemoveFromParent(false);
 	}
-	CC_SAFE_RELEASE (m_ccNode);
+	CC_SAFE_RELEASE (m_pkCCNode);
 	CC_SAFE_RELEASE(m_pShaderProgram); //@shader
 }
 
@@ -59,10 +59,10 @@ NDNode* NDNode::Node()
 
 void NDNode::Initialization()
 {
-	NDAsssert(m_ccNode == NULL);
+	NDAsssert(m_pkCCNode == NULL);
 
-	m_ccNode = new NDBaseNode();
-	NDBaseNode *ndBaseNode = (NDBaseNode *) m_ccNode;
+	m_pkCCNode = new NDBaseNode();
+	NDBaseNode *ndBaseNode = (NDBaseNode *) m_pkCCNode;
 	ndBaseNode->setNDNode(this);
 }
 
@@ -87,7 +87,7 @@ const std::vector<NDNode*>& NDNode::GetChildren()
 
 void NDNode::RemoveAllChildren(bool bCleanUp)
 {
-	NDAsssert(m_ccNode != NULL);
+	NDAsssert(m_pkCCNode != NULL);
 
 	while (m_kChildrenList.begin() != m_kChildrenList.end())
 	{
@@ -117,8 +117,8 @@ void NDNode::RemoveAllChildren(bool bCleanUp)
 			pkDelegate->OnAfterNodeRemoveFromParent(pkNDNode, bCleanUp);
 		}
 
-		CCNode *pkNode = pkNDNode->m_ccNode;
-		m_ccNode->removeChild(pkNode, bCleanUp);
+		CCNode *pkNode = pkNDNode->m_pkCCNode;
+		m_pkCCNode->removeChild(pkNode, bCleanUp);
 
 		if (bCleanUp)
 		{
@@ -129,46 +129,46 @@ void NDNode::RemoveAllChildren(bool bCleanUp)
 
 CCSize NDNode::GetContentSize()
 {
-	NDAsssert(m_ccNode != NULL);
+	NDAsssert(m_pkCCNode != NULL);
 
-	return m_ccNode->getContentSize();
+	return m_pkCCNode->getContentSize();
 }
 
 void NDNode::SetContentSize(CCSize size)
 {
-	NDAsssert(m_ccNode != NULL);
+	NDAsssert(m_pkCCNode != NULL);
 
-	m_ccNode->setContentSize(size);
+	m_pkCCNode->setContentSize(size);
 }
 
 int NDNode::GetzOrder()
 {
-	NDAsssert(m_ccNode != NULL);
+	NDAsssert(m_pkCCNode != NULL);
 
-	return m_ccNode->getZOrder();
+	return m_pkCCNode->getZOrder();
 }
 
 int NDNode::GetTag()
 {
-	NDAsssert(m_ccNode != NULL);
+	NDAsssert(m_pkCCNode != NULL);
 
-	return m_ccNode->getTag();
+	return m_pkCCNode->getTag();
 }
 
 void NDNode::SetTag(int tag)
 {
-	NDAsssert(m_ccNode != NULL);
+	NDAsssert(m_pkCCNode != NULL);
 
-	m_ccNode->setTag(tag);
+	m_pkCCNode->setTag(tag);
 }
 
 void NDNode::AddChild(NDNode* node)
 {
-	if (node && node->m_ccNode)
+	if (node && node->m_pkCCNode)
 	{
 		const char* pszTemp = GetRuntimeClass()->className;
 
-		CCNode *ccNode = node->m_ccNode;
+		CCNode *ccNode = node->m_pkCCNode;
 		int z = ccNode->getZOrder();
 		int tag = ccNode->getTag();
 
@@ -178,7 +178,7 @@ void NDNode::AddChild(NDNode* node)
 
 void NDNode::AddChild(NDNode* node, int z)
 {
-	CCNode *ccNode = node->m_ccNode;
+	CCNode *ccNode = node->m_pkCCNode;
 	int tag = ccNode->getTag();
 
 	this->AddChild(node, z, tag);
@@ -186,27 +186,27 @@ void NDNode::AddChild(NDNode* node, int z)
 
 void NDNode::AddChild(NDNode* pkNode, int nZBuffer, int nTag)
 {
-	NDAsssert(m_ccNode != NULL && pkNode != NULL && pkNode->m_ccNode != NULL);
+	NDAsssert(m_pkCCNode != NULL && pkNode != NULL && pkNode->m_pkCCNode != NULL);
 	NDAsssert(pkNode != this);
 
-	CCNode* pkCCNode = pkNode->m_ccNode;
+	CCNode* pkCCNode = pkNode->m_pkCCNode;
 
 	pkNode->SetParent(this);
 
-	m_ccNode->addChild(pkCCNode, nZBuffer, nTag);
+	m_pkCCNode->addChild(pkCCNode, nZBuffer, nTag);
 
 	m_kChildrenList.push_back(pkNode); 
 }
 
 void NDNode::RemoveChild(NDNode* pkNode, bool bCleanUp)
 {
-	NDAsssert(m_ccNode != NULL && pkNode != NULL && pkNode->m_ccNode != NULL);
+	NDAsssert(m_pkCCNode != NULL && pkNode != NULL && pkNode->m_pkCCNode != NULL);
 
 	std::vector<NDNode*>::iterator iter = m_kChildrenList.begin();
 	for (; iter != this->m_kChildrenList.end(); iter++)
 	{
 		NDNode* ndNode = (NDNode*) *iter;
-		if (ndNode->m_ccNode == pkNode->m_ccNode)
+		if (ndNode->m_pkCCNode == pkNode->m_pkCCNode)
 		{
 			LuaObject funcObj;
 
@@ -233,8 +233,8 @@ void NDNode::RemoveChild(NDNode* pkNode, bool bCleanUp)
 				delegate->OnAfterNodeRemoveFromParent(ndNode, bCleanUp);
 			}
 
-			CCNode *ccNode = ndNode->m_ccNode;
-			m_ccNode->removeChild(ccNode, bCleanUp);
+			CCNode *ccNode = ndNode->m_pkCCNode;
+			m_pkCCNode->removeChild(ccNode, bCleanUp);
 
 			if (bCleanUp)
 			{
@@ -248,14 +248,14 @@ void NDNode::RemoveChild(NDNode* pkNode, bool bCleanUp)
 
 void NDNode::RemoveChild(int tag, bool bCleanUp)
 {
-	NDAsssert(m_ccNode != NULL);
+	NDAsssert(m_pkCCNode != NULL);
 
 	std::vector<NDNode*>::iterator iter;
 	for (iter = m_kChildrenList.begin(); iter != m_kChildrenList.end();
 			iter++)
 	{
 		NDNode* node = (NDNode*) *iter;
-		if (node->m_ccNode->getTag() == tag)
+		if (node->m_pkCCNode->getTag() == tag)
 		{
 			LuaObject funcObj;
 
@@ -281,7 +281,7 @@ void NDNode::RemoveChild(int tag, bool bCleanUp)
 				delegate->OnAfterNodeRemoveFromParent(node, bCleanUp);
 			}
 
-			m_ccNode->removeChildByTag(tag, bCleanUp);
+			m_pkCCNode->removeChildByTag(tag, bCleanUp);
 
 			if (bCleanUp)
 			{
@@ -295,7 +295,7 @@ void NDNode::RemoveChild(int tag, bool bCleanUp)
 
 void NDNode::RemoveFromParent(bool bCleanUp)
 {
-	NDAsssert(this->m_ccNode != NULL);
+	NDAsssert(this->m_pkCCNode != NULL);
 
 	if (this->m_pkParent)
 	{
@@ -305,7 +305,7 @@ void NDNode::RemoveFromParent(bool bCleanUp)
 
 bool NDNode::ContainChild(NDNode* node)
 {
-	NDAsssert(m_ccNode != NULL && node != NULL && node->m_ccNode != NULL);
+	NDAsssert(m_pkCCNode != NULL && node != NULL && node->m_pkCCNode != NULL);
 
 	std::vector<NDNode*>::iterator iter;
 	for (iter = m_kChildrenList.begin(); iter != m_kChildrenList.end();
@@ -328,7 +328,7 @@ NDNode* NDNode::GetChild(int tag)
 			iter++)
 	{
 		NDNode* pkNode = (NDNode*) *iter;
-		if (pkNode && pkNode->m_ccNode->getTag() == tag)
+		if (pkNode && pkNode->m_pkCCNode->getTag() == tag)
 		{
 			return pkNode;
 		}

@@ -427,6 +427,14 @@
 				RelativePath="..\actions\CCActionTween.h"
 				>
 			</File>
+			<File
+				RelativePath="..\actions\CCShake.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\actions\CCShake.h"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="include"
@@ -673,6 +681,10 @@
 			</File>
 			<File
 				RelativePath="..\platform\CCThread.h"
+				>
+			</File>
+			<File
+				RelativePath="..\platform\NDBitmapMacro.h"
 				>
 			</File>
 			<File

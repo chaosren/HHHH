@@ -147,9 +147,9 @@ namespace NDEngine
 	void NDUINode::SetVisible(bool visible)
 	{
 		m_bVisibled = visible;
-		if (NULL != m_ccNode)
+		if (NULL != m_pkCCNode)
 		{
-			m_ccNode->setVisible(visible);
+			m_pkCCNode->setVisible(visible);
 		}
 		/*
 		for (int i = this->GetChildren().size() - 1; i >= 0; i--) 

@@ -21,6 +21,7 @@
 #include "ScriptGameDataLua.h"
 #include "utf8.h"
 #include "NDBitmapMacro.h"
+#include "NDUIColorLabel.h"
 
 
 using namespace cocos2d;
@@ -287,7 +288,8 @@ NDUIText* NDUITextBuilder::Build_WithNDBitmap(const char* pszText, unsigned int 
 							 cocos2d::ccColor4B kDefaultColor /*= ccc4(0, 0, 0, 255)*/,
 							 bool bWithPageArrow /*= false*/, bool bHpyerLink /*= false*/)
 {
-	NDUILabel* label = new NDUILabel;
+	//NDUILabel* label = new NDUILabel;
+	NDUIColorLabel* label = new NDUIColorLabel;
 	if (label)
 	{
 		label->SetText( pszText );

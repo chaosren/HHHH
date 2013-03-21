@@ -29,6 +29,7 @@
 #include "NDPicture.h"
 #include "NDUIImage.h"
 #include "NDUILabel.h"
+#include "NDUIColorLabel.h"
 #include "NDUIDialog.h"
 
 // smys begin
@@ -1518,7 +1519,8 @@ CCSize GetHyperLinkTextSize(const char* str, unsigned int fontsize, int nBoundWi
 #if WITH_NDBITMAP
 NDUINode* CreateColorLabel_NDBitmap(const char* str, unsigned int fontsize, const CCRect& frameRect)
 {
-	NDUILabel* label = new NDUILabel;
+	//NDUILabel* label = new NDUILabel;
+	NDUIColorLabel* label = new NDUIColorLabel;
 	if (label)
 	{
 		label->Initialization();

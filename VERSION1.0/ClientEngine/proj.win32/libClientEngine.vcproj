@@ -642,10 +642,6 @@
 					>
 				</File>
 				<File
-					RelativePath="..\UI\inc\NDBitmapMacro.h"
-					>
-				</File>
-				<File
 					RelativePath="..\UI\inc\NDScrollLayer.h"
 					>
 				</File>
@@ -667,6 +663,10 @@
 				</File>
 				<File
 					RelativePath="..\UI\inc\NDUICheckBox.h"
+					>
+				</File>
+				<File
+					RelativePath="..\UI\inc\NDUIColorLabel.h"
 					>
 				</File>
 				<File
@@ -811,6 +811,10 @@
 				</File>
 				<File
 					RelativePath="..\UI\src\NDUICheckBox.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\UI\src\NDUIColorLabel.cpp"
 					>
 				</File>
 				<File
@@ -1310,11 +1314,11 @@
 			>
 		</File>
 		<File
-			RelativePath="..\UI\inc\NDUITableLayer.h"
+			RelativePath="..\TempClass\NDUITableLayer.h"
 			>
 		</File>
 		<File
-			RelativePath="..\TempClass\NDUITableLayer.h"
+			RelativePath="..\UI\inc\NDUITableLayer.h"
 			>
 		</File>
 		<File

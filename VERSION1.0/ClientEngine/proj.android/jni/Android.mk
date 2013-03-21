@@ -69,6 +69,7 @@ LOCAL_SRC_FILES := \
 ../../UI/src/NDUIFrame.cpp \
 ../../UI/src/NDUIImage.cpp \
 ../../UI/src/NDUILabel.cpp \
+../../UI/src/NDUIColorLabel.cpp \
 ../../UI/src/NDUILayer.cpp \
 ../../UI/src/NDUINode.cpp \
 ../../UI/src/NDUIOptionButton.cpp \
