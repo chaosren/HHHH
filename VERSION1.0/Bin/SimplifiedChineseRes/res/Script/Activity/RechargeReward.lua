@@ -28,7 +28,8 @@ p.NeedDownFlag = true;
 p.RechargeState = { First = {Num = 0, Flag = 0,},
                                    OnceFlag = {0, 0 , 0, 0, 0, 0, 0, 0, 0, 0,0, 0 , 0, 0, 0, 0, 0, 0, 0, 0,0, 0 , 0, 0, 0, 0, 0, 0, 0, 0,}, 
                                    TotalFlag = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0 , 0, 0, 0, 0, 0, 0, 0, 0,},
-                                   DailyFlag = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0 , 0, 0, 0, 0, 0, 0, 0, 0,0, 0 , 0, 0, 0, 0, 0, 0, 0, 0,},};
+                                   DailyFlag = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0 , 0, 0, 0, 0, 0, 0, 0, 0,0, 0 , 0, 0, 0, 0, 0, 0, 0, 0,},
+                                   VipFlag = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0 , 0, 0, 0, 0, 0, 0, 0, 0,0, 0 , 0, 0, 0, 0, 0, 0, 0, 0,},};
 
 p.RechargeTimeBegin = {First = 0,  OnceFlag = 0, TotalFlag = 0, DailyFlag = 0,};                                
 
@@ -41,9 +42,9 @@ p.ActionType =
     TOTAL_PAY = 5,           --累计充值
     DAILY_PAY = 7,           --每日充值
     DAILY_RETURN = 8,           --每日返還   
-    ONLINE_RETURN = 9,           --在線返還  
-    
-};               
+    ONLINE_RETURN = 9,           --在線返還 
+    VIP_RETURN = 10,         --vip累計禮包   
+};           
 
 --加载充值活动主界面
 function p.LoadUI()
@@ -361,8 +362,13 @@ function p.SetLeftListFocus(nIndex)
         return;
     end
     SetLabel(layer, p.UiCtr.contText, Info.Content);
-    SetLabel(layer, p.UiCtr.broadText, Info.Broad);    
-    SetLabel(layer, p.UiCtr.rightListTitleText, Info.Name .. GetTxtPub("shoe"));     
+    SetLabel(layer, p.UiCtr.broadText, Info.Broad);  
+    
+	if Info.Type ==  p.ActionType.VIP_RETURN  then -- vip累计礼包
+		SetLabel(layer, p.UiCtr.rightListTitleText, GetTxtPub("vip_grade")); 
+	else
+		SetLabel(layer, p.UiCtr.rightListTitleText, Info.Name .. GetTxtPub("shoe")); 
+	end    
 
     local strTime = "";    
     LogInfo("TimeType = %d, InfoType = %d, First = %d, once = %d, total = %d", 
@@ -453,7 +459,13 @@ function p.SetRightListFocus(nIndex)
             btnGet:EnalbeGray(true);
        else
             btnGet:EnalbeGray(false);
-       end    
+       end  
+	elseif InfoLeft.Type ==  p.ActionType.VIP_RETURN  then -- VIP充值禮包
+		if p.RechargeState.VipFlag[p.UiList.ListRight.CurFocus] < 1 then 
+			btnGet:EnalbeGray(true);
+		else
+			btnGet:EnalbeGray(false);
+		end         
     end
     
     --领取的奖励提示
@@ -724,6 +736,34 @@ function p.SetDailyRechargeInfo(iData, iBeginTime)
     LogInfo("daily end");                                                                                                                                                                                              
 end
 
+------------------vip充值禮包-----------------iData从后开始每一位代表一个阶梯是否已经领取---------------
+function p.SetVipReturnInfo(iData, iBeginTime)
+    local ReceiveData = iData;
+    local temp = ReceiveData;
+    LogInfo("Total ReceiveData = %d, temp = %d", ReceiveData, temp);
+    
+    for i = 25, 1, -1 do
+        local num1 = 1;
+        for j = i - 1, 1, -1 do
+            num1 = num1*2;
+        end
+        
+        local num2 = math.floor(temp/num1);
+        p.RechargeState.VipFlag[i] =  num2;
+        
+        if num2 > 0 then
+            temp = temp - num1;
+        end
+   end
+   
+   for i, v in pairs(p.RechargeState.VipFlag) do
+       LogInfo("daily v = %d", v);
+   end    
+
+    p.Refresh();     
+    
+    LogInfo("daily end");                                                                                                                                                                                              
+end
 ------------------首次充值消息响应-------------------------------
 function p.SendRechargeInfo()  
     LogInfo("send begin"); 
@@ -746,7 +786,11 @@ function p.SendRechargeInfo()
     elseif InfoLeft.Type ==  p.ActionType.DAILY_PAY  then -- 每日充值
         LogInfo("send 8"); 
         netdata:WriteByte(8);   
+	elseif InfoLeft.Type ==  p.ActionType.VIP_RETURN  then -- 每日充值
+		LogInfo("send 11"); 
+		netdata:WriteByte(11);   
     end
+    
     local Num = p.UiList.ListRight.CurFocus;
     netdata:WriteInt(Num);	
     netdata:WriteInt(0);	   

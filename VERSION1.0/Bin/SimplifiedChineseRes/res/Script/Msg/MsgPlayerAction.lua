@@ -20,8 +20,9 @@ p.PLAYER_ACTION_TYPE =
     VIP_CHECK_IN = 6,           --VIP簽到
     DAILY_PAY = 7,            --每日充值  
     DAILY_RETURN = 8,            --每日返還 
-    ONLINE_RETURN = 9,            --在線返還     
-    END = 10,
+    ONLINE_RETURN = 9,            --在線返還  
+    VIP_RETURN = 10,            --VIP累计       
+    END = 11,
 };
 
 p.RechargeRewardActionType = 6;
@@ -38,7 +39,8 @@ p.PLAYER_ACTION_STATION =
     {type = p.PLAYER_ACTION_TYPE.VIP_PAY,  IsExit = 1,},       --vip充值  
     {type = p.PLAYER_ACTION_TYPE.DAILY_PAY,  IsExit = 0,},       --每日充值
     {type = p.PLAYER_ACTION_TYPE.DAILY_RETURN,  IsExit = 0,},       --每日返還   
-    {type = p.PLAYER_ACTION_TYPE.ONLINE_RETURN,  IsExit = 0,},       --在線返還    
+    {type = p.PLAYER_ACTION_TYPE.ONLINE_RETURN,  IsExit = 0,},       --在線返還   
+    {type = p.PLAYER_ACTION_TYPE.VIP_RETURN,  IsExit = 0,},       --VIP累计    
 };
 
 
@@ -132,7 +134,9 @@ function p.MsgGetPlayerActionInfo(netdatas)
                     RechargeReward.SetTotalRechargeInfo(p.StrActionInfo.iData2, p.StrActionInfo.iBeginTime); 
             elseif (p.PLAYER_ACTION_TYPE.DAILY_PAY == iType) then  --每日充值
                     RechargeReward.SetDailyRechargeInfo(p.StrActionInfo.iData2, p.StrActionInfo.iBeginTime); 
-           end
+	        elseif (p.PLAYER_ACTION_TYPE.VIP_RETURN == iType) then  --vip累計禮包
+				      RechargeReward.SetVipReturnInfo(p.StrActionInfo.iData2, p.StrActionInfo.iBeginTime);                
+			 end
         end
         
         --更新用户是否存在这张表
@@ -180,7 +184,8 @@ function p.IsActionOpen(iType)
            or  (p.PLAYER_ACTION_STATION[p.PLAYER_ACTION_TYPE.TOTAL_PAY].IsExit == 1)  
            or  (p.PLAYER_ACTION_STATION[p.PLAYER_ACTION_TYPE.DAILY_PAY].IsExit == 1)  
            or  (p.PLAYER_ACTION_STATION[p.PLAYER_ACTION_TYPE.DAILY_RETURN].IsExit == 1)  
-           or  (p.PLAYER_ACTION_STATION[p.PLAYER_ACTION_TYPE.ONLINE_RETURN].IsExit == 1) then
+           or  (p.PLAYER_ACTION_STATION[p.PLAYER_ACTION_TYPE.ONLINE_RETURN].IsExit == 1) 
+           or  (p.PLAYER_ACTION_STATION[p.PLAYER_ACTION_TYPE.VIP_RETURN].IsExit == 1)  then
             return true;
         else
             return false;

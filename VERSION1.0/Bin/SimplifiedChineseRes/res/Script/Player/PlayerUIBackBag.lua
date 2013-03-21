@@ -1380,8 +1380,6 @@ function p.RefreshPetPanel(v)
         LogInfo("petId:v[%d]",v);
         
 		p.RefreshPetEquip(v);
-		
-	end
 end
 
 --刷新当前背包

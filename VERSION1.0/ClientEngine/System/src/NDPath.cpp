@@ -38,7 +38,7 @@ NS_NDENGINE_BGN
 //#define NDPath_SoundPath			 "/sdcard/dhlj/SimplifiedChineseRes/res/sound/"
 //#define NDPath_UIPath			 "/sdcard/dhlj/SimplifiedChineseRes/res/UI/"
 //#define NDPath_ScriptPath		 "/sdcard/dhlj/SimplifiedChineseRes/res/Script/"
-#define NDPath_LogPath			 "/sdcard/dhlj/log"
+#define NDPath_LogPath			 "/sdcard/dhlj/"
 #else
 #define  LOG_TAG    "DaHuaLongJiang"
 #define  LOGD(...)
@@ -56,6 +56,7 @@ NS_NDENGINE_BGN
 // #define NDPath_ScriptPath		 "../SimplifiedChineseRes/res/Script/"
 #define NDPath_LogPath			 "log/"
 #endif
+
 
 ////////////////////////////////////////////////////////////
 IMPLEMENT_CLASS(NDPath, NDObject)
@@ -185,6 +186,8 @@ const string NDPath::GetResPath(const char* fileName)
 {
 	string ret;
 	ret = GetResPath() + string(fileName);
+	PrintResStatistic(ret);
+
 	return ret;
 }
 
@@ -235,66 +238,100 @@ const string NDPath::GetFullImagepath(const char* pszFileName)
 const string NDPath::GetImgPath(const char* filename,bool bPackage)
 {
 	static string ret;
-	return ret = GetImagePath(bPackage) + filename;
+	ret = GetImagePath(bPackage) + filename;
+	PrintResStatistic(ret);
+	return ret;
 }
 const string NDPath::GetImg00Path(const char* filename)
 {
 	static string ret;
-	return ret = GetImage00Path() + filename;
+	ret = GetImage00Path() + filename;
+	PrintResStatistic(ret);
+	return ret;
 }
 
 const string NDPath::GetImgPathBattleUI(const char* fileName)
 {
-	return GetResPath("image/battle_ui/") + fileName;
+	static string ret;
+	ret = GetResPath("image/battle_ui/") + fileName;
+	PrintResStatistic(ret);
+	return ret;
 }
 
 
 const string NDPath::GetAniPath(const char* fileName)
 {
-	return GetAnimationPath() + fileName;
+	static string ret;
+	ret = GetAnimationPath() + fileName;
+	PrintResStatistic(ret);
+	return ret;
 }
 
 // 新界面资源统一放在 res/image/ui_new
 const string NDPath::GetImgPathUINew(const char* fileName)
 {
-	return GetResPath("image/ui_new/")+ fileName;
+	static string ret;
+	ret = GetResPath("image/ui_new/")+ fileName;
+	PrintResStatistic(ret);
+	return ret;
 }
 
 // 新界面高分辨率资源统一放在 res/image/ui_new/advance
 const string NDPath::GetImgPathUINewAdvance(const char* fileName)
 {
-	return GetResPath("image/ui_new/advance/")+ fileName;
+	static string ret;
+	ret = GetResPath("image/ui_new/advance/")+ fileName;
+	PrintResStatistic(ret);
+	return ret;
 }
 
 const string NDPath::GetMapPath(const char* fileName)
 {
-	return GetResPath("map/")+ fileName;
+	static string ret;
+	ret = GetResPath("map/")+ fileName;
+	PrintResStatistic(ret);
+	return ret;
 }
 
 const string NDPath::GetUIConfigPath(const char* filename)
 {
-	return GetUIPath() + filename;
+	static string ret;
+	ret = GetUIPath() + filename;
+	PrintResStatistic(ret);
+	return ret;
 }
 
 const string NDPath::GetUIImgPath(const char* uiFileNameWithPath)
 {
-	return NDPath::GetRootResPath() + uiFileNameWithPath;
+	static string ret;
+	ret = NDPath::GetRootResPath() + uiFileNameWithPath;
+	PrintResStatistic(ret);
+	return ret;
 }
 
 const string NDPath::GetSMImgPath(const char* fileName)
 {
-	return GetImagePath() + "Res00/" + fileName;
+	static string ret;
+	ret = GetImagePath() + "Res00/" + fileName;
+	PrintResStatistic(ret);
+	return ret;
 }
 
 const string NDPath::GetSMImg00Path(const char* fileName)
 {
-	return GetImage00Path() + "Res00/" + fileName;
+	static string ret;
+	ret = GetImage00Path() + "Res00/" + fileName;
+	PrintResStatistic(ret);
+	return ret;
 }
 
 
 const string NDPath::GetScriptPath(const char* filename)
 {
-	return GetScriptPath() + filename;
+	static string ret;
+	ret = GetScriptPath() + filename;
+	PrintResStatistic(ret);
+	return ret;
 }
 
 
@@ -305,12 +342,18 @@ const string NDPath::GetScriptPath()
 
 const string NDPath::GetImgPathNew( const char* fileName )
 {
-    return GetResPath("image/ui_new/") + string(fileName);
+	static string ret;
+	ret = GetResPath("image/ui_new/") + string(fileName);
+	PrintResStatistic(ret);
+	return ret;
 }
 
 const string NDPath::GetImgPathNewAdvance( const char* fileName )
 {
-    return GetResPath("image/ui_new/advance/") + fileName;
+	static string ret;
+	ret = GetResPath("image/ui_new/advance/") + fileName;
+	PrintResStatistic(ret);
+	return ret;
 }
     
 //++Guosen 2012.8.9
@@ -342,6 +385,53 @@ const string NDPath::GetGameConfigPath( const char* pszConfFileName,
 		string(pszConfFileName);
 
 	return strRet;
+}
+
+
+//資源統計
+#define RES_STATISTICS
+
+#ifdef	RES_STATISTICS
+//#include "ScriptMgr.h"
+ map<string, int> mapResPathNum;
+#endif
+
+//打印資源統計結果
+void NDPath::PrintResStatistic(const string ResPath)
+{
+#ifdef	RES_STATISTICS
+	int iCount = mapResPathNum.count(ResPath);
+	++mapResPathNum[ResPath];
+	//ScriptMgrObj.excuteLuaFunc("GetPlayerLevel", "Transport");
+
+	if(iCount == 0)
+	{
+		FILE *Pfile;
+		char filename[256] = {0};
+		char buff[256] = {0};
+		memset(filename, 0, sizeof(filename));
+		memset(buff, 0, sizeof(buff));
+		
+		sprintf(filename, "%s/ResStatistic.txt", NDPath::GetLogPath().c_str());
+	   	sprintf(buff, "%s", ResPath.c_str());
+		Pfile = fopen(filename, "a");  
+		//fseek(Pfile, 0, SEEK_END);
+
+		if(Pfile)
+		{
+			fwrite(ResPath.c_str(), 1, ResPath.size()+1, Pfile);
+			fwrite("\n", 1, 1, Pfile);
+			fclose(Pfile);
+			Pfile = 0;
+		}
+
+	}
+#endif
+}
+
+void NDPath::ClearResPath()
+{
+	mapResPathNum.clear();
 }
 
 ///////////////////////////>>>

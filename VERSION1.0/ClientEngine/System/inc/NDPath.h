@@ -12,6 +12,7 @@
 #include "NDObject.h"
 #include <string>
 #include "define.h"
+#include <map>
 
 NS_NDENGINE_BGN
 
@@ -71,6 +72,9 @@ public:
 	static const char* GetRootResDirName();
 
 	static const string GetLogPath();
+
+	static void PrintResStatistic(const string ResPath);
+	static void ClearResPath();
 
 protected:
 
