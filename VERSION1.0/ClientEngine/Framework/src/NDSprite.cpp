@@ -282,15 +282,13 @@ void NDSprite::RunAnimation_WithOnePic(bool bDraw)
 //@anim
 void NDSprite::RunAnimation(bool bDraw)
 {
-	//if (!NDDebugOpt::getDrawRoleEnabled()) return;//@todo
-
 	if (m_pkFrameRunRecord && m_pkAniGroup && m_pkCurrentAnimation)
 	{
-		this->RunAnimation_WithFrames(bDraw);
+		RunAnimation_WithFrames(bDraw);
 	}
 	else if (m_pkPicSprite)
 	{
-		this->RunAnimation_WithOnePic(bDraw);
+		RunAnimation_WithOnePic(bDraw);
 	}
 }
 

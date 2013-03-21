@@ -86,10 +86,7 @@ void CUISpriteNode::draw()
 	{
 		return;
 	}
-	
-	
-	//CGFloat w = m_pSprite->GetWidth();
-	//CGFloat h = m_pSprite->GetHeight();
+
 	CCRect scrRect	= this->GetScreenRect();
 	CCPoint pos		= ccpAdd(scrRect.origin, 
 							 ccp((scrRect.size.width ) / 2 ,

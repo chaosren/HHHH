@@ -19,6 +19,8 @@ public:
 	NDShakeSprite();
 	virtual ~NDShakeSprite();
 
+	virtual void draw();
+
 protected:
 private:
 };

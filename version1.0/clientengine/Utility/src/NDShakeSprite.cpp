@@ -14,4 +14,9 @@ NDShakeSprite::~NDShakeSprite()
 
 }
 
+void NDShakeSprite::draw()
+{
+
+}
+
 NS_NDENGINE_END

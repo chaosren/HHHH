@@ -37,6 +37,7 @@
 #include "../CocosDenshion/include/SimpleAudioEngine.h"
 #include "CCShake.h"
 #include "NDScrollImageNumber.h"
+#include "NDShakeSprite.h"
 
 using namespace CocosDenshion;
 
@@ -132,6 +133,8 @@ CSMLoginScene* CSMLoginScene::Scene( bool bShowEntry /*= false*/  )
 	pkImageNumber->Initialization();
 	pkImageNumber->SetFrameRect(CCRectMake(16, 25, 40, 10));
 	pkImageNumber->SetScrollNumber(55123,1.0,NDScrollImageNumber::Font_SmallRed);
+
+	NDShakeSprite* pkSprite = new NDShakeSprite;
 
 //  	CCShake* pkShake = CCShake::create(12.0f,2.0f);
 //  
