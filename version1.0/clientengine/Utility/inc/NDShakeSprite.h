@@ -6,11 +6,11 @@
 #define NDSHAKESPRITE_H
 
 #include "define.h"
-#include "NDSprite.h"
+#include "NDUIImage.h"
 
 NS_NDENGINE_BGN
 
-class NDShakeSprite:public NDSprite
+class NDShakeSprite:public NDUIImage
 {
 	DECLARE_CLASS(NDShakeSprite)
 

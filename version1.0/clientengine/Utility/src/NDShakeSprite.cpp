@@ -2,7 +2,7 @@
 
 NS_NDENGINE_BGN
 
-IMPLEMENT_CLASS(NDShakeSprite,NDSprite)
+IMPLEMENT_CLASS(NDShakeSprite,NDUIImage)
 
 NDShakeSprite::NDShakeSprite()
 {

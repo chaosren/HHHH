@@ -135,6 +135,8 @@ CSMLoginScene* CSMLoginScene::Scene( bool bShowEntry /*= false*/  )
 	pkImageNumber->SetScrollNumber(55123,1.0,NDScrollImageNumber::Font_SmallRed);
 
 	NDShakeSprite* pkSprite = new NDShakeSprite;
+	pkSprite->Initialization();
+	NDPicture* pkTempPic = 0;
 
 //  	CCShake* pkShake = CCShake::create(12.0f,2.0f);
 //  
@@ -183,15 +185,20 @@ CSMLoginScene* CSMLoginScene::Scene( bool bShowEntry /*= false*/  )
 		NDPicture* pkPicture = kPool.AddPicture( NDPath::GetImg00Path("Res00/Load/Unzipping.png") );
 #endif
 
+		pkTempPic = kPool.AddPicture( NDPath::GetImg00Path("Res00/action/CheckIn.png") );
+		pkSprite->SetPicture(pkTempPic);
+		pkSprite->SetFrameRect(CCRectMake(500,500,100,200));
+
 		if (pkPicture)
 		{
 			pkBackgroundImage->SetPicture(pkPicture, true);
         }
-        
-        CCSize winSize = CCDirector::sharedDirector()->getWinSizeInPixels();
-        pkBackgroundImage->SetFrameRect( CCRectMake(0, 0, winSize.width, winSize.height ));
+
+        CCSize kWinSize = CCDirector::sharedDirector()->getWinSizeInPixels();
+        pkBackgroundImage->SetFrameRect( CCRectMake(0, 0, kWinSize.width, kWinSize.height ));
         
         pkLayer->AddChild(pkBackgroundImage);
+		pkScene->AddChild(pkSprite,1000);
 #endif //(CC_TARGET_PLATFORM != CC_PLATFORM_ANDROID)
 
 		CCLog( "@@login01: open CSMLoginScene\r\n" );
