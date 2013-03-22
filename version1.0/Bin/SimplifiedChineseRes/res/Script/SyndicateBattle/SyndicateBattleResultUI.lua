@@ -247,7 +247,9 @@ function p.RefreshResult()
 	--屏蔽触摸查看按钮
 	for i,v in pairs(tBattleIdBattleResultBtn) do
 		local checkbtn = GetButton(layer, v);
-   		checkbtn:SetFocus( true );		
+   		checkbtn:SetFocus( true );	
+        checkbtn:SetFontColor(NameColor.GRAY);
+            	
 	end
 	
 	
@@ -328,7 +330,7 @@ function p.RefreshResult()
 		local CDlabel = p.GetEnterEndCDLabel();
 		CDlabel:SetText("--:--:--");
 		local DescLabel = p.GetDescLabel();
-   		DescLabel:SetText(" 军团战结果:");
+   		DescLabel:SetText(GetTxtPri("SYN_D69"));
    		
    		
    	else
@@ -343,7 +345,7 @@ function p.RefreshResult()
 		local CDlabel = p.GetEnterEndCDLabel();
 		CDlabel:SetText("--:--:--");
 		local DescLabel = p.GetDescLabel();
-   		DescLabel:SetText(" 军团战准备中:");		
+   		DescLabel:SetText(GetTxtPri("SYN_D64"));		
 		
 	end
 
@@ -448,7 +450,7 @@ function p.updateEnterEndCount(restCount,nBattleEndTime)
 		--LogInfo("qboy CDlabel nil:"); 
 		if restCount <= 0 and nBattleEndTime<= 0  then
 
-			DescLabel:SetText(" 军团战结果:");
+			DescLabel:SetText(GetTxtPri("SYN_D69"));
 			CDlabel:SetText("--:--:--");
 		elseif restCount > 0 then
 			CDlabel:SetText(FormatTime(restCount,1));
@@ -461,12 +463,12 @@ end
 
 
 local tDescBattleType = {}
-	tDescBattleType[0] = " 军团战结果:";
-	tDescBattleType[1] = "八强赛进行中:";
-	tDescBattleType[2] = "四强赛进行中:";
-	tDescBattleType[3] = "半决赛进行中:";
-	tDescBattleType[4] = "决赛进行中:";
-	tDescBattleType[5] = " 军团战准备中:";
+	tDescBattleType[0] = GetTxtPri("SYN_D69");
+	tDescBattleType[1] = GetTxtPri("SYN_D60");
+	tDescBattleType[2] = GetTxtPri("SYN_D61");
+	tDescBattleType[3] = GetTxtPri("SYN_D62");
+	tDescBattleType[4] = GetTxtPri("SYN_D63");
+	tDescBattleType[5] = GetTxtPri("SYN_D64");
 
 
 
@@ -516,7 +518,7 @@ function p.TimerTick(tag)
 			local BattleUIDesclabel = SyndicateBattleUI.GetDescLabel();
 			if g_EnterEndTime > 0 then
 					BattleUIlabel:SetText(FormatTime(g_EnterEndTime,1));
-					BattleUIDesclabel:SetText("参战倒计时: ");
+					BattleUIDesclabel:SetText(GetTxtPri("SYN_D65"));
 					
 					--闪光提示
 					if nRefreshCount%2 == 0 then
@@ -536,7 +538,7 @@ function p.TimerTick(tag)
 			local CDLabel = p.GetEnterEndCDLabel();
 			if g_EnterEndTime > 0 then
 				local DescLabel = p.GetDescLabel();
-				DescLabel:SetText("参战倒计时: ");
+				DescLabel:SetText(GetTxtPri("SYN_D65"));
 				CDLabel:SetText(FormatTime(g_EnterEndTime,1));	
 				
 				--闪光提示
@@ -735,7 +737,7 @@ function p.AddArmyMember(container, cell)
 	local sArmyName = cell.name;
 	if "" == sArmyName or  sArmyName == nil then
 		LogInfo("qboy AddArmy sArmyName nil");
-		sArmyName = "无"; --return;
+		sArmyName = GetTxtPri("SYN_D21"); --return;
 	end
 
 		
@@ -935,13 +937,13 @@ function p.OnUIEvent(uiNode, uiEventType, param)
 		--参战
 			--军团战还未开始
 			if g_BattleType == 5 then
-				CommonDlgNew.ShowTipDlg("軍團戰尚未開始！");
+				CommonDlgNew.ShowTipDlg(GetTxtPri("SYN_D59"));
 				return true;
 			end
 			
 			--军团战已结束
 			if g_BattleType == 0 then
-				CommonDlgNew.ShowTipDlg("本次軍團戰已經結束！");
+				CommonDlgNew.ShowTipDlg(GetTxtPri("SYN_D54"));
 				return true;
 			end			
 		
@@ -953,17 +955,17 @@ function p.OnUIEvent(uiNode, uiEventType, param)
 			
 			
 			if nbattleid == -1 then
-				CommonDlgNew.ShowTipDlg("抱歉！您未參加這次活動！");
+				CommonDlgNew.ShowTipDlg(GetTxtPri("SYN_D55"));
 				 LogInfo("qboy 无军团 或 军团未参加");
 			elseif nbattleid == -2 then	
 				 LogInfo("qboy 已淘汰");
-				 CommonDlgNew.ShowTipDlg("您的軍團已淘汰！");
+				 CommonDlgNew.ShowTipDlg(GetTxtPri("SYN_D56"));
 			elseif g_EnterEndTime <= 0 then
-				CommonDlgNew.ShowTipDlg("本輪準備時間已過，無法參加戰鬥。");
+				CommonDlgNew.ShowTipDlg(GetTxtPri("SYN_D57"));
 			else
 				--轮空了
 				if tBattleIdToBattleType[nbattleid] ~= g_BattleType then
-					CommonDlgNew.ShowTipDlg("您的軍團當前輪空。");
+					CommonDlgNew.ShowTipDlg(GetTxtPri("SYN_D58"));
 					return true;
 				end
 			

@@ -553,7 +553,7 @@ function p.updateCount(restCount)
 			CDlabel:SetTitle(FormatTime(restCount,1));
 			CDlabel:SetChecked( false );
 		else
-			CDlabel:SetTitle(GetTxtPri("SYN_D28"));
+			CDlabel:SetTitle(GetTxtPri("SYN_D28").."...");
 			CDlabel:SetChecked( true );
 		end
 	end

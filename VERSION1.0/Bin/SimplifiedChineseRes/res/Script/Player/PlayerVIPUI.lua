@@ -90,7 +90,7 @@ tVipInfo[1][1] = GetTxtPri("PLAYER_T20")
 tVipInfo[1][2] = GetTxtPri("PLAYER_T21")
 tVipInfo[1][3] = GetTxtPri("PLAYER_T22")
 tVipInfo[1][4] = GetTxtPri("PLAYER_T23")
-tVipInfo[1][4] = GetTxtPri("PUIA_T9")--添加多语言
+tVipInfo[1][5] = GetTxtPri("PUIA_T9")--添加多语言
 
 tVipInfo[2][1] = GetTxtPri("PLAYER_T24")
 tVipInfo[2][2] = GetTxtPri("PLAYER_T25")

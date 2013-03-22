@@ -381,6 +381,7 @@ function p.GetStatusAttrTypeDesc(nAttr)
 		return str;
 	end
     LogInfo("p.GetStatusAttrTypeDesc nAttr:[%d]",nAttr);
+    nAttr = Num2(nAttr);
 	if nAttr == Item.STATUS_ATTR_TYPE_CONTROL_ADD then
 		str = GetTxtPri("PUIA_T4");
     elseif nAttr == Item.STATUS_ATTR_TYPE_CONTROL_SUB then
