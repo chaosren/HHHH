@@ -59,13 +59,13 @@ bool CCShake::initWithDuration(float duration, float strength_x, float strength_
 static float fgRangeRand( float min, float max )
 {
 	float rnd = ((float)rand()/(float)RAND_MAX);
-	return rnd*(max-min)+min;
+	return rnd * (max - min) + min;
 }
 
 void CCShake::update(float dt)
 {
-	float randx = fgRangeRand( -m_fStrengthX, m_fStrengthX )*dt;
-	float randy = fgRangeRand( -m_StrengthY, m_StrengthY )*dt;
+	float randx = fgRangeRand( -m_fStrengthX, m_fStrengthX ) * dt;
+	float randy = fgRangeRand( -m_StrengthY, m_StrengthY ) * dt;
 
 	m_pTarget->setPosition( ccpAdd(ccp(m_fInitialX, m_fInitialY),ccp( randx, randy)));
 }
