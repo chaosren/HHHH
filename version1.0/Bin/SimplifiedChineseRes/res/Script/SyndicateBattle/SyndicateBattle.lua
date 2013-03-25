@@ -1155,7 +1155,10 @@ GetTxtPri("CB2_T30"),
 GetTxtPri("CB2_T31"),
 GetTxtPri("CB2_T33"),
 GetTxtPri("CB2_T34"),
-GetTxtPri("CB2_T35"),GetTxtPri("CB2_T351"),GetTxtPri("CB2_T352"),
+GetTxtPri("CB2_T35"),
+GetTxtPri("CB2_T352"),
+GetTxtPri("CB2_T4211"),
+GetTxtPri("CB2_T4311"),
 }
 
 local Tiptag = 9998;
