@@ -454,7 +454,7 @@ void CCRepeat::update(float dt)
 
             m_pInnerAction->stop();
             m_pInnerAction->startWithTarget(m_pTarget);
-            m_fNextDt += m_pInnerAction->getDuration()/m_fDuration;
+            m_fNextDt += m_pInnerAction->getDuration() / m_fDuration;
         }
 
         // fix for issue #1288, incorrect end value of repeat
@@ -2487,5 +2487,63 @@ void CCTargetedAction::update(float time)
 {
     m_pAction->update(time);
 }
+
+#ifdef ND_MOD
+
+CCAccelerationMoveTo::CCAccelerationMoveTo()
+{
+	m_fAcceleration = 0.0f;
+	m_fBaseSpeedPercent_X = 0.0f;
+	m_fBaseSpeedPercent_Y = 0.0f;
+}
+
+void CCAccelerationMoveTo::update( float time )
+{
+	if (m_pTarget)
+	{
+		m_pTarget->setPosition(ccp(m_startPosition.x + m_fBaseSpeedPercent_X,
+			m_startPosition.y + m_fBaseSpeedPercent_Y));
+
+		m_fBaseSpeedPercent_X += m_delta.x * time;
+		m_fBaseSpeedPercent_Y += m_delta.y * time;
+	}
+}
+
+CCAccelerationMoveTo* CCAccelerationMoveTo::create( float duration,
+									   float fAcceleration,
+									   const CCPoint& position )
+{
+	CCAccelerationMoveTo *pMoveTo = new CCAccelerationMoveTo();
+	pMoveTo->initWithDuration(duration,fAcceleration, position);
+	pMoveTo->autorelease();
+
+	return pMoveTo;
+}
+
+bool CCAccelerationMoveTo::initWithDuration( float duration,
+											float fAcceleration,
+											const CCPoint& position )
+{
+	if (CCActionInterval::initWithDuration(duration))
+	{
+		m_endPosition = position;
+		m_fAcceleration = fAcceleration;
+		return true;
+	}
+
+	return false;
+}
+
+void CCAccelerationMoveTo::startWithTarget( CCNode *pTarget )
+{
+	CCActionInterval::startWithTarget(pTarget);
+	m_startPosition = pTarget->getPosition();
+	m_delta = ccpSub(m_endPosition, m_startPosition);
+
+	m_fDistance = sqrt(abs(m_delta.x) * abs(m_delta.x) +
+		abs(m_delta.y) + abs(m_delta.y));
+}
+
+#endif
 
 NS_CC_END

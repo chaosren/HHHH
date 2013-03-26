@@ -132,7 +132,7 @@ CSMLoginScene* CSMLoginScene::Scene( bool bShowEntry /*= false*/  )
 	NDScrollImageNumber* pkImageNumber = new NDScrollImageNumber;
 	pkImageNumber->Initialization();
 	pkImageNumber->SetFrameRect(CCRectMake(16, 25, 40, 10));
-	pkImageNumber->SetScrollNumber(55123,1.0,NDScrollImageNumber::Font_SmallRed);
+	pkImageNumber->SetScrollNumber(65535,1.0,NDScrollImageNumber::Font_SmallRed);
 
 	NDShakeSprite* pkSprite = new NDShakeSprite;
 	pkSprite->Initialization();
@@ -187,15 +187,17 @@ CSMLoginScene* CSMLoginScene::Scene( bool bShowEntry /*= false*/  )
 
 		pkTempPic = kPool.AddPicture( NDPath::GetImg00Path("Res00/action/CheckIn.png") );
 		pkSprite->SetPicture(pkTempPic);
-		pkSprite->SetFrameRect(CCRectMake(500,500,100,200));
+		pkSprite->SetFrameRect(CCRectMake(0,0,100,200));
+		pkSprite->setFirstPosition(CCPointMake(300,-200));
+		pkSprite->setShakeNode(pkScene->getCCNode());
 
 		if (pkPicture)
 		{
 			pkBackgroundImage->SetPicture(pkPicture, true);
         }
 
-        CCSize kWinSize = CCDirector::sharedDirector()->getWinSizeInPixels();
-        pkBackgroundImage->SetFrameRect( CCRectMake(0, 0, kWinSize.width, kWinSize.height ));
+        CCSize kWindowSize = CCDirector::sharedDirector()->getWinSizeInPixels();
+        pkBackgroundImage->SetFrameRect( CCRectMake(0, 0, kWindowSize.width, kWindowSize.height ));
         
         pkLayer->AddChild(pkBackgroundImage);
 		pkScene->AddChild(pkSprite,1000);

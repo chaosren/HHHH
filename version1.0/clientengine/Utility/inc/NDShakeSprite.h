@@ -20,8 +20,14 @@ public:
 	virtual ~NDShakeSprite();
 
 	virtual void draw();
+	virtual void CallbackFunction();
 
 protected:
+
+	CC_SYNTHESIZE(CCNode*,m_pkTargetNode,ShakeNode);
+	CC_SYNTHESIZE(CCPoint,m_kFirstPosition,FirstPosition);
+	CC_SYNTHESIZE_READONLY(cc_timeval,m_kLastUpdateTimeVal,LastUpdateTime);
+
 private:
 };
 

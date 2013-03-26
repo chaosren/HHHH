@@ -358,6 +358,35 @@ protected:
     CCPoint m_delta;
 };
 
+#ifdef ND_MOD
+
+class CC_DLL CCAccelerationMoveTo : public CCActionInterval
+{
+public:
+
+	CCAccelerationMoveTo();
+
+	static CCAccelerationMoveTo* create(float duration,float fAcceleration, const CCPoint& position);
+
+	bool initWithDuration(float duration, float fAcceleration,const CCPoint& position);
+	virtual void startWithTarget(CCNode *pTarget);
+
+	virtual void update(float time);
+
+protected:
+
+	CCPoint m_endPosition;
+	CCPoint m_startPosition;
+	CCPoint m_delta;
+
+	float m_fDistance;
+	float m_fBaseSpeedPercent_X;
+	float m_fBaseSpeedPercent_Y;
+	float m_fAcceleration;
+};
+
+#endif
+
 /** @brief Moves a CCNode object x,y pixels by modifying it's position attribute.
  x and y are relative to the position of the object.
  Duration is is seconds.
