@@ -1275,7 +1275,7 @@
 		5A1B3F72164AB5C100C94D7F /* NDBaseNode.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NDBaseNode.cpp; sourceTree = "<group>"; };
 		5A1B3F73164AB5C100C94D7F /* NDCommonProtocol.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NDCommonProtocol.cpp; sourceTree = "<group>"; };
 		5A1B3F74164AB5C100C94D7F /* NDDebugOpt.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NDDebugOpt.cpp; sourceTree = "<group>"; };
-		5A1B3F75164AB5C100C94D7F /* NDDirector.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NDDirector.cpp; sourceTree = "<group>"; };
+		5A1B3F75164AB5C100C94D7F /* NDDirector.cpp */ = {isa = PBXFileReference; fileEncoding = 2147483673; lastKnownFileType = sourcecode.cpp.cpp; path = NDDirector.cpp; sourceTree = "<group>"; };
 		5A1B3F76164AB5C100C94D7F /* NDLayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NDLayer.cpp; sourceTree = "<group>"; };
 		5A1B3F77164AB5C100C94D7F /* NDLightEffect.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; path = NDLightEffect.cpp; sourceTree = "<group>"; };
 		5A1B3F78164AB5C100C94D7F /* NDMapLayer.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; path = NDMapLayer.cpp; sourceTree = "<group>"; };

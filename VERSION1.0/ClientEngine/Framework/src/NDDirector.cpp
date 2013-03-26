@@ -492,7 +492,12 @@ float NDDirector::getCoordScaleX()
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
 	return getAndroidScale().x;
 #else
-	return 0.5f * m_pkDirector->getContentScaleFactor();
+    float scaleX = 0.5f * m_pkDirector->getContentScaleFactor();
+    if (IS_IPHONE5)
+    {
+        scaleX *= IPHONE5_WIDTH_SCALE;
+    }
+    return scaleX;
 #endif
 }
 
