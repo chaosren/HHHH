@@ -565,7 +565,7 @@ function p.updateCount(restCount)
 			CDlabel:SetTitle(FormatTime(restCount,1));
 			CDlabel:SetChecked( false );
 		else
-			CDlabel:SetTitle(GetTxtPri("SYN_D28"));
+			CDlabel:SetTitle(GetTxtPri("SYN_D28").."...");
 			CDlabel:SetChecked( true );
 		end
 	end
@@ -601,7 +601,7 @@ function p.refreshResultInfo()
 	if g_EncourageLev ~= 0 then
 		EncourageLabel:SetText("鼓舞"..g_EncourageLev.."星")
 	else
-		EncourageLabel:SetText("无")
+		EncourageLabel:SetText(GetTxtPri("SYN_D21"))
 	end
 	--]]
 end
@@ -624,8 +624,8 @@ function p.refreshPlayerCount()
 	local AttkLabel 	=  RecursiveLabel(p.GetParent(),{ID_ARMYGROUPBATTLE_CTRL_TEXT_ATTACK});
 	local DefLabel 		=  RecursiveLabel(p.GetParent(),{ID_ARMYGROUPBATTLE_CTRL_TEXT_DEFENCE});
 
-	AttkLabel:SetText(g_AttArmyName.."("..nCountAtt.."人)");
-	DefLabel:SetText(g_DefArmyName.."("..nCountDef.."人)");
+	AttkLabel:SetText(g_AttArmyName.."("..nCountAtt..GetTxtPri("SYN_D34"));
+	DefLabel:SetText(g_DefArmyName.."("..nCountDef..GetTxtPri("SYN_D34"));
 	
 	
 end
@@ -756,7 +756,7 @@ function p.AddPlayerToList(nUserId,nCamp,sName)
 		local CDLabel = p.GetCDLabel();
 
 		if CDLabel ~= nil then
-			CDLabel:SetTitle("等待戰鬥...");
+			CDLabel:SetTitle(GetTxtPri("SYN_D35"));
 			CDLabel:SetChecked( true );
 		end
 	end	
@@ -940,9 +940,9 @@ function p.ChangeColorByIndex(nIndex,Color)
 	
 	local sState = ""
 	if Color == NameColor.YELLOW then
-		sState = "[待]"
+		sState = GetTxtPri("SYN_D36")
 	else	
-		sState = "[战]"
+		sState = GetTxtPri("SYN_D37")
 	end
 	
 	local attContainer = p.GetAttContainer();
@@ -1237,7 +1237,7 @@ GetTxtPri("SYN_D41"),GetTxtPri("SYN_D42"),GetTxtPri("SYN_D43"),GetTxtPri("SYN_D4
 GetTxtPri("SYN_D45"),
 "",
 GetTxtPri("SYN_D46"),GetTxtPri("SYN_D47"),
-GetTxtPri("SYN_D46"),GetTxtPri("SYN_D53"),
+GetTxtPri("SYN_D53"),
 "",
 GetTxtPri("SYN_D48"),GetTxtPri("SYN_D49"),
 "",
@@ -1278,7 +1278,7 @@ function p.ShowTip()
 	end
 	uiLoad:Load("scuffle/scuffle_L_3.ini", layer, p.OnUIEventTip, 0, 0);
 	local titlelabel = RecursiveLabel(layer, {3});
-	titlelabel:SetText("軍團戰規則");
+	titlelabel:SetText(GetTxtPri("SYN_D1"));
 	
 	----------------------------容器---------------------------------------
 	local rectX = winsize.w*0.25;
@@ -1625,7 +1625,7 @@ function p.OnUIEvent(uiNode, uiEventType, param)
                     
 			
 			if  p.bIfComplete == false and SyndicateBattleResultUI.GetEnterEndTime() <= 0 then
-				CommonDlgNew.ShowYesOrNoDlg("退出后將會無法再次加入這場戰鬥，確定退出嗎？", p.CloseSyndicateBattleUI, true );			
+				CommonDlgNew.ShowYesOrNoDlg(GetTxtPri("SYN_D66"), p.CloseSyndicateBattleUI, true );			
 			else
 				p.QuitBattle();
 				p.CloseUI();			
@@ -1636,7 +1636,7 @@ function p.OnUIEvent(uiNode, uiEventType, param)
 		--参战/退出	
 		elseif tag == ID_ARMYGROUPBATTLE_CTRL_BUTTON_BATTLE then
 			if  p.ActivityState == 3 then
-				CommonDlgNew.ShowYesDlg("您已退出，請重新打開介面！");
+				CommonDlgNew.ShowYesDlg(GetTxtPri("CB2_T39"));
 				return;
 			end
 
@@ -1646,7 +1646,7 @@ function p.OnUIEvent(uiNode, uiEventType, param)
 				LogInfo("qboy sign up战斗 ");
 				--cd未冷却
 				if g_Count > 0 then
-					CommonDlgNew.ShowYesOrNoDlg( "是否話費2金幣清除冷卻時間", p.ClearCDTime, true );
+					CommonDlgNew.ShowYesOrNoDlg( GetTxtPri("CB2_T40"), p.ClearCDTime, true );
 					return true;
 				end
 				
@@ -1763,7 +1763,7 @@ function p.OnUIEventInfoList(uiNode, uiEventType, param)
 		elseif tag == ID_TALK_LIST_CTRL_BUTTON_12 then
 			--加好友
 			if FriendFunc.IsExistFriend(nCheckPlayerId)  then
-				CommonDlgNew.ShowYesDlg("該玩家已近是您的好友！");
+				CommonDlgNew.ShowYesDlg(GetTxtPri("CB2_T41"));
 			else
 				FriendFunc.AddFriend(nCheckPlayerId,sCheckPlayerName); --加为好友 
 			end
@@ -1856,7 +1856,7 @@ end
 
 --[[
 	if bIfAutoJoinNextBattle == tState.InBattle   then
-		CommonDlgNew.ShowYesDlg("已退出，战斗结束后请关闭活动界面！");
+		CommonDlgNew.ShowYesDlg(GetTxtPri("SYN_D22"));
 		--设置战斗后关闭
 	end	
 ]]

@@ -103,7 +103,7 @@ function p.SwapEquip()
         if(nIsEquip) then
             p.SendSwapEquip()
         else
-            CommonDlgNew.ShowYesOrNoDlg(string.format("【%s】和【%s】职业不同，武器将不会互换，你确定要换装吗？",nNameA,nNameB), p.SwapEquipCallback);
+            CommonDlgNew.ShowYesOrNoDlg(string.format("【%s】和【%s】職業不同，武器不會互換，你確定要換裝嗎？",nNameA,nNameB), p.SwapEquipCallback);
         end
     end
 end
@@ -123,12 +123,12 @@ function p.IsAllowEquip( nIsEquip )
     local nNameA    = RolePetFunc.GetPropDesc(p.nPetId, PET_ATTR.PET_ATTR_NAME);
     local nNameB    = RolePetFunc.GetPropDesc(p.nPetIdTarget, PET_ATTR.PET_ATTR_NAME);
     if(nFlagA == false) then
-        CommonDlgNew.ShowYesDlg(string.format("【%s】的等级不足，无法换上【%s】的装备。",nNameB,nNameA));
+        CommonDlgNew.ShowYesDlg(string.format("【%s】的等級不足，無法換上【%s】的裝備。",nNameB,nNameA));
         return false;
     end
     
     if(nFlagB == false) then
-        CommonDlgNew.ShowYesDlg(string.format("【%s】的等级不足，无法换上【%s】的装备。",nNameA,nNameB));
+        CommonDlgNew.ShowYesDlg(string.format("【%s】的等級不足，無法換上【%s】的裝備。",nNameA,nNameB));
         return false;
     end
     return true;

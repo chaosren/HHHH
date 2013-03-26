@@ -287,23 +287,17 @@ void NDPicture::Initialization( unsigned char* pszBuffer,unsigned int uiSize )
 
 	destroy();
     
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32 || !ENABLE_PAL_MODE)
 	CCImage kImage;
 
 	if (!kImage.initWithImageData((void*)pszBuffer,uiSize))
 	{
 		//LOGERROR("picture [%s] not exist", imageFile);
 	}
-#endif
 
 	//m_pkTexture = new CCTexture2D;
 	m_pkTexture = CCTexture2D::create();
 
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32 || !ENABLE_PAL_MODE)
 	m_pkTexture->initWithImage(&kImage);
-#else
-	m_pkTexture->initWithPalettePNG(imageFile);
-#endif
 
 	LOGD("m_pkTexture->getContentSizeInPixels().width is %d,m_pkTexture->getContentSizeInPixels().height is %d",
 		m_pkTexture->getContentSizeInPixels().width,m_pkTexture->getContentSizeInPixels().height);

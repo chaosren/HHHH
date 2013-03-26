@@ -231,16 +231,19 @@ public:
 	int GetParam2();
 
 public: //@shader
+
 	CC_SYNTHESIZE_RETAIN(CCGLProgram*, m_pShaderProgram, ShaderProgram);
 	CC_SYNTHESIZE(ccGLServerState, m_glServerState, GLServerState);
+	CC_SYNTHESIZE_READONLY(CCNode*,m_pkCCNode,CCNode);
+
 protected:
+
 	void DrawSetup( const char* shaderType = kCCShader_PositionTexture_uColor );
 
 protected:
+
 	int m_nParam1;
 	int m_nParam2;
-public:
-	cocos2d::CCNode *m_ccNode;
 
 protected:
 

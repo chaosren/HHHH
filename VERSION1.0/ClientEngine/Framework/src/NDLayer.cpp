@@ -34,9 +34,9 @@ NDLayer* NDLayer::Layer()
 
 void NDLayer::Initialization()
 {
-	NDAsssert(m_ccNode == NULL);
-	m_ccNode = new NDBaseLayer();
-	NDBaseLayer *layer = (NDBaseLayer *) m_ccNode;
+	NDAsssert(m_pkCCNode == NULL);
+	m_pkCCNode = new NDBaseLayer();
+	NDBaseLayer *layer = (NDBaseLayer *) m_pkCCNode;
 	layer->SetLayer(this);
 	layer->setDebugName( "NDLayer" );
 	this->SetContentSize(CCSizeZero);
@@ -49,9 +49,9 @@ void NDLayer::draw()
 
 void NDLayer::SetTouchEnabled(bool bEnabled)
 {
-	NDAsssert(m_ccNode != NULL);
+	NDAsssert(m_pkCCNode != NULL);
 
-	NDBaseLayer *layer = (NDBaseLayer*) m_ccNode;
+	NDBaseLayer *layer = (NDBaseLayer*) m_pkCCNode;
 	layer->setTouchEnabled(bEnabled);
 }
 
