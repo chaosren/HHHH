@@ -51,6 +51,11 @@
 #endif
 #include "../CocosDenshion/include/SimpleAudioEngine.h"
 
+
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
+#include "NDPlayMovie.h"
+#endif
+
 using namespace CocosDenshion;
 
 NS_NDENGINE_BGN
@@ -5209,6 +5214,13 @@ void NDMapMgr::LoadMapMusic()
 	CCString* pstrMusicFile = CCString::stringWithFormat("%smusic_%d.ogg",pstrMusicPath->getCString(),nMusicID);	
 #endif
 	pkSimpleAudio->playBackgroundMusic(pstrMusicFile->getCString(),true);
+    
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
+    if ([[NDPlayMovie sharedObj] isPlaying])
+    {
+        pkSimpleAudio->pauseBackgroundMusic();
+    }
+#endif
 }
 
 // LifeSkill* NDMapMgr::getLifeSkill( OBJID idSkill )

@@ -20,6 +20,7 @@
 		20BBCE1E16F9DB8E004E898C /* NDUIColorLabel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 20BBCE1D16F9DB8E004E898C /* NDUIColorLabel.cpp */; };
 		20BBCE2116F9DC8E004E898C /* NDUIColorLabel.h in Headers */ = {isa = PBXBuildFile; fileRef = 20BBCE2016F9DC8E004E898C /* NDUIColorLabel.h */; };
 		20BBCE2216F9DCB9004E898C /* NDUIColorLabel.h in Headers */ = {isa = PBXBuildFile; fileRef = 20BBCE2016F9DC8E004E898C /* NDUIColorLabel.h */; };
+		20BBCE2D16FC4F11004E898C /* NDPlayMovie.mm in Sources */ = {isa = PBXBuildFile; fileRef = 20BBCE2C16FC4F11004E898C /* NDPlayMovie.mm */; };
 		20E23701169169A1008FB048 /* TextureList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 20E236FF169169A1008FB048 /* TextureList.cpp */; };
 		20E2370B16916DFB008FB048 /* cpLog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 20E2370316916DFB008FB048 /* cpLog.cpp */; };
 		20E2370C16916DFB008FB048 /* KCondition.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 20E2370416916DFB008FB048 /* KCondition.cpp */; };
@@ -1168,6 +1169,8 @@
 		20BBCE1D16F9DB8E004E898C /* NDUIColorLabel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NDUIColorLabel.cpp; sourceTree = "<group>"; };
 		20BBCE2016F9DC8E004E898C /* NDUIColorLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NDUIColorLabel.h; sourceTree = "<group>"; };
 		20BBCE2316F9DD16004E898C /* NDBitmapMacro.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NDBitmapMacro.h; sourceTree = "<group>"; };
+		20BBCE2B16FC4E9E004E898C /* NDPlayMovie.h */ = {isa = PBXFileReference; fileEncoding = 2147483673; lastKnownFileType = sourcecode.c.h; path = NDPlayMovie.h; sourceTree = "<group>"; };
+		20BBCE2C16FC4F11004E898C /* NDPlayMovie.mm */ = {isa = PBXFileReference; fileEncoding = 2147483673; lastKnownFileType = sourcecode.cpp.objcpp; path = NDPlayMovie.mm; sourceTree = "<group>"; };
 		20E236FF169169A1008FB048 /* TextureList.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TextureList.cpp; sourceTree = "<group>"; };
 		20E23700169169A1008FB048 /* TextureList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextureList.h; sourceTree = "<group>"; };
 		20E2370316916DFB008FB048 /* cpLog.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = cpLog.cpp; sourceTree = "<group>"; };
@@ -5052,6 +5055,8 @@
 				5A1A41A41653804700BD1510 /* RootViewController.mm */,
 				5AC4564A1643D6FA0014B2E7 /* AppDelegate.h */,
 				5AC456421643D6FA0014B2E7 /* Supporting Files */,
+				20BBCE2B16FC4E9E004E898C /* NDPlayMovie.h */,
+				20BBCE2C16FC4F11004E898C /* NDPlayMovie.mm */,
 			);
 			path = dhlj;
 			sourceTree = "<group>";
@@ -6298,6 +6303,7 @@
 				5A1A41A71653804800BD1510 /* RootViewController.mm in Sources */,
 				5A210198166522EA003BBA12 /* MobageViewController.m in Sources */,
 				5A210199166522EA003BBA12 /* ND91SDKViewController.m in Sources */,
+				20BBCE2D16FC4F11004E898C /* NDPlayMovie.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
