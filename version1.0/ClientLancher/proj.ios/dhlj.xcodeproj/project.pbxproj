@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		207F78011701862400A141C6 /* CCShake.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 207F77FF1701862400A141C6 /* CCShake.cpp */; };
 		2085E89B16D6346D009DFA2E /* NDJsonReader.h in Headers */ = {isa = PBXBuildFile; fileRef = 2085E89A16D6346D009DFA2E /* NDJsonReader.h */; };
 		2085E89F16D635EB009DFA2E /* NDUIListHorz.h in Headers */ = {isa = PBXBuildFile; fileRef = 2085E89C16D635EB009DFA2E /* NDUIListHorz.h */; };
 		2085E8A016D635EB009DFA2E /* NDUIListVert.h in Headers */ = {isa = PBXBuildFile; fileRef = 2085E89D16D635EB009DFA2E /* NDUIListVert.h */; };
@@ -1147,6 +1148,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		207F77FF1701862400A141C6 /* CCShake.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CCShake.cpp; sourceTree = "<group>"; };
+		207F78001701862400A141C6 /* CCShake.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCShake.h; sourceTree = "<group>"; };
 		2085E89A16D6346D009DFA2E /* NDJsonReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NDJsonReader.h; sourceTree = "<group>"; };
 		2085E89C16D635EB009DFA2E /* NDUIListHorz.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NDUIListHorz.h; sourceTree = "<group>"; };
 		2085E89D16D635EB009DFA2E /* NDUIListVert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NDUIListVert.h; sourceTree = "<group>"; };
@@ -4188,6 +4191,8 @@
 				5A3FBB98165279D0002166DD /* CCActionInterval.cpp */,
 				5A3FBB99165279D0002166DD /* CCActionInterval.h */,
 				5A3FBB9A165279D0002166DD /* CCActionManager.cpp */,
+				207F77FF1701862400A141C6 /* CCShake.cpp */,
+				207F78001701862400A141C6 /* CCShake.h */,
 				5A3FBB9B165279D0002166DD /* CCActionManager.h */,
 				5A3FBB9C165279D0002166DD /* CCActionPageTurn3D.cpp */,
 				5A3FBB9D165279D0002166DD /* CCActionPageTurn3D.h */,
@@ -6460,6 +6465,7 @@
 				5AEA3B571687F91F00456B97 /* ObjectTracker.cpp in Sources */,
 				5AEA3B891688003800456B97 /* StringConvert.cpp in Sources */,
 				20E23701169169A1008FB048 /* TextureList.cpp in Sources */,
+				207F78011701862400A141C6 /* CCShake.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
