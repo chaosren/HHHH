@@ -1379,7 +1379,7 @@
 		5A1B400F164AB5C100C94D7F /* NDFrame.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; path = NDFrame.cpp; sourceTree = "<group>"; };
 		5A1B4010164AB5C100C94D7F /* NDPicture.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; path = NDPicture.cpp; sourceTree = "<group>"; };
 		5A1B4011164AB5C100C94D7F /* NDTextureMonitor.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; path = NDTextureMonitor.cpp; sourceTree = "<group>"; };
-		5A1B4012164AB5C100C94D7F /* NDTile.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; path = NDTile.cpp; sourceTree = "<group>"; };
+		5A1B4012164AB5C100C94D7F /* NDTile.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 2147483673; path = NDTile.cpp; sourceTree = "<group>"; };
 		5A1B4013164AB5C100C94D7F /* UIImageCombiner.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; path = UIImageCombiner.cpp; sourceTree = "<group>"; };
 		5A1B4014164AB5C100C94D7F /* UIImageExt.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; path = UIImageExt.cpp; sourceTree = "<group>"; };
 		5A1B4017164AB5C100C94D7F /* NDMapData.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; path = NDMapData.h; sourceTree = "<group>"; };
@@ -1450,7 +1450,7 @@
 		5A1B406C164AB5C100C94D7F /* XMLReader.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; path = XMLReader.h; sourceTree = "<group>"; };
 		5A1B406E164AB5C100C94D7F /* Des.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; path = Des.cpp; sourceTree = "<group>"; };
 		5A1B406F164AB5C100C94D7F /* Des.mm */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; path = Des.mm; sourceTree = "<group>"; };
-		5A1B4070164AB5C100C94D7F /* ImageNumber.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; path = ImageNumber.cpp; sourceTree = "<group>"; };
+		5A1B4070164AB5C100C94D7F /* ImageNumber.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 2147483673; path = ImageNumber.cpp; sourceTree = "<group>"; };
 		5A1B4071164AB5C100C94D7F /* MD5checksum.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; path = MD5checksum.cpp; sourceTree = "<group>"; };
 		5A1B4072164AB5C100C94D7F /* MD5checksum.mm */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; path = MD5checksum.mm; sourceTree = "<group>"; };
 		5A1B4074164AB5C100C94D7F /* NDDataSource.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; path = NDDataSource.cpp; sourceTree = "<group>"; };
@@ -1480,7 +1480,7 @@
 		5A1B464D164ABC9800C94D7F /* BattleMgr.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; path = BattleMgr.cpp; sourceTree = "<group>"; };
 		5A1B464E164ABC9800C94D7F /* BattleSkill.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 2147483673; lineEnding = 2; path = BattleSkill.cpp; sourceTree = "<group>"; };
 		5A1B464F164ABC9800C94D7F /* BattleUtil.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; path = BattleUtil.cpp; sourceTree = "<group>"; };
-		5A1B4650164ABC9800C94D7F /* Fighter.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; path = Fighter.cpp; sourceTree = "<group>"; };
+		5A1B4650164ABC9800C94D7F /* Fighter.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 2147483673; path = Fighter.cpp; sourceTree = "<group>"; };
 		5A1B4651164ABC9800C94D7F /* Hurt.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; path = Hurt.cpp; sourceTree = "<group>"; };
 		5A1B4652164ABC9800C94D7F /* NDEraseInOutEffect.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; path = NDEraseInOutEffect.cpp; sourceTree = "<group>"; };
 		5A1B4653164ABC9800C94D7F /* StatusDialog.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; path = StatusDialog.cpp; sourceTree = "<group>"; };

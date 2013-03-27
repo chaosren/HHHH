@@ -155,7 +155,7 @@ void NDDirector::RunScene(NDScene* scene)
 
 	m_kScenesStack.push_back(scene);
 
-	LOGD("ready to runwithscene,scene->m_ccNode value is %d",(int)(scene->m_pkCCNode));
+	LOGD("ready to runwithscene,scene->m_ccNode value is %d",(int)(scene->getCCNode()));
 
 	m_pkDirector->runWithScene((CCScene *) scene->getCCNode());
 }
