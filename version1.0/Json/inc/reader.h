@@ -105,7 +105,7 @@ namespace Json {
          Location extra_;
       };
 
-      typedef std::deque<ErrorInfo> Errors;
+      typedef std::vector<ErrorInfo> Errors;
 
       bool expectToken( TokenType type, Token &token, const char *message );
       bool readToken( Token &token );
