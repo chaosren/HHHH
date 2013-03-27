@@ -23,6 +23,7 @@
 #include "NDPath.h"
 #include "ScriptMgr.h"
 #include "ObjectTracker.h"
+#include "UsePointPls.h"
 
 using namespace NDEngine;
 
@@ -70,13 +71,14 @@ static int g_iYOffset[] = { //
 	410, 500, 620, 
 	410, 500, 620,
 };
+
 //状态小图标宽高
-#define STATUS_ICON_WIDTH		(32)
-#define STATUS_ICON_HEIGHT		(32)
+#define STATUS_ICON_WIDTH		((32)*RESOURCE_SCALE_960)
+#define STATUS_ICON_HEIGHT		((32)*RESOURCE_SCALE_960)
 
 //交战者血条/气条的宽高
-#define HP_BAR_WIDTH	(120-STATUS_ICON_WIDTH)
-#define HP_BAR_HEIGHT	(12-4)
+#define HP_BAR_WIDTH            (120*RESOURCE_SCALE_960-STATUS_ICON_WIDTH)
+#define HP_BAR_HEIGHT           ((12-4)*RESOURCE_SCALE_960)
 
 #define STATUS_ICON_IMAGE		"Res00/StatusIcons1.png"
 
@@ -320,10 +322,10 @@ void Fighter::updatePos()
 
 		// 所有怪物武将的姓名位置改成固定值
 		//--this->lb_FighterName->SetFrameRect(CCRectMake(x - sizeStr.width / 2, y - m_role->GetHeight() - sizeStr.height, sizeStr.width, sizeStr.height));
-		m_pkFighterNameLabel->SetFrameRect(
-			CCRectMake(m_nX - sizeStr.width / 2, 
-				m_nY - m_nRoleInitialHeight - sizeStr.height - HP_BAR_HEIGHT - 2, 
-					sizeStr.width*FONT_SCALE, sizeStr.height ));
+		m_pkFighterNameLabel->SetFrameRect(CCRectMake(m_nX - sizeStr.width / 2,
+                                                      m_nY - m_nRoleInitialHeight - sizeStr.height - HP_BAR_HEIGHT - 2,
+                                                      sizeStr.width*FONT_SCALE,
+                                                      sizeStr.height ));
 	}
 
 	if (m_pkSkillNameLabel)
