@@ -973,10 +973,14 @@ void CCMoveTo::startWithTarget(CCNode *pTarget)
 
 void CCMoveTo::update(float time)
 {
+	static float s_fScale = 4.0f;
+
     if (m_pTarget)
     {
         m_pTarget->setPosition(ccp(m_startPosition.x + m_delta.x * time,
             m_startPosition.y + m_delta.y * time));
+
+		m_pTarget->setScale(s_fScale - time * 3);
     }
 }
 

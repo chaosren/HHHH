@@ -187,8 +187,8 @@ CSMLoginScene* CSMLoginScene::Scene( bool bShowEntry /*= false*/  )
 
 		pkTempPic = kPool.AddPicture( NDPath::GetImg00Path("Res00/action/CheckIn.png") );
 		pkSprite->SetPicture(pkTempPic);
-		pkSprite->SetFrameRect(CCRectMake(0,0,100,200));
-		pkSprite->setFirstPosition(CCPointMake(300,-200));
+		pkSprite->SetFrameRect(CCRectMake(200,400,100,200));
+		pkSprite->setFirstPosition(CCPointMake(300,-100));
 		pkSprite->setShakeNode(pkScene->getCCNode());
 
 		if (pkPicture)
