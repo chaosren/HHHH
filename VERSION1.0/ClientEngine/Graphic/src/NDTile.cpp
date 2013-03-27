@@ -677,7 +677,7 @@ void NDTile::SetDrawRect( CCRect rect, bool bBattleMap )
 		fScale = ConvertUtil::getAndroidScale().x;
 	}
 #elif (CC_TARGET_PLATFORM == CC_PLATFORM_IOS) && WITH_IPHONE5_BATTLEMAP_SCALE
-	if (bBattleMap)
+	if (bBattleMap && IS_IPHONE5)
 	{
 		//IPHONE5战斗地图下以X为主等比缩放
 		fScale = IPHONE5_WIDTH_SCALE;
