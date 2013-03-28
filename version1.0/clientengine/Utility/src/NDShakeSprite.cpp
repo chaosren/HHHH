@@ -36,7 +36,7 @@ void NDShakeSprite::draw()
 
 	if (bFirst)
 	{
-		CCMoveTo* pkMoveTo = CCMoveTo::create(0.30f,m_kFirstPosition);
+		CCScaleTo* pkMoveTo = CCScaleTo::create(0.30f,1.0f,1.0f);
 		CCCallFunc* pkFunc = CCCallFunc::actionWithTarget(m_pkCCNode,
 			callfunc_selector(NDShakeSprite::CallbackFunction));
 		m_pkCCNode->runAction(CCSequence::actions(pkMoveTo,pkFunc,0));
