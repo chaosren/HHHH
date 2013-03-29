@@ -979,8 +979,6 @@ void CCMoveTo::update(float time)
     {
         m_pTarget->setPosition(ccp(m_startPosition.x + m_delta.x * time,
             m_startPosition.y + m_delta.y * time));
-
-		m_pTarget->setScale(s_fScale - time * 3);
     }
 }
 

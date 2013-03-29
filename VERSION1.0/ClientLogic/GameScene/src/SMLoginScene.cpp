@@ -158,9 +158,9 @@ CSMLoginScene* CSMLoginScene::Scene( bool bShowEntry /*= false*/  )
 
 		pkLayer->Initialization();
 		pkLayer->SetFrameRect(CCRectMake(0, 0, kWinSize.width, kWinSize.height));
-		pkScene->AddChild(pkLayer);
+	//	pkScene->AddChild(pkLayer);
 		pkScene->m_pLayerOld = pkLayer;
-		pkScene->AddChild(pkImageNumber,100);
+	//	pkScene->AddChild(pkImageNumber,100);
 
 		NDPicturePool& kPool = *(NDPicturePool::DefaultPool());
 		NDUIImage* pkBackgroundImage = new NDUIImage;
@@ -200,7 +200,7 @@ CSMLoginScene* CSMLoginScene::Scene( bool bShowEntry /*= false*/  )
         pkBackgroundImage->SetFrameRect( CCRectMake(0, 0, kWindowSize.width, kWindowSize.height ));
         
         pkLayer->AddChild(pkBackgroundImage);
-		pkScene->AddChild(pkSprite,1000);
+	//	pkScene->AddChild(pkSprite,1000);
 #endif //(CC_TARGET_PLATFORM != CC_PLATFORM_ANDROID)
 
 		CCLog( "@@login01: open CSMLoginScene\r\n" );
@@ -1339,17 +1339,6 @@ void CSMLoginScene::CloseWaitingAni()
 //ÏÔÊ¾¼ì²âWIFIÊ§°Ü¶Ô»°¿ò
 void CSMLoginScene::ShowCheckWIFIOff()
 {
-// 	CCSize winSize = CCDirector::sharedDirector()->getWinSizeInPixels();
-// 	
-// 	NDUILayer *	pLayer	= new NDUILayer();
-// 	if ( !pLayer )
-// 		return;
-// 	pLayer->Initialization();
-// 	pLayer->SetFrameRect( CCRectMake(0, 0, winSize.width, winSize.height) );
-// 	AddChild(pLayer);
-// 	m_pLayerCheckWIFI = pLayer;
-// 	NDUILoad tmpUILoad;
-// 	tmpUILoad.Load( "CheckWIFIDlg.ini", pLayer, this, CCSizeMake(0, 0) );
 	CreatConfirmDlg( NDCommonCString2(SZ_WIFI_OFF).c_str() );
 	m_iState = 1;
 }
