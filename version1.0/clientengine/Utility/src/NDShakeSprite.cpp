@@ -30,7 +30,7 @@ void NDShakeSprite::draw()
 	if (dbTimeDelta / 1000.0 < 5.0)
 	{
 		m_pkCCNode->setScale(4.0f);
-		NDUIImage::draw();
+		//NDUIImage::draw();
 		return;
 	}
 

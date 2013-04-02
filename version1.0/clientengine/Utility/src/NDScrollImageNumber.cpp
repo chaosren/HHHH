@@ -102,6 +102,8 @@ void NDScrollImageNumber::draw()
 		NDPicture* pkPicture = PictureNumber::SharedInstance()->SmallRed(uiBit);
 		if (pkPicture)
 		{
+			pkPicture->setScale(0.8f);
+
 			NDUIImage* pkImage = new NDUIImage();
 			pkImage->Initialization();
 			pkImage->SetPicture(pkPicture);
@@ -110,7 +112,7 @@ void NDScrollImageNumber::draw()
 				nStartPosition
 				- i
 				* PictureNumber::SharedInstance()->GetSmallRedSize().width,
-				0, pkPicture->GetSize().width, pkPicture->GetSize().height));
+				101, pkPicture->GetSize().width, pkPicture->GetSize().height));
 			AddChild(pkImage,100,1000 + i);
 		}
 

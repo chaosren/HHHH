@@ -42,7 +42,7 @@ namespace NDEngine
 		
 		m_lblText = new NDUILabel();
 		m_lblText->Initialization();
-		this->AddChild(m_lblText);
+		AddChild(m_lblText);
 	}
 	
 	void NDUIScrollText::SetScrollType(ScrollTextType scrollTextType)
