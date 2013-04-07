@@ -2545,14 +2545,14 @@ void CCTargetedAction::update(float time)
 
 #ifdef ND_MOD
 
-CCAccelerationMoveTo::CCAccelerationMoveTo()
+CCPhysicsMove::CCPhysicsMove()
 {
 	m_fAcceleration = 0.0f;
 	m_fBaseSpeedPercent_X = 0.0f;
 	m_fBaseSpeedPercent_Y = 0.0f;
 }
 
-void CCAccelerationMoveTo::update( float time )
+void CCPhysicsMove::update( float time )
 {
 	if (m_pTarget)
 	{
@@ -2564,18 +2564,18 @@ void CCAccelerationMoveTo::update( float time )
 	}
 }
 
-CCAccelerationMoveTo* CCAccelerationMoveTo::create( float duration,
+CCPhysicsMove* CCPhysicsMove::create( float duration,
 		float fAcceleration,
 		const CCPoint& position )
 {
-	CCAccelerationMoveTo *pMoveTo = new CCAccelerationMoveTo();
+	CCPhysicsMove *pMoveTo = new CCPhysicsMove();
 	pMoveTo->initWithDuration(duration,fAcceleration, position);
 	pMoveTo->autorelease();
 
 	return pMoveTo;
 }
 
-bool CCAccelerationMoveTo::initWithDuration( float duration,
+bool CCPhysicsMove::initWithDuration( float duration,
 		float fAcceleration,
 		const CCPoint& position )
 {
@@ -2589,7 +2589,7 @@ bool CCAccelerationMoveTo::initWithDuration( float duration,
 	return false;
 }
 
-void CCAccelerationMoveTo::startWithTarget( CCNode *pTarget )
+void CCPhysicsMove::startWithTarget( CCNode *pTarget )
 {
 	CCActionInterval::startWithTarget(pTarget);
 	m_startPosition = pTarget->getPosition();

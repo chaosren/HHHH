@@ -361,13 +361,13 @@ protected:
 
 #ifdef ND_MOD
 
-class CC_DLL CCAccelerationMoveTo : public CCActionInterval
+class CC_DLL CCPhysicsMove : public CCActionInterval
 {
 public:
 
-	CCAccelerationMoveTo();
+	CCPhysicsMove();
 
-	static CCAccelerationMoveTo* create(float duration,float fAcceleration, const CCPoint& position);
+	static CCPhysicsMove* create(float duration,float fAcceleration, const CCPoint& position);
 
 	bool initWithDuration(float duration, float fAcceleration,const CCPoint& position);
 	virtual void startWithTarget(CCNode *pTarget);
