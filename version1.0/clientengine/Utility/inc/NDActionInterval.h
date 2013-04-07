@@ -23,6 +23,7 @@ public:
 	virtual ~NDActionInterval();
 
 	virtual bool IsDone();
+	virtual void Stop();
 
 protected:
 

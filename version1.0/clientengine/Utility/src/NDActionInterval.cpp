@@ -19,4 +19,9 @@ bool NDActionInterval::IsDone()
 	return m_pkActionInterval->isDone();
 }
 
+void NDActionInterval::Stop()
+{
+
+}
+
 NS_NDENGINE_END
