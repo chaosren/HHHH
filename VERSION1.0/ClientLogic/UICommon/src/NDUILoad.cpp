@@ -33,24 +33,24 @@ IMPLEMENT_CLASS(NDUILoad, NDUILoadEngine)
 class NDUILoad_Util
 {
 public:
-	static unsigned int inline findAndReplace(
-		std::string& source, 
-		const std::string& find, 
-		const std::string& replace, 
-		unsigned int time=0 ) 
-	{     
-		unsigned int num=0;     
-		size_t fLen = find.size();
-		size_t rLen = replace.size();     
-		for (size_t pos=0; (pos=source.find(find, pos))!=std::string::npos; pos+=rLen)     
-		{         
-			source.replace(pos, fLen, replace); 
-
-			if (time > 0 && ++num >= time)
-				break;
-		}     
-		return num; 
-	}
+//	static unsigned int inline findAndReplace(
+//		std::string& source, 
+//		const std::string& find, 
+//		const std::string& replace, 
+//		unsigned int time=0 ) 
+//	{     
+//		unsigned int num=0;     
+//		size_t fLen = find.size();
+//		size_t rLen = replace.size();     
+//		for (size_t pos=0; (pos=source.find(find, pos))!=std::string::npos; pos+=rLen)     
+//		{         
+//			source.replace(pos, fLen, replace); 
+//
+//			if (time > 0 && ++num >= time)
+//				break;
+//		}     
+//		return num; 
+//	}
 
 	static bool FilterStringName(UIINFO& uiInfo)
 	{

@@ -50,6 +50,12 @@ for(int i=0; i<nCtrlAmount; i++)
 #include "IniFile.h"
 #include "UtilityInc.h"
 
+unsigned int findAndReplace(
+                                          std::string& source,
+                                          const std::string& find,
+                                          const std::string& replace,
+                                          unsigned int time=0 );
+
 enum DISPLAY_RESOLUTION
 {
 	DISPLAY_RESOLUTION_BEGIN,
