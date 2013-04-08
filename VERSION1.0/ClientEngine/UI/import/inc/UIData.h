@@ -114,6 +114,8 @@ struct UIINFO
 	
 	unsigned long nTextFontSize;
 	unsigned long nTextFontColor;
+        
+	unsigned long nBlockSize;
 
 	void reset()
 	{
@@ -143,6 +145,8 @@ struct UIINFO
 
 		nTextFontSize = 0;
 		nTextFontColor = 0;
+        
+        nBlockSize = 0;
 	}
 
 	UIINFO() { this->reset(); }

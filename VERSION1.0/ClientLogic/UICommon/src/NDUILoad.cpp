@@ -396,7 +396,14 @@ NDUINode* NDUILoad::CreateCtrl( UIINFO& uiInfo, CCSize sizeOffset, const char*& 
 			node = (NDUINode*)help.Create(uiInfo, sizeOffset);
 			ctrlTypeName = "MY_CONTROL_TYPE_LIST_LOOP";
 		}
-		break;
+        break;
+    case MY_CONTROL_TYPE_9BLK_BACKGROUND:
+		{
+			ControlHelp<MY_CONTROL_TYPE_9BLK_BACKGROUND> help;
+			node = (NDUINode*)help.Create(uiInfo, sizeOffset);
+			ctrlTypeName = "MY_CONTROL_TYPE_9BLK_BACKGROUND";
+		}
+        break;
 	default:
 		break;
 	}
