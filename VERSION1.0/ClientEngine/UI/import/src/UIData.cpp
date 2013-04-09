@@ -29,9 +29,31 @@
 #define CTRL_TEXTFONTSIZE "TextSize"
 #define CTRL_TEXTFONTCOLOR "TextColor"
 
+#define CTRL_BLOCKSIZE "BgBlockSize"
+
+
+unsigned int findAndReplace(
+                            std::string& source,
+                            const std::string& find,
+                            const std::string& replace,
+                            unsigned int time/*=0*/ )
+{
+    unsigned int num=0;
+    size_t fLen = find.size();
+    size_t rLen = replace.size();
+    for (size_t pos=0; (pos=source.find(find, pos))!=std::string::npos; pos+=rLen)
+    {
+        source.replace(pos, fLen, replace);
+        
+        if (time > 0 && ++num >= time)
+            break;
+    }
+    return num;
+}
+
 CUIData::CUIData(void)
 {
-	INC_NDOBJ("CUIData"); 
+	INC_NDOBJ("CUIData");
 
 	m_kInfo.strNormalFile = "";
 	m_kInfo.strSelectedFile = "";
@@ -49,6 +71,7 @@ CUIData::CUIData(void)
 	m_kInfo.strTextTradition = "";
 	m_kInfo.nTextFontSize = 0;
 	m_kInfo.nTextFontColor = 0;
+    m_kInfo.nBlockSize = 0;
 }
 
 CUIData::~CUIData(void)
@@ -136,9 +159,11 @@ bool CUIData::getCtrlData(char* szCtrlName)
 
 	//取文本信息
 	m_kInfo.strText = m_kINIFile.GetValue(szCtrlName, CTRL_TEXT_KEY);
+    findAndReplace(m_kInfo.strText, "<br>", "\r");
 	m_kInfo.strTextAlign = m_kINIFile.GetValue(szCtrlName, CTRL_TEXTALIGN_KEY);
 	m_kInfo.strTextTradition = m_kINIFile.GetValue(szCtrlName,
-			CTRL_TEXTTRADITION);
+                                                   CTRL_TEXTTRADITION);
+    findAndReplace(m_kInfo.strTextTradition, "<br>", "\r");
 	m_kInfo.nTextFontSize = m_kINIFile.GetValueI(szCtrlName, CTRL_TEXTFONTSIZE);
 	m_kInfo.nTextFontColor = m_kINIFile.GetValueI(szCtrlName,
 			CTRL_TEXTFONTCOLOR);
@@ -146,6 +171,8 @@ bool CUIData::getCtrlData(char* szCtrlName)
 	//其它信息
 	m_kInfo.nID = m_kINIFile.GetValueI(szCtrlName, CTRL_ID_KEY);
 	m_kInfo.nType = m_kINIFile.GetValueI(szCtrlName, CTRL_TYPE_KEY);
+    
+	m_kInfo.nBlockSize = m_kINIFile.GetValueI(szCtrlName, CTRL_BLOCKSIZE);
 
 	return true;
 }
