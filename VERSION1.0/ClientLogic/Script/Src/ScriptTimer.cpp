@@ -76,11 +76,8 @@ bool ScriptTimerMgr::RemoveTimer(OBJID tag)
 		return false;
 	}
 	
-	//ScriptMgrObj.DebugOutPut("remove timer:%s", m_mapDebugTimerFuncTip[tag].c_str());
 	m_mapFunc.erase(it);
-	
 	m_idAlloc.ReturnID(tag);
-	
 	m_timer.KillTimer(this, tag);
 	
 	return true;
