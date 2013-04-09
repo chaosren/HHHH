@@ -29,6 +29,8 @@
 #define CTRL_TEXTFONTSIZE "TextSize"
 #define CTRL_TEXTFONTCOLOR "TextColor"
 
+#define CTRL_BLOCKSIZE "BgBlockSize"
+
 
 unsigned int findAndReplace(
                             std::string& source,
@@ -69,6 +71,7 @@ CUIData::CUIData(void)
 	m_kInfo.strTextTradition = "";
 	m_kInfo.nTextFontSize = 0;
 	m_kInfo.nTextFontColor = 0;
+    m_kInfo.nBlockSize = 0;
 }
 
 CUIData::~CUIData(void)
@@ -168,6 +171,8 @@ bool CUIData::getCtrlData(char* szCtrlName)
 	//其它信息
 	m_kInfo.nID = m_kINIFile.GetValueI(szCtrlName, CTRL_ID_KEY);
 	m_kInfo.nType = m_kINIFile.GetValueI(szCtrlName, CTRL_TYPE_KEY);
+    
+	m_kInfo.nBlockSize = m_kINIFile.GetValueI(szCtrlName, CTRL_BLOCKSIZE);
 
 	return true;
 }
