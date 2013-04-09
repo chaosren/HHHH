@@ -3297,16 +3297,16 @@ bool GameScene::AddNpc(int nKey, int nLookFace)
 		return false;
 	}
 
-	NDNpc *npc = new NDNpc;
-	npc->Initialization(nLookFace);
-	if (!AddNodeToMap(npc))
+	NDNpc* pkNPC = new NDNpc;
+	pkNPC->Initialization(nLookFace);
+	if (!AddNodeToMap(pkNPC))
 	{
-		delete npc;
+		delete pkNPC;
 		ScriptMgrObj.DebugOutPut("DramaScene::AddNpc !AddNodeToMap lookface[%d]key[%d]", nLookFace, nKey);
 		return false;
 	}
 
-	m_mapNpc.insert(std::make_pair(nKey, npc));
+	m_mapNpc.insert(std::make_pair(nKey, pkNPC));
 
 	return true;
 }

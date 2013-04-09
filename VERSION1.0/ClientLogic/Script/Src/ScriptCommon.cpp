@@ -39,19 +39,57 @@
 using namespace LuaPlus;
 using namespace std;
 
-namespace NDEngine {
+#include "define.h"
+
+NS_NDENGINE_BGN
 
 int LuaLogInfo(LuaState* state)
 {
-	LuaStack args(state);
-	LuaObject kString = args[1];
+	LuaStack kArgs(state);
+	LuaStackObject kStackObj = kArgs[1];
+	LuaObject kString(kStackObj);
 	
 	if (kString.IsString())
 	{
 		ScriptMgrObj.WriteLog("[lua] %s", kString.GetString());
-		//ScriptMgrObj.DebugOutPut("%s", str.GetString());
 	}
 	
+	return 0;
+}
+
+int LuaColorInfo(LuaState* state)
+{
+	LuaStack kArgs(state);
+	LuaObject kString = kArgs[1];
+	LuaObject kLevel = kArgs[2];
+
+	if (kString.IsString())
+	{
+		const char* pszTemp = kString.GetString();
+
+		ScriptMgrObj.WriteLog("[lua] %s", kString.GetString());
+
+		if (kLevel.IsNil())
+		{
+			ScriptMgrObj.DebugOutPut("[lua] %s",kString.GetString());
+		}
+
+		unsigned int uiLogLevel = kLevel.ToInteger();
+
+		switch(uiLogLevel)
+		{
+		case 1:
+			ScriptMgrObj.ColorDebugOutPut(FOREGROUND_GREEN,"[lua] %s", pszTemp);
+		case 2:
+			ScriptMgrObj.ColorDebugOutPut(FOREGROUND_BLUE,"[lua] %s", pszTemp);
+		case 3:
+			ScriptMgrObj.ColorDebugOutPut(FOREGROUND_RED,"[lua] %s", pszTemp);
+		default:
+			ScriptMgrObj.DebugOutPut("[lua] %s", pszTemp);
+			break;
+		}
+	}
+
 	return 0;
 }
 
@@ -115,6 +153,7 @@ int BitwiseAnd(int x, int y)
 void ScriptCommonLoad()
 {
 	ETLUAFUNC("LuaLogInfo", LuaLogInfo);
+	ETLUAFUNC("LuaColorInfo", LuaColorInfo);
 	ETLUAFUNC("LuaLogError", LuaLogError);
 	ETLUAFUNC("DoFile", DoFile);
 	ETCFUNC("LeftShift", LeftShift);
@@ -123,4 +162,4 @@ void ScriptCommonLoad()
 	ETCFUNC("PicMemoryUsingLogOut", PicMemoryUsingLogOut);
 }
 
-}
+NS_NDENGINE_END

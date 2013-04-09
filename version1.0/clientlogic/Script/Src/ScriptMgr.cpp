@@ -57,7 +57,15 @@
 #define TextureMonitorObj	CNDTextureMonitor::GetSingleton()
 
 using namespace NDEngine;
-const unsigned char g_dekey[] = {0x80,0x12,0x97,0x67,0x24,0x88,0x89,0x98,0x55,0x34,0xBD,0x33,0x34,0x80,0x12,0x97,0x67,0x24,0x88,0x89,0x98,0x55,0x34,0xBD};
+
+const unsigned char g_dekey[] = 
+{
+	0x80,0x12,0x97,0x67,0x24,0x88,
+	0x89,0x98,0x55,0x34,0xBD,0x33,
+	0x34,0x80,0x12,0x97,0x67,0x24,
+	0x88,0x89,0x98,0x55,0x34,0xBD
+};
+
 std::string* s_DataDir = 0;
 
 IMPLEMENT_CLASS(ScriptMgr,NDBaseScriptMgr)
@@ -129,8 +137,9 @@ const char* DataFilePath()
     return s_DataDir->c_str();
 }
 
-ScriptMgr::ScriptMgr()
-: m_bLoadLuaOK(false)
+ScriptMgr::ScriptMgr():
+m_bLoadLuaOK(false),
+m_fDebugOutPut(0)
 {
 	INC_NDOBJ_RTCLS
 
@@ -144,10 +153,10 @@ char filename[256];
     printf(filename);
 #endif
 
-	char filename[256] = {0};
-	memset(filename, 0, sizeof(filename));
-	snprintf(filename, sizeof(filename), "%s/name.txt", NDPath::GetLogPath().c_str());
-	m_fTest = fopen(filename, "w+");
+	char pszFileName[256] = {0};
+	memset(pszFileName, 0, sizeof(pszFileName));
+	snprintf(pszFileName, sizeof(pszFileName), "%s/name.txt", NDPath::GetLogPath().c_str());
+	m_fTest = fopen(pszFileName, "w+");
 
 	LuaStateMgrObj.SetExceptOutput(&luaExceptLoadOutPut);
 }
@@ -165,19 +174,6 @@ ScriptMgr::~ScriptMgr()
 	}
 }
 
-/*
-void ScriptMgr::DebugOutPut(const char* str)
-{
-	if (!str || !m_fDebugOutPut)
-	{
-		return;
-	}
-	
-	fprintf(m_fDebugOutPut, "\r\n%s", str);
-	fflush(m_fDebugOutPut);
-}
-*/
-
 void ScriptMgr::WriteLog(const char* fmt, ...)
 {
 	//return;
@@ -186,12 +182,12 @@ void ScriptMgr::WriteLog(const char* fmt, ...)
 	{
 		return;
 	}
-	va_list argumentList;
+	va_list kArgumentList;
 	char buffer[1024] = "";
-	va_start(argumentList, fmt);
-	::vsprintf( buffer, fmt, argumentList);
+	va_start(kArgumentList, fmt);
+	::vsprintf( buffer, fmt, kArgumentList);
 	sprintf(buffer, "%s\0", buffer);
-	va_end(argumentList);
+	va_end(kArgumentList);
 
 	if(strstr(buffer, "tzq") != NULL && m_fTest)
 	{
@@ -203,21 +199,51 @@ void ScriptMgr::WriteLog(const char* fmt, ...)
 	CCLog( "%s\r\n", buffer );
 }
 
-void ScriptMgr::DebugOutPut(const char* fmt, ...)
+void ScriptMgr::DebugOutPut(const char* pszFormat, ...)
 {
-	if (!fmt || !m_fDebugOutPut)
+	if (!pszFormat)
 	{
 		return;
 	}
-	va_list argumentList;
-	char buffer[4096] = "";
-	va_start(argumentList, fmt);
-	::vsprintf( buffer, fmt, argumentList);
-	va_end(argumentList);
-	
+	va_list kArgumentList;
+	char szBuffer[4096] = "";
+	va_start(kArgumentList, pszFormat);
+	::vsprintf( szBuffer, pszFormat, kArgumentList);
+	va_end(kArgumentList);
+
     //NDLog(buffer);
-    printf(buffer);
+    printf(szBuffer);
     printf("\n");
+}
+
+void NDEngine::ScriptMgr::ColorDebugOutPut(unsigned int uiColor,const char* pszFormat,... )
+{
+	if (!pszFormat)
+	{
+		return;
+	}
+
+	va_list kArgumentList;
+	char szBuffer[4096] = "";
+	va_start(kArgumentList, pszFormat);
+	::vsprintf( szBuffer, pszFormat, kArgumentList);
+	va_end(kArgumentList);
+
+#ifdef WIN32
+
+	HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
+	SetConsoleTextAttribute(hStdOut, uiColor); ///< 修改顏色為指定顏色
+
+#endif
+
+	printf(szBuffer);
+	printf("\n");
+
+#ifdef WIN32
+
+	SetConsoleTextAttribute(hStdOut, 7); ///< 恢复默认颜色 @郭浩
+
+#endif
 }
 
 //using namespace LuaPlus;
@@ -313,7 +339,6 @@ void ScriptMgr::Load()
  		else
  		{
  			LOGERROR("Load %s failed!",strPath.c_str());
- 
  		}
 	}
 #else

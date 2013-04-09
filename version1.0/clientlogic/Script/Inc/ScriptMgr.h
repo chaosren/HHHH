@@ -61,7 +61,8 @@ public:
     const char* excuteLuaFuncRetS(const char* funcname, const char* modulename);
     ccColor4B excuteLuaFuncRetColor4(const char* funcname, const char* modulename,int param1);
 	//void DebugOutPut(const char* str);
-	void DebugOutPut(const char* fmt, ...);
+	void DebugOutPut(const char* pszFormat, ...);
+	void ColorDebugOutPut(unsigned int uiColor,const char* pszFormat,...);
 	void LoadLuaFile(const char* pszluaFile);
 	void WriteLog(const char* fmt, ...);
 
