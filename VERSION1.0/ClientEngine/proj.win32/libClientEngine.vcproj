@@ -650,6 +650,10 @@
 					>
 				</File>
 				<File
+					RelativePath="..\UI\inc\NDUI9BlkImage.h"
+					>
+				</File>
+				<File
 					RelativePath="..\UI\inc\NDUIBaseGraphics.h"
 					>
 				</File>
@@ -795,6 +799,10 @@
 				</File>
 				<File
 					RelativePath="..\UI\src\NDTextNode.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\UI\src\NDUI9BlkImage.cpp"
 					>
 				</File>
 				<File
@@ -1314,11 +1322,11 @@
 			>
 		</File>
 		<File
-			RelativePath="..\TempClass\NDUITableLayer.h"
+			RelativePath="..\UI\inc\NDUITableLayer.h"
 			>
 		</File>
 		<File
-			RelativePath="..\UI\inc\NDUITableLayer.h"
+			RelativePath="..\TempClass\NDUITableLayer.h"
 			>
 		</File>
 		<File

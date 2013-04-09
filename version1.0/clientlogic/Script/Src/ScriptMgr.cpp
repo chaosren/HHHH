@@ -226,7 +226,7 @@ void NDEngine::ScriptMgr::ColorDebugOutPut(unsigned int uiColor,const char* pszF
 	va_list kArgumentList;
 	char szBuffer[4096] = "";
 	va_start(kArgumentList, pszFormat);
-	::vsprintf( szBuffer, pszFormat, kArgumentList);
+	vsprintf( szBuffer, pszFormat, kArgumentList);
 	va_end(kArgumentList);
 
 #ifdef WIN32
