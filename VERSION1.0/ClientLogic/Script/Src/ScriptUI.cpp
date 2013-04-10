@@ -148,8 +148,7 @@ void PrintLog(const char* pszText)
 	}
 }
 
-NDUINode*							
-GetUiNode(NDNode* pNode, int tag)
+NDUINode* GetUiNode(NDNode* pNode, int tag)
 {
 	if (!pNode)
 	{
@@ -167,8 +166,7 @@ GetUiNode(NDNode* pNode, int tag)
 }
 
 
-NDUILabel*							
-GetLabel(NDNode* pNode, int tag)
+NDUILabel* GetLabel(NDNode* pNode, int tag)
 {
 	if (!pNode)
 	{
@@ -193,18 +191,17 @@ GetButton(NDNode* pNode, int tag)
 		return NULL;
 	}
 	
-	NDNode *btn = pNode->GetChild(tag);
+	NDNode* pkButton = pNode->GetChild(tag);
 	
-	if (!btn || !btn->IsKindOfClass(RUNTIME_CLASS(NDUIButton)))
+	if (!pkButton || !pkButton->IsKindOfClass(RUNTIME_CLASS(NDUIButton)))
 	{
 		return NULL;
 	}
 	
-	return (NDUIButton*)btn;
+	return (NDUIButton*)pkButton;
 }
 
-NDUILayer*							
-GetUiLayer(NDNode* pNode, int tag)
+NDUILayer* GetUiLayer(NDNode* pNode, int tag)
 {
 	if (!pNode)
 	{
@@ -221,8 +218,7 @@ GetUiLayer(NDNode* pNode, int tag)
 	return (NDUILayer*)layer;
 }
 
-NDUITableLayer*						
-GetTableLayer(NDNode* pNode, int tag)
+NDUITableLayer* GetTableLayer(NDNode* pNode, int tag)
 {
 	if (!pNode)
 	{
@@ -239,8 +235,7 @@ GetTableLayer(NDNode* pNode, int tag)
 	return (NDUITableLayer*)tl;
 }
 
-NDUIImage*							
-GetImage(NDNode* pNode, int tag)
+NDUIImage* GetImage(NDNode* pNode, int tag)
 {	
 	if (!pNode)
 	{
@@ -265,32 +260,31 @@ GetScrollLayer(NDNode* pNode, int tag)
 		return NULL;
 	}
 	
-	NDNode *sl = pNode->GetChild(tag);
+	NDNode* pkScrollLayer = pNode->GetChild(tag);
 	
-	if (!sl || !sl->IsKindOfClass(RUNTIME_CLASS(NDUIContainerScrollLayer)))
+	if (!pkScrollLayer || !pkScrollLayer->IsKindOfClass(RUNTIME_CLASS(NDUIContainerScrollLayer)))
 	{
 		return NULL;
 	}
 	
-	return (NDUIContainerScrollLayer*)sl;
+	return (NDUIContainerScrollLayer*)pkScrollLayer;
 }
 
-NDUIContainerHScrollLayer*			
-GetHScrollLayer(NDNode* pNode, int tag)
+NDUIContainerHScrollLayer* GetHScrollLayer(NDNode* pNode, int tag)
 {
 	if (!pNode)
 	{
 		return NULL;
 	}
 	
-	NDNode *hsl = pNode->GetChild(tag);
+	NDNode* pkHScrollLayer = pNode->GetChild(tag);
 	
-	if (!hsl || !hsl->IsKindOfClass(RUNTIME_CLASS(NDUIContainerHScrollLayer)))
+	if (!pkHScrollLayer || !pkHScrollLayer->IsKindOfClass(RUNTIME_CLASS(NDUIContainerHScrollLayer)))
 	{
 		return NULL;
 	}
 	
-	return (NDUIContainerHScrollLayer*)hsl;
+	return (NDUIContainerHScrollLayer*)pkHScrollLayer;
 }
 
 NDUIScrollViewContainer*			
@@ -301,33 +295,33 @@ GetScrollViewContainer(NDNode* pNode, int tag)
 		return NULL;
 	}
 	
-	NDNode *sc = pNode->GetChild(tag);
+	NDNode *pkScrollViewContainer = pNode->GetChild(tag);
 	
-	if (!sc || !sc->IsKindOfClass(RUNTIME_CLASS(NDUIScrollViewContainer)))
+	if (!pkScrollViewContainer || !pkScrollViewContainer->
+		IsKindOfClass(RUNTIME_CLASS(NDUIScrollViewContainer)))
 	{
 		return NULL;
 	}
 	
-	return (NDUIScrollViewContainer*)sc;
+	return (NDUIScrollViewContainer*)pkScrollViewContainer;
 }
 
 
-CUIScrollViewContainerM*			
-GetScrollViewContainerM(NDNode* pNode, int tag)
+CUIScrollViewContainerM* GetScrollViewContainerM(NDNode* pNode, int tag)
 {
 	if (!pNode)
 	{
 		return NULL;
 	}
 	
-	NDNode *sc = pNode->GetChild(tag);
+	NDNode *pkScrollViewContainerM = pNode->GetChild(tag);
 	
-	if (!sc || !sc->IsKindOfClass(RUNTIME_CLASS(CUIScrollViewContainerM)))
+	if (!pkScrollViewContainerM || !pkScrollViewContainerM->IsKindOfClass(RUNTIME_CLASS(CUIScrollViewContainerM)))
 	{
 		return NULL;
 	}
 	
-	return (CUIScrollViewContainerM*)sc;
+	return (CUIScrollViewContainerM*)pkScrollViewContainerM;
 }
 
 CUIScrollContainerExpand*			
@@ -388,40 +382,38 @@ GetHyperLinkButton(NDNode* pNode, int tag)
 	return (CUIHyperlinkButton*)hlb;
 }
 
-CUIItemButton*
-GetItemButton(NDNode* pNode, int tag)
+CUIItemButton* GetItemButton(NDNode* pNode, int tag)
 {
 	if (!pNode)
 	{
 		return NULL;
 	}
 	
-	NDNode* itemBtn = pNode->GetChild(tag);
+	NDNode* pkItemButton = pNode->GetChild(tag);
 	
-	if (!itemBtn || !itemBtn->IsKindOfClass(RUNTIME_CLASS(CUIItemButton)))
+	if (!pkItemButton || !pkItemButton->IsKindOfClass(RUNTIME_CLASS(CUIItemButton)))
 	{
 		return NULL;
 	}
 	
-	return (CUIItemButton*)itemBtn;
+	return (CUIItemButton*)pkItemButton;
 }
 
-CUIEquipItem*							
-GetEquipButton(NDNode* pNode, int tag)
+CUIEquipItem* GetEquipButton(NDNode* pNode, int tag)
 {
 	if (!pNode)
 	{
 		return NULL;
 	}
 	
-	NDNode* equipBtn = pNode->GetChild(tag);
+	NDNode* pkEquipButton = pNode->GetChild(tag);
 	
-	if (!equipBtn || !equipBtn->IsKindOfClass(RUNTIME_CLASS(CUIEquipItem)))
+	if (!pkEquipButton || !pkEquipButton->IsKindOfClass(RUNTIME_CLASS(CUIEquipItem)))
 	{
 		return NULL;
 	}
 	
-	return (CUIEquipItem*)equipBtn; 
+	return (CUIEquipItem*)pkEquipButton; 
 }
 
 //#pragma mark 通过tag列表获取子结点
@@ -476,7 +468,7 @@ RecursiveUINode(NDNode* pParentNode, LuaObject tagTable)
 }
 
 //通过tag列表获取标签节点
-NDUILabel*							
+NDUILabel*
 RecursiveLabel(NDNode* pParentNode, LuaObject tagTable)
 {
 	NDNode* pResultNode = RecursiveNode(pParentNode, tagTable);
@@ -491,7 +483,7 @@ RecursiveLabel(NDNode* pParentNode, LuaObject tagTable)
 }
 
 //通过tag列表获取按钮节点
-NDUIButton*							
+NDUIButton*
 RecursiveButton(NDNode* pParentNode, LuaObject tagTable)
 {
 	NDNode* pResultNode = RecursiveNode(pParentNode, tagTable);
@@ -506,7 +498,7 @@ RecursiveButton(NDNode* pParentNode, LuaObject tagTable)
 }
 
 //通过tag列表获取层节点
-NDUILayer*							
+NDUILayer*
 RecursiveUILayer(NDNode* pParentNode, LuaObject tagTable)
 {
 	NDNode* pResultNode = RecursiveNode(pParentNode, tagTable);
@@ -521,8 +513,7 @@ RecursiveUILayer(NDNode* pParentNode, LuaObject tagTable)
 }
 
 //通过tag列表获取层节点
-NDUIImage*							
-RecursiveImage(NDNode* pParentNode, LuaObject tagTable)
+NDUIImage* RecursiveImage(NDNode* pParentNode, LuaObject tagTable)
 {
 	NDNode* pResultNode = RecursiveNode(pParentNode, tagTable);
 	
@@ -566,7 +557,7 @@ RecursiveScrollContainer(NDNode* pParentNode, LuaObject tagTable)
 }
 
 //通过tag列表获取视图容器节点
-NDUIScrollViewContainer*							
+NDUIScrollViewContainer*
 RecursiveSVC(NDNode* pParentNode, LuaObject tagTable)
 {
 	NDNode* pResultNode = RecursiveNode(pParentNode, tagTable);
@@ -597,7 +588,7 @@ RecursiveSV(NDNode* pParentNode, LuaObject tagTable)
 
 
 //通过tag列表获取视图容器节点
-CUIScrollViewContainerM*							
+CUIScrollViewContainerM*
 RecursiveSVCM(NDNode* pParentNode, LuaObject tagTable)
 {
 	NDNode* pResultNode = RecursiveNode(pParentNode, tagTable);
@@ -612,7 +603,7 @@ RecursiveSVCM(NDNode* pParentNode, LuaObject tagTable)
 }
 
 //通过tag列表获取视图节点
-CUIScrollViewM*							
+CUIScrollViewM*
 RecursiveSVM(NDNode* pParentNode, LuaObject tagTable)
 {
 	NDNode* pResultNode = RecursiveNode(pParentNode, tagTable);
@@ -627,11 +618,11 @@ RecursiveSVM(NDNode* pParentNode, LuaObject tagTable)
 }
 
 //通过tag列表获取视图容器节点
-CUIScrollContainerExpand*							
+CUIScrollContainerExpand*
 RecursiveSCE(NDNode* pParentNode, LuaObject tagTable)
 {
 	NDNode* pResultNode = RecursiveNode(pParentNode, tagTable);
-	
+
 	if (!pResultNode || 
 		!pResultNode->IsKindOfClass(RUNTIME_CLASS(CUIScrollContainerExpand)))
 	{

@@ -72,6 +72,7 @@ int WINAPI WinMain (HINSTANCE hInstance,
 		NDGameDataUtil::destroyAll();
 		NDLocalXmlString::GetSingleton().destroy();
 	}
+
 	return ret;
 #endif
 }
