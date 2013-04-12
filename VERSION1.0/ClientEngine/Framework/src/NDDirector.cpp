@@ -451,7 +451,14 @@ void NDDirector::Recyle()
 float NDDirector::getIosScale() const
 {
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
-	return 0.5f * CCDirector::sharedDirector()->getContentScaleFactor();
+    if (IS_IPAD)
+    {
+        return float(IPAD_POINT_SIZE_WIDTH) / 960.0;
+    }
+	else
+    {
+        return 0.5f * CCDirector::sharedDirector()->getContentScaleFactor();
+    }
 #elif (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
 	return 0.5f * CCDirector::sharedDirector()->getContentScaleFactor();
 #else
@@ -481,7 +488,12 @@ float NDDirector::getResourceScale()
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
 	return 2.0f * getAndroidScale().y; //乘2是因为是参考960*640的，不要改成1
 #else
-	return m_pkDirector->getContentScaleFactor();
+   	float scale = m_pkDirector->getContentScaleFactor();
+    if (IS_IPAD)
+    {
+        scale *= (float(IPAD_POINT_SIZE_HEIGHT) / 320);
+    }
+    return scale;
 #endif
 }
 
@@ -497,6 +509,10 @@ float NDDirector::getCoordScaleX()
     {
         scaleX *= IPHONE5_WIDTH_SCALE;
     }
+    else if (IS_IPAD)
+    {
+        scaleX *= (float(IPAD_POINT_SIZE_WIDTH) / 480);
+    }
     return scaleX;
 #endif
 }
@@ -508,7 +524,12 @@ float NDDirector::getCoordScaleY()
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
 	return getAndroidScale().y;
 #else
-	return 0.5f * m_pkDirector->getContentScaleFactor();
+	float scaleY = 0.5f * m_pkDirector->getContentScaleFactor();
+    if (IS_IPAD)
+    {
+        scaleY *= (float(IPAD_POINT_SIZE_HEIGHT) / 320);
+    }
+    return scaleY;
 #endif
 }
 
