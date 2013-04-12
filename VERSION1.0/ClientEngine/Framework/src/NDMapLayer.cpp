@@ -64,8 +64,10 @@ bool GetIntersectRect(CCRect first, CCRect second, CCRect& ret)
 		return false;
 	}
 
-	//todo(zjh)
-	//ret = CCRectIntersection(first, second);
+	ret.origin.x = MAX(first.getMinX(),second.getMinX());
+	ret.origin.y = MAX(first.getMinY(), second.getMinY());
+	ret.size.width = MIN(first.getMaxX(), second.getMaxX()) - ret.origin.x;
+	ret.size.height = MIN(first.getMaxY(), second.getMaxY()) - ret.origin.y;
 
 	return true;
 }
@@ -773,14 +775,13 @@ void NDMapLayer::DrawBgs()
 		NDTile* pkTile = (NDTile*) m_pkMapData->getBgTiles()->objectAtIndex(i);
 		if (pkTile && cocos2d::CCRect::CCRectIntersectsRect(scrRect, pkTile->getDrawRect()))
 		{
-			draw();
-// 				CCRect intersectRect	= CCRectZero;
-// 				CCRect drawRect			= CCRectZero;
-// 				if(GetIntersectRect(scrRect, tile.drawRect, intersectRect) &&
-// 				   GetRectPercent(tile.drawRect, intersectRect, drawRect))
-// 				{
-// 					tile->drawSubRect(drawRect);
-// 				}
+			CCRect intersectRect	= CCRectZero;
+			CCRect drawRect			= CCRectZero;
+			if(GetIntersectRect(scrRect, pkTile->getDrawRect(), intersectRect) &&
+			   GetRectPercent(pkTile->getDrawRect(), intersectRect, drawRect))
+			{
+				pkTile->drawSubRect(drawRect);
+			}
 		}
 	}
 }

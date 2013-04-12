@@ -48,6 +48,8 @@ int FileOp::readShort(FILE* f)
 		return 0;
 	}
 	usData = ((unsigned short)shortBuf[0] << 8) + shortBuf[1];
+	if(usData > 32767)
+		return (short)usData;
 	return usData;
 }
 
