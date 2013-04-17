@@ -1663,19 +1663,19 @@ namespace NDEngine {
 		{
 			return false;
 		}
-		
+
 		LuaObject kFuncObject;
-		
+
 		if (!pkUINode->GetLuaDelegate(kFuncObject)
 			|| !kFuncObject.IsFunction())
 		{
 			return false;
 		}
-		
+
 		LuaFunction<bool> kLuaUIEventCallback = kFuncObject;
-		
+
 		bool bRet = kLuaUIEventCallback(pkUINode, nTargetEvent, nParam);
-		
+
 		return bRet;
 	}
 }
