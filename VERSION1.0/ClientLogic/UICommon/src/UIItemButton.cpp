@@ -104,11 +104,11 @@ void CUIItemButton::SetLock(bool bSet)
 	
 	if (!m_bLock)
 	{
-		this->RemoveChild(TAG_ITEM_LOCK, true);
+		RemoveChild(TAG_ITEM_LOCK, true);
 		return;
 	}
 	
-	if (!this->GetChild(TAG_ITEM_LOCK))
+	if (!GetChild(TAG_ITEM_LOCK))
 	{
 		NDPicture *pic	= NDPicturePool::DefaultPool()->AddPicture(GetSMImgPath("bg_grid_closed.png"));
 		if (!pic)
@@ -117,7 +117,7 @@ void CUIItemButton::SetLock(bool bSet)
 		}
 		
 		CCSize picSize	= pic->GetSize();
-		CCRect rect	= this->GetFrameRect();
+		CCRect rect	= GetFrameRect();
 		rect.origin	= CCPointZero;
 		if (picSize.width < rect.size.width)
 		{
@@ -134,8 +134,8 @@ void CUIItemButton::SetLock(bool bSet)
 		imgLock->SetFrameRect(rect);
 		imgLock->SetPicture(pic, true);
 		imgLock->SetTag(TAG_ITEM_LOCK);
-		this->AddChild(imgLock);
-		imgLock->SetVisible(this->IsVisibled());
+		AddChild(imgLock);
+		imgLock->SetVisible(IsVisibled());
 	}
 }
 
@@ -146,17 +146,17 @@ bool CUIItemButton::IsLock()
 
 void CUIItemButton::ChangeItem(unsigned int unItemId)
 {
-	m_unItemId					= unItemId;
+	m_unItemId = unItemId;
 
-	unsigned int nItemType		= GetItemInfoN(unItemId, ITEM_TYPE);
+	unsigned int nItemType = GetItemInfoN(unItemId, ITEM_TYPE);
 	
-	this->ChangeItemType(nItemType);
+	ChangeItemType(nItemType);
 	
-	this->RefreshItemCount();
+	RefreshItemCount();
 	
 	if (unItemId > 0)
 	{
-		this->SetLock(false);
+		SetLock(false);
 	}
 }
 
@@ -167,29 +167,30 @@ unsigned int CUIItemButton::GetItemId()
 
 void CUIItemButton::ChangeItemType(unsigned int unItemType)
 {
-	this->SetImage(NULL, false, CCRectZero, true);
+	SetImage(NULL, false, CCRectZero, true);
 	
 	m_unItemType			= unItemType;
 	
 	unsigned int nIconIndex = GetItemDBN(unItemType, DB_ITEMTYPE_ICONINDEX);
 	if (nIconIndex > 0)
 	{
-		NDPicture* pic	= ItemImage::GetSMItem(nIconIndex);
-		if (pic)
+		NDPicture* pkPicture = ItemImage::GetSMItem(nIconIndex);
+
+		if (pkPicture)
 		{
-           pic->setScale(0.5f*RESOURCE_SCALE);
+           pkPicture->setScale(0.5f*RESOURCE_SCALE);
 			if (!m_bShowAdapt)
 			{
-				CCSize size = pic->GetSize();
-				CCRect frame = this->GetFrameRect();
-				CCRect rect	= CCRectMake((frame.size.width - size.width) / 2, 
-										 (frame.size.height - size.height) / 2, 
-										 size.width, size.height);
-				this->SetImage(pic, true, rect, true);
+				CCSize kSize = pkPicture->GetSize();
+				CCRect kFrame = GetFrameRect();
+				CCRect kRect	= CCRectMake((kFrame.size.width - kSize.width) / 2, 
+										 (kFrame.size.height - kSize.height) / 2, 
+										 kSize.width, kSize.height);
+				SetImage(pkPicture, true, kRect, true);
 			}
 			else
 			{
-				this->SetImage(pic, false, CCRectZero, true);
+				SetImage(pkPicture, false, CCRectZero, true);
 			}
 		}
 	}
@@ -211,7 +212,7 @@ void CUIItemButton::RefreshItemCount()
 		nItemCount	= GetItemInfoN(m_unItemId, ITEM_AMOUNT);
 	}
 	
-	this->ChangeItemCount(nItemCount);
+	ChangeItemCount(nItemCount);
 }
 
 unsigned int CUIItemButton::GetItemCount()
@@ -223,17 +224,17 @@ void CUIItemButton::ChangeItemCount(unsigned int unItemCount)
 	m_unItemCount	= unItemCount;
 	if (unItemCount == 0)
 	{
-		this->RemoveChild(TAG_ITEM_COUNT, true);
+		RemoveChild(TAG_ITEM_COUNT, true);
 		return;
 	}
 	
-	NDNode *pNode		= this->GetChild(TAG_ITEM_COUNT);
+	NDNode *pNode		= GetChild(TAG_ITEM_COUNT);
 	NDUILabel *pLabel	= NULL;
 	if (!pNode || !pNode->IsKindOfClass(RUNTIME_CLASS(NDUILabel)))
 	{
-		this->RemoveChild(TAG_ITEM_COUNT, true);
+		RemoveChild(TAG_ITEM_COUNT, true);
 		
-		CCRect rect = this->GetFrameRect();
+		CCRect rect = GetFrameRect();
 		
 		pLabel		= new NDUILabel;
 		pLabel->Initialization();
@@ -246,7 +247,7 @@ void CUIItemButton::ChangeItemCount(unsigned int unItemCount)
 							 0.5 * rect.size.height, 
 							 0.75 * rect.size.width,
 							 0.333 * rect.size.height));
-		this->AddChild(pLabel);
+		AddChild(pLabel);
 	}
 	else
 	{
@@ -255,7 +256,7 @@ void CUIItemButton::ChangeItemCount(unsigned int unItemCount)
 	
 	std::stringstream ss; ss << unItemCount;
 	pLabel->SetText(ss.str().c_str());
-	pLabel->SetVisible(this->IsVisibled());
+	pLabel->SetVisible(IsVisibled());
 }
 
 void CUIItemButton::SetShowAdapt(bool bShowAdapt)
@@ -274,7 +275,7 @@ void CUIItemButton::draw()
 	//NDUIButton::draw();
     NDUINode::draw();
     
-    if (this->IsVisibled()) 
+    if (IsVisibled()) 
     {
         if (m_bNeedSetTitle) 
         {
@@ -288,14 +289,14 @@ void CUIItemButton::draw()
             m_bNeedSetTwoTitle = false;
         }
         
-        NDNode* parentNode = this->GetParent();
+        NDNode* parentNode = GetParent();
         if (parentNode) 
         {
             if (parentNode-IsKindOfClass(RUNTIME_CLASS(NDUILayer))) 
             {
                 NDUILayer* uiLayer = (NDUILayer*)parentNode;
                 
-                CCRect scrRect = this->GetScreenRect();					
+                CCRect scrRect = GetScreenRect();					
                 
                 //draw back ground
                 if (m_picBG)
@@ -670,7 +671,7 @@ void CUIItemButton::draw()
     
 	
 	/*
-	 CCRect scrRect = this->GetScreenRect();
+	 CCRect scrRect = GetScreenRect();
 	 
 	 DrawLine(scrRect.origin, 
 	 ccpAdd(scrRect.origin, ccp(scrRect.size.width, 0)),

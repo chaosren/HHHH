@@ -1576,12 +1576,9 @@ namespace NDEngine {
 		ETCFUNC("RecursiveSVCM", RecursiveSVCM);
 		ETCFUNC("RecursiveSVM", RecursiveSVM);
 
-
-
 		//** chh 2012-07-24 **//
 		ETCFUNC("RecursiveSCE", RecursiveSCE);
 		ETCFUNC("RecursiveSCEV", RecursiveSCEV);
-
 
 		ETCFUNC("RecursiveHyperText", RecursiveHyperText);
 		ETCFUNC("RecursiveHyperBtn", RecursiveHyperBtn);
@@ -1648,7 +1645,7 @@ namespace NDEngine {
 		ETCFUNC("ConverToRadioGroup", ConverToRadioGroup);
 		ETCFUNC("ConverToEdit", ConverToEdit);
 		ETCFUNC("ConverToSprite", ConverToSprite);
-        
+
 		//++ Guosen 2012.6.3 //获得各种路径
 		ETCFUNC("NDPath_GetResourcePath",						NDPath_GetResourcePath);
 		ETCFUNC("NDPath_GetImagePath", NDPath_GetImagePath);
