@@ -15,6 +15,7 @@
 #include "CCDirector.h"
 #include "NDDirector.h"
 #include "CCPointExtension.h"
+#include "CCApplication.h"
 
 USING_NS_CC;
 
@@ -154,8 +155,12 @@ CCSize ConvertUtil::getCellSize()
 	float fScale = getAndroidScale().y; //以Y方向优先，维持高宽比，等比缩放
 	return CCSizeMake( 32 * fScale, 32 * fScale );
 #else
-	float fSize = 16 * CCDirector::sharedDirector()->getContentScaleFactor();
-	return CCSizeMake( fSize, fSize );
+    float fSize = 16 * CCDirector::sharedDirector()->getContentScaleFactor();
+    if (IS_IPAD)
+    {
+        fSize *= (768.0 / 320.0);
+    }
+    return CCSizeMake( fSize, fSize );
 #endif
 }
 
@@ -187,6 +192,27 @@ float ConvertUtil::get_iphone5_width_scale_for_ui_480_based()
 {
 	//UI配置是基于480*320
 	return float(IPHONE5_POINT_SIZE_WIDTH) / 480.0f;
+}
+
+bool ConvertUtil::is_ipad()
+{
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
+    if (CCApplication::sharedApplication()->getTargetPlatform() == kTargetIpad)
+        return true;
+#endif
+	return false;
+}
+
+float ConvertUtil::get_ipad_width_scale_for_ui_480_based()
+{
+    return CCDirector::sharedDirector()->getContentScaleFactor() *
+                float(IPAD_POINT_SIZE_WIDTH) / 480.0f;
+}
+
+float ConvertUtil::get_ipad_height_scale_for_ui_480_based()
+{
+    return CCDirector::sharedDirector()->getContentScaleFactor() *
+                float(IPAD_POINT_SIZE_HEIGHT) / 320.0f;
 }
 
 NS_NDENGINE_END

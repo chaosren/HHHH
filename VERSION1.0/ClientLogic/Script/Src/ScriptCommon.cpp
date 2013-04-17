@@ -74,6 +74,7 @@ int LuaColorInfo(LuaState* state)
 			ScriptMgrObj.DebugOutPut("[lua] %s",kString.GetString());
 		}
 
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
 		unsigned int uiLogLevel = kLevel.ToInteger();
 
 		switch(uiLogLevel)
@@ -88,6 +89,7 @@ int LuaColorInfo(LuaState* state)
 			ScriptMgrObj.DebugOutPut("[lua] %s", pszTemp);
 			break;
 		}
+#endif
 	}
 
 	return 0;

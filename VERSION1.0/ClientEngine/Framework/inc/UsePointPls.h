@@ -55,7 +55,8 @@ USING_NS_CC;
 //-----------------------------------------------------------------------------------------------------------
 
 #define IPHONE5_POINT_SIZE_WIDTH	568
-
+#define IPAD_POINT_SIZE_WIDTH       1024
+#define IPAD_POINT_SIZE_HEIGHT      768
 
 
 NS_NDENGINE_BGN
@@ -99,9 +100,14 @@ public: //@android
 	static CCPoint getAndroidScale();
 	static float getIosScale();
 
-public:
+public: //iPhone5
 	static bool		is_iphone5();
 	static float	get_iphone5_width_scale_for_ui_480_based();
+    
+public://iPad
+    static bool     is_ipad();
+    static float    get_ipad_width_scale_for_ui_480_based();
+    static float    get_ipad_height_scale_for_ui_480_based();
 };
 
 //-----------------------------------------------------------------------------------------------------------
@@ -118,5 +124,9 @@ public:
 
 #define IS_IPHONE5					(ConvertUtil::is_iphone5())
 #define IPHONE5_WIDTH_SCALE			(ConvertUtil::get_iphone5_width_scale_for_ui_480_based())
+
+#define IS_IPAD                     (ConvertUtil::is_ipad())
+#define IPAD_WIDTH_SCALE            (ConvertUtil::get_ipad_width_scale_for_ui_480_based())
+#define IPAD_HEIGHT_SCALE           (ConvertUtil::get_ipad_height_scale_for_ui_480_based())
 
 NS_NDENGINE_END
