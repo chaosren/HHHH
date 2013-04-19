@@ -60,7 +60,7 @@ int WINAPI WinMain (HINSTANCE hInstance,
 
 	CCEGLView* eglView = CCEGLView::sharedOpenGLView();
 	eglView->SetTitle("´ó»°Áú½«");
-	eglView->setFrameSize(480, 320); 
+	eglView->setFrameSize(320, 480); 
 	//eglView->setFrameSize(320, 480); 
 
 #if 0

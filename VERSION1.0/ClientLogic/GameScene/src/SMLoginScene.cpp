@@ -45,6 +45,8 @@ using namespace CocosDenshion;
 #include <jni.h>
 #include <android/log.h>
 #include "android/jni/JniHelper.h"
+#include "CCTMXTiledMap.h"
+#include "CCSprite.h"
 
 #define  LOG_TAG    "DaHuaLongJiang"
 #define  LOGD(...)  __android_log_print(ANDROID_LOG_DEBUG,LOG_TAG,__VA_ARGS__)
@@ -120,6 +122,11 @@ using namespace CocosDenshion;
 //NSAutoreleasePool * globalPool = [[NSAutoreleasePool alloc] init];
 IMPLEMENT_CLASS(CSMLoginScene, NDScene)
 
+#define R_ROLE "D:\\work\\DHLJ_Work\\VERSION1.0\\Bin\\Debug\\mission_sugoroku_token_self_r.png"
+#define L_ROLE "D:\\work\\DHLJ_Work\\VERSION1.0\\Bin\\Debug\\mission_sugoroku_token_self_l.png"
+#define D_ROLE "D:\\work\\DHLJ_Work\\VERSION1.0\\Bin\\Debug\\mission_sugoroku_token_self_d.png"
+#define U_ROLE "D:\\work\\DHLJ_Work\\VERSION1.0\\Bin\\Debug\\mission_sugoroku_token_self_u.png"
+
 //===========================================================================
 CSMLoginScene* CSMLoginScene::Scene( bool bShowEntry /*= false*/  )
 {
@@ -147,6 +154,26 @@ CSMLoginScene* CSMLoginScene::Scene( bool bShowEntry /*= false*/  )
 	pkUILable->SetTextAlignment(LabelTextAlignmentRight);
 	pkUILable->SetFrameRect(CCRectMake(100,100,200,200));
 	pkUILable->SetText("Money:");
+
+	CCTMXTiledMap* pkMap = CCTMXTiledMap::create("D:\\work\\ShuangKe\\slamdunk\\dev\\Bin\\Debug\\test.tmx");
+	pkMap->setPosition(20,100);
+
+	CCSprite* pkCCSprite = CCSprite::spriteWithFile(L_ROLE,CCRectMake(0,0,72,84));
+
+	if (!pkMap)
+	{
+		return 0;
+	}
+
+	pkCCSprite->setPosition(CCPointMake(100,100));
+	pkScene->getCCNode()->addChild(pkMap,200);
+	pkScene->getCCNode()->addChild(pkCCSprite,300);
+	CCSize kSize = pkMap->getMapSize();
+
+	float fX = 0.0f;
+	float fY = 0.0f;
+
+	pkMap->getPosition(&fX,&fY);
 
 //  	CCShake* pkShake = CCShake::create(12.0f,2.0f);
 //  
@@ -191,7 +218,7 @@ CSMLoginScene* CSMLoginScene::Scene( bool bShowEntry /*= false*/  )
 		pkScene->m_pkProgressTextLabel->SetFontColor(kColor);
 		
 		pkTempLayer->AddChild(pkUILable,1000);
-		pkScene->AddChild(pkTempLayer,500);
+		//pkScene->AddChild(pkTempLayer,500);
 
 		pkBackgroundImage->Initialization();
 
@@ -201,7 +228,7 @@ CSMLoginScene* CSMLoginScene::Scene( bool bShowEntry /*= false*/  )
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
 		NDPicture* pkPicture = kPool.AddPicture( NDPath::GetImg00Path("Res00/Load/Unzipping.png") );
 #elif (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
-		NDPicture* pkPicture = kPool.AddPicture( NDPath::GetImg00Path("Res00/Load/Unzipping.png") );
+		NDPicture* pkPicture = kPool.AddPicture("D:\\work\\DHLJ_Work\\VERSION1.0\\Bin\\Debug\\mission_sugoroku_bg0001.png");//( NDPath::GetImg00Path("Res00/Load/Unzipping.png") );
 #endif
 
 		pkTempPic = kPool.AddPicture( NDPath::GetImg00Path("Res00/action/CheckIn.png") );
@@ -216,10 +243,10 @@ CSMLoginScene* CSMLoginScene::Scene( bool bShowEntry /*= false*/  )
         }
 
         CCSize kWindowSize = CCDirector::sharedDirector()->getWinSizeInPixels();
-        pkBackgroundImage->SetFrameRect( CCRectMake(0, 0, kWindowSize.width, kWindowSize.height ));
+        pkBackgroundImage->SetFrameRect( CCRectMake(0, 0, kWinSize.width, kWinSize.width / 96.0f * 117.0f));
         
-        //pkScene->AddChild(pkBackgroundImage);
-		pkScene->AddChild(pkSprite,1000);
+        pkScene->AddChild(pkBackgroundImage);
+		//pkScene->AddChild(pkSprite,1000);
 #endif //(CC_TARGET_PLATFORM != CC_PLATFORM_ANDROID)
 
 		CCLog( "@@login01: open CSMLoginScene\r\n" );
@@ -360,20 +387,6 @@ void CSMLoginScene::ontimer_unzip_success()
 	{
 	    //定义保存路径
 	    m_strUpdateURL = *kDeqUpdateUrl.begin();
-	
-		//m_savePath = [[NSString stringWithFormat:@"%s/update%d.zip", m_cachPath.c_str(), PackageCount] UTF8String];
-		//重新设置m_SavePath的值，保存本地的文件名与服务器上下载名保持一致
-		/*
-		char szUpdateURL[100] = {0};
-		snprintf(szUpdateURL,sizeof(szUpdateURL),"%s",m_strUpdateURL.c_str());
-		char* szTempFile = GetPathFileName(szUpdateURL,'/');
-		if (szTempFile)
-		{
-			m_strSavePath = m_strCachePath + szTempFile;
-		}
-		else
-			return;
-		*/
 
 		m_pTimer->SetTimer( this, TAG_TIMER_UPDATE, 0.5f );
 	    StartDownload();
