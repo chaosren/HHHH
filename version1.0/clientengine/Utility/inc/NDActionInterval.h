@@ -32,6 +32,21 @@ protected:
 private:
 };
 
+class NDSequence:public NDActionInterval
+{
+	DECLARE_CLASS(NDSequence)
+
+public:
+
+	NDSequence();
+	virtual ~NDSequence();
+
+	bool InitWithTwoActions(CCFiniteTimeAction *pActionOne, CCFiniteTimeAction *pActionTwo);
+
+protected:
+private:
+};
+
 NS_NDENGINE_END
 
 #endif

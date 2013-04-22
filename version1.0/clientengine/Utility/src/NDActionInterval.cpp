@@ -24,4 +24,16 @@ void NDActionInterval::Stop()
 
 }
 
+IMPLEMENT_CLASS(NDSequence,NDActionInterval)
+
+NDSequence::NDSequence()
+{
+
+}
+
+NDSequence::~NDSequence()
+{
+
+}
+
 NS_NDENGINE_END

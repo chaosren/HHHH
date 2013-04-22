@@ -410,13 +410,13 @@ NDMapLayer* GetMapLayer()
 	{
 		return NULL;
 	}
-	NDMapLayer* layer = NDMapMgrObj.getMapLayerOfScene(scene);
-	if (!layer)
+	NDMapLayer* pkLayer = NDMapMgrObj.getMapLayerOfScene(scene);
+	if (!pkLayer)
 	{
 		return NULL;
 	}
 
-	return layer;
+	return pkLayer;
 }
 
 int GetSystemSetN(const char* key, int default_value)
