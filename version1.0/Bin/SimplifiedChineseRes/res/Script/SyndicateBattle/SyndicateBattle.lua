@@ -1763,10 +1763,10 @@ end
 
 p.SignUpList = {}
 -----------------报名---------------------
-function p.SignUpInfo(signUpList,nLeftTime,nArmyGroupLev)	
+function p.SignUpInfo(signUpList,nLeftTime,nArmyGroupLev,nRank)
 	p.SignUpList = signUpList;
 	LogInfo("qboy SignUpInfo n:"..table.getn(signUpList));
-	SyndicateBattleSignUpUI.LoadUI(signUpList,nLeftTime,nArmyGroupLev);
+	SyndicateBattleSignUpUI.LoadUI(signUpList,nLeftTime,nArmyGroupLev,nRank);
 end
 
 

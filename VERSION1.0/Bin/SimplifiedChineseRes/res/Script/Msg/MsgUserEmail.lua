@@ -416,3 +416,10 @@ RegisterNetMsgHandler( NMSG_Type._MSG_RECEIED_LETTER, "p.ProcessReceiedLetter", 
 RegisterNetMsgHandler( NMSG_Type._MSG_LETTER_INFO, "p.ProcessLetterInfo", p.ProcessLetterInfo );
 RegisterNetMsgHandler( NMSG_Type._MSG_LETTER_REQUEST, "p.ProcessLetterRequest", p.ProcessLetterRequest );
 RegisterNetMsgHandler( NMSG_Type._MSG_SENDLETTER, "p.ProcessSendLetter", p.ProcessSendLetter );
+
+
+function p.Reset()
+    p.tReceivedEmails   = {};
+    p.tSentEmails       = {};
+end
+_G.RegisterGlobalEventHandler(_G.GLOBALEVENT.GE_LOGIN_GAME, "MsgUserEmail.Reset", p.Reset);

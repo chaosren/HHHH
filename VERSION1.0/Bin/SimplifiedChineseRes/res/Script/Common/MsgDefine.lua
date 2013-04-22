@@ -2,6 +2,7 @@ local _MSG_GENERAL = 1000;
 
 NMSG_Type = 
 {
+    _MSG_LOAD                       = 110;
     _MSG_TALK                       = _MSG_GENERAL + 4,
 	_MSG_USERINFO					= _MSG_GENERAL + 8,
 	_MSG_USERINFO_UPDATE			= _MSG_GENERAL + 40,
