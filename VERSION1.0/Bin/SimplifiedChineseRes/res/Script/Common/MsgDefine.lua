@@ -263,6 +263,8 @@ NMSG_Type =
     _MSG_MAP_BUFF_ACTION_RET     = _MSG_GENERAL+8141,    --玩家状态请求返回
     _MSG_MAP_BUFF_BUFFLIST     = _MSG_GENERAL+8142,    --玩家状态列表数据
     
+
+    _MSG_MOUNTSOUL            =   _MSG_GENERAL + 6060,	-- 兽魂
     
     _MSG_GMCOMMAND              = 139,      --gm com
 };

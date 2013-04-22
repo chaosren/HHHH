@@ -357,7 +357,7 @@ end
 
 
 ------------------------------------------------------------------------------------------------
-function p.ShowInputDlg(tip, callback, param, nDefault, nMaxLength)
+function p.ShowInputDlg(tip, callback, param, nDefault, nMaxLength, nTitle)
     local scene = GetRunningScene();
 	if not CheckP(scene) then
 		LogInfo("not CheckP(scene),load CommonDlg.ShowInputDlg failed!");
@@ -404,13 +404,11 @@ function p.ShowInputDlg(tip, callback, param, nDefault, nMaxLength)
     
     if(CheckN(nDefault)) then
         inputBox:SetText(nDefault.."");
-    else
-        if(CheckS(nDefault)) then
-            local desc = GetLabel(layer,4);
-            desc:SetText(nDefault);
-        else
-            inputBox:SetText("1");
-        end
+    end
+    
+    if(CheckS(nTitle)) then
+        local desc = GetLabel(layer,4);
+        desc:SetText(nTitle);
     end
     
     
@@ -434,7 +432,7 @@ function p.ShowInputDlg(tip, callback, param, nDefault, nMaxLength)
     --音效
     Music.PlayEffectSound(Music.SoundEffect.POPWIN);
 
-	return nTag;
+	return nTag, layer;
 end
 
 function p.OnUIEventInputDlg(uiNode, uiEventType, param)

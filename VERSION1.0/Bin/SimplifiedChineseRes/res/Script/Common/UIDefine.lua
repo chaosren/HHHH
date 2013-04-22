@@ -205,8 +205,8 @@ NMAINSCENECHILDTAG =
  	PVPADDUI           =  NUITAG_BEGIN + 184,                   --PVP属性界面
 
  	DestinyUI               = NUITAG_BEGIN + 182,                   --占星
-    DestinyFeteUI           = NUITAG_BEGIN + 183,                   --占星祭祀
-
+    DestinyFeteUI           = NUITAG_BEGIN + 183,                   --占星祭祀    
+ 	MountSoul               = NUITAG_BEGIN + 190,                   --兽魂
 	RankListUI              = NUITAG_BEGIN + 189,                   --名人堂
 	SlaveUI					= 2015,                   --斗地主
 
