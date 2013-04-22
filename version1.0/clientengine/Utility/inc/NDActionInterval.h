@@ -8,6 +8,7 @@
 #include "define.h"
 #include "NDObject.h"
 #include "CCActionInterval.h"
+#include "NDAction.h"
 
 NS_NDENGINE_BGN
 
@@ -27,12 +28,12 @@ public:
 
 protected:
 
-	CCActionInterval* m_pkActionInterval;
+	CC_SYNTHESIZE(CCActionInterval*,m_pkCCActionInterval,CCActionInterval);
 
 private:
 };
 
-class NDSequence:public NDActionInterval
+class NDSequence:public NDObject
 {
 	DECLARE_CLASS(NDSequence)
 
@@ -41,9 +42,43 @@ public:
 	NDSequence();
 	virtual ~NDSequence();
 
-	bool InitWithTwoActions(CCFiniteTimeAction *pActionOne, CCFiniteTimeAction *pActionTwo);
+	bool InitWithTwoActions(NDFiniteTimeAction *pActionOne, NDFiniteTimeAction *pActionTwo);
 
 protected:
+
+	CC_SYNTHESIZE(CCSequence*,m_pkCCSquence,CCSquence);
+
+private:
+};
+
+class NDRepeat:public NDObject
+{
+	DECLARE_CLASS(NDRepeat)
+
+public:
+
+	NDRepeat();
+	virtual ~NDRepeat();
+
+protected:
+private:
+};
+
+class NDRotateTo:public NDObject
+{
+	DECLARE_CLASS(NDRotateTo)
+
+public:
+
+	NDRotateTo();
+	virtual ~NDRotateTo();
+
+	virtual void StartWithTarget(NDNode* pTarget);
+
+protected:
+
+	CC_SYNTHESIZE(CCRotateTo*,m_pkCCRotateTo,CCRotateTo);
+
 private:
 };
 

@@ -14,6 +14,7 @@
 #include "shaders/CCShaderCache.h"
 #include "NDDebugOpt.h"
 #include "ObjectTracker.h"
+#include "NDAction.h"
 
 using namespace cocos2d;
 
@@ -474,6 +475,13 @@ void NDNode::DrawSetup( const char* shaderType /*=kCCShader_PositionTexture_uCol
 
 	getShaderProgram()->use();
 	getShaderProgram()->setUniformForModelViewProjectionMatrix();
+}
+
+NDAction* NDNode::RunAction( NDAction* pkAction )
+{
+	m_pkCCNode->runAction(pkAction->getCCAction());
+
+	return 0;
 }
 
 NS_NDENGINE_END

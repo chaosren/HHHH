@@ -34,9 +34,30 @@ public:
 	void SetTarget(NDNode* pkTarget);
 	NDNode* GetTarget();
 
+	void SetTag(int nTag);
+	int GetTag();
+
 protected:
 
-	CC_SYNTHESIZE(CCAction*,m_pkCCAction,CCAction);
+	CC_PROPERTY(CCAction*,m_pkCCAction,CCAction);
+	
+	NDNode* m_pkTargetNode;
+
+private:
+};
+
+class NDFiniteTimeAction:public NDAction
+{
+	DECLARE_CLASS(NDFiniteTimeAction)
+
+public:
+
+	NDFiniteTimeAction();
+	virtual ~NDFiniteTimeAction();
+
+protected:
+
+	CC_PROPERTY(CCFiniteTimeAction*,m_pkCCFiniteTimeAction,CCFiniteTimeAction);
 
 private:
 };
