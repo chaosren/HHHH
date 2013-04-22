@@ -31,9 +31,12 @@ public:
 	virtual void Step(float fDeltaTime);
 	virtual void StartWithTarget(NDNode* pkTarget);
 
+	void SetTarget(NDNode* pkTarget);
+	NDNode* GetTarget();
+
 protected:
 
-	CCAction* m_pkCCAction;
+	CC_SYNTHESIZE(CCAction*,m_pkCCAction,CCAction);
 
 private:
 };

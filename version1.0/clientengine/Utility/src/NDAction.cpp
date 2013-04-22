@@ -39,4 +39,14 @@ const char* NDAction::Description()
 	return m_pkCCAction->description();
 }
 
+void NDAction::SetTarget( NDNode* pkTarget )
+{
+	m_pkCCAction->setTarget(pkTarget->getCCNode());
+}
+
+NDNode* NDAction::GetTarget()
+{
+	return 0;
+}
+
 NS_NDENGINE_END
