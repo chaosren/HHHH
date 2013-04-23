@@ -229,7 +229,7 @@ void NDSprite::RunAnimation_WithFrames(bool bDraw)
 	bool bIsOldTitleHightLight = IsTileHightLight();
 	TileSetHightLight (m_bHightLight);
 
-	bool bRet = this->OnDrawBegin(bDraw);
+	bool bRet = OnDrawBegin(bDraw);
 
 	if (bRet)
 	{
@@ -1107,7 +1107,7 @@ void NDSprite::RunBattleSubAnimation(NDBaseFighter* pkFighter)
 
 bool NDSprite::DrawSubAnimation(NDSubAniGroup& kSag)
 {
-	NDNode* layer = this->GetParent();
+	NDNode* layer = GetParent();
 	
 	if ( !layer )
 	{

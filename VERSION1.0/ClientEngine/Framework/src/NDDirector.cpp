@@ -122,35 +122,13 @@ void NDDirector::SetTransitionScene(NDScene *scene, TransitionSceneType type)
 
 	m_eTransitionSceneType = type;
 
-	m_pkDirector->pushScene(CCTransitionFade::transitionWithDuration(1.2f, (CCScene *)scene->getCCNode()));
-	//[m_director pushScene:[CCTransitionFadeTR transitionWithDuration:1.2f scene:(CCScene *)scene->m_ccNode]];
-
-	/*
-	 static bool right = true;
-	 if (right)
-	 [m_director pushScene:[CCMoveInRTransition transitionWithDuration:0.6f scene:(CCScene *)scene->m_ccNode]];
-	 else
-	 [m_director pushScene:[CCMoveInLTransition transitionWithDuration:0.6f scene:(CCScene *)scene->m_ccNode]];
-
-	 right = !right;
-	 */
+	m_pkDirector->pushScene(CCTransitionFade::transitionWithDuration(1.2f,
+		(CCScene *)scene->getCCNode()));
 }
 
 
 void NDDirector::RunScene(NDScene* scene)
 {
-// 	//@zwq
-// 	if (m_pkDirector->getRunningScene())
-// 	{
-// 		m_kScenesStack.push_back(scene);
-// 		m_pkDirector->replaceScene((CCScene *) scene->m_ccNode);
-// 	}
-// 	else
-// 	{
-// 		m_kScenesStack.push_back(scene);
-// 		m_pkDirector->runWithScene((CCScene *) scene->m_ccNode);
-// 	}
-
 	LOGD("Entry run scene,scene value is %d",(int)scene);
 
 	m_kScenesStack.push_back(scene);
@@ -170,21 +148,21 @@ void NDDirector::ReplaceScene(NDScene* pkScene, bool bAnimate/*=false*/)
 // 	}
 
 	if (m_kScenesStack.size() > 0)
+	{
+		//NDLog("===============================当前场景栈大小[%u]", m_scenesStack.size());
+		BeforeDirectorPopScene(m_kScenesStack.back(), true);
+
+		NDScene* pkScene = m_kScenesStack.back();
+
+		if (pkScene)
 		{
-			//NDLog("===============================当前场景栈大小[%u]", m_scenesStack.size());
-			this->BeforeDirectorPopScene(m_kScenesStack.back(), true);
-	
-			NDScene* pkScene = m_kScenesStack.back();
-	
-			if (pkScene)
-			{
-				delete pkScene;
-			}
-	
-			m_kScenesStack.pop_back();
-	
-			this->AfterDirectorPopScene(true);
+			delete pkScene;
 		}
+
+		m_kScenesStack.pop_back();
+
+		AfterDirectorPopScene(true);
+	}
 	
 	BeforeDirectorPushScene(pkScene);
 	m_kScenesStack.push_back(pkScene);
@@ -197,33 +175,19 @@ void NDDirector::ReplaceScene(NDScene* pkScene, bool bAnimate/*=false*/)
 
 void NDDirector::PushScene(NDScene* scene, bool bAnimate/*=false*/)
 {
-// 	if (bAnimate) 
-// 	{
-// 		SetTransitionScene(scene, eTransitionScenePush);
-// 
-// 		return;
-// 	}
-
-	this->BeforeDirectorPushScene(scene);
+	BeforeDirectorPushScene(scene);
 
 	m_kScenesStack.push_back(scene);
 	m_pkDirector->pushScene((CCScene *) scene->getCCNode());
 
-	this->AfterDirectorPushScene(scene);
+	AfterDirectorPushScene(scene);
 
 	//NDLog("===============================当前场景栈大小[%u]", m_scenesStack.size());
 }
 
 bool NDDirector::PopScene(NDScene* scene/*=NULL*/, bool bAnimate/*=false*/)
 {
-// 	if (bAnimate && m_kScenesStack.size() >= 2) 
-// 	{
-// 		SetTransitionScene(m_kScenesStack[m_kScenesStack.size()-2], eTransitionScenePop);
-// 
-// 		return true;
-// 	}
-
-	return this->PopScene(true);
+	return PopScene(true);
 }
 
 bool NDDirector::PopScene(bool cleanUp)
@@ -233,7 +197,7 @@ bool NDDirector::PopScene(bool cleanUp)
 		return false;
 	}
 
-	this->BeforeDirectorPopScene(this->GetRunningScene(), cleanUp);
+	BeforeDirectorPopScene(GetRunningScene(), cleanUp);
 
 	//NDLog("===============================当前场景栈大小[%u]", m_scenesStack.size());
 
@@ -244,7 +208,7 @@ bool NDDirector::PopScene(bool cleanUp)
 	m_kScenesStack.pop_back();
 	m_pkDirector->popScene();
 
-	this->AfterDirectorPopScene(cleanUp);
+	AfterDirectorPopScene(cleanUp);
 
 	//NDLog("===============================当前场景栈大小[%u]", m_scenesStack.size());
 
@@ -258,9 +222,6 @@ void NDDirector::PurgeCachedData()
 	NDPicturePool::DefaultPool()->PurgeDefaultPool();
 
 	NDAnimationGroupPool::purgeDefaultPool();
-
-//  	if (m_pkDirector)
-//  		m_pkDirector->purgeCachedData();
 }
 
 void NDDirector::Stop()
@@ -308,12 +269,7 @@ void NDDirector::SetViewRect(CCRect kRect, NDNode* pkNode)
 	CCSize kWinSize = m_pkDirector->getWinSizeInPixels();
 
 #if 1 //@check
-	glEnable (GL_SCISSOR_TEST);
-
-// 	glScissor(kWinSize.height - kRect.origin.y - kRect.size.height,
-// 			kWinSize.width - kRect.origin.x - kRect.size.width, kRect.size.height,
-// 			kRect.size.width);
-	
+	glEnable (GL_SCISSOR_TEST);	
 	glScissor(	kRect.origin.x,
 				kWinSize.height - (kRect.origin.y + kRect.size.height),
 	 			kRect.size.width, 

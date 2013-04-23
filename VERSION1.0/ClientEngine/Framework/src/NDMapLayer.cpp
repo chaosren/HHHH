@@ -64,9 +64,6 @@ bool GetIntersectRect(CCRect first, CCRect second, CCRect& ret)
 		return false;
 	}
 
-	//todo(zjh)
-	//ret = CCRectIntersection(first, second);
-
 	return true;
 }
 
@@ -211,16 +208,6 @@ void NDMapLayer::replaceMapData(int mapId, int center_x, int center_y)
 		m_kScreenCenter = ccp(kWinSize.width / 2,
 				GetContentSize().height - kWinSize.height / 2);
 		m_pkCCNode->setPosition(0, 0);
-
-		/*
-		 m_texMap = [[CCTexture2D alloc] initWithContentSize:winSize];
-		 m_picMap = new NDPicture();
-		 m_picMap->SetTexture(m_texMap);
-
-		 ReflashMapTexture(ccp(-winSize.width / 2, -winSize.height / 2), m_screenCenter);
-		 m_areaCamarkSplit = IntersectionAreaNone;
-		 m_ptCamarkSplit = ccp(0, 0);
-		 */
 	}
 	SetScreenCenter(ccp(center_x, center_y));
 
@@ -290,12 +277,11 @@ void NDMapLayer::refreshTitle()
 				{
 					int x = CCDirector::sharedDirector()->getWinSizeInPixels().width / 2 - 150; //@todo:µ°ËéµÄÓ²±àÂë£¬É¶ÊÇ150? É¶ÊÇ210?
 					int y = 60;
-					//NDLog("x:%d,y:%d",x,y);
+
 					m_lbTitleBg->SetFrameRect(CCRectMake(
 						CCDirector::sharedDirector()->getWinSizeInPixels().width / 2 - 210, 
 							y, 420, 60));
 
-					//m_lbTitleBg->draw();
 					m_lbTitle->SetFrameRect(CCRectMake(x, y, 300, 60));
 
 					NDPicture* pkPicture1 = m_lbTitle->GetPicture();
@@ -353,35 +339,6 @@ void NDMapLayer::refreshTitle()
 	}
 }
 
-/*
- void NDMapLayer::ShowTreasureBox()
- {
- if(!m_pkTreasureBox)
- {
- box_status=BOX_SHOWING;
- m_pkTreasureBox = new NDSprite;
- NSString aniPath=[CCString::stringWithUTF8String:NDEngine::NDPath::GetAnimationPath().c_str()];
- m_pkTreasureBox->Initialization([[NSString stringWithFormat:@"%@treasure_box.spr", aniPath] UTF8String]);
- m_pkTreasureBox->SetPosition(CCPointMake(NDPlayer::defaultHero().GetPosition().x+64,NDPlayer::defaultHero().GetPosition().y));
-
- m_pkTreasureBox->SetCurrentAnimation(0, false);
- AddChild(m_pkTreasureBox);
- }
- }
-
- void NDMapLayer::OpenTreasureBox()
- {
- if(m_pkTreasureBox)
- {
- NDTransData data(_MSG_INSTANCING_BOX_AWARD_LIST);
-
- NDDataTransThread::DefaultThread()->GetSocket()->Send(&data);
-
- m_pkTreasureBox->SetCurrentAnimation(2, false);
- box_status=BOX_OPENING;
- }
- }
- */
 void NDMapLayer::ShowTitle(int name_row, int name_col)
 {
 	m_bShowTitle = true;
@@ -499,7 +456,7 @@ void NDMapLayer::showSwitchSprite(MAP_SWITCH_TYPE type)
 
 	float fScale = 2 * RESOURCE_SCALE;
 	m_pkSwitchSpriteNode->SetScale( fScale );
-	this->GetParent()->AddChild(m_pkSwitchSpriteNode, ZORDER_MASK_ANI);
+	GetParent()->AddChild(m_pkSwitchSpriteNode, ZORDER_MASK_ANI);
 }
 
 bool NDMapLayer::isTouchTreasureBox(CCPoint touchPoint)
@@ -1948,7 +1905,7 @@ void NDMapLayer::debugDraw()
 
 void NDMapLayer::drawCell()
 {
-	NDMapData* pMapData = this->GetMapData();	
+	NDMapData* pMapData = GetMapData();	
 	if (!pMapData) return;
 
 	const float fScale = CCDirector::sharedDirector()->getContentScaleFactor();
