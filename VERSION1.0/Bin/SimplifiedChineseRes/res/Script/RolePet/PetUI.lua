@@ -236,6 +236,10 @@ function p.LoadUI(bIsSMB)
     c_s_txt:SetVisible( false );
     n_s_txt:SetVisible( false );
     
+    --暂时屏蔽兽魂按钮
+    local btnShouHun = GetButton(layer, 108);
+    btnShouHun:SetVisible( false );
+        
     return true;
 end
 

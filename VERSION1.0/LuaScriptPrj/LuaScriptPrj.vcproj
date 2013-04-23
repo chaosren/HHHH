@@ -1650,6 +1650,18 @@
 				>
 			</File>
 			<File
+				RelativePath="..\Bin\SimplifiedChineseRes\res\UI\MountSoul\MountSoul.ini"
+				>
+			</File>
+			<File
+				RelativePath="..\Bin\SimplifiedChineseRes\res\UI\MountSoul\MountSoul_Intro.ini"
+				>
+			</File>
+			<File
+				RelativePath="..\Bin\SimplifiedChineseRes\res\UI\MountSoul\MountSoul_M.ini"
+				>
+			</File>
+			<File
 				RelativePath="..\Bin\SimplifiedChineseRes\res\UI\No_Prompt.ini"
 				>
 			</File>
@@ -1859,6 +1871,22 @@
 			</File>
 			<File
 				RelativePath="..\Bin\SimplifiedChineseRes\res\Script\TreasureHunt\TreasureHunt.lua"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="MountSoul"
+			>
+			<File
+				RelativePath="..\Bin\SimplifiedChineseRes\res\Script\MountSoul\define.lua"
+				>
+			</File>
+			<File
+				RelativePath="..\Bin\SimplifiedChineseRes\res\Script\MountSoul\MountSoul.lua"
+				>
+			</File>
+			<File
+				RelativePath="..\Bin\SimplifiedChineseRes\res\Script\MountSoul\MsgMountSoul.lua"
 				>
 			</File>
 		</Filter>
