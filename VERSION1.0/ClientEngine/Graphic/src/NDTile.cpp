@@ -513,6 +513,10 @@ void NDTile::draw()
 	DrawSetup();
 
 	ccGLBindTexture2D(m_pkTexture->getName());		//绑定纹理
+    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST );
+    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST );
+    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE );
+    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE );
 
 	// attribute
 	ccGLEnableVertexAttribs( kCCVertexAttribFlag_PosColorTex );
@@ -673,7 +677,7 @@ void NDTile::SetDrawRect( CCRect rect, bool bBattleMap )
 		fScale = ConvertUtil::getAndroidScale().x;
 	}
 #elif (CC_TARGET_PLATFORM == CC_PLATFORM_IOS) && WITH_IPHONE5_BATTLEMAP_SCALE
-	if (bBattleMap)
+	if (bBattleMap && IS_IPHONE5)
 	{
 		//IPHONE5战斗地图下以X为主等比缩放
 		fScale = IPHONE5_WIDTH_SCALE;

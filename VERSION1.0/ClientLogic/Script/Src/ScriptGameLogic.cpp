@@ -62,6 +62,11 @@
 #define  LOGERROR(...)
 #endif
 
+
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
+#include "NDPlayMovie.h"
+#endif
+
 using namespace CocosDenshion;
 
 //#include "CCVideoPlayer.h"
@@ -492,6 +497,14 @@ void SetSceneMusicNew(int idMusic)
 	CCString* pstrMusicFile = CCString::stringWithFormat("%smusic_%d.ogg", strMusicPath.c_str(),idMusic);
 #endif
 	pkSimpleAudio->playBackgroundMusic(pstrMusicFile->getCString(),true);
+    
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
+    if ([[NDPlayMovie sharedObj] isPlaying])
+    {
+        pkSimpleAudio->pauseBackgroundMusic();
+    }
+#endif
+    
 }
 
 void SetBgMusicVolume(int nVolune)
@@ -559,6 +572,13 @@ void StopBGMusic()
 
 int StartEffectSound(int idMusic)
 {
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
+    if ([[NDPlayMovie sharedObj] isPlaying])
+    {
+        return -1;
+    }
+#endif
+    
 	if (!gs_bIsSound)
 	{
 		return 2;
@@ -574,7 +594,7 @@ int StartEffectSound(int idMusic)
 	string strMusicPath = NDPath::GetSoundPath();
 	CCString* pstrMusicFile = CCString::stringWithFormat("%seffect/effect_%d.aac",
 		strMusicPath.c_str(),idMusic);
-	return pkSimpleAudio->playEffect(pstrMusicFile->getCString(),false);
+    return pkSimpleAudio->playEffect(pstrMusicFile->getCString(),false);
 }
 
 void ResumeAllEffectSound()

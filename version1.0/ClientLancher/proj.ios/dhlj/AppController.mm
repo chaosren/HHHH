@@ -33,6 +33,7 @@
 #import "MBGSocialService.h"
 #endif
 #include "NDBeforeGameMgr.h"
+#include "NDPlayMovie.h"
 
 @implementation AppController
 
@@ -89,6 +90,10 @@ static AppDelegate s_sharedApplication;
         // use this method on ios6
         [window setRootViewController:viewController];
     }
+    
+    // set video owner view
+    [[NDPlayMovie sharedObj] setOwnerView : viewController.view];
+//    [[NDPlayMovie sharedObj] playTest]; //@del
     
     [window makeKeyAndVisible];
 

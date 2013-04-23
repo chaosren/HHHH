@@ -94,6 +94,7 @@ LOCAL_SRC_FILES := \
 ../../UI/src/NDUIScrollViewExpand.cpp \
 ../../UI/src/NDUIScrollViewMulHand.cpp \
 ../../UI/src/NDUISpriteNode.cpp \
+../../UI/src/NDUI9BlkImage.cpp \
 ../../UI/import/src/IniFile.cpp \
 ../../UI/import/src/NDControlHelp.cpp \
 ../../UI/import/src/NDUILoadEngine.cpp \

@@ -50,6 +50,12 @@ for(int i=0; i<nCtrlAmount; i++)
 #include "IniFile.h"
 #include "UtilityInc.h"
 
+unsigned int findAndReplace(
+                                          std::string& source,
+                                          const std::string& find,
+                                          const std::string& replace,
+                                          unsigned int time=0 );
+
 enum DISPLAY_RESOLUTION
 {
 	DISPLAY_RESOLUTION_BEGIN,
@@ -108,6 +114,8 @@ struct UIINFO
 	
 	unsigned long nTextFontSize;
 	unsigned long nTextFontColor;
+        
+	unsigned long nBlockSize;
 
 	void reset()
 	{
@@ -137,6 +145,8 @@ struct UIINFO
 
 		nTextFontSize = 0;
 		nTextFontColor = 0;
+        
+        nBlockSize = 0;
 	}
 
 	UIINFO() { this->reset(); }

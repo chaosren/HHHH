@@ -102,10 +102,11 @@ p.RoleListTag = {};
 --	Music.PlayLoginMusic()
 --	--PlayVideo("480_0.mp4",false);
 --end
+local bIsSwichKey = false;
 	
 function p.LoadUI()
     p.ProcessNotifyClient2();
-    
+    bIsSwichKey = false;
     local bFlag = HideLoginUI(NMAINSCENECHILDTAG.Login_ServerUI);
     if(bFlag) then
         return true;
@@ -452,6 +453,25 @@ function p.GetViewContainer()
 	return svc;
 end
 
+------------------发送服务器id-------------------------------
+--p.SendServerId(p.nCurSerId);
+
+function p.SendServerId(nId)  
+    LogInfo("p.SendServerId "..nId)
+	local netdata = createNDTransData(NMSG_Type._MSG_LOAD);
+    netdata:WriteInt(nId);	   
+	SendMsg(netdata);	
+	netdata:Free();	
+	return true;
+end
+
+function p.ProcessMsgLoad(netdata)
+    LogInfo("p.ProcessMsgLoad ")
+    p.SendServerId(p.nCurSerId);
+    bIsSwichKey = false;
+end
+
+
 function p.LoginGame(strServerName,strServerIp,strServerPort)
     LogInfo("strServerName[%s],strServerIp[%s],strServerPort[%d],p.UIN[%d]",strServerName,strServerIp,strServerPort,p.UIN);
     --发起登陆
@@ -460,6 +480,9 @@ function p.LoginGame(strServerName,strServerIp,strServerPort)
     if bSucc == false then
         CommonDlgNew.ShowYesDlg(GetTxtPri("LoginFailReLogin"));
     else
+        
+        bIsSwichKey = true;
+		
         if p.LoginWait then
             ShowLoadBar();
         else
@@ -567,7 +590,11 @@ function p.TimerGetServerList(nTimer)
         end
     
     --end
-    sendMsgConnect(p.worldIP, p.worldPort, p.UIN);
+    if bIsSwichKey == false then
+    	sendMsgConnect(p.worldIP, p.worldPort, p.UIN);	 	
+    end
+    	--bIsSwichKey = false;
+
 end
 
 function p.ChangeUserLogin(nUIN)
@@ -731,6 +758,7 @@ end
 
 RegisterNetMsgHandler(NMSG_Type._MSG_SERVERROLE,"p.ProcessServerRole",p.ProcessServerRole);
 RegisterNetMsgHandler(NMSG_Type._MSG_SERVERLISTITEM,"p.ProcessServerList",p.ProcessServerList);
+RegisterNetMsgHandler(NMSG_Type._MSG_LOAD,"p.ProcessMsgLoad",p.ProcessMsgLoad);
 
 function p.SetAccountID( nAccountID )
 	p.UIN = nAccountID;

@@ -88,7 +88,16 @@ function p.AddAllChatRecordPrivate(playerId)
 end
 
 function p.AddChatRecord(sID,cID,tID,spk,txt)
-	LogInfo("addChatRecord:%s:%s",spk,txt);
+	LogInfo("addChatRecord:%s:%s cId:%d",spk,txt,cID);
+	
+	cID=p.GetChatTypeFromChannel(cID);
+
+	if  cID==ChatType.CHAT_CHANNEL_SYSTIP then
+		--ChatMainUI.AddChatText(sID,cID,spk,txt);
+		CommonDlgNew.ShowTipDlg(txt);
+        return;
+	end
+			
 	if (list_end-list_head)>49 then
 		p.chatList[list_head]=nil;
         				
@@ -99,7 +108,7 @@ function p.AddChatRecord(sID,cID,tID,spk,txt)
 		list_head=list_head+1;
 	end
 	
-	cID=p.GetChatTypeFromChannel(cID);
+	
 	p.chatList[list_end]={sID,cID,tID,spk,txt};
 	list_end=list_end+1;
 	
@@ -113,12 +122,8 @@ function p.AddChatRecord(sID,cID,tID,spk,txt)
 	end
 	
     
- 	if  cID==ChatType.CHAT_CHANNEL_SYSTIP then
-		--ChatMainUI.AddChatText(sID,cID,spk,txt);
-		CommonDlgNew.ShowTipDlg(txt);
-        return;
-	end
-    
+
+	   
     ChatGameScene.AddChatText(sID,cID,spk,txt,list_end);
     
     ChatGameScene.DelayShowUI();

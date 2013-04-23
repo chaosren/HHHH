@@ -33,6 +33,7 @@
 #include "NDUIScrollContainerExpand.h"
 #include "NDUIBaseItemButton.h"
 #include "ScriptGameDataLua.h"
+#include "NDUI9BlkImage.h"
 
 #ifdef ANDROID
 #include <jni.h>
@@ -75,6 +76,7 @@ enum MY_CONTROL_TYPE
 	MY_CONTROL_TYPE_SPRITE,							// 动画
 	MY_CONTROL_TYPE_LIST_HV,                        // 水平+垂直型列表20
 	MY_CONTROL_TYPE_LIST_LOOP,                      // 循环水平列表21
+	MY_CONTROL_TYPE_9BLK_BACKGROUND,                // 九宫格背景22
 };
 
 
@@ -559,6 +561,23 @@ public:
 		listVert->SetBottomReserveDistance(rect.size.height);
 		listVert->SetBackgroundImage(GetNormalPicture(), true);
 		return listVert;
+	}
+};
+
+template<>
+class ControlHelp<MY_CONTROL_TYPE_9BLK_BACKGROUND> : public CtrolTrait<NDUI9BlkImage>
+{
+public:
+	NDUI9BlkImage* Create(UIINFO& info, CCSize& sizeOffset)
+	{
+		Init(info, sizeOffset);
+        
+		NDUI9BlkImage *image = new NDUI9BlkImage;
+		image->Initialization();
+		image->SetFrameRect(this->GetFrameRect());
+		image->SetPicture(GetNormalPicture(), true);
+        image->SetBlockSize(info.nBlockSize);
+		return image;
 	}
 };
 

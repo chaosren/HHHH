@@ -775,7 +775,9 @@ const char* CCTexture2D::stringForFormat()
 
 		case kCCTexture2DPixelFormat_PVRTC2:
 			return  "PVRTC2";
-
+            
+        case kCCTexture2DPixelFormat_RGBA8:
+            return "RGBA8";
 		default:
 			CCAssert(false , "unrecognized pixel format");
 			CCLOG("stringForFormat: %ld, cannot give useful result", (long)m_ePixelFormat);
@@ -838,6 +840,9 @@ unsigned int CCTexture2D::bitsPerPixelForFormat(CCTexture2DPixelFormat format)
 		case kCCTexture2DPixelFormat_PVRTC2:
 			ret = 2;
 			break;
+        case kCCTexture2DPixelFormat_RGBA8:
+            ret = 8;
+            break;
 		default:
 			ret = -1;
 			CCAssert(false , "unrecognized pixel format");
@@ -854,7 +859,7 @@ unsigned int CCTexture2D::bitsPerPixelForFormat()
 
 
 #if ND_MOD
-#pragma message xx
+#pragma message "PaletteData"
 CCTexture2D* CCTexture2D::initWithPaletteData(const void* pData,
 		CCTexture2DPixelFormat ePixelFormat, int nWidth, int nHeight,
 		CCSize kSize, unsigned int uiSizeOfData)
@@ -892,7 +897,7 @@ CCTexture2D* CCTexture2D::initWithPaletteData(const void* pData,
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_ALPHA, (GLsizei) nWidth,
 				(GLsizei) nHeight, 0, GL_ALPHA, GL_UNSIGNED_BYTE, pData);
 		break;
-        case kCCTexture2DPixelFormat_RGBA8:
+    case kCCTexture2DPixelFormat_RGBA8:
 #define GL_PALETTE8_RGBA8_OES             0x8B96
 		glCompressedTexImage2D(GL_TEXTURE_2D, 0, GL_PALETTE8_RGBA8_OES, nWidth,
 				nHeight, 0, uiSizeOfData, pData);
@@ -1062,7 +1067,7 @@ bool CCTexture2D::initWithPalettePNG(const char* pszPNGFile)
 	{
 		nMaxRowBytes = nRowBytes;
 
-		if (0 == s_pData)
+		if (0 != s_pData)
 		{
 			free(s_pData);
 			s_pData = 0;
@@ -1123,11 +1128,13 @@ bool CCTexture2D::initWithPalettePNG(const char* pszPNGFile)
 	initWithPaletteData(s_pData, ePixelFormat, nPOTWide,nPOTHigh,
 		kImageSize,sizeof(CCTexture2D::RGBQUAD) * nNumberPalette + nRowBytes * dwHeight);
 
-	m_bHasPremultipliedAlpha = true;
+//	m_bHasPremultipliedAlpha = true;
 
 	if (m_bKeepData)
 	{
-		m_pData = s_pData;
+        int size = sizeof(CCTexture2D::RGBQUAD) * nNumberPalette + nRowBytes * dwHeight;
+		m_pData = malloc(size);
+		memcpy(m_pData, s_pData, size);
 	}
 
 	png_destroy_read_struct(&pkPNGPointer, &pkPNGInfo, png_infopp_NULL);
@@ -1137,11 +1144,42 @@ bool CCTexture2D::initWithPalettePNG(const char* pszPNGFile)
 	return true;
 }
 
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
+
+typedef unsigned short WORD;
+typedef unsigned int DWORD;
+typedef signed long LONG;
+#pragma pack(push)
+#pragma pack(1)
+typedef struct tagBITMAPFILEHEADER {
+    WORD  bfType;
+    DWORD bfSize;
+    WORD  bfReserved1;
+    WORD  bfReserved2;
+    DWORD bfOffBits;
+} BITMAPFILEHEADER, *PBITMAPFILEHEADER;
+
+typedef struct tagBITMAPINFOHEADER {
+    DWORD biSize;
+    LONG  biWidth;
+    LONG  biHeight;
+    WORD  biPlanes;
+    WORD  biBitCount;
+    DWORD biCompression;
+    DWORD biSizeImage;
+    LONG  biXPelsPerMeter;
+    LONG  biYPelsPerMeter;
+    DWORD biClrUsed;
+    DWORD biClrImportant;
+} BITMAPINFOHEADER, *PBITMAPINFOHEADER;
+#pragma pack(pop)
+#endif
+
 void CCTexture2D::SaveToBitmap(const char* pszPngFile,
 		unsigned char** pBMPColorBuf, int rowByteWidth, int width, int height,
 		int colorDepth, CCTexture2D::RGBQUAD* pPalette, int nPaletteLen)
 {
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32) || (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
 	int mPackedRowByteWidth = (rowByteWidth + 3) & 0xfffffffc;
 	BYTE *pBmpBuf = (BYTE*) malloc(
 			mPackedRowByteWidth * height + 54 + nPaletteLen * sizeof(CCTexture2D::RGBQUAD));
@@ -1185,10 +1223,9 @@ void CCTexture2D::SaveToBitmap(const char* pszPngFile,
 		pRowBuf -= mPackedRowByteWidth;
 		pBMPColorBuf++;
 	}
-	//memcpy((BYTE *)(pBih+1),pBMPColorBuf,rowByteWidth * height);
-	char szFileName[256] =
-	{	0};
-	sprintf(szFileName, "%stestJPG_PngLib.bmp", pszPngFile);
+//	memcpy((BYTE *)(pBih+1),pBMPColorBuf,rowByteWidth * height);
+	char szFileName[256] = {0};
+	sprintf(szFileName, "%sPngLib.bmp", pszPngFile);
 	WriteToBMPFile(szFileName, pBmpBuf,
 			mPackedRowByteWidth * height + 54 + nPaletteLen * sizeof(CCTexture2D::RGBQUAD));
 	free(pBmpBuf);

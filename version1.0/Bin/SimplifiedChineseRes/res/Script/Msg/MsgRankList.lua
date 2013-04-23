@@ -66,6 +66,8 @@ function p.ProcessGetListInfo(netdata)
         elseif(nStatus == 2) then
             CommonDlgNew.ShowYesDlg(GetTxtPri("RLUI_T10"));
         elseif(nStatus == 3) then
+            CommonDlgNew.ShowYesDlg(GetTxtPri("RLUI_T11"));
+        elseif(nStatus == 4) then
             CommonDlgNew.ShowYesDlg(GetTxtPri("RLUI_T12"));
         end
         CloseLoadBar();

@@ -4,29 +4,32 @@
 #include "define.h"
 #include "NDSharedPtr.h"
 #include "ObjectTracker.h"
+#include "UsePointPls.h"
 
 #define title_image (NDPath::GetImgPath("titles.png"))
 //#define title_image ([[NSString stringWithFormat:@"%s", NDPath::GetImgPath("titles.png")] UTF8String])
 
 //小号红色数字图形文件，数字的宽，高
-#define SMALL_RED_NUMBER_FIGURE_IMAG		"Res00/Number/SmallRedFigure.png"
+#define SMALL_RED_NUMBER_FIGURE_IMAG		"Res00/number/SmallRedFigure.png"
 #define SMALL_RED_NUMBER_FIGURE_SIZE_W		32
 #define SMALL_RED_NUMBER_FIGURE_SIZE_H		38
 //小号绿色数字图形文件，数字的宽，高
-#define SMALL_GREEN_NUMBER_FIGURE_IMAG		"Res00/Number/SmallGreenFigure.png"
+#define SMALL_GREEN_NUMBER_FIGURE_IMAG		"Res00/number/SmallGreenFigure.png"
 #define SMALL_GREEN_NUMBER_FIGURE_SIZE_W	32
 #define SMALL_GREEN_NUMBER_FIGURE_SIZE_H	38
 
 //大号红色数字图形文件，数字的宽，高
-#define BIG_RED_NUMBER_FIGURE_IMAG			"Res00/Number/BigRedFigure.png"
+#define BIG_RED_NUMBER_FIGURE_IMAG			"Res00/number/BigRedFigure.png"
 #define BIG_RED_NUMBER_FIGURE_SIZE_W		64
 #define BIG_RED_NUMBER_FIGURE_SIZE_H		76
 //大号绿色数字图形文件，数字的宽，高
-#define BIG_GREEN_NUMBER_FIGURE_IMAG		"Res00/Number/BigGreenFigure.png"
+#define BIG_GREEN_NUMBER_FIGURE_IMAG		"Res00/number/BigGreenFigure.png"
 #define BIG_GREEN_NUMBER_FIGURE_SIZE_W		64
 #define BIG_GREEN_NUMBER_FIGURE_SIZE_H		76
 
 static PictureNumber* PictureNumber_SharedInstance = NULL;
+
+using namespace NDEngine;
 
 PictureNumber::PictureNumber()
 {
@@ -131,45 +134,51 @@ PictureNumber* PictureNumber::SharedInstance()
 	return PictureNumber_SharedInstance;
 }
 
-NDPicture* PictureNumber::TitleGoldNumber(unsigned int uiNumber)
+NDPicture* PictureNumber::TitleGoldNumber(unsigned int number)
 {
-	if (uiNumber >= sizeof(m_picTitleGlod) / sizeof(m_picTitleGlod[0]))
+	if (number >= sizeof(m_picTitleGlod) / sizeof(m_picTitleGlod[0]))
 	{
 		return NULL;
 	}
 
-	if (!m_picTitleGlod[uiNumber])
+	if (!m_picTitleGlod[number])
 	{
-		m_picTitleGlod[uiNumber] = NDPicturePool::DefaultPool()->AddPicture(
+		m_picTitleGlod[number] = NDPicturePool::DefaultPool()->AddPicture(
 			title_image);
-		int nIDx = uiNumber - 1;
+        
+		int idx = number - 1;
 
-		if (nIDx == -1)
+		if (idx == -1)
 		{
-			nIDx = 9;
+			idx = 9;
 		}
 
-		m_picTitleGlod[uiNumber]->Cut(CCRectMake(120 + nIDx * 20,
-			24,GetTitleGoldNumberSize().width, GetTitleGoldNumberSize().height));
+		m_picTitleGlod[number]->Cut(CCRectMake(120 + idx * 20,
+                                               24,
+                                               GetTitleGoldNumberSize().width,
+                                               GetTitleGoldNumberSize().height));
 	}
-	return m_picTitleGlod[uiNumber];
+	return m_picTitleGlod[number];
 }
 
-NDPicture* PictureNumber::TitleRedNumber(unsigned int uiNumber)
+NDPicture* PictureNumber::TitleRedNumber(unsigned int number)
 {
-	if (uiNumber >= sizeof(m_picTitleRed) / sizeof(m_picTitleRed[0]))
+	if (number >= sizeof(m_picTitleRed) / sizeof(m_picTitleRed[0]))
 	{
 		return NULL;
 	}
 
-	if (!m_picTitleRed[uiNumber])
+	if (!m_picTitleRed[number])
 	{
-		m_picTitleRed[uiNumber] = NDPicturePool::DefaultPool()->AddPicture(
+		m_picTitleRed[number] = NDPicturePool::DefaultPool()->AddPicture(
 			title_image);
-		m_picTitleRed[uiNumber]->Cut(CCRectMake(80 + uiNumber * 20,
-			48,GetTitleRedNumberSize().width, GetTitleRedNumberSize().height));
+        
+		m_picTitleRed[number]->Cut(CCRectMake(80 + number * 20,
+                                              48,
+                                              GetTitleRedNumberSize().width,
+                                              GetTitleRedNumberSize().height));
 	}
-	return m_picTitleRed[uiNumber];
+	return m_picTitleRed[number];
 }
 
 NDPicture* PictureNumber::TitleSplit()
@@ -177,8 +186,11 @@ NDPicture* PictureNumber::TitleSplit()
 	if (!m_picTitleSplit)
 	{
 		m_picTitleSplit = NDPicturePool::DefaultPool()->AddPicture(title_image);
-		m_picTitleSplit->Cut(CCRectMake(60, 48,
-			GetTitleSplitSize().width, GetTitleSplitSize().height));
+        
+		m_picTitleSplit->Cut(CCRectMake(60,
+                                        48,
+                                        GetTitleSplitSize().width,
+                                        GetTitleSplitSize().height));
 	}
 	return m_picTitleSplit;
 }
@@ -209,6 +221,7 @@ NDPicture* PictureNumber::SmallRed(unsigned int index)
 	{
 		m_picSmallRed[index] = NDPicturePool::DefaultPool()->AddPicture(
 			NDPath::GetImgPath(SMALL_RED_NUMBER_FIGURE_IMAG));
+
 		m_picSmallRed[index]->Cut(
 			CCRectMake(GetSmallRedSize().width * index, 0,
 			GetSmallRedSize().width, GetSmallRedSize().height));
@@ -228,6 +241,7 @@ NDPicture* PictureNumber::SmallGreen(unsigned int index)
 	{
 		m_picSmallGreen[index] = NDPicturePool::DefaultPool()->AddPicture(
 			NDPath::GetImgPath(SMALL_GREEN_NUMBER_FIGURE_IMAG));
+
 		m_picSmallGreen[index]->Cut(
 			CCRectMake(GetSmallRedSize().width * index, 0,
 			GetSmallRedSize().width, GetSmallRedSize().height));
@@ -246,7 +260,8 @@ NDPicture* PictureNumber::SmallWhite(unsigned int index)
 	if (!m_picSmallWhite[index])
 	{
 		m_picSmallWhite[index] = NDPicturePool::DefaultPool()->AddPicture(
-			NDPath::GetImgPath("uiNumber_1.png"));
+			NDPath::GetImgPath("number1.png"));
+
 		m_picSmallWhite[index]->Cut(
 			CCRectMake(GetSmallWhiteSize().width * index, 0,
 			GetSmallWhiteSize().width, GetSmallWhiteSize().height));
@@ -266,6 +281,7 @@ NDPicture* PictureNumber::BigGreen(unsigned int index)
 	{
 		m_picBigGreen[index] = NDPicturePool::DefaultPool()->AddPicture(
 			NDPath::GetImgPath(BIG_GREEN_NUMBER_FIGURE_IMAG));
+
 		m_picBigGreen[index]->Cut(
 			CCRectMake(GetBigRedSize().width * index, 0,
 			GetBigRedSize().width, GetBigRedSize().height));
@@ -285,6 +301,7 @@ NDPicture* PictureNumber::SmallGold(unsigned int index)
 	{
 		m_picSmallGold[index] = NDPicturePool::DefaultPool()->AddPicture(
 			NDPath::GetImgPathBattleUI(BIG_RED_NUMBER_FIGURE_IMAG));
+
 		m_picSmallGold[index]->Cut(
 			CCRectMake(GetSmallGoldSize().width * index, 0,
 			GetSmallGoldSize().width, GetSmallGoldSize().height));
@@ -304,6 +321,7 @@ NDPicture* PictureNumber::BigRed(unsigned int index)
 	{
 		m_picBigRed[index] = NDPicturePool::DefaultPool()->AddPicture(
 			NDPath::GetImgPath(BIG_RED_NUMBER_FIGURE_IMAG));
+
 		m_picBigRed[index]->Cut(
 			CCRectMake(GetBigRedSize().width * index, 0,
 			GetBigRedSize().width, GetBigRedSize().height));
@@ -359,105 +377,114 @@ CCSize ImageNumber::GetNumberSize()
 	return m_kSize;
 }
 
-unsigned int ImageNumber::SetTitleRedNumber(bool bCleanUp, unsigned int uiNumber,
-											unsigned int uiInterval, unsigned int uiStartPosition)
+unsigned int ImageNumber::SetTitleRedNumber(bool cleanUp, unsigned int number,
+											unsigned int interval, unsigned int startPos)
 {
-	if (bCleanUp)
+	if (cleanUp)
 	{
 		RemoveAllChildren(true);
 	}
 
-	std::vector<unsigned int> kBits;
-	NumberBits(uiNumber, kBits);
+	std::vector<unsigned int> bits;
+	NumberBits(number, bits);
 
-	for (unsigned int i = 0; i < kBits.size(); i++)
+	for (unsigned int i = 0; i < bits.size(); i++)
 	{
-		unsigned int uiBit = kBits.at(i);
-		NDPicture* pkPicture = PictureNumber::SharedInstance()->TitleRedNumber(uiBit);
+		unsigned int bit = bits.at(i);
+		NDPicture* pkPicture = PictureNumber::SharedInstance()->TitleRedNumber(bit);
 		if (pkPicture)
 		{
-			NDUIImage* pkImage = new NDUIImage();
-			pkImage->Initialization();
-			pkImage->SetPicture(pkPicture);
-			pkImage->SetFrameRect(
+            int xPos = startPos
+                + i * PictureNumber::SharedInstance()->GetTitleRedNumberSize().width * RESOURCE_SCALE_960
+                + interval * RESOURCE_SCALE_960;
+            
+			NDUIImage* image = new NDUIImage();
+			image->Initialization();
+			image->SetPicture(pkPicture);
+            
+			image->SetFrameRect(
 				CCRectMake(
-				uiStartPosition
-				+ i
-				* PictureNumber::SharedInstance()->GetTitleRedNumberSize().width
-				+ uiInterval, 0, pkPicture->GetSize().width,
-				pkPicture->GetSize().height));
-			AddChild(pkImage);
+                xPos,
+                0,
+                pkPicture->GetSize().width * RESOURCE_SCALE_960,
+				pkPicture->GetSize().height * RESOURCE_SCALE_960));
+            
+			AddChild(image);
 		}
 	}
 
-	return (kBits.size()
-		* (PictureNumber::SharedInstance()->GetTitleRedNumberSize().width
-		+ uiInterval));
+	return (bits.size()
+		* (PictureNumber::SharedInstance()->GetTitleRedNumberSize().width * RESOURCE_SCALE_960
+		+ interval * RESOURCE_SCALE_960));
 }
 
-void ImageNumber::SetTitleRedNumber(unsigned int uiNumber, unsigned int uiInterval)
+void ImageNumber::SetTitleRedNumber(unsigned int number, unsigned int interval)
 {
-	m_kSize.width = SetTitleRedNumber(true, uiNumber, uiInterval, 0);
+	m_kSize.width = SetTitleRedNumber(true, number, interval, 0);
 	m_kSize.height =
-		PictureNumber::SharedInstance()->GetTitleRedNumberSize().height;
+		PictureNumber::SharedInstance()->GetTitleRedNumberSize().height * RESOURCE_SCALE_960;
 }
 
-void ImageNumber::SetTitleRedTwoNumber(unsigned int uiNumber_1,
-									   unsigned int uiNumber_2, unsigned int uiInterval)
+void ImageNumber::SetTitleRedTwoNumber(unsigned int number1,
+									   unsigned int number2, unsigned int interval)
 {
-	unsigned int uiLength = SetTitleRedNumber(true, uiNumber_1, uiInterval, 0);
+	unsigned int len = SetTitleRedNumber(true, number1, interval, 0);
 
-	NDPicture* pkPicture = PictureNumber::SharedInstance()->TitleSplit();
-	if (pkPicture)
+	NDPicture* pic = PictureNumber::SharedInstance()->TitleSplit();
+	if (pic)
 	{
 		NDUIImage* pkImage = new NDUIImage();
 		pkImage->Initialization();
-		pkImage->SetPicture(pkPicture);
+		pkImage->SetPicture(pic);
+
 		pkImage->SetFrameRect(
-			CCRectMake(uiLength, 0, pkPicture->GetSize().width,
-			pkPicture->GetSize().height));
+			CCRectMake(len,
+                       0,
+                       pic->GetSize().width * RESOURCE_SCALE_960,
+                       pic->GetSize().height * RESOURCE_SCALE_960));
+
 		AddChild(pkImage);
 
-		uiLength += uiInterval + pkPicture->GetSize().width;
+		len += interval + pic->GetSize().width * RESOURCE_SCALE_960;
 	}
 
-	m_kSize.width = uiLength + SetTitleRedNumber(false, uiNumber_2, uiInterval, uiLength);
+	m_kSize.width = len + SetTitleRedNumber(false, number2, interval, len);
 	m_kSize.height =
-		PictureNumber::SharedInstance()->GetTitleRedNumberSize().height;
+		PictureNumber::SharedInstance()->GetTitleRedNumberSize().height * RESOURCE_SCALE_960;
 }
 
 unsigned int ImageNumber::exp(unsigned int value, unsigned int n)
 {
-	unsigned int uiResult = 1;
+	unsigned int result = 1;
 	for (unsigned int i = 0; i < n; i++)
 	{
-		uiResult *= value;
+		result *= value;
 	}
-	return uiResult;
+	return result;
 }
 
-void ImageNumber::NumberBits(unsigned int uiNumber,
-							 std::vector<unsigned int>& kBits)
+void ImageNumber::NumberBits(unsigned int number,
+							 std::vector<unsigned int>& bits)
 {
-	kBits.clear();
-	CCStringRef kStringNumber = CCString::stringWithFormat("%u", uiNumber);
-	unsigned int uiLength = kStringNumber->m_sString.length();
+	bits.clear();
+	CCStringRef strNum = CCString::stringWithFormat("%u", number);
+	unsigned int len = strNum->m_sString.length();
 
-	if (uiNumber == 0)
+	if (number == 0)
 	{
-		kBits.push_back(0);
+		bits.push_back(0);
 	}
 	else
 	{
-		for (int i = uiLength; i > 0; i--)
+		for (int i = len; i > 0; i--)
 		{
-			unsigned int v = (uiNumber / exp(10, i - 1)) % 10;
-			kBits.push_back(v);
+			unsigned int v = (number / exp(10, i - 1)) % 10;
+			bits.push_back(v);
 		}
 	}
 }
 
-void ImageNumber::SetSmallRedNumber(int uiNumber, bool bWithSign)
+void ImageNumber::SetSmallRedNumber(int number, bool bWithSign)
 {
 	RemoveAllChildren(true);
 
@@ -466,7 +493,7 @@ void ImageNumber::SetSmallRedNumber(int uiNumber, bool bWithSign)
 	if (bWithSign) // 显示符号
 	{
 		int nPicIndex = 11;
-		if (uiNumber > 0)
+		if (number > 0)
 		{
 			nPicIndex = 11;
 		}
@@ -475,25 +502,29 @@ void ImageNumber::SetSmallRedNumber(int uiNumber, bool bWithSign)
 			nPicIndex = 12;
 		}
 
-		NDPicture* pkPicSign = PictureNumber::SharedInstance()->SmallRed(
-			nPicIndex);
+		NDPicture* pkPicSign = PictureNumber::SharedInstance()->SmallRed(nPicIndex);
+        
 		if (pkPicSign)
 		{
 			NDUIImage* pkImage = new NDUIImage();
 			pkImage->Initialization();
 			pkImage->SetPicture(pkPicSign);
+            
 			pkImage->SetFrameRect(
-				CCRectMake(nStartPosition, 0, pkPicSign->GetSize().width,
-				pkPicSign->GetSize().height));
+				CCRectMake(nStartPosition, 0,
+                           pkPicSign->GetSize().width * RESOURCE_SCALE_960,
+                           pkPicSign->GetSize().height * RESOURCE_SCALE_960));
+
 			AddChild(pkImage);
-			nStartPosition += pkPicSign->GetSize().width;
+            
+			nStartPosition += pkPicSign->GetSize().width * RESOURCE_SCALE_960;
 		}
 	}
 
-	uiNumber = abs(uiNumber);
+	number = abs(number);
 
 	std::vector<unsigned int> kBits;
-	NumberBits(uiNumber, kBits);
+	NumberBits(number, kBits);
 
 	for (unsigned int i = 0; i < kBits.size(); i++)
 	{
@@ -501,92 +532,112 @@ void ImageNumber::SetSmallRedNumber(int uiNumber, bool bWithSign)
 		NDPicture* pkPicture = PictureNumber::SharedInstance()->SmallRed(uiBit);
 		if (pkPicture)
 		{
+            int xPos = nStartPosition
+                        + i * PictureNumber::SharedInstance()->GetSmallRedSize().width
+                            * RESOURCE_SCALE_960;
+            
 			NDUIImage* pkImage = new NDUIImage();
 			pkImage->Initialization();
 			pkImage->SetPicture(pkPicture);
-			pkImage->SetFrameRect(
-				CCRectMake(
-				nStartPosition
-				+ i
-				* PictureNumber::SharedInstance()->GetSmallRedSize().width,
-				0, pkPicture->GetSize().width, pkPicture->GetSize().height));
+			
+            pkImage->SetFrameRect(
+				CCRectMake( xPos, 0,
+                           pkPicture->GetSize().width * RESOURCE_SCALE_960,
+                           pkPicture->GetSize().height * RESOURCE_SCALE_960));
+            
 			AddChild(pkImage);
 		}
 	}
 
 	m_kSize.width = kBits.size()
-		* PictureNumber::SharedInstance()->GetSmallRedSize().width;
-	m_kSize.height = PictureNumber::SharedInstance()->GetSmallRedSize().height;
+		* PictureNumber::SharedInstance()->GetSmallRedSize().width * RESOURCE_SCALE_960;
+    
+	m_kSize.height = PictureNumber::SharedInstance()->GetSmallRedSize().height * RESOURCE_SCALE_960;
 }
 
-void ImageNumber::SetSmallRedTwoNumber(unsigned int uiNumber_1, unsigned int uiNumber_2)
+void ImageNumber::SetSmallRedTwoNumber(unsigned int num1, unsigned int num2)
 {
 	bool bVisible = IsVisibled();
 
 	RemoveAllChildren(true);
 
-	int nStartPosition = 0;
+	int startPos = 0;
 
-	std::vector<unsigned int> kBits;
+	std::vector<unsigned int> bits;
 	// 数字1
-	NumberBits(uiNumber_1, kBits);
-	for (unsigned int i = 0; i < kBits.size(); i++)
+	NumberBits(num1, bits);
+	for (unsigned int i = 0; i < bits.size(); i++)
 	{
-		unsigned int uiBit = kBits.at(i);
-		NDPicture* pkPicture = PictureNumber::SharedInstance()->SmallRed(uiBit);
-		if (pkPicture)
+		unsigned int bit = bits.at(i);
+		NDPicture* pic = PictureNumber::SharedInstance()->SmallRed(bit);
+		if (pic)
 		{
-			NDUIImage* pkImage = new NDUIImage();
-			pkImage->Initialization();
-			pkImage->SetPicture(pkPicture);
-			pkImage->SetFrameRect(
-				CCRectMake(nStartPosition, 0, pkPicture->GetSize().width,
-				pkPicture->GetSize().height));
-			AddChild(pkImage);
-			pkImage->SetVisible(bVisible);
-			nStartPosition += pkPicture->GetSize().width;
+			NDUIImage* image = new NDUIImage();
+			image->Initialization();
+			image->SetPicture(pic);
+            
+			image->SetFrameRect(
+				CCRectMake(startPos,
+                           0,
+                           pic->GetSize().width * RESOURCE_SCALE_960,
+                           pic->GetSize().height * RESOURCE_SCALE_960));
+			
+            AddChild(image);
+			
+            image->SetVisible(bVisible);
+			
+            startPos += pic->GetSize().width * RESOURCE_SCALE_960;
 		}
 	}
 
 	// 斜线
-	NDPicture* pkPictureSlash = PictureNumber::SharedInstance()->SmallRed(10);
-	if (pkPictureSlash)
+	NDPicture* picSlash = PictureNumber::SharedInstance()->SmallRed(10);
+	if (picSlash)
 	{
 		NDUIImage* pkImage = new NDUIImage();
 		pkImage->Initialization();
-		pkImage->SetPicture(pkPictureSlash);
+		pkImage->SetPicture(picSlash);
+
 		pkImage->SetFrameRect(
-			CCRectMake(nStartPosition, 0, pkPictureSlash->GetSize().width,
-			pkPictureSlash->GetSize().height));
-		AddChild(pkImage);
-		pkImage->SetVisible(bVisible);
-		nStartPosition += pkPictureSlash->GetSize().width;
+			CCRectMake(startPos, 0,
+                       picSlash->GetSize().width * RESOURCE_SCALE_960,
+                       picSlash->GetSize().height * RESOURCE_SCALE_960));
+		
+        AddChild(pkImage);
+		
+        pkImage->SetVisible(bVisible);
+		
+        startPos += picSlash->GetSize().width * RESOURCE_SCALE_960;
 	}
 
-	NumberBits(uiNumber_2, kBits);
-	for (unsigned int i = 0; i < kBits.size(); i++)
+	NumberBits(num2, bits);
+	for (unsigned int i = 0; i < bits.size(); i++)
 	{
-		unsigned int bit = kBits.at(i);
-		NDPicture* pkPicture = PictureNumber::SharedInstance()->SmallRed(bit);
-		if (pkPicture)
+		unsigned int bit = bits.at(i);
+		NDPicture* pic = PictureNumber::SharedInstance()->SmallRed(bit);
+		if (pic)
 		{
 			NDUIImage* pkImage = new NDUIImage();
 			pkImage->Initialization();
-			pkImage->SetPicture(pkPicture);
+			pkImage->SetPicture(pic);
+            
 			pkImage->SetFrameRect(
-				CCRectMake(nStartPosition, 0, pkPicture->GetSize().width,
-				pkPicture->GetSize().height));
+				CCRectMake(startPos, 0,
+                           pic->GetSize().width * RESOURCE_SCALE_960,
+                           pic->GetSize().height * RESOURCE_SCALE_960));
+            
 			AddChild(pkImage);
 			pkImage->SetVisible(bVisible);
-			nStartPosition += pkPicture->GetSize().width;
+            
+			startPos += pic->GetSize().width * RESOURCE_SCALE_960;
 		}
 	}
 
-	m_kSize.width = nStartPosition;
-	m_kSize.height = PictureNumber::SharedInstance()->GetSmallRedSize().height;
+	m_kSize.width = startPos;
+	m_kSize.height = PictureNumber::SharedInstance()->GetSmallRedSize().height * RESOURCE_SCALE_960;
 }
 
-void ImageNumber::SetSmallWhiteNumber(int uiNumber, bool bWithSign)
+void ImageNumber::SetSmallWhiteNumber(int number, bool bWithSign)
 {
 	RemoveAllChildren(true);
 
@@ -594,191 +645,225 @@ void ImageNumber::SetSmallWhiteNumber(int uiNumber, bool bWithSign)
 
 	if (bWithSign) // 显示符号
 	{
-		int nPicIndex = 11;
-		if (uiNumber > 0)
+		int pciIndex = 11;
+		if (number > 0)
 		{
-			nPicIndex = 11;
+			pciIndex = 11;
 		}
 		else
 		{
-			nPicIndex = 12;
+			pciIndex = 12;
 		}
 
-		NDPicture* pkPictureSign = PictureNumber::SharedInstance()->SmallWhite(
-			nPicIndex);
-		if (pkPictureSign)
+		NDPicture* picSign = PictureNumber::SharedInstance()->SmallWhite(pciIndex);
+        
+		if (picSign)
 		{
-			NDUIImage* pkImage = new NDUIImage();
-			pkImage->Initialization();
-			pkImage->SetPicture(pkPictureSign);
-			pkImage->SetFrameRect(
-				CCRectMake(nStartPosition, 0, pkPictureSign->GetSize().width,
-				pkPictureSign->GetSize().height));
-			AddChild(pkImage);
-			nStartPosition += pkPictureSign->GetSize().width;
+			NDUIImage* image = new NDUIImage();
+			image->Initialization();
+			image->SetPicture(picSign);
+			
+            image->SetFrameRect(
+				CCRectMake(nStartPosition, 0,
+                           picSign->GetSize().width * RESOURCE_SCALE_960,
+                           picSign->GetSize().height * RESOURCE_SCALE_960));
+
+			AddChild(image);
+            
+			nStartPosition += picSign->GetSize().width * RESOURCE_SCALE_960;
 		}
 	}
 
-	uiNumber = abs(uiNumber);
+	number = abs(number);
 
-	std::vector<unsigned int> kBits;
-	NumberBits(uiNumber, kBits);
+	std::vector<unsigned int> bits;
+	NumberBits(number, bits);
 
-	for (unsigned int i = 0; i < kBits.size(); i++)
+	for (unsigned int i = 0; i < bits.size(); i++)
 	{
-		unsigned int uiBit = kBits.at(i);
-		NDPicture* pkPicture = PictureNumber::SharedInstance()->SmallWhite(uiBit);
-		if (pkPicture)
+		unsigned int bit = bits.at(i);
+		NDPicture* pic = PictureNumber::SharedInstance()->SmallWhite(bit);
+		if (pic)
 		{
+            int xPos = nStartPosition
+                        + i * PictureNumber::SharedInstance()->GetSmallWhiteSize().width
+                            * RESOURCE_SCALE_960;
+            
 			NDUIImage* pkImage = new NDUIImage();
 			pkImage->Initialization();
-			pkImage->SetPicture(pkPicture);
+			pkImage->SetPicture(pic);
+            
 			pkImage->SetFrameRect(
 				CCRectMake(
-				nStartPosition
-				+ i
-				* PictureNumber::SharedInstance()->GetSmallWhiteSize().width,
-				0, pkPicture->GetSize().width, pkPicture->GetSize().height));
+                           xPos,
+                           0,
+                           pic->GetSize().width * RESOURCE_SCALE_960,
+                           pic->GetSize().height * RESOURCE_SCALE_960));
+            
 			AddChild(pkImage);
 		}
 	}
 
-	m_kSize.width = kBits.size()
-		* PictureNumber::SharedInstance()->GetSmallWhiteSize().width;
-	m_kSize.height = PictureNumber::SharedInstance()->GetSmallWhiteSize().height;
+	m_kSize.width = bits.size()
+		* PictureNumber::SharedInstance()->GetSmallWhiteSize().width * RESOURCE_SCALE_960;
+    
+	m_kSize.height = PictureNumber::SharedInstance()->GetSmallWhiteSize().height * RESOURCE_SCALE_960;
 }
 
-void ImageNumber::SetBigGreenNumber(int uiNumber, bool bWithSign)
+void ImageNumber::SetBigGreenNumber(int number, bool bWithSign)
 {
 	RemoveAllChildren(true);
 
-	int nStartPosition = 0;
+	int startPos = 0;
 
 	if (bWithSign) // 显示符号
 	{
-		int nPicIndex = 11;
-		if (uiNumber > 0)
+		int pciIndex = 11;
+		if (number > 0)
 		{
-			nPicIndex = 11;
+			pciIndex = 11;
 		}
 		else
 		{
-			nPicIndex = 12;
+			pciIndex = 12;
 		}
 
-		NDPicture* pkPicSign = PictureNumber::SharedInstance()->BigGreen(
-			nPicIndex);
-		if (pkPicSign)
+		NDPicture* picSign = PictureNumber::SharedInstance()->BigGreen(pciIndex);
+        
+		if (picSign)
 		{
-			NDUIImage* pkImage = new NDUIImage();
-			pkImage->Initialization();
-			pkImage->SetPicture(pkPicSign);
-			pkImage->SetFrameRect(
-				CCRectMake(nStartPosition, 0, pkPicSign->GetSize().width,
-				pkPicSign->GetSize().height));
-			AddChild(pkImage);
-			nStartPosition += pkPicSign->GetSize().width;
+			NDUIImage* image = new NDUIImage();
+			image->Initialization();
+			image->SetPicture(picSign);
+            
+			image->SetFrameRect(
+				CCRectMake(startPos,
+                           0,
+                           picSign->GetSize().width * RESOURCE_SCALE_960,
+                           picSign->GetSize().height * RESOURCE_SCALE_960));
+			
+            AddChild(image);
+			
+            startPos += picSign->GetSize().width * RESOURCE_SCALE_960;
 		}
 	}
 
-	uiNumber = abs(uiNumber);
+	number = abs(number);
 
-	std::vector<unsigned int> kBits;
-	NumberBits(uiNumber, kBits);
+	std::vector<unsigned int> bits;
+	NumberBits(number, bits);
 
-	for (unsigned int i = 0; i < kBits.size(); i++)
+	for (unsigned int i = 0; i < bits.size(); i++)
 	{
-		unsigned int uiBit = kBits.at(i);
-		NDPicture* pkPicture = PictureNumber::SharedInstance()->BigGreen(uiBit);
-		if (pkPicture)
+		unsigned int bit = bits.at(i);
+		NDPicture* pic = PictureNumber::SharedInstance()->BigGreen(bit);
+		if (pic)
 		{
-			NDUIImage* pkImage = new NDUIImage();
-			pkImage->Initialization();
-			pkImage->SetPicture(pkPicture);
-			pkImage->SetFrameRect(
+            int xPos = startPos
+                        + i * PictureNumber::SharedInstance()->GetBigRedSize().width
+                            * RESOURCE_SCALE_960;
+            
+			NDUIImage* image = new NDUIImage();
+			image->Initialization();
+			image->SetPicture(pic);
+            
+			image->SetFrameRect(
 				CCRectMake(
-				nStartPosition
-				+ i
-				* PictureNumber::SharedInstance()->GetBigRedSize().width,
-				0, pkPicture->GetSize().width, pkPicture->GetSize().height));
-			AddChild(pkImage);
+                           xPos,
+                           0,
+                           pic->GetSize().width * RESOURCE_SCALE_960,
+                           pic->GetSize().height * RESOURCE_SCALE_960));
+			
+            AddChild(image);
 		}
 	}
 
-	m_kSize.width = nStartPosition
-		+ kBits.size()
-		* PictureNumber::SharedInstance()->GetBigRedSize().width;
-	m_kSize.height = PictureNumber::SharedInstance()->GetBigRedSize().height;
+	m_kSize.width = startPos
+		+ bits.size()
+		* PictureNumber::SharedInstance()->GetBigRedSize().width * RESOURCE_SCALE_960;
+
+	m_kSize.height = PictureNumber::SharedInstance()->GetBigRedSize().height * RESOURCE_SCALE_960;
 }
 
-void ImageNumber::SetSmallGreenNumber(int uiNumber, bool bWithSign)
+void ImageNumber::SetSmallGreenNumber(int number, bool bWithSign)
 {
 	RemoveAllChildren(true);
 
-	int nStartPosition = 0;
+	int startPos = 0;
 
 	if (bWithSign) // 显示符号
 	{
-		int nPicIndex = 11;
-		if (uiNumber > 0)
+		int pciIndex = 11;
+		if (number > 0)
 		{
-			nPicIndex = 11;
+			pciIndex = 11;
 		}
 		else
 		{
-			nPicIndex = 12;
+			pciIndex = 12;
 		}
 
-		NDPicture* pkPictureSign = PictureNumber::SharedInstance()->SmallGreen(
-			nPicIndex);
-		if (pkPictureSign)
+		NDPicture* picSign = PictureNumber::SharedInstance()->SmallGreen(pciIndex);
+        
+		if (picSign)
 		{
-			NDUIImage* pkImage = new NDUIImage();
-			pkImage->Initialization();
-			pkImage->SetPicture(pkPictureSign);
-			pkImage->SetFrameRect(
-				CCRectMake(nStartPosition, 0, pkPictureSign->GetSize().width,
-				pkPictureSign->GetSize().height));
-			AddChild(pkImage);
-			nStartPosition += pkPictureSign->GetSize().width;
+			NDUIImage* image = new NDUIImage();
+            
+			image->Initialization();
+			image->SetPicture(picSign);
+			
+            image->SetFrameRect(
+				CCRectMake(startPos,
+                           0,
+                           picSign->GetSize().width * RESOURCE_SCALE_960,
+                           picSign->GetSize().height * RESOURCE_SCALE_960));
+
+			AddChild(image);
+            
+			startPos += picSign->GetSize().width * RESOURCE_SCALE_960;
 		}
 	}
 
-	uiNumber = abs(uiNumber);
+	number = abs(number);
 
-	std::vector<unsigned int> kBits;
-	NumberBits(uiNumber, kBits);
+	std::vector<unsigned int> bits;
+	NumberBits(number, bits);
 
-	for (unsigned int i = 0; i < kBits.size(); i++)
+	for (unsigned int i = 0; i < bits.size(); i++)
 	{
-		unsigned int uiBit = kBits.at(i);
-		NDPicture* pkPicture = PictureNumber::SharedInstance()->SmallGreen(uiBit);
-		if (pkPicture)
+		unsigned int bit = bits.at(i);
+		NDPicture* pic = PictureNumber::SharedInstance()->SmallGreen(bit);
+		if (pic)
 		{
-			NDUIImage* pkImage = new NDUIImage();
-			pkImage->Initialization();
-			pkImage->SetPicture(pkPicture);
-			pkImage->SetFrameRect(
-				CCRectMake(
-				nStartPosition
-				+ i
-				* PictureNumber::SharedInstance()->GetSmallRedSize().width,
-				0, pkPicture->GetSize().width, pkPicture->GetSize().height));
-			AddChild(pkImage);
+            int xPos = startPos
+                            + i * PictureNumber::SharedInstance()->GetSmallRedSize().width
+                                * RESOURCE_SCALE_960;
+            
+			NDUIImage* image = new NDUIImage();
+			image->Initialization();
+			image->SetPicture(pic);
+            
+			image->SetFrameRect(
+				CCRectMake(xPos, 0,
+                           pic->GetSize().width * RESOURCE_SCALE_960,
+                           pic->GetSize().height * RESOURCE_SCALE_960));
+
+			AddChild(image);
 		}
 	}
 
-	m_kSize.width = nStartPosition
-		+ kBits.size()
-		* PictureNumber::SharedInstance()->GetSmallRedSize().width;
-	m_kSize.height = PictureNumber::SharedInstance()->GetSmallRedSize().height;
+	m_kSize.width = startPos
+		+ bits.size()
+		* PictureNumber::SharedInstance()->GetSmallRedSize().width * RESOURCE_SCALE_960;
+    
+	m_kSize.height = PictureNumber::SharedInstance()->GetSmallRedSize().height * RESOURCE_SCALE_960;
 }
 
 void ImageNumber::SetSmallGoldNumber(int num)
 {
 	RemoveAllChildren(true);
 
-	int nStartPosition = 0;
+	int startPos = 0;
 
 	num = abs(num);
 
@@ -788,116 +873,139 @@ void ImageNumber::SetSmallGoldNumber(int num)
 	for (unsigned int i = 0; i < bits.size(); i++)
 	{
 		unsigned int bit = bits.at(i);
-		NDPicture* pkPicture = PictureNumber::SharedInstance()->SmallGold(bit);
-		if (pkPicture)
+		NDPicture* pic = PictureNumber::SharedInstance()->SmallGold(bit);
+		if (pic)
 		{
-			NDUIImage* pkImage = new NDUIImage();
-			pkImage->Initialization();
-			pkImage->SetPicture(pkPicture);
-			pkImage->SetFrameRect(
+            int xPos = startPos
+                        + i * PictureNumber::SharedInstance()->GetSmallGoldSize().width
+                            * RESOURCE_SCALE_960;
+            
+			NDUIImage* image = new NDUIImage();
+			image->Initialization();
+			image->SetPicture(pic);
+            
+			image->SetFrameRect(
 				CCRectMake(
-				nStartPosition
-				+ i
-				* PictureNumber::SharedInstance()->GetSmallGoldSize().width,
-				0, pkPicture->GetSize().width, pkPicture->GetSize().height));
-			AddChild(pkImage);
+                           xPos,
+                           0,
+                           pic->GetSize().width * RESOURCE_SCALE_960,
+                           pic->GetSize().height * RESOURCE_SCALE_960));
+            
+			AddChild(image);
 		}
 	}
 
-	m_kSize.width = nStartPosition
+	m_kSize.width = startPos
 		+ bits.size()
-		* PictureNumber::SharedInstance()->GetSmallGoldSize().width;
-	m_kSize.height = PictureNumber::SharedInstance()->GetSmallGoldSize().height;
+		* PictureNumber::SharedInstance()->GetSmallGoldSize().width * RESOURCE_SCALE_960;
+    
+	m_kSize.height = PictureNumber::SharedInstance()->GetSmallGoldSize().height * RESOURCE_SCALE_960;
 }
 
-void ImageNumber::SetBigRedNumber(int uiNumber, bool bWithSign)
+void ImageNumber::SetBigRedNumber(int number, bool bWithSign)
 {
 	RemoveAllChildren(true);
 
-	int nStartPosition = 0;
+	int startPos = 0;
 
 	if (bWithSign) // 显示符号
 	{
-		int pkIndex = 11;
-		if (uiNumber > 0)
+		int pciIndex = 11;
+		if (number > 0)
 		{
-			pkIndex = 11;
+			pciIndex = 11;
 		}
 		else
 		{
-			pkIndex = 12;
+			pciIndex = 12;
 		}
 
-		NDPicture* pkPictureSign = PictureNumber::SharedInstance()->BigRed(pkIndex);
-		if (pkPictureSign)
+		NDPicture* picSign = PictureNumber::SharedInstance()->BigRed(pciIndex);
+		if (picSign)
 		{
-			NDUIImage* pkImage = new NDUIImage();
-			pkImage->Initialization();
-			pkImage->SetPicture(pkPictureSign);
-			pkImage->SetFrameRect(
-				CCRectMake(nStartPosition, 0, pkPictureSign->GetSize().width,
-				pkPictureSign->GetSize().height));
-			AddChild(pkImage);
-			nStartPosition += pkPictureSign->GetSize().width;
+			NDUIImage* image = new NDUIImage();
+			image->Initialization();
+			image->SetPicture(picSign);
+			
+            image->SetFrameRect(
+				CCRectMake(startPos,
+                           0,
+                           picSign->GetSize().width * RESOURCE_SCALE_960,
+                           picSign->GetSize().height * RESOURCE_SCALE_960));
+            
+			AddChild(image);
+			
+            startPos += picSign->GetSize().width * RESOURCE_SCALE_960;
 		}
 	}
 
-	uiNumber = abs(uiNumber);
+	number = abs(number);
 
-	std::vector<unsigned int> kBits;
-	NumberBits(uiNumber, kBits);
+	std::vector<unsigned int> bits;
+	NumberBits(number, bits);
 
-	for (unsigned int i = 0; i < kBits.size(); i++)
+	for (unsigned int i = 0; i < bits.size(); i++)
 	{
-		unsigned int uiBit = kBits.at(i);
-		NDPicture* pkPicture = PictureNumber::SharedInstance()->BigRed(uiBit);
-		if (pkPicture)
+		unsigned int bit = bits.at(i);
+		NDPicture* pic = PictureNumber::SharedInstance()->BigRed(bit);
+		if (pic)
 		{
-			NDUIImage* pkImage = new NDUIImage();
-			pkImage->Initialization();
-			pkImage->SetPicture(pkPicture);
-			pkImage->SetFrameRect(
-				CCRectMake(
-				nStartPosition
-				+ i
-				* PictureNumber::SharedInstance()->GetBigRedSize().width,
-				0, pkPicture->GetSize().width, pkPicture->GetSize().height));
-			AddChild(pkImage);
+            int xPos = startPos
+                        + i * PictureNumber::SharedInstance()->GetBigRedSize().width
+                            * RESOURCE_SCALE_960;
+            
+			NDUIImage* image = new NDUIImage();
+			image->Initialization();
+			image->SetPicture(pic);
+            
+			image->SetFrameRect(
+				CCRectMake(xPos,
+                           0,
+                           pic->GetSize().width * RESOURCE_SCALE_960,
+                           pic->GetSize().height * RESOURCE_SCALE_960));
+
+			AddChild(image);
 		}
 	}
 
-	m_kSize.width = nStartPosition
-		+ kBits.size()
-		* PictureNumber::SharedInstance()->GetBigRedSize().width;
-	m_kSize.height = PictureNumber::SharedInstance()->GetBigRedSize().height;
+	m_kSize.width = startPos
+		+ bits.size()
+		* PictureNumber::SharedInstance()->GetBigRedSize().width * RESOURCE_SCALE_960;
+    
+	m_kSize.height = PictureNumber::SharedInstance()->GetBigRedSize().height * RESOURCE_SCALE_960;
 }
 
-void ImageNumber::SetBigRedTwoNumber(int uiNumber_1, int uiNumber_2)
+void ImageNumber::SetBigRedTwoNumber(int number1, int number2)
 {
 	RemoveAllChildren(true);
 
-	int nStartPosition = 0;
+	int startPos = 0;
 
-	uiNumber_1 = abs(uiNumber_1);
-	uiNumber_2 = abs(uiNumber_2);
+	number1 = abs(number1);
+	number2 = abs(number2);
 
-	std::vector<unsigned int> kBits;
+	std::vector<unsigned int> bits;
 	// 数字1
-	NumberBits(uiNumber_1, kBits);
-	for (unsigned int i = 0; i < kBits.size(); i++)
+	NumberBits(number1, bits);
+	for (unsigned int i = 0; i < bits.size(); i++)
 	{
-		unsigned int uiBit = kBits.at(i);
-		NDPicture* pkPicture = PictureNumber::SharedInstance()->BigRed(uiBit);
-		if (pkPicture)
+		unsigned int bit = bits.at(i);
+		NDPicture* pic = PictureNumber::SharedInstance()->BigRed(bit);
+		if (pic)
 		{
-			NDUIImage* pkImage = new NDUIImage();
-			pkImage->Initialization();
-			pkImage->SetPicture(pkPicture);
-			pkImage->SetFrameRect(
-				CCRectMake(nStartPosition, 0, pkPicture->GetSize().width,
-				pkPicture->GetSize().height));
-			AddChild(pkImage);
-			nStartPosition += pkPicture->GetSize().width;
+			NDUIImage* image = new NDUIImage();
+			image->Initialization();
+			image->SetPicture(pic);
+            
+			image->SetFrameRect(
+				CCRectMake(startPos,
+                           0,
+                           pic->GetSize().width * RESOURCE_SCALE_960,
+                           pic->GetSize().height * RESOURCE_SCALE_960));
+			
+            AddChild(image);
+
+			startPos += pic->GetSize().width * RESOURCE_SCALE_960;
 		}
 	}
 
@@ -905,34 +1013,45 @@ void ImageNumber::SetBigRedTwoNumber(int uiNumber_1, int uiNumber_2)
 	NDPicture* picSlash = PictureNumber::SharedInstance()->BigRed(10);
 	if (picSlash)
 	{
-		NDUIImage* pkImage = new NDUIImage();
-		pkImage->Initialization();
-		pkImage->SetPicture(picSlash);
-		pkImage->SetFrameRect(
-			CCRectMake(nStartPosition, 0, picSlash->GetSize().width,
-			picSlash->GetSize().height));
-		AddChild(pkImage);
-		nStartPosition += picSlash->GetSize().width;
+		NDUIImage* image = new NDUIImage();
+		image->Initialization();
+		image->SetPicture(picSlash);
+        
+		image->SetFrameRect(
+			CCRectMake(startPos,
+                       0,
+                       picSlash->GetSize().width * RESOURCE_SCALE_960,
+                       picSlash->GetSize().height * RESOURCE_SCALE_960));
+		
+        AddChild(image);
+		
+        startPos += picSlash->GetSize().width * RESOURCE_SCALE_960;
 	}
 
-	NumberBits(uiNumber_2, kBits);
-	for (unsigned int i = 0; i < kBits.size(); i++)
+	NumberBits(number2, bits);
+	for (unsigned int i = 0; i < bits.size(); i++)
 	{
-		unsigned int uiBit = kBits.at(i);
-		NDPicture* pkPicture = PictureNumber::SharedInstance()->BigRed(uiBit);
-		if (pkPicture)
+		unsigned int bit = bits.at(i);
+		NDPicture* pic = PictureNumber::SharedInstance()->BigRed(bit);
+		if (pic)
 		{
-			NDUIImage* pkImage = new NDUIImage();
-			pkImage->Initialization();
-			pkImage->SetPicture(pkPicture);
-			pkImage->SetFrameRect(
-				CCRectMake(nStartPosition, 0, pkPicture->GetSize().width,
-				pkPicture->GetSize().height));
-			AddChild(pkImage);
-			nStartPosition += pkPicture->GetSize().width;
+			NDUIImage* image = new NDUIImage();
+			image->Initialization();
+			image->SetPicture(pic);
+            
+			image->SetFrameRect(
+				CCRectMake(
+                           startPos,
+                           0,
+                           pic->GetSize().width * RESOURCE_SCALE_960,
+                           pic->GetSize().height * RESOURCE_SCALE_960));
+
+			AddChild(image);
+			
+            startPos += pic->GetSize().width * RESOURCE_SCALE_960;
 		}
 	}
 
-	m_kSize.width = nStartPosition;
-	m_kSize.height = PictureNumber::SharedInstance()->GetBigRedSize().height;
+	m_kSize.width = startPos;
+	m_kSize.height = PictureNumber::SharedInstance()->GetBigRedSize().height * RESOURCE_SCALE_960;
 }

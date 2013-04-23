@@ -88,12 +88,9 @@ void dumpCocos2dx()
 	// dump NDDirector & CCDirector
 	{
 		CCLog( 
-			//			"hero pos(%d, %d)\r\n"
 			"[CCDirector] size in Points  (%d, %d)\r\n"
 			"[CCDirector] size in Pixels  (%d, %d)\r\n"
-			"[CCDirector] content scale = %.1f\r\n"
-			,
-			//			(int)posScreen.x, (int)posScreen.y, //screen pos in pixels.
+			"[CCDirector] content scale = %.1f\r\n",
 
 			(int)CCDirector::sharedDirector()->getWinSize().width,
 			(int)CCDirector::sharedDirector()->getWinSize().height,
@@ -112,61 +109,34 @@ void dumpCocos2dx()
 		{
 			CCLog(
 				"\r\n"
-				"[EGLVIEW] frame     size (%d, %d)\r\n"
+				"[EGLVIEW] frame     size (%d, %d)\t\t[AKA: Screen Size]\r\n"
 				"[EGLVIEW] designed  size (%d, %d)\r\n"
+				"[EGLVIEW] scale          (%.2f, %.2f)\r\n"
+				"\r\n"
+				"[EGLVIEW] viewport  org  (%d, %d)\r\n"
 				"[EGLVIEW] viewport  size (%d, %d)\r\n"
+				"\r\n"
 				"[EGLVIEW] visible   org  (%d, %d)\r\n"
 				"[EGLVIEW] visible   size (%d, %d)\r\n"
-				"[EGLVIEW] scale (%.1f, %.1f)\r\n"
-				//"[EGLVIEW] resolution policy (%d)\r\n"
+				"\r\n"
 				"[EGLVIEW] retina enabled (%d)\r\n"
+				//"[EGLVIEW] resolution policy (%d)\r\n"
 				,
 				/*frame*/	(int)eglView->getFrameSize().width,			(int)eglView->getFrameSize().height, 
 				/*designed*/(int)eglView->getSize().width,				(int)eglView->getSize().height, 
-				/*viewport*/(int)eglView->getViewPortRect().origin.x,	(int)eglView->getViewPortRect().origin.y, //in origin, not in size!
+				/*scale*/	eglView->getScaleX(), eglView->getScaleY(),
+
+				/*viewport*/(int)eglView->getViewPortRect().origin.x,	(int)eglView->getViewPortRect().origin.y,
+				/*viewport*/(int)eglView->getViewPortRect().size.width,	(int)eglView->getViewPortRect().size.height,
+
 				/*vis org*/	(int)eglView->getVisibleOrigin().x,			(int)eglView->getVisibleOrigin().y,
 				/*vis size*/(int)eglView->getVisibleSize().width,		(int)eglView->getVisibleSize().height,
-				/*scale*/	eglView->getScaleX(), eglView->getScaleY(),
-				/*policy*/
+				
 				/*retina*/	(int)eglView->isRetinaEnabled()
+				///*policy*/	(int)eglView->m_eResolutionPolicy
 				);
 		}
 	}
-
-	// 	// dump map layer
-	// 	{
-	// 		extern NDMapLayer* g_pMapLayer; //for debug only.
-	// 		if (g_pMapLayer)
-	// 		{
-	// 			sprintf( msg, 
-	// 				"\r\n"
-	// 				"[NDMapLayer] content size (%d, %d)\r\n"
-	// 				"[NDMapLayer] screen center (%d, %d)\r\n", 
-	// 				(int)g_pMapLayer->GetContentSize().width,
-	// 				(int)g_pMapLayer->GetContentSize().height,
-	// 				(int)g_pMapLayer->GetScreenCenter().x,
-	// 				(int)g_pMapLayer->GetScreenCenter().y
-	// 				);
-	// 
-	// 			WriteConsoleA( hOut, msg, strlen(msg), &n, NULL );	
-	// 		}
-	// 	}
-
-	// 	// dump world map layer
-	// 	{
-	// 		extern WorldMapLayer* g_pWorldMapLayer; //for debug only.
-	// 		if (g_pWorldMapLayer)
-	// 		{
-	// 			sprintf( msg, 
-	// 				"\r\n"
-	// 				"[WorldMapLayer] content size (%d, %d)\r\n", 
-	// 				(int)g_pWorldMapLayer->GetContentSize().width,
-	// 				(int)g_pWorldMapLayer->GetContentSize().height
-	// 				);
-	// 
-	// 			WriteConsoleA( hOut, msg, strlen(msg), &n, NULL );	
-	// 		}
-	// 	}
 
 	CCLog( "@@------------------------------------------------------------}}\r\n" );
 }
@@ -205,8 +175,8 @@ bool NDGameApplication::applicationDidFinishLaunching()
 		CCFileUtils::sharedFileUtils()->setResourceDirectory("iphonehd");
 
 		// don't enable retina because we don't have ipad hd resource
-		CCEGLView::sharedOpenGLView()->setDesignResolutionSize(960, 640,
-			kResolutionNoBorder);
+		//CCEGLView::sharedOpenGLView()->setDesignResolutionSize(960, 640, kResolutionNoBorder);
+        CCEGLView::sharedOpenGLView()->setDesignResolutionSize(1024, 768, kResolutionNoBorder);
 	}
 	else if (target == kTargetIphone)
 	{

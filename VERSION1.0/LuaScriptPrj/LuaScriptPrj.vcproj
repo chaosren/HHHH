@@ -1190,6 +1190,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\Bin\SimplifiedChineseRes\res\Script\ArmyGroup\DistributeRecordDlg.lua"
+				>
+			</File>
+			<File
 				RelativePath="..\Bin\SimplifiedChineseRes\res\Script\ArmyGroup\HandleMember.lua"
 				>
 			</File>

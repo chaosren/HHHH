@@ -122,18 +122,40 @@ void NDDirector::SetTransitionScene(NDScene *scene, TransitionSceneType type)
 
 	m_eTransitionSceneType = type;
 
-	m_pkDirector->pushScene(CCTransitionFade::transitionWithDuration(1.2f,
-		(CCScene *)scene->getCCNode()));
+	m_pkDirector->pushScene(CCTransitionFade::transitionWithDuration(1.2f, (CCScene *)scene->getCCNode()));
+	//[m_director pushScene:[CCTransitionFadeTR transitionWithDuration:1.2f scene:(CCScene *)scene->m_ccNode]];
+
+	/*
+	 static bool right = true;
+	 if (right)
+	 [m_director pushScene:[CCMoveInRTransition transitionWithDuration:0.6f scene:(CCScene *)scene->m_ccNode]];
+	 else
+	 [m_director pushScene:[CCMoveInLTransition transitionWithDuration:0.6f scene:(CCScene *)scene->m_ccNode]];
+
+	 right = !right;
+	 */
 }
 
 
 void NDDirector::RunScene(NDScene* scene)
 {
+// 	//@zwq
+// 	if (m_pkDirector->getRunningScene())
+// 	{
+// 		m_kScenesStack.push_back(scene);
+// 		m_pkDirector->replaceScene((CCScene *) scene->m_ccNode);
+// 	}
+// 	else
+// 	{
+// 		m_kScenesStack.push_back(scene);
+// 		m_pkDirector->runWithScene((CCScene *) scene->m_ccNode);
+// 	}
+
 	LOGD("Entry run scene,scene value is %d",(int)scene);
 
 	m_kScenesStack.push_back(scene);
 
-	LOGD("ready to runwithscene,scene->m_ccNode value is %d",(int)(scene->m_pkCCNode));
+	LOGD("ready to runwithscene,scene->m_ccNode value is %d",(int)(scene->getCCNode()));
 
 	m_pkDirector->runWithScene((CCScene *) scene->getCCNode());
 }
@@ -148,21 +170,21 @@ void NDDirector::ReplaceScene(NDScene* pkScene, bool bAnimate/*=false*/)
 // 	}
 
 	if (m_kScenesStack.size() > 0)
-	{
-		//NDLog("===============================当前场景栈大小[%u]", m_scenesStack.size());
-		BeforeDirectorPopScene(m_kScenesStack.back(), true);
-
-		NDScene* pkScene = m_kScenesStack.back();
-
-		if (pkScene)
 		{
-			delete pkScene;
+			//NDLog("===============================当前场景栈大小[%u]", m_scenesStack.size());
+			this->BeforeDirectorPopScene(m_kScenesStack.back(), true);
+	
+			NDScene* pkScene = m_kScenesStack.back();
+	
+			if (pkScene)
+			{
+				delete pkScene;
+			}
+	
+			m_kScenesStack.pop_back();
+	
+			this->AfterDirectorPopScene(true);
 		}
-
-		m_kScenesStack.pop_back();
-
-		AfterDirectorPopScene(true);
-	}
 	
 	BeforeDirectorPushScene(pkScene);
 	m_kScenesStack.push_back(pkScene);
@@ -175,19 +197,33 @@ void NDDirector::ReplaceScene(NDScene* pkScene, bool bAnimate/*=false*/)
 
 void NDDirector::PushScene(NDScene* scene, bool bAnimate/*=false*/)
 {
-	BeforeDirectorPushScene(scene);
+// 	if (bAnimate) 
+// 	{
+// 		SetTransitionScene(scene, eTransitionScenePush);
+// 
+// 		return;
+// 	}
+
+	this->BeforeDirectorPushScene(scene);
 
 	m_kScenesStack.push_back(scene);
 	m_pkDirector->pushScene((CCScene *) scene->getCCNode());
 
-	AfterDirectorPushScene(scene);
+	this->AfterDirectorPushScene(scene);
 
 	//NDLog("===============================当前场景栈大小[%u]", m_scenesStack.size());
 }
 
 bool NDDirector::PopScene(NDScene* scene/*=NULL*/, bool bAnimate/*=false*/)
 {
-	return PopScene(true);
+// 	if (bAnimate && m_kScenesStack.size() >= 2) 
+// 	{
+// 		SetTransitionScene(m_kScenesStack[m_kScenesStack.size()-2], eTransitionScenePop);
+// 
+// 		return true;
+// 	}
+
+	return this->PopScene(true);
 }
 
 bool NDDirector::PopScene(bool cleanUp)
@@ -197,7 +233,7 @@ bool NDDirector::PopScene(bool cleanUp)
 		return false;
 	}
 
-	BeforeDirectorPopScene(GetRunningScene(), cleanUp);
+	this->BeforeDirectorPopScene(this->GetRunningScene(), cleanUp);
 
 	//NDLog("===============================当前场景栈大小[%u]", m_scenesStack.size());
 
@@ -208,7 +244,7 @@ bool NDDirector::PopScene(bool cleanUp)
 	m_kScenesStack.pop_back();
 	m_pkDirector->popScene();
 
-	AfterDirectorPopScene(cleanUp);
+	this->AfterDirectorPopScene(cleanUp);
 
 	//NDLog("===============================当前场景栈大小[%u]", m_scenesStack.size());
 
@@ -222,6 +258,9 @@ void NDDirector::PurgeCachedData()
 	NDPicturePool::DefaultPool()->PurgeDefaultPool();
 
 	NDAnimationGroupPool::purgeDefaultPool();
+
+//  	if (m_pkDirector)
+//  		m_pkDirector->purgeCachedData();
 }
 
 void NDDirector::Stop()
@@ -269,7 +308,12 @@ void NDDirector::SetViewRect(CCRect kRect, NDNode* pkNode)
 	CCSize kWinSize = m_pkDirector->getWinSizeInPixels();
 
 #if 1 //@check
-	glEnable (GL_SCISSOR_TEST);	
+	glEnable (GL_SCISSOR_TEST);
+
+// 	glScissor(kWinSize.height - kRect.origin.y - kRect.size.height,
+// 			kWinSize.width - kRect.origin.x - kRect.size.width, kRect.size.height,
+// 			kRect.size.width);
+	
 	glScissor(	kRect.origin.x,
 				kWinSize.height - (kRect.origin.y + kRect.size.height),
 	 			kRect.size.width, 
@@ -407,7 +451,14 @@ void NDDirector::Recyle()
 float NDDirector::getIosScale() const
 {
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
-	return 0.5f * CCDirector::sharedDirector()->getContentScaleFactor();
+    if (IS_IPAD)
+    {
+        return float(IPAD_POINT_SIZE_WIDTH) / 960.0;
+    }
+	else
+    {
+        return 0.5f * CCDirector::sharedDirector()->getContentScaleFactor();
+    }
 #elif (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
 	return 0.5f * CCDirector::sharedDirector()->getContentScaleFactor();
 #else
@@ -437,7 +488,12 @@ float NDDirector::getResourceScale()
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
 	return 2.0f * getAndroidScale().y; //乘2是因为是参考960*640的，不要改成1
 #else
-	return m_pkDirector->getContentScaleFactor();
+   	float scale = m_pkDirector->getContentScaleFactor();
+    if (IS_IPAD)
+    {
+        scale *= (float(IPAD_POINT_SIZE_HEIGHT) / 320);
+    }
+    return scale;
 #endif
 }
 
@@ -448,7 +504,16 @@ float NDDirector::getCoordScaleX()
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
 	return getAndroidScale().x;
 #else
-	return 0.5f * m_pkDirector->getContentScaleFactor();
+    float scaleX = 0.5f * m_pkDirector->getContentScaleFactor();
+    if (IS_IPHONE5)
+    {
+        scaleX *= IPHONE5_WIDTH_SCALE;
+    }
+    else if (IS_IPAD)
+    {
+        scaleX *= (float(IPAD_POINT_SIZE_WIDTH) / 480);
+    }
+    return scaleX;
 #endif
 }
 
@@ -459,7 +524,12 @@ float NDDirector::getCoordScaleY()
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
 	return getAndroidScale().y;
 #else
-	return 0.5f * m_pkDirector->getContentScaleFactor();
+	float scaleY = 0.5f * m_pkDirector->getContentScaleFactor();
+    if (IS_IPAD)
+    {
+        scaleY *= (float(IPAD_POINT_SIZE_HEIGHT) / 320);
+    }
+    return scaleY;
 #endif
 }
 

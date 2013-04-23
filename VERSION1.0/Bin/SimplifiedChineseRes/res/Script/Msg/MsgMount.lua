@@ -100,6 +100,13 @@ function p.processMountInfo(netdata)
             PetUI.OpenTutorial();
         end
         
+        --++Guosen 2012.3.26--判断兽魂--2转1星
+    	p.RolePetInfo.star = star;
+        if ( p.RolePetInfo.star >= 21 ) then
+        	if ( MainUIBottomSpeedBar.GetFuncIsOpen( 131 ) ) then --
+        		MainUIBottomSpeedBar.refreshScroll();
+        	end
+        end
     end
     
     p.RolePetInfo.star = star;

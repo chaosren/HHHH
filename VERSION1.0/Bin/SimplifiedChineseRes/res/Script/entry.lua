@@ -173,3 +173,7 @@ DoFile("Destiny/define.lua");
 DoFile("RankList/define.lua");
 --¹Å¼£Ñ°±¦
 DoFile("TreasureHunt/define.lua");
+
+--ÊÞ»ê
+DoFile("MountSoul/define.lua");
+

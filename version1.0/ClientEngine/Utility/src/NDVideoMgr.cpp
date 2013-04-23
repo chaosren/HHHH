@@ -21,6 +21,8 @@
 #define  LOGERROR(...)
 #endif
 
+void playVideoIos();
+
 using namespace std;
 using namespace cocos2d;
 
@@ -117,6 +119,11 @@ bool NDVideoMgr::PlayVideoForIOS( const char* pszFilename )
 		return false;
 	}
 
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
+    CCLog("@@ PlayVideoForIOS(), fileName=%s\r\n", pszFilename);
+    playVideoIos();
+#endif
+    
 	return true;
 }
 

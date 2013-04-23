@@ -10,6 +10,7 @@ local p = QuickSwapEquipUI;
 
 local TAG_CONTAINER     = 101;
 local TAG_SWAP_BTN      = 57;
+local TAG_SWAP_MAR_BTN  = 58;
 
 local TAG_BOX_PIC1_BTN          = 204;
 local TAG_BOX_NAME1_LBL         = 202;
@@ -64,17 +65,96 @@ function p.OnUIEvent(uiNode, uiEventType, param)
     LogInfo("p.OnUIEvent[%d], event:%d!", tag, uiEventType);
     
     if uiEventType == NUIEventType.TE_TOUCH_BTN_CLICK then
-        if TagClose == tag then   
+        if TagClose == tag then
             p.CloseUI();
-        elseif TAG_SWAP_BTN == tag then
+        elseif TAG_SWAP_MAR_BTN == tag then
             --换装消息
+            p.SwapEquip(true);
+        elseif( TAG_SWAP_BTN == tag ) then
             p.SwapEquip();
         end
     end
     return true;
 end
 
-function p.SwapEquip()
+p.bIsSwapMar = nil;
+
+function p.SwapEquip( bIsSwapMar )
+    LogInfo("p.SwapEquip");
+    
+    if(p.nPetIdTarget == 0) then
+        CommonDlgNew.ShowYesDlg(GetTxtPri("MSG_ITEM_T02"));
+        return;
+    end
+    
+    if(bIsSwapMar) then
+        --判断是否主角
+        local mainpetid 	= RolePetUser.GetMainPetId(GetPlayerId());
+        LogInfo("p.nPetId:[%d],mainpetid:[%d],p.nPetIdTarget:[%d]",p.nPetId,mainpetid,p.nPetIdTarget);
+        if(p.nPetId == mainpetid or p.nPetIdTarget == mainpetid) then
+            CommonDlgNew.ShowYesDlg(GetTxtPri("PlayerNotDownLine"));
+            return;
+        end
+        
+        local Pos = {
+            {2},
+            {4,5,6},
+            {7,8,9},
+        };
+        
+        --判断已上阵人
+        local bIsA = false;
+        local bIsB = false;
+        local pMartialUsers, count    = MsgMagic.getRoleMatrixList();
+        pMartialUsers = pMartialUsers[1];
+        
+        for i,v in ipairs(pMartialUsers) do
+            LogInfo("v:[%d],[%d],[%d]",v,p.nPetId,p.nPetIdTarget);
+            if(v == p.nPetId) then
+                bIsA = true;
+            end
+            if(v == p.nPetIdTarget) then
+                bIsB = true;
+            end
+        end
+        if(bIsA and bIsB) then
+            CommonDlgNew.ShowYesDlg(GetTxtPri("MSG_ITEM_T0111112"));
+            return;
+        elseif(bIsA==false and bIsB==false) then
+            CommonDlgNew.ShowYesDlg(GetTxtPri("MSG_ITEM_T0111113"));
+            return;
+        end
+        
+        
+        --判断是否相同位置
+        local nPetIdTemp = 0;
+        local stand_type;
+        if(bIsA) then
+            stand_type = RolePet.GetPetInfoN(p.nPetIdTarget, PET_ATTR.PET_ATTR_STAND_TYPE);
+            nPetIdTemp = p.nPetId;
+        end
+        if(bIsB) then
+            stand_type = RolePet.GetPetInfoN(p.nPetId, PET_ATTR.PET_ATTR_STAND_TYPE);
+            nPetIdTemp = p.nPetIdTarget;
+        end
+        
+        local bIsMar = true;
+        LogInfo("stand_type:[%d]",stand_type);
+        for i,v in ipairs(Pos[stand_type]) do
+            LogInfo("v:[%d],p.nPetId:[%d]",v,p.nPetId);
+            if(pMartialUsers[v] == nil or pMartialUsers[v] == 0 or pMartialUsers[v] == nPetIdTemp) then
+                bIsMar = false;
+                break;
+            end
+        end
+        if(bIsMar) then
+            CommonDlgNew.ShowYesDlg(GetTxtPri("NotMartialPos"));
+            return;
+        end
+        
+    end
+
+    p.bIsSwapMar = bIsSwapMar;
     local nProfessA = GetDataBaseDataN("pet_config", RolePet.GetPetInfoN(p.nPetId,PET_ATTR.PET_ATTR_TYPE), DB_PET_CONFIG.PROFESSION);
     local nProfessB = GetDataBaseDataN("pet_config", RolePet.GetPetInfoN(p.nPetIdTarget,PET_ATTR.PET_ATTR_TYPE), DB_PET_CONFIG.PROFESSION);
     
@@ -103,7 +183,7 @@ function p.SwapEquip()
         if(nIsEquip) then
             p.SendSwapEquip()
         else
-            CommonDlgNew.ShowYesOrNoDlg(string.format("【%s】和【%s】职业不同，武器将不会互换，你确定要换装吗？",nNameA,nNameB), p.SwapEquipCallback);
+            CommonDlgNew.ShowYesOrNoDlg(string.format("【%s】和【%s】職業不同，武器不會互換，你確定要換裝嗎？",nNameA,nNameB), p.SwapEquipCallback);
         end
     end
 end
@@ -111,6 +191,8 @@ end
 function p.SwapEquipCallback(nEventType , nEvent, param)
 	if nEventType == CommonDlgNew.BtnOk then
 		p.SendSwapEquip();
+    else
+        p.bIsSwapMar = nil;
 	end
 end
 
@@ -123,12 +205,14 @@ function p.IsAllowEquip( nIsEquip )
     local nNameA    = RolePetFunc.GetPropDesc(p.nPetId, PET_ATTR.PET_ATTR_NAME);
     local nNameB    = RolePetFunc.GetPropDesc(p.nPetIdTarget, PET_ATTR.PET_ATTR_NAME);
     if(nFlagA == false) then
-        CommonDlgNew.ShowYesDlg(string.format("【%s】的等级不足，无法换上【%s】的装备。",nNameB,nNameA));
+        CommonDlgNew.ShowYesDlg(string.format("【%s】的等級不足，無法換上【%s】的裝備。",nNameB,nNameA));
+        p.bIsSwapMar = nil;
         return false;
     end
     
     if(nFlagB == false) then
-        CommonDlgNew.ShowYesDlg(string.format("【%s】的等级不足，无法换上【%s】的装备。",nNameA,nNameB));
+        CommonDlgNew.ShowYesDlg(string.format("【%s】的等級不足，無法換上【%s】的裝備。",nNameA,nNameB));
+        p.bIsSwapMar = nil;
         return false;
     end
     return true;

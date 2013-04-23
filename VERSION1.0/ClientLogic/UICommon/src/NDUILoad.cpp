@@ -33,24 +33,24 @@ IMPLEMENT_CLASS(NDUILoad, NDUILoadEngine)
 class NDUILoad_Util
 {
 public:
-	static unsigned int inline findAndReplace(
-		std::string& source, 
-		const std::string& find, 
-		const std::string& replace, 
-		unsigned int time=0 ) 
-	{     
-		unsigned int num=0;     
-		size_t fLen = find.size();
-		size_t rLen = replace.size();     
-		for (size_t pos=0; (pos=source.find(find, pos))!=std::string::npos; pos+=rLen)     
-		{         
-			source.replace(pos, fLen, replace); 
-
-			if (time > 0 && ++num >= time)
-				break;
-		}     
-		return num; 
-	}
+//	static unsigned int inline findAndReplace(
+//		std::string& source, 
+//		const std::string& find, 
+//		const std::string& replace, 
+//		unsigned int time=0 ) 
+//	{     
+//		unsigned int num=0;     
+//		size_t fLen = find.size();
+//		size_t rLen = replace.size();     
+//		for (size_t pos=0; (pos=source.find(find, pos))!=std::string::npos; pos+=rLen)     
+//		{         
+//			source.replace(pos, fLen, replace); 
+//
+//			if (time > 0 && ++num >= time)
+//				break;
+//		}     
+//		return num; 
+//	}
 
 	static bool FilterStringName(UIINFO& uiInfo)
 	{
@@ -396,7 +396,14 @@ NDUINode* NDUILoad::CreateCtrl( UIINFO& uiInfo, CCSize sizeOffset, const char*& 
 			pkUINode = (NDUINode*)help.Create(uiInfo, sizeOffset);
 			ctrlTypeName = "MY_CONTROL_TYPE_LIST_LOOP";
 		}
-		break;
+        break;
+    case MY_CONTROL_TYPE_9BLK_BACKGROUND:
+		{
+			ControlHelp<MY_CONTROL_TYPE_9BLK_BACKGROUND> help;
+			pkUINode = (NDUINode*)help.Create(uiInfo, sizeOffset);
+			ctrlTypeName = "MY_CONTROL_TYPE_9BLK_BACKGROUND";
+		}
+        break;
 	default:
 		break;
 	}
@@ -465,9 +472,13 @@ void NDUILoad::PostLoad(UIINFO& uiInfo)
 	//@check
 	// 备注：UI按480*320来配置的.
 	// 假设INI配置(0,0,480,320)，转换后的结果如下：
-	// ios retina:	(0,0,960,640)
-	// ios:			(0,0,480,320)
-	// android:		(0,0,800,480) //假设android的分辨率是800*600.
+	// iPhone 3GS:          (0,0,480,320)
+	// iPhone 4:            (0,0,480,320)
+	// iPhone 4S (retina):	(0,0,960,640)
+    // iPhone 5:            (0,0,1136,640)
+    // iPad:                (0,0,1024,768)
+    // iPad (retina):       (0,0,2048,1536)
+	// android:             (0,0,800,480) //假设android的分辨率是800*600.
 	
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
     float scale = 2.0f; //先转到960*640，后面会乘个scale(基于960*640)
@@ -495,6 +506,14 @@ void NDUILoad::PostLoad(UIINFO& uiInfo)
 		uiInfo.CtrlPos.x	*= IPHONE5_WIDTH_SCALE;
 		uiInfo.nCtrlWidth	*= IPHONE5_WIDTH_SCALE;	
 	}
+    else if (IS_IPAD)
+    {
+		uiInfo.CtrlPos.x	*= IPAD_WIDTH_SCALE;
+		uiInfo.nCtrlWidth	*= IPAD_WIDTH_SCALE;
+        
+		uiInfo.CtrlPos.y	*= IPAD_HEIGHT_SCALE;
+		uiInfo.nCtrlHeight	*= IPAD_HEIGHT_SCALE;
+    }
 #endif
 
 	//重置锚点(0,0)
