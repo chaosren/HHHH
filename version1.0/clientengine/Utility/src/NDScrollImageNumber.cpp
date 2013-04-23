@@ -3,7 +3,7 @@
 
 NS_NDENGINE_BGN
 
-IMPLEMENT_CLASS(NDScrollImageNumber,NDObject)
+IMPLEMENT_CLASS(NDScrollImageNumber,ImageNumber)
 
 NDScrollImageNumber::NDScrollImageNumber():
 m_fScrollTime(5.0f),

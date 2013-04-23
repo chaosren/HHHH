@@ -659,16 +659,16 @@ void ImageNumber::SetSmallWhiteNumber(int number, bool bWithSign)
         
 		if (picSign)
 		{
-			NDUIImage* image = new NDUIImage();
-			image->Initialization();
-			image->SetPicture(picSign);
+			NDUIImage* pkImage = new NDUIImage();
+			pkImage->Initialization();
+			pkImage->SetPicture(picSign);
 			
-            image->SetFrameRect(
+            pkImage->SetFrameRect(
 				CCRectMake(nStartPosition, 0,
                            picSign->GetSize().width * RESOURCE_SCALE_960,
                            picSign->GetSize().height * RESOURCE_SCALE_960));
 
-			AddChild(image);
+			AddChild(pkImage);
             
 			nStartPosition += picSign->GetSize().width * RESOURCE_SCALE_960;
 		}

@@ -20,9 +20,7 @@ NS_NDENGINE_BGN
 
 using namespace std;
 
-class NDScrollImageNumber:
-	public NDObject,
-	public ImageNumber
+class NDScrollImageNumber:public ImageNumber
 {
 	DECLARE_CLASS(NDScrollImageNumber)
 

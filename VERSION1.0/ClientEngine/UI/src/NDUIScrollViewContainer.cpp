@@ -730,7 +730,7 @@ void NDUIScrollViewContainer::ScrollView(unsigned int uiIndex,
 	else
 	{
 		m_fScrollDistance = fDistance;
-		m_fMaxScrollDistance = abs(fDistance);
+		m_fMaxScrollDistance = fabs(fDistance);
 		m_fScrollSpeed = m_fInitialVelocity;
 
 		EnableViewToScroll(true);

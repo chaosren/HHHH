@@ -123,54 +123,14 @@ IMPLEMENT_CLASS(CSMLoginScene, NDScene)
 //===========================================================================
 CSMLoginScene* CSMLoginScene::Scene( bool bShowEntry /*= false*/)
 {
-	CCLog( "@@ CSMLoginScene::Scene( bShowEntry=%d ) \r\n", int(bShowEntry));
-
 	CSMLoginScene* pkScene = new CSMLoginScene;
 	pkScene->Initialization();
 	pkScene->SetTag(SMLOGINSCENE_TAG);
 
-	NDUILoad kUILoad;
-
-	NDScrollImageNumber* pkImageNumber = new NDScrollImageNumber;
-	pkImageNumber->Initialization();
-	pkImageNumber->SetFrameRect(CCRectMake(16, 225, 40, 10));
-	pkImageNumber->SetScrollNumber(65535,1.0,NDScrollImageNumber::Font_SmallRed);
-
-	NDShakeSprite* pkSprite = new NDShakeSprite;
-	pkSprite->Initialization();
-	NDPicture* pkTempPic = 0;
-	NDUILabel* pkUILable = new NDUILabel;
-	pkUILable->Initialization();
-	pkUILable->SetFontSize(14 * COORD_SCALE_Y_960);
-	pkUILable->SetFontColor(ccc4(255, 204, 177, 213));
-	pkUILable->SetTag(34567);
-	pkUILable->SetTextAlignment(LabelTextAlignmentRight);
-	pkUILable->SetFrameRect(CCRectMake(100,100,200,200));
-	pkUILable->SetText("Money:");
-
-	CCTMXTiledMap* pkMap = CCTMXTiledMap::create("D:\\work\\ShuangKe\\slamdunk\\dev\\Bin\\Debug\\test.tmx");
-	pkMap->setPosition(20,100);
-
-	CCSprite* pkCCSprite = CCSprite::spriteWithFile(L_ROLE,CCRectMake(0,0,72,84));
-
-	if (!pkMap)
-	{
-		return 0;
-	}
-
-	pkCCSprite->setPosition(CCPointMake(100,100));
-	pkScene->getCCNode()->addChild(pkMap,200);
-	pkScene->getCCNode()->addChild(pkCCSprite,300);
-	CCSize kSize = pkMap->getMapSize();
-
-	float fX = 0.0f;
-	float fY = 0.0f;
-
-	pkMap->getPosition(&fX,&fY);
-
-//  	CCShake* pkShake = CCShake::create(12.0f,2.0f);
-//  
-//  	pkScene->getCCNode()->runAction(pkShake);
+// 	ImageNumber* pkImageNumber = new ImageNumber;
+// 	pkImageNumber->Initialization();
+// 	pkImageNumber->SetFrameRect(CCRectMake(16, 25, 40, 10));
+// 	pkImageNumber->SetSmallRedTwoNumber(100,false);
 
 	if ( bShowEntry )
 	{
@@ -185,24 +145,17 @@ CSMLoginScene* CSMLoginScene::Scene( bool bShowEntry /*= false*/)
 		CCSize kWinSize = CCDirector::sharedDirector()->getWinSizeInPixels();
 
 		NDUILayer* pkLayer = new NDUILayer();
-		NDUILayer* pkTempLayer = new NDUILayer;
-		pkTempLayer->Initialization();
-		pkTempLayer->SetFrameRect(CCRectMake(0, 0, kWinSize.width, kWinSize.height));
-		pkTempLayer->AddChild(pkImageNumber,100);
-
-		kUILoad.Load("activity.ini",pkTempLayer,0);
 
 		pkLayer->Initialization();
 		pkLayer->SetFrameRect(CCRectMake(0, 0, kWinSize.width, kWinSize.height));
-		//	pkScene->AddChild(pkLayer);
+		pkScene->AddChild(pkLayer);
+		//pkLayer->AddChild(pkImageNumber);
 		pkScene->m_pLayerOld = pkLayer;
-		//	pkScene->AddChild(pkImageNumber,100);
 
 		NDPicturePool& kPool = *(NDPicturePool::DefaultPool());
 		NDUIImage* pkBackgroundImage = new NDUIImage;
 
-		ccColor4B kColor =
-		{	100,100,100,255};
+		ccColor4B kColor = {100,100,100,255};
 
 		pkScene->m_pkProgressTextLabel = new NDUILabel();
 		pkScene->m_pkProgressTextLabel->Initialization();
@@ -211,40 +164,30 @@ CSMLoginScene* CSMLoginScene::Scene( bool bShowEntry /*= false*/)
 		pkScene->m_pkProgressTextLabel->SetFontSize(15);
 		pkScene->m_pkProgressTextLabel->SetFontColor(kColor);
 
-		pkTempLayer->AddChild(pkUILable,1000);
-		//pkScene->AddChild(pkTempLayer,500);
-
 		pkBackgroundImage->Initialization();
 
 		NDUIImage* pkUILoadingImage = 0;
 		NDPicture* pkLoadingPic = 0;
-
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
 		NDPicture* pkPicture = kPool.AddPicture( NDPath::GetImg00Path("Res00/Load/Unzipping.png") );
 #elif (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
-		NDPicture* pkPicture = kPool.AddPicture("D:\\work\\DHLJ_Work\\VERSION1.0\\Bin\\Debug\\mission_sugoroku_bg0001.png"); //( NDPath::GetImg00Path("Res00/Load/Unzipping.png") );
+		NDPicture* pkPicture = kPool.AddPicture( NDPath::GetImg00Path("Res00/Load/Unzipping.png") );
 #endif
-
-		pkTempPic = kPool.AddPicture( NDPath::GetImg00Path("Res00/action/CheckIn.png") );
-		pkSprite->SetPicture(pkTempPic);
-		pkSprite->SetFrameRect(CCRectMake(200,300,140,210));
-		pkSprite->setFirstPosition(CCPointMake(300,-100));
-		pkSprite->setShakeNode(pkTempLayer->getCCNode());
-
 		if (pkPicture)
 		{
 			pkBackgroundImage->SetPicture(pkPicture, true);
 		}
 
 		CCSize kWindowSize = CCDirector::sharedDirector()->getWinSizeInPixels();
-		pkBackgroundImage->SetFrameRect( CCRectMake(0, 0, kWinSize.width, kWinSize.width / 96.0f * 117.0f));
+		pkBackgroundImage->SetFrameRect( CCRectMake(0, 0, kWindowSize.width, kWindowSize.height ));
 
-		pkScene->AddChild(pkBackgroundImage);
-		//pkScene->AddChild(pkSprite,1000);
-#endif //(CC_TARGET_PLATFORM != CC_PLATFORM_ANDROID)
+		pkLayer->AddChild(pkBackgroundImage);
+#endif
+
 		CCLog( "@@login01: open CSMLoginScene\r\n" );
 
-		//pkScene->m_pTimer->SetTimer( pkScene, TAG_TIMER_FIRST_RUN,0.5f );
+		LOGD("TAG_TIMER_FIRST_RUN is register");
+		pkScene->m_pTimer->SetTimer( pkScene, TAG_TIMER_FIRST_RUN,0.5f );
 	}
 	return pkScene;
 }
