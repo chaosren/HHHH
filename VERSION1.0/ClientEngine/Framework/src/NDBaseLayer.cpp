@@ -93,11 +93,6 @@ bool NDBaseLayer::ccTouchBegan(CCTouch *pTouch, CCEvent *pEvent)
 
 	m_pkTouch->Initialization(pTouch);
 
-	//if (g_NDBaseLayerPress)
-	//{
-	//	return NO;
-	//}
-
 	if (m_kUILayerNode)
 	{
 		if (m_kUILayerNode->UITouchBegin(m_pkTouch))

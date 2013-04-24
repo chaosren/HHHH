@@ -14,6 +14,7 @@
 #include "shaders/CCShaderCache.h"
 #include "NDDebugOpt.h"
 #include "ObjectTracker.h"
+#include "NDAction.h"
 
 using namespace cocos2d;
 
@@ -41,10 +42,10 @@ NDNode::~NDNode()
 {
 	DEC_NDOBJ_RTCLS
 
-	this->RemoveAllChildren(true);
+	RemoveAllChildren(true);
 	if (m_pkParent)
 	{
-		this->RemoveFromParent(false);
+		RemoveFromParent(false);
 	}
 	CC_SAFE_RELEASE (m_pkCCNode);
 	CC_SAFE_RELEASE(m_pShaderProgram); //@shader
@@ -172,7 +173,7 @@ void NDNode::AddChild(NDNode* node)
 		int z = ccNode->getZOrder();
 		int tag = ccNode->getTag();
 
-		this->AddChild(node, z, tag);
+		AddChild(node, z, tag);
 	}
 }
 
@@ -181,7 +182,7 @@ void NDNode::AddChild(NDNode* node, int z)
 	CCNode *ccNode = node->m_pkCCNode;
 	int tag = ccNode->getTag();
 
-	this->AddChild(node, z, tag);
+	AddChild(node, z, tag);
 }
 
 void NDNode::AddChild(NDNode* pkNode, int nZBuffer, int nTag)
@@ -203,7 +204,7 @@ void NDNode::RemoveChild(NDNode* pkNode, bool bCleanUp)
 	NDAsssert(m_pkCCNode != NULL && pkNode != NULL && pkNode->m_pkCCNode != NULL);
 
 	std::vector<NDNode*>::iterator iter = m_kChildrenList.begin();
-	for (; iter != this->m_kChildrenList.end(); iter++)
+	for (; iter != m_kChildrenList.end(); iter++)
 	{
 		NDNode* ndNode = (NDNode*) *iter;
 		if (ndNode->m_pkCCNode == pkNode->m_pkCCNode)
@@ -295,9 +296,9 @@ void NDNode::RemoveChild(int tag, bool bCleanUp)
 
 void NDNode::RemoveFromParent(bool bCleanUp)
 {
-	NDAsssert(this->m_pkCCNode != NULL);
+	NDAsssert(m_pkCCNode != NULL);
 
-	if (this->m_pkParent)
+	if (m_pkParent)
 	{
 		m_pkParent->RemoveChild(this, bCleanUp);
 	}
@@ -338,7 +339,7 @@ NDNode* NDNode::GetChild(int tag)
 
 bool NDNode::IsChildOf(NDNode* node)
 {
-	NDNode* pNode = this->GetParent();
+	NDNode* pNode = GetParent();
 	while (pNode)
 	{
 		if (pNode == node)
@@ -407,7 +408,7 @@ bool NDNode::GetDestroyNotify(LuaObject& func)
 
 void NDNode::AddViewer(NDCommonProtocol* viewer)
 {
-	this->RemoveViewer(viewer);
+	RemoveViewer(viewer);
 
 	if (NULL == viewer || viewer == this)
 	{
@@ -474,6 +475,13 @@ void NDNode::DrawSetup( const char* shaderType /*=kCCShader_PositionTexture_uCol
 
 	getShaderProgram()->use();
 	getShaderProgram()->setUniformForModelViewProjectionMatrix();
+}
+
+NDAction* NDNode::RunAction( NDAction* pkAction )
+{
+	m_pkCCNode->runAction(pkAction->getCCAction());
+
+	return 0;
 }
 
 NS_NDENGINE_END

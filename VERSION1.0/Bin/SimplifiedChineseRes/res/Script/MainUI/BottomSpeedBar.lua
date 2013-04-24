@@ -600,7 +600,7 @@ end
 
 function p.GetContainer()
 	local container = GetScrollViewContainer(p.GetLayer(), TAG_CONTAINER);
-	--container:SetBottomSpeedBar(true);
+	container:SetBottomSpeedBar(true);
     if nil == container then
         LogInfo("container is nil!");
 		return nil;

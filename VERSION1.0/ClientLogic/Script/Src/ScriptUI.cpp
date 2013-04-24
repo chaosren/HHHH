@@ -77,7 +77,6 @@
 using namespace cocos2d;
 using namespace NDEngine;
 
-
 int GetChildrenTagList(LuaState* state)
 {
 	lua_State* L	= state->GetCState();
@@ -148,8 +147,7 @@ void PrintLog(const char* pszText)
 	}
 }
 
-NDUINode*							
-GetUiNode(NDNode* pNode, int tag)
+NDUINode* GetUiNode(NDNode* pNode, int tag)
 {
 	if (!pNode)
 	{
@@ -167,94 +165,89 @@ GetUiNode(NDNode* pNode, int tag)
 }
 
 
-NDUILabel*							
-GetLabel(NDNode* pNode, int tag)
+NDUILabel* GetLabel(NDNode* pNode, int tag)
 {
 	if (!pNode)
 	{
 		return NULL;
 	}
 	
-	NDNode *lb = pNode->GetChild(tag);
+	NDNode* pkLabel = pNode->GetChild(tag);
 	
-	if (!lb || !lb->IsKindOfClass(RUNTIME_CLASS(NDUILabel)))
+	if (!pkLabel || !pkLabel->IsKindOfClass(RUNTIME_CLASS(NDUILabel)))
 	{
 		return NULL;
 	}
 	
-	return (NDUILabel*)lb;
+	return (NDUILabel*)pkLabel;
 }
 
-NDUIButton*							
-GetButton(NDNode* pNode, int tag)
+NDUIButton*	GetButton(NDNode* pNode, int tag)
 {
 	if (!pNode)
 	{
 		return NULL;
 	}
 	
-	NDNode *btn = pNode->GetChild(tag);
+	NDNode* pkButton = pNode->GetChild(tag);
 	
-	if (!btn || !btn->IsKindOfClass(RUNTIME_CLASS(NDUIButton)))
+	if (!pkButton || !pkButton->IsKindOfClass(RUNTIME_CLASS(NDUIButton)))
 	{
 		return NULL;
 	}
 	
-	return (NDUIButton*)btn;
+	return (NDUIButton*)pkButton;
 }
 
-NDUILayer*							
-GetUiLayer(NDNode* pNode, int tag)
+NDUILayer* GetUiLayer(NDNode* pNode, int tag)
 {
 	if (!pNode)
 	{
 		return NULL;
 	}
 	
-	NDNode *layer = pNode->GetChild(tag);
+	NDNode* pkLayerNode = pNode->GetChild(tag);
 	
-	if (!layer || !layer->IsKindOfClass(RUNTIME_CLASS(NDUILayer)))
+	if (!pkLayerNode || !pkLayerNode->IsKindOfClass(RUNTIME_CLASS(NDUILayer)))
 	{
 		return NULL;
 	}
 	
-	return (NDUILayer*)layer;
+	return (NDUILayer*)pkLayerNode;
 }
 
-NDUITableLayer*						
-GetTableLayer(NDNode* pNode, int tag)
+NDUITableLayer* GetTableLayer(NDNode* pNode, int tag)
 {
 	if (!pNode)
 	{
 		return NULL;
 	}
 	
-	NDNode *tl = pNode->GetChild(tag);
+	NDNode* pkTableLayer = pNode->GetChild(tag);
 	
-	if (!tl || !tl->IsKindOfClass(RUNTIME_CLASS(NDUITableLayer)))
+	if (!pkTableLayer || !pkTableLayer->IsKindOfClass(RUNTIME_CLASS(NDUITableLayer)))
 	{
 		return NULL;
 	}
 	
-	return (NDUITableLayer*)tl;
+	return (NDUITableLayer*)pkTableLayer;
 }
 
-NDUIImage*							
-GetImage(NDNode* pNode, int tag)
+NDUIImage* GetImage(NDNode* pNode, int tag)
 {	
 	if (!pNode)
 	{
 		return NULL;
 	}
 	
-	NDNode *img = pNode->GetChild(tag);
+	NDNode *pkImageNode = pNode->GetChild(tag);
 	
-	if (!img || !img->IsKindOfClass(RUNTIME_CLASS(NDUIImage)))
+	if (!pkImageNode || !pkImageNode->IsKindOfClass(RUNTIME_CLASS(NDUIImage)))
 	{
 		return NULL;
 	}
 	
-	return (NDUIImage*)img;
+	return (NDUIImage*)pkImageNode;
 }
 
 NDUIContainerScrollLayer*			
@@ -265,32 +258,31 @@ GetScrollLayer(NDNode* pNode, int tag)
 		return NULL;
 	}
 	
-	NDNode *sl = pNode->GetChild(tag);
+	NDNode* pkScrollLayer = pNode->GetChild(tag);
 	
-	if (!sl || !sl->IsKindOfClass(RUNTIME_CLASS(NDUIContainerScrollLayer)))
+	if (!pkScrollLayer || !pkScrollLayer->IsKindOfClass(RUNTIME_CLASS(NDUIContainerScrollLayer)))
 	{
 		return NULL;
 	}
 	
-	return (NDUIContainerScrollLayer*)sl;
+	return (NDUIContainerScrollLayer*)pkScrollLayer;
 }
 
-NDUIContainerHScrollLayer*			
-GetHScrollLayer(NDNode* pNode, int tag)
+NDUIContainerHScrollLayer* GetHScrollLayer(NDNode* pNode, int tag)
 {
 	if (!pNode)
 	{
 		return NULL;
 	}
 	
-	NDNode *hsl = pNode->GetChild(tag);
+	NDNode* pkHScrollLayer = pNode->GetChild(tag);
 	
-	if (!hsl || !hsl->IsKindOfClass(RUNTIME_CLASS(NDUIContainerHScrollLayer)))
+	if (!pkHScrollLayer || !pkHScrollLayer->IsKindOfClass(RUNTIME_CLASS(NDUIContainerHScrollLayer)))
 	{
 		return NULL;
 	}
 	
-	return (NDUIContainerHScrollLayer*)hsl;
+	return (NDUIContainerHScrollLayer*)pkHScrollLayer;
 }
 
 NDUIScrollViewContainer*			
@@ -301,127 +293,119 @@ GetScrollViewContainer(NDNode* pNode, int tag)
 		return NULL;
 	}
 	
-	NDNode *sc = pNode->GetChild(tag);
+	NDNode* pkScrollViewContainer = pNode->GetChild(tag);
 	
-	if (!sc || !sc->IsKindOfClass(RUNTIME_CLASS(NDUIScrollViewContainer)))
+	if (!pkScrollViewContainer || !pkScrollViewContainer->
+		IsKindOfClass(RUNTIME_CLASS(NDUIScrollViewContainer)))
 	{
 		return NULL;
 	}
 	
-	return (NDUIScrollViewContainer*)sc;
+	return (NDUIScrollViewContainer*)pkScrollViewContainer;
 }
 
 
-CUIScrollViewContainerM*			
-GetScrollViewContainerM(NDNode* pNode, int tag)
+CUIScrollViewContainerM* GetScrollViewContainerM(NDNode* pNode, int tag)
 {
 	if (!pNode)
 	{
 		return NULL;
 	}
 	
-	NDNode *sc = pNode->GetChild(tag);
+	NDNode* pkScrollViewContainerM = pNode->GetChild(tag);
 	
-	if (!sc || !sc->IsKindOfClass(RUNTIME_CLASS(CUIScrollViewContainerM)))
+	if (!pkScrollViewContainerM || !pkScrollViewContainerM->IsKindOfClass(RUNTIME_CLASS(CUIScrollViewContainerM)))
 	{
 		return NULL;
 	}
 	
-	return (CUIScrollViewContainerM*)sc;
+	return (CUIScrollViewContainerM*)pkScrollViewContainerM;
 }
 
-CUIScrollContainerExpand*			
-GetScrollContainerExpand(NDNode* pNode, int tag)
+CUIScrollContainerExpand* GetScrollContainerExpand(NDNode* pkNode, int nTag)
+{
+	if (!pkNode)
+	{
+		return NULL;
+	}
+	
+	NDNode* pkScrollContainer = pkNode->GetChild(nTag);
+	
+	if (!pkScrollContainer || !pkScrollContainer->
+		IsKindOfClass(RUNTIME_CLASS(CUIScrollContainerExpand)))
+	{
+		return NULL;
+	}
+	
+	return (CUIScrollContainerExpand*)pkScrollContainer;
+}
+
+CUIHyperlinkText* GetHyperLinkText(NDNode* pNode, int tag)
 {
 	if (!pNode)
 	{
 		return NULL;
 	}
 	
-	NDNode *sc = pNode->GetChild(tag);
+	NDNode* pkHyperlinkText = pNode->GetChild(tag);
 	
-	if (!sc || !sc->IsKindOfClass(RUNTIME_CLASS(CUIScrollContainerExpand)))
+	if (!pkHyperlinkText || !pkHyperlinkText->IsKindOfClass(RUNTIME_CLASS(CUIHyperlinkText)))
 	{
 		return NULL;
 	}
 	
-	return (CUIScrollContainerExpand*)sc;
+	return (CUIHyperlinkText*)pkHyperlinkText;
 }
 
-
-
-
-
-CUIHyperlinkText*
-GetHyperLinkText(NDNode* pNode, int tag)
+CUIHyperlinkButton* GetHyperLinkButton(NDNode* pNode, int tag)
 {
 	if (!pNode)
 	{
 		return NULL;
 	}
 	
-	NDNode *hlt = pNode->GetChild(tag);
+	NDNode* pkHyperlinkButton = pNode->GetChild(tag);
 	
-	if (!hlt || !hlt->IsKindOfClass(RUNTIME_CLASS(CUIHyperlinkText)))
+	if (!pkHyperlinkButton || !pkHyperlinkButton->IsKindOfClass(RUNTIME_CLASS(CUIHyperlinkButton)))
 	{
 		return NULL;
 	}
 	
-	return (CUIHyperlinkText*)hlt;
+	return (CUIHyperlinkButton*)pkHyperlinkButton;
 }
 
-CUIHyperlinkButton*
-GetHyperLinkButton(NDNode* pNode, int tag)
+CUIItemButton* GetItemButton(NDNode* pNode, int tag)
 {
 	if (!pNode)
 	{
 		return NULL;
 	}
 	
-	NDNode* hlb = pNode->GetChild(tag);
+	NDNode* pkItemButton = pNode->GetChild(tag);
 	
-	if (!hlb || !hlb->IsKindOfClass(RUNTIME_CLASS(CUIHyperlinkButton)))
+	if (!pkItemButton || !pkItemButton->IsKindOfClass(RUNTIME_CLASS(CUIItemButton)))
 	{
 		return NULL;
 	}
 	
-	return (CUIHyperlinkButton*)hlb;
+	return (CUIItemButton*)pkItemButton;
 }
 
-CUIItemButton*
-GetItemButton(NDNode* pNode, int tag)
+CUIEquipItem* GetEquipButton(NDNode* pNode, int tag)
 {
 	if (!pNode)
 	{
 		return NULL;
 	}
 	
-	NDNode* itemBtn = pNode->GetChild(tag);
+	NDNode* pkEquipButton = pNode->GetChild(tag);
 	
-	if (!itemBtn || !itemBtn->IsKindOfClass(RUNTIME_CLASS(CUIItemButton)))
+	if (!pkEquipButton || !pkEquipButton->IsKindOfClass(RUNTIME_CLASS(CUIEquipItem)))
 	{
 		return NULL;
 	}
 	
-	return (CUIItemButton*)itemBtn;
-}
-
-CUIEquipItem*							
-GetEquipButton(NDNode* pNode, int tag)
-{
-	if (!pNode)
-	{
-		return NULL;
-	}
-	
-	NDNode* equipBtn = pNode->GetChild(tag);
-	
-	if (!equipBtn || !equipBtn->IsKindOfClass(RUNTIME_CLASS(CUIEquipItem)))
-	{
-		return NULL;
-	}
-	
-	return (CUIEquipItem*)equipBtn; 
+	return (CUIEquipItem*)pkEquipButton; 
 }
 
 //#pragma mark 通过tag列表获取子结点
@@ -461,7 +445,7 @@ NDNode* RecursiveNode(NDNode* pParentNode, LuaObject& tagTable)
 }
 
 //通过tag列表获取UI节点(不导到脚本)
-NDUINode*							
+NDUINode* 
 RecursiveUINode(NDNode* pParentNode, LuaObject tagTable)
 {
 	NDNode* pResultNode = RecursiveNode(pParentNode, tagTable);
@@ -476,7 +460,7 @@ RecursiveUINode(NDNode* pParentNode, LuaObject tagTable)
 }
 
 //通过tag列表获取标签节点
-NDUILabel*							
+NDUILabel*
 RecursiveLabel(NDNode* pParentNode, LuaObject tagTable)
 {
 	NDNode* pResultNode = RecursiveNode(pParentNode, tagTable);
@@ -491,7 +475,7 @@ RecursiveLabel(NDNode* pParentNode, LuaObject tagTable)
 }
 
 //通过tag列表获取按钮节点
-NDUIButton*							
+NDUIButton*
 RecursiveButton(NDNode* pParentNode, LuaObject tagTable)
 {
 	NDNode* pResultNode = RecursiveNode(pParentNode, tagTable);
@@ -506,10 +490,9 @@ RecursiveButton(NDNode* pParentNode, LuaObject tagTable)
 }
 
 //通过tag列表获取层节点
-NDUILayer*							
-RecursiveUILayer(NDNode* pParentNode, LuaObject tagTable)
+NDUILayer* RecursiveUILayer(NDNode* pParentNode, LuaObject kTagTable)
 {
-	NDNode* pResultNode = RecursiveNode(pParentNode, tagTable);
+	NDNode* pResultNode = RecursiveNode(pParentNode, kTagTable);
 	
 	if (!pResultNode || 
 		!pResultNode->IsKindOfClass(RUNTIME_CLASS(NDUILayer)))
@@ -521,8 +504,7 @@ RecursiveUILayer(NDNode* pParentNode, LuaObject tagTable)
 }
 
 //通过tag列表获取层节点
-NDUIImage*							
-RecursiveImage(NDNode* pParentNode, LuaObject tagTable)
+NDUIImage* RecursiveImage(NDNode* pParentNode, LuaObject tagTable)
 {
 	NDNode* pResultNode = RecursiveNode(pParentNode, tagTable);
 	
@@ -566,7 +548,7 @@ RecursiveScrollContainer(NDNode* pParentNode, LuaObject tagTable)
 }
 
 //通过tag列表获取视图容器节点
-NDUIScrollViewContainer*							
+NDUIScrollViewContainer*
 RecursiveSVC(NDNode* pParentNode, LuaObject tagTable)
 {
 	NDNode* pResultNode = RecursiveNode(pParentNode, tagTable);
@@ -581,8 +563,7 @@ RecursiveSVC(NDNode* pParentNode, LuaObject tagTable)
 }
 
 //通过tag列表获取视图节点
-CUIScrollView*							
-RecursiveSV(NDNode* pParentNode, LuaObject tagTable)
+CUIScrollView* RecursiveSV(NDNode* pParentNode, LuaObject tagTable)
 {
 	NDNode* pResultNode = RecursiveNode(pParentNode, tagTable);
 	
@@ -597,8 +578,7 @@ RecursiveSV(NDNode* pParentNode, LuaObject tagTable)
 
 
 //通过tag列表获取视图容器节点
-CUIScrollViewContainerM*							
-RecursiveSVCM(NDNode* pParentNode, LuaObject tagTable)
+CUIScrollViewContainerM* RecursiveSVCM(NDNode* pParentNode, LuaObject tagTable)
 {
 	NDNode* pResultNode = RecursiveNode(pParentNode, tagTable);
 	
@@ -612,8 +592,7 @@ RecursiveSVCM(NDNode* pParentNode, LuaObject tagTable)
 }
 
 //通过tag列表获取视图节点
-CUIScrollViewM*							
-RecursiveSVM(NDNode* pParentNode, LuaObject tagTable)
+CUIScrollViewM* RecursiveSVM(NDNode* pParentNode, LuaObject tagTable)
 {
 	NDNode* pResultNode = RecursiveNode(pParentNode, tagTable);
 	
@@ -627,11 +606,10 @@ RecursiveSVM(NDNode* pParentNode, LuaObject tagTable)
 }
 
 //通过tag列表获取视图容器节点
-CUIScrollContainerExpand*							
-RecursiveSCE(NDNode* pParentNode, LuaObject tagTable)
+CUIScrollContainerExpand* RecursiveSCE(NDNode* pParentNode, LuaObject tagTable)
 {
 	NDNode* pResultNode = RecursiveNode(pParentNode, tagTable);
-	
+
 	if (!pResultNode || 
 		!pResultNode->IsKindOfClass(RUNTIME_CLASS(CUIScrollContainerExpand)))
 	{
@@ -642,8 +620,7 @@ RecursiveSCE(NDNode* pParentNode, LuaObject tagTable)
 }
 
 //通过tag列表获取视图节点
-UIScrollViewExpand*							
-RecursiveSCEV(NDNode* pParentNode, LuaObject tagTable)
+UIScrollViewExpand*	RecursiveSCEV(NDNode* pParentNode, LuaObject tagTable)
 {
 	NDNode* pResultNode = RecursiveNode(pParentNode, tagTable);
 	
@@ -659,8 +636,7 @@ RecursiveSCEV(NDNode* pParentNode, LuaObject tagTable)
 
 
 //通过tag列表获取超链接文本节点
-CUIHyperlinkText*							
-RecursiveHyperText(NDNode* pParentNode, LuaObject tagTable)
+CUIHyperlinkText* RecursiveHyperText(NDNode* pParentNode, LuaObject tagTable)
 {
 	NDNode* pResultNode = RecursiveNode(pParentNode, tagTable);
 	
@@ -674,7 +650,7 @@ RecursiveHyperText(NDNode* pParentNode, LuaObject tagTable)
 }
 
 //通过tag列表获取超链接按钮节点
-CUIHyperlinkButton*							
+CUIHyperlinkButton* 
 RecursiveHyperBtn(NDNode* pParentNode, LuaObject tagTable)
 {
 	NDNode* pResultNode = RecursiveNode(pParentNode, tagTable);
@@ -689,8 +665,7 @@ RecursiveHyperBtn(NDNode* pParentNode, LuaObject tagTable)
 }
 
 //通过tag列表获取物品按钮节点
-CUIItemButton*							
-RecursiveItemBtn(NDNode* pParentNode, LuaObject tagTable)
+CUIItemButton* RecursiveItemBtn(NDNode* pParentNode, LuaObject tagTable)
 {
 	NDNode* pResultNode = RecursiveNode(pParentNode, tagTable);
 	
@@ -704,8 +679,7 @@ RecursiveItemBtn(NDNode* pParentNode, LuaObject tagTable)
 }
 
 //通过tag列表获取装备按钮节点
-CUIEquipItem*							
-RecursiveEquipBtn(NDNode* pParentNode, LuaObject tagTable)
+CUIEquipItem* RecursiveEquipBtn(NDNode* pParentNode, LuaObject tagTable)
 {
 	NDNode* pResultNode = RecursiveNode(pParentNode, tagTable);
 	
@@ -719,8 +693,7 @@ RecursiveEquipBtn(NDNode* pParentNode, LuaObject tagTable)
 }
 
 //通过tag列表获取CheckBox节点
-CUICheckBox*							
-RecursiveCheckBox(NDNode* pParentNode, LuaObject tagTable)
+CUICheckBox* RecursiveCheckBox(NDNode* pParentNode, LuaObject tagTable)
 {
 	NDNode* pResultNode = RecursiveNode(pParentNode, tagTable);
 	
@@ -734,8 +707,7 @@ RecursiveCheckBox(NDNode* pParentNode, LuaObject tagTable)
 }
 
 //通过tag列表获取RadioButton节点
-CUIRadioButton*							
-RecursiveRadioBtn(NDNode* pParentNode, LuaObject tagTable)
+CUIRadioButton* RecursiveRadioBtn(NDNode* pParentNode, LuaObject tagTable)
 {
 	NDNode* pResultNode = RecursiveNode(pParentNode, tagTable);
 	
@@ -749,8 +721,7 @@ RecursiveRadioBtn(NDNode* pParentNode, LuaObject tagTable)
 }
 
 //通过tag列表获取RadioGroup节点
-CUIRadioGroup*							
-RecursiveRadioGroup(NDNode* pParentNode, LuaObject tagTable)
+CUIRadioGroup* RecursiveRadioGroup(NDNode* pParentNode, LuaObject tagTable)
 {
 	NDNode* pResultNode = RecursiveNode(pParentNode, tagTable);
 	
@@ -764,8 +735,7 @@ RecursiveRadioGroup(NDNode* pParentNode, LuaObject tagTable)
 }
 
 //通过tag列表获取经验条节点
-CUIExp*							
-RecursivUIExp(NDNode* pParentNode, LuaObject tagTable)
+CUIExp* RecursivUIExp(NDNode* pParentNode, LuaObject tagTable)
 {
 	NDNode* pResultNode = RecursiveNode(pParentNode, tagTable);
 	
@@ -779,8 +749,7 @@ RecursivUIExp(NDNode* pParentNode, LuaObject tagTable)
 }
 
 //通过tag列表获取edit节点
-CUIEdit*							
-RecursivUIEdit(NDNode* pParentNode, LuaObject tagTable)
+CUIEdit* RecursivUIEdit(NDNode* pParentNode, LuaObject tagTable)
 {
 	NDNode* pResultNode = RecursiveNode(pParentNode, tagTable);
 	
@@ -794,8 +763,7 @@ RecursivUIEdit(NDNode* pParentNode, LuaObject tagTable)
 }
 
 //通过tag列表获取精灵节点
-CUISpriteNode*							
-RecursivUISprite(NDNode* pParentNode, LuaObject tagTable)
+CUISpriteNode* RecursivUISprite(NDNode* pParentNode, LuaObject tagTable)
 {
 	NDNode* pResultNode = RecursiveNode(pParentNode, tagTable);
 	if (!pResultNode || 
@@ -806,8 +774,7 @@ RecursivUISprite(NDNode* pParentNode, LuaObject tagTable)
 	return (CUISpriteNode*)pResultNode; 
 }
 //通过tag列表获取角色节点
-CUIRoleNode*							
-RecursivUIRoleNode(NDNode* pParentNode, LuaObject tagTable)
+CUIRoleNode* RecursivUIRoleNode(NDNode* pParentNode, LuaObject tagTable)
 {
 	NDNode* pResultNode = RecursiveNode(pParentNode, tagTable);
 	if (!pResultNode || 
@@ -820,7 +787,7 @@ RecursivUIRoleNode(NDNode* pParentNode, LuaObject tagTable)
 //通过tag列表获取列表节点
 
 #if 0
-CUIList*							
+CUIList* 
 RecursivUIList(NDNode* pParentNode, LuaObject tagTable)
 {
 	NDNode* pResultNode = RecursiveNode(pParentNode, tagTable);
@@ -856,8 +823,7 @@ NDNode* PRecursiveNode(NDNode* pChildNode, unsigned int nRecuriveCount)
 }
 
 //通过tag列表获取UI节点(不导到脚本)
-NDUINode*							
-PRecursiveUINode(NDNode* pChildNode, unsigned int nRecuriveCount)
+NDUINode* PRecursiveUINode(NDNode* pChildNode, unsigned int nRecuriveCount)
 {
 	NDNode* pResultNode = PRecursiveNode(pChildNode, nRecuriveCount);
 	
@@ -871,8 +837,7 @@ PRecursiveUINode(NDNode* pChildNode, unsigned int nRecuriveCount)
 }
 
 //通过tag列表获取标签节点
-NDUILabel*							
-PRecursiveLabel(NDNode* pChildNode, unsigned int nRecuriveCount)
+NDUILabel* PRecursiveLabel(NDNode* pChildNode, unsigned int nRecuriveCount)
 {
 	NDNode* pResultNode = PRecursiveNode(pChildNode, nRecuriveCount);
 	
@@ -886,8 +851,7 @@ PRecursiveLabel(NDNode* pChildNode, unsigned int nRecuriveCount)
 }
 
 //通过tag列表获取按钮节点
-NDUIButton*							
-PRecursiveButton(NDNode* pChildNode, unsigned int nRecuriveCount)
+NDUIButton* PRecursiveButton(NDNode* pChildNode, unsigned int nRecuriveCount)
 {
 	NDNode* pResultNode = PRecursiveNode(pChildNode, nRecuriveCount);
 	
@@ -901,8 +865,7 @@ PRecursiveButton(NDNode* pChildNode, unsigned int nRecuriveCount)
 }
 
 //通过tag列表获取层节点
-NDUILayer*							
-PRecursiveUILayer(NDNode* pChildNode, unsigned int nRecuriveCount)
+NDUILayer* PRecursiveUILayer(NDNode* pChildNode, unsigned int nRecuriveCount)
 {
 	NDNode* pResultNode = PRecursiveNode(pChildNode, nRecuriveCount);
 	
@@ -916,8 +879,7 @@ PRecursiveUILayer(NDNode* pChildNode, unsigned int nRecuriveCount)
 }
 
 //通过tag列表获取层节点
-NDUIImage*							
-PRecursiveImage(NDNode* pChildNode, unsigned int nRecuriveCount)
+NDUIImage* PRecursiveImage(NDNode* pChildNode, unsigned int nRecuriveCount)
 {
 	NDNode* pResultNode = PRecursiveNode(pChildNode, nRecuriveCount);
 	
@@ -931,8 +893,7 @@ PRecursiveImage(NDNode* pChildNode, unsigned int nRecuriveCount)
 }
 
 //通过tag列表获取视图容器节点
-NDUIScrollViewContainer*							
-PRecursiveSVC(NDNode* pChildNode, unsigned int nRecuriveCount)
+NDUIScrollViewContainer* PRecursiveSVC(NDNode* pChildNode, unsigned int nRecuriveCount)
 {
 	NDNode* pResultNode = PRecursiveNode(pChildNode, nRecuriveCount);
 	
@@ -946,8 +907,7 @@ PRecursiveSVC(NDNode* pChildNode, unsigned int nRecuriveCount)
 }
 
 //通过tag列表获取视图节点
-CUIScrollView*							
-PRecursiveSV(NDNode* pChildNode, unsigned int nRecuriveCount)
+CUIScrollView* PRecursiveSV(NDNode* pChildNode, unsigned int nRecuriveCount)
 {
 	NDNode* pResultNode = PRecursiveNode(pChildNode, nRecuriveCount);
 	
@@ -960,13 +920,10 @@ PRecursiveSV(NDNode* pChildNode, unsigned int nRecuriveCount)
 	return (CUIScrollView*)pResultNode; 
 }
 
-
-
 //** chh 2012-06-25 **//
 
 //通过tag列表获取视图容器节点
-CUIScrollViewContainerM*							
-PRecursiveSVCM(NDNode* pChildNode, unsigned int nRecuriveCount)
+CUIScrollViewContainerM* PRecursiveSVCM(NDNode* pChildNode, unsigned int nRecuriveCount)
 {
 	NDNode* pResultNode = PRecursiveNode(pChildNode, nRecuriveCount);
 	
@@ -980,8 +937,7 @@ PRecursiveSVCM(NDNode* pChildNode, unsigned int nRecuriveCount)
 }
 
 //通过tag列表获取视图节点
-CUIScrollViewM*							
-PRecursiveSVM(NDNode* pChildNode, unsigned int nRecuriveCount)
+CUIScrollViewM* PRecursiveSVM(NDNode* pChildNode, unsigned int nRecuriveCount)
 {
 	NDNode* pResultNode = PRecursiveNode(pChildNode, nRecuriveCount);
 	
@@ -995,8 +951,7 @@ PRecursiveSVM(NDNode* pChildNode, unsigned int nRecuriveCount)
 }
 
 //通过tag列表获取超链接文本节点
-CUIHyperlinkText*							
-PRecursiveHyperText(NDNode* pChildNode, unsigned int nRecuriveCount)
+CUIHyperlinkText* PRecursiveHyperText(NDNode* pChildNode, unsigned int nRecuriveCount)
 {
 	NDNode* pResultNode = PRecursiveNode(pChildNode, nRecuriveCount);
 	
@@ -1010,8 +965,7 @@ PRecursiveHyperText(NDNode* pChildNode, unsigned int nRecuriveCount)
 }
 
 //通过tag列表获取超链接按钮节点
-CUIHyperlinkButton*							
-PRecursiveHyperBtn(NDNode* pChildNode, unsigned int nRecuriveCount)
+CUIHyperlinkButton* PRecursiveHyperBtn(NDNode* pChildNode, unsigned int nRecuriveCount)
 {
 	NDNode* pResultNode = PRecursiveNode(pChildNode, nRecuriveCount);
 	
@@ -1025,8 +979,7 @@ PRecursiveHyperBtn(NDNode* pChildNode, unsigned int nRecuriveCount)
 }
 
 //通过tag列表获取物品按钮节点
-CUIItemButton*							
-PRecursiveItemBtn(NDNode* pChildNode, unsigned int nRecuriveCount)
+CUIItemButton* PRecursiveItemBtn(NDNode* pChildNode, unsigned int nRecuriveCount)
 {
 	NDNode* pResultNode = PRecursiveNode(pChildNode, nRecuriveCount);
 	
@@ -1040,8 +993,7 @@ PRecursiveItemBtn(NDNode* pChildNode, unsigned int nRecuriveCount)
 }
 
 //通过tag列表获取装备按钮节点
-CUIEquipItem*							
-PRecursiveEquipBtn(NDNode* pChildNode, unsigned int nRecuriveCount)
+CUIEquipItem* PRecursiveEquipBtn(NDNode* pChildNode, unsigned int nRecuriveCount)
 {
 	NDNode* pResultNode = PRecursiveNode(pChildNode, nRecuriveCount);
 	
@@ -1055,8 +1007,7 @@ PRecursiveEquipBtn(NDNode* pChildNode, unsigned int nRecuriveCount)
 }
 
 //通过tag列表获取CheckBox节点
-CUICheckBox*							
-PRecursiveCheckBox(NDNode* pParentNode, unsigned int nRecuriveCoun)
+CUICheckBox* PRecursiveCheckBox(NDNode* pParentNode, unsigned int nRecuriveCoun)
 {
 	NDNode* pResultNode = PRecursiveNode(pParentNode, nRecuriveCoun);
 	
@@ -1070,8 +1021,7 @@ PRecursiveCheckBox(NDNode* pParentNode, unsigned int nRecuriveCoun)
 }
 
 //通过tag列表获取RadioButton节点
-CUIRadioButton*							
-PRecursiveRadioBtn(NDNode* pParentNode, unsigned int nRecuriveCount)
+CUIRadioButton* PRecursiveRadioBtn(NDNode* pParentNode, unsigned int nRecuriveCount)
 {
 	NDNode* pResultNode = PRecursiveNode(pParentNode, nRecuriveCount);
 	
@@ -1085,8 +1035,7 @@ PRecursiveRadioBtn(NDNode* pParentNode, unsigned int nRecuriveCount)
 }
 
 //通过tag列表获取RadioGroup节点
-CUIRadioGroup*							
-PRecursiveRadioGroup(NDNode* pParentNode, unsigned int nRecuriveCount)
+CUIRadioGroup* PRecursiveRadioGroup(NDNode* pParentNode, unsigned int nRecuriveCount)
 {
 	NDNode* pResultNode = PRecursiveNode(pParentNode, nRecuriveCount);
 	
@@ -1100,8 +1049,7 @@ PRecursiveRadioGroup(NDNode* pParentNode, unsigned int nRecuriveCount)
 }
 
 //通过tag列表获取经验条节点
-CUIExp*	
-PRecursiveUIExp(NDNode* pParentNode, unsigned int nRecuriveCount)
+CUIExp*	PRecursiveUIExp(NDNode* pParentNode, unsigned int nRecuriveCount)
 {
 	NDNode* pResultNode = PRecursiveNode(pParentNode, nRecuriveCount);
 	
@@ -1115,8 +1063,7 @@ PRecursiveUIExp(NDNode* pParentNode, unsigned int nRecuriveCount)
 }
 
 //通过tag列表获取edit条节点
-CUIEdit*	
-PRecursiveUIEdit(NDNode* pParentNode, unsigned int nRecuriveCount)
+CUIEdit* PRecursiveUIEdit(NDNode* pParentNode, unsigned int nRecuriveCount)
 {
 	NDNode* pResultNode = PRecursiveNode(pParentNode, nRecuriveCount);
 	
@@ -1130,8 +1077,7 @@ PRecursiveUIEdit(NDNode* pParentNode, unsigned int nRecuriveCount)
 }
 
 //通过tag列表获取精灵节点
-CUISpriteNode*	
-PRecursiveUISprite(NDNode* pParentNode, unsigned int nRecuriveCount)
+CUISpriteNode* PRecursiveUISprite(NDNode* pParentNode, unsigned int nRecuriveCount)
 {
 	NDNode* pResultNode = PRecursiveNode(pParentNode, nRecuriveCount);
 	if (!pResultNode || 
@@ -1142,8 +1088,7 @@ PRecursiveUISprite(NDNode* pParentNode, unsigned int nRecuriveCount)
 	return (CUISpriteNode*)pResultNode; 
 }
 //通过tag列表获取精灵节点
-CUIRoleNode*	
-PRecursiveUIRoleNode(NDNode* pParentNode, unsigned int nRecuriveCount)
+CUIRoleNode* PRecursiveUIRoleNode(NDNode* pParentNode, unsigned int nRecuriveCount)
 {
 	NDNode* pResultNode = PRecursiveNode(pParentNode, nRecuriveCount);
 	if (!pResultNode || 
@@ -1168,8 +1113,7 @@ PRecursiveUIList(NDNode* pParentNode, unsigned int nRecuriveCount)
 }
 #endif
 //#pragma mark 节点类型转换
-NDUINode*							
-ConverToUiNode(NDNode* pNode)
+NDUINode* ConverToUiNode(NDNode* pNode)
 {
 	if (!pNode || !pNode->IsKindOfClass(RUNTIME_CLASS(NDUINode)))
 	{
@@ -1179,9 +1123,7 @@ ConverToUiNode(NDNode* pNode)
 	return (NDUINode*)pNode;
 }
 
-
-NDUILabel*							
-ConverToLabel(NDNode* pNode)
+NDUILabel* ConverToLabel(NDNode* pNode)
 {
 	if (!pNode || !pNode->IsKindOfClass(RUNTIME_CLASS(NDUILabel)))
 	{
@@ -1191,8 +1133,7 @@ ConverToLabel(NDNode* pNode)
 	return (NDUILabel*)pNode;
 }
 
-NDUIButton*							
-ConverToButton(NDNode* pNode)
+NDUIButton* ConverToButton(NDNode* pNode)
 {
 	if (!pNode || !pNode->IsKindOfClass(RUNTIME_CLASS(NDUIButton)))
 	{
@@ -1202,8 +1143,7 @@ ConverToButton(NDNode* pNode)
 	return (NDUIButton*)pNode;
 }
 
-NDUILayer*							
-ConverToUiLayer(NDNode* pNode)
+NDUILayer* ConverToUiLayer(NDNode* pNode)
 {
 	if (!pNode || !pNode->IsKindOfClass(RUNTIME_CLASS(NDUILayer)))
 	{
@@ -1213,8 +1153,7 @@ ConverToUiLayer(NDNode* pNode)
 	return (NDUILayer*)pNode;
 }
 
-NDUITableLayer*						
-ConverToTableLayer(NDNode* pNode)
+NDUITableLayer*	ConverToTableLayer(NDNode* pNode)
 {
 	if (!pNode || !pNode->IsKindOfClass(RUNTIME_CLASS(NDUITableLayer)))
 	{
@@ -1224,7 +1163,7 @@ ConverToTableLayer(NDNode* pNode)
 	return (NDUITableLayer*)pNode;
 }
 
-NDUIImage*							
+NDUIImage* 
 ConverToImage(NDNode* pNode)
 {	
 	if (!pNode || !pNode->IsKindOfClass(RUNTIME_CLASS(NDUIImage)))
@@ -1235,46 +1174,7 @@ ConverToImage(NDNode* pNode)
 	return (NDUIImage*)pNode;
 }
 
-/*
-NDUIContainerScrollLayer*			
-GetScrollLayer(NDNode* pNode, int tag)
-{
-	if (!pNode)
-	{
-		return NULL;
-	}
-	
-	NDNode *sl = pNode->GetChild(tag);
-	
-	if (!sl || !sl->IsKindOfClass(RUNTIME_CLASS(NDUIContainerScrollLayer)))
-	{
-		return NULL;
-	}
-	
-	return (NDUIContainerScrollLayer*)sl;
-}
-
-NDUIContainerHScrollLayer*			
-GetHScrollLayer(NDNode* pNode, int tag)
-{
-	if (!pNode)
-	{
-		return NULL;
-	}
-	
-	NDNode *hsl = pNode->GetChild(tag);
-	
-	if (!hsl || !hsl->IsKindOfClass(RUNTIME_CLASS(NDUIContainerHScrollLayer)))
-	{
-		return NULL;
-	}
-	
-	return (NDUIContainerHScrollLayer*)hsl;
-}
-*/
-
-NDUIScrollViewContainer*			
-ConverToSVC(NDNode* pNode)
+NDUIScrollViewContainer* ConverToSVC(NDNode* pNode)
 {
 	if (!pNode || !pNode->IsKindOfClass(RUNTIME_CLASS(NDUIScrollViewContainer)))
 	{
@@ -1284,8 +1184,7 @@ ConverToSVC(NDNode* pNode)
 	return (NDUIScrollViewContainer*)pNode;
 }
 
-CUIScrollView*			
-ConverToSV(NDNode* pNode)
+CUIScrollView* ConverToSV(NDNode* pNode)
 {
 	if (!pNode || !pNode->IsKindOfClass(RUNTIME_CLASS(CUIScrollView)))
 	{
@@ -1295,9 +1194,7 @@ ConverToSV(NDNode* pNode)
 	return (CUIScrollView*)pNode;
 }
 
-
-CUIScrollViewContainerM*			
-ConverToSVCM(NDNode* pNode)
+CUIScrollViewContainerM* ConverToSVCM(NDNode* pNode)
 {
 	if (!pNode || !pNode->IsKindOfClass(RUNTIME_CLASS(CUIScrollViewContainerM)))
 	{
@@ -1307,8 +1204,7 @@ ConverToSVCM(NDNode* pNode)
 	return (CUIScrollViewContainerM*)pNode;
 }
 
-CUIScrollViewM*			
-ConverToSVM(NDNode* pNode)
+CUIScrollViewM*	ConverToSVM(NDNode* pNode)
 {
 	if (!pNode || !pNode->IsKindOfClass(RUNTIME_CLASS(CUIScrollViewM)))
 	{
@@ -1318,10 +1214,7 @@ ConverToSVM(NDNode* pNode)
 	return (CUIScrollViewM*)pNode;
 }
 
-
-
-CUIScrollContainerExpand*			
-ConverToSCE(NDNode* pNode)
+CUIScrollContainerExpand* ConverToSCE(NDNode* pNode)
 {
 	if (!pNode || !pNode->IsKindOfClass(RUNTIME_CLASS(CUIScrollContainerExpand)))
 	{
@@ -1331,8 +1224,7 @@ ConverToSCE(NDNode* pNode)
 	return (CUIScrollContainerExpand*)pNode;
 }
 
-UIScrollViewExpand*			
-ConverToSCEV(NDNode* pNode)
+UIScrollViewExpand*	ConverToSCEV(NDNode* pNode)
 {
 	if (!pNode || !pNode->IsKindOfClass(RUNTIME_CLASS(UIScrollViewExpand)))
 	{
@@ -1344,8 +1236,7 @@ ConverToSCEV(NDNode* pNode)
 
 
 
-CUIHyperlinkText*
-ConverToHLT(NDNode* pNode)
+CUIHyperlinkText* ConverToHLT(NDNode* pNode)
 {
 	if (!pNode || !pNode->IsKindOfClass(RUNTIME_CLASS(CUIHyperlinkText)))
 	{
@@ -1355,8 +1246,7 @@ ConverToHLT(NDNode* pNode)
 	return (CUIHyperlinkText*)pNode;
 }
 
-CUIHyperlinkButton*
-ConverToHLB(NDNode* pNode)
+CUIHyperlinkButton* ConverToHLB(NDNode* pNode)
 {
 	if (!pNode || !pNode->IsKindOfClass(RUNTIME_CLASS(CUIHyperlinkButton)))
 	{
@@ -1366,8 +1256,7 @@ ConverToHLB(NDNode* pNode)
 	return (CUIHyperlinkButton*)pNode;
 }
 
-CUIRoleNode*
-ConverToRoleNode(NDNode* pNode)
+CUIRoleNode* ConverToRoleNode(NDNode* pNode)
 {
 	if (!pNode || !pNode->IsKindOfClass(RUNTIME_CLASS(CUIRoleNode)))
 	{
@@ -1375,8 +1264,7 @@ ConverToRoleNode(NDNode* pNode)
 	}
 	return (CUIRoleNode*)pNode;
 }
-CUIItemButton*
-ConverToItemButton(NDNode* pNode)
+CUIItemButton* ConverToItemButton(NDNode* pNode)
 {
 	if (!pNode || !pNode->IsKindOfClass(RUNTIME_CLASS(CUIItemButton)))
 	{
@@ -1386,8 +1274,7 @@ ConverToItemButton(NDNode* pNode)
 	return (CUIItemButton*)pNode;
 }
 
-CUIEquipItem*							
-ConverToEquipBtn(NDNode* pNode)
+CUIEquipItem* ConverToEquipBtn(NDNode* pNode)
 {
 	if (!pNode || !pNode->IsKindOfClass(RUNTIME_CLASS(CUIEquipItem)))
 	{
@@ -1397,8 +1284,7 @@ ConverToEquipBtn(NDNode* pNode)
 	return (CUIEquipItem*)pNode; 
 }
 
-CUICheckBox*							
-ConverToCheckBox(NDNode* pNode)
+CUICheckBox* ConverToCheckBox(NDNode* pNode)
 {
 	if (!pNode || !pNode->IsKindOfClass(RUNTIME_CLASS(CUICheckBox)))
 	{
@@ -1408,8 +1294,7 @@ ConverToCheckBox(NDNode* pNode)
 	return (CUICheckBox*)pNode;  
 }
 
-CUIRadioButton*							
-ConverToRadioBtn(NDNode* pNode)
+CUIRadioButton* ConverToRadioBtn(NDNode* pNode)
 {
 	if (!pNode || !pNode->IsKindOfClass(RUNTIME_CLASS(CUIRadioButton)))
 	{
@@ -1419,8 +1304,7 @@ ConverToRadioBtn(NDNode* pNode)
 	return (CUIRadioButton*)pNode;
 }
 
-CUIRadioGroup*							
-ConverToRadioGroup(NDNode* pNode)
+CUIRadioGroup* ConverToRadioGroup(NDNode* pNode)
 {
 	if (!pNode || !pNode->IsKindOfClass(RUNTIME_CLASS(CUIRadioGroup)))
 	{
@@ -1430,8 +1314,7 @@ ConverToRadioGroup(NDNode* pNode)
 	return (CUIRadioGroup*)pNode;  
 }
 
-CUIEdit*							
-ConverToEdit(NDNode* pNode)
+CUIEdit* ConverToEdit(NDNode* pNode)
 {
 	if (!pNode || !pNode->IsKindOfClass(RUNTIME_CLASS(CUIEdit)))
 	{
@@ -1444,8 +1327,7 @@ ConverToEdit(NDNode* pNode)
     return pEdit;
 }
 
-CUISpriteNode*							
-ConverToSprite(NDNode* pNode)
+CUISpriteNode* ConverToSprite(NDNode* pNode)
 {
 	if (!pNode || !pNode->IsKindOfClass(RUNTIME_CLASS(CUISpriteNode)))
 	{
@@ -1453,36 +1335,6 @@ ConverToSprite(NDNode* pNode)
 	}
 	return (CUISpriteNode*)pNode;  
 }
-#if 0
-CUIList*							
-ConverToUIList(NDNode* pNode)
-{
-	if (!pNode || !pNode->IsKindOfClass(RUNTIME_CLASS(CUIList)))
-	{
-		return NULL;
-	}
-	return (CUIList*)pNode;  
-}
-CUIListSection*							
-ConverToUIListSection(NDNode* pNode)
-{
-	if (!pNode || !pNode->IsKindOfClass(RUNTIME_CLASS(CUIListSection)))
-	{
-		return NULL;
-	}
-	return (CUIListSection*)pNode;  
-}
-CUIListCell*							
-ConverToUIListCell(NDNode* pNode)
-{
-	if (!pNode || !pNode->IsKindOfClass(RUNTIME_CLASS(CUIListCell)))
-	{
-		return NULL;
-	}
-	return (CUIListCell*)pNode;  
-}
-#endif
-//#pragma mark 其它ui通用函数
 
 CCSize GetStringSize(const char* str, unsigned int fontsize)
 {
@@ -1502,17 +1354,17 @@ CCSize GetMutiLineStringSize(const char* str, int fontsize, int nWidth)
 	return getStringSizeMutiLine(str, fontsize, CCSizeMake(nWidth, winsize.height * 5));
 }
 
-CCSize GetHyperLinkTextSize(const char* str, unsigned int fontsize, int nBoundWidth)
+CCSize GetHyperLinkTextSize(const char* pszString, unsigned int uiFontSize, int nBoundWidth)
 {
-	if (!str)
+	if (!pszString)
 	{
 		return CCSizeZero;
 	}
-	CCSize textSize;
-	textSize.width	= nBoundWidth;
-	textSize.height = NDUITextBuilder::DefaultBuilder()->StringHeightAfterFilter(str, textSize.width, fontsize);
-	textSize.width	= NDUITextBuilder::DefaultBuilder()->StringWidthAfterFilter(str, textSize.width, fontsize);
-	return textSize;
+	CCSize kTextSize;
+	kTextSize.width	= nBoundWidth;
+	kTextSize.height = NDUITextBuilder::DefaultBuilder()->StringHeightAfterFilter(pszString, kTextSize.width, uiFontSize);
+	kTextSize.width	= NDUITextBuilder::DefaultBuilder()->StringWidthAfterFilter(pszString, kTextSize.width, uiFontSize);
+	return kTextSize;
 }
 
 // @ndbitmap: create a single color label by NDBitmap mechanism 
@@ -1535,26 +1387,26 @@ NDUINode* CreateColorLabel_NDBitmap(const char* str, unsigned int fontsize, cons
 }
 #endif
 
-NDUINode* CreateColorLabel(const char* str, unsigned int fontsize, unsigned int nConstraitWidth)
+NDUINode* CreateColorLabel(const char* pszString, unsigned int uiFontSize, unsigned int nConstraitWidth)
 {
 	//LUA fontSize=6, fix it.
-	fontsize = (fontsize == 6 ? 12 : fontsize);
-	if (!str)
+	uiFontSize = (uiFontSize == 6 ? 12 : uiFontSize);
+	if (!pszString)
 	{
 		return NULL;
 	}
-	CCSize winsize	= CCDirector::sharedDirector()->getWinSizeInPixels();
-	winsize.width	= nConstraitWidth;
+	CCSize kWinSize	= CCDirector::sharedDirector()->getWinSizeInPixels();
+	kWinSize.width	= nConstraitWidth;
 
 //@ndbitmap
 #if WITH_NDBITMAP
 	if (nConstraitWidth > 0)
 	{
-		winsize = ::getStringSizeMutiLine( str, fontsize * FONT_SCALE, winsize );
+		kWinSize = ::getStringSizeMutiLine( pszString, uiFontSize * FONT_SCALE, kWinSize );
 	}
-	return CreateColorLabel_NDBitmap(str, fontsize, CCRectMake(0,0,winsize.width,winsize.height));
+	return CreateColorLabel_NDBitmap(pszString, uiFontSize, CCRectMake(0,0,kWinSize.width,kWinSize.height));
 #else
-	return (NDUINode*)NDUITextBuilder::DefaultBuilder()->Build(str, fontsize, winsize, ccc4(255, 255, 255, 255));
+	return (NDUINode*)NDUITextBuilder::DefaultBuilder()->Build(pszString, uiFontSize, kWinSize, ccc4(255, 255, 255, 255));
 #endif
 }
 
@@ -1592,17 +1444,17 @@ LIST_ATTR_SEC MakeListSecAttr(
 	int nLInner, int nRInner, int nTInner, int nBInner,
 	int nCellInner, int nCellWidth, int nCellHeight)
 {
-	LIST_ATTR_SEC attr;
-	attr.unSectionWidth			= nSectionWidth;
-	attr.unSectionHeight		= nSectionHeight;
-	attr.unContentLInner		= nLInner;
-	attr.unContentRInner		= nRInner;
-	attr.unContentTInner		= nTInner;
-	attr.unContentBInner		= nBInner;
-	attr.unCellInner			= nCellInner;
-	attr.unCellWidth			= nCellWidth;
-	attr.unCellHeight			= nCellHeight;
-	return attr;
+	LIST_ATTR_SEC kAttr;
+	kAttr.unSectionWidth			= nSectionWidth;
+	kAttr.unSectionHeight		= nSectionHeight;
+	kAttr.unContentLInner		= nLInner;
+	kAttr.unContentRInner		= nRInner;
+	kAttr.unContentTInner		= nTInner;
+	kAttr.unContentBInner		= nBInner;
+	kAttr.unCellInner			= nCellInner;
+	kAttr.unCellWidth			= nCellWidth;
+	kAttr.unCellHeight			= nCellHeight;
+	return kAttr;
 }
 #endif
 void ShowLoadBar()
@@ -1622,44 +1474,7 @@ std::string NDPath_GetMapPath()			{ return NDPath::GetMapPath(); }
 std::string NDPath_GetAnimationPath()	{ return NDPath::GetAnimationPath(); }
 std::string NDPath_GetResPath()			{ return NDPath::GetResPath(); }
 std::string NDPath_GetSoundPath()		{ return NDPath::GetSoundPath(); }
-//tanwt 20120913 //注册本地通知
-/*//新功能暂时不开放
-int RegisterLocalNotification(string noticeTime,string Content)
-{
-    //指定的yyyymmddhh24miss，格化为time_t的时间
-    struct tm tm1;
-    time_t time1;
-    char timeFormart[20] = {0};
-    //sprintf(notifyTime, "%ld",noticeTime);
-    sscanf(noticeTime.c_str(),"%4d%2d%2d%2d%2d%2d",&tm1.tm_year,&tm1.tm_mon,&tm1.tm_mday,&tm1.tm_hour,&tm1.tm_min,&tm1.tm_sec);
-    sprintf(timeFormart,"%4d-%02d-%02d %02d:%02d:%02d",tm1.tm_year,tm1.tm_mon,tm1.tm_mday,tm1.tm_hour,tm1.tm_min,tm1.tm_sec);
-    
-    //注销所有的本地通知
-    [[UIApplication sharedApplication] cancelAllLocalNotifications];
-    //定义本地通知
-    UILocalNotification *notification=[[UILocalNotification alloc] init]; 
 
-    //strftime(Noticetime, sizeof(Noticetime), "%F %T",localtime(&notifytime));
-    if (notification!=nil) 
-    { 
-        NSString *noticeDate = [NSString stringWithFormat:@"%s", timeFormart];
-        NSString *noticeContent = [NSString stringWithUTF8String:Content.c_str()];
-        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-        //NSString *noticeDate = @"2012-09-14 00:02:30";
-        formatter.dateFormat = @"yyyy-MM-dd HH:mm:ss";
-        //设置触发时间
-        notification.fireDate = [formatter dateFromString:noticeDate];
-        [formatter release];
-        //NSDate *now=[NSDate new]; 
-        //notification.fireDate=[now addTimeInterval:10]; 
-        notification.timeZone=[NSTimeZone defaultTimeZone]; 
-        notification.applicationIconBadgeNumber = 1;
-        //notification.alertBody=@"服务器正式开启，大家一起来吧"; 
-        notification.alertBody=noticeContent; 
-        [[UIApplication sharedApplication]   scheduleLocalNotification:notification];
-    }
-}
- */
 int RegisterLocalNotification(string Date,string Content)
 {
 #if 0
@@ -1703,8 +1518,6 @@ CCSize SizeMake(float width, float height)
 }
 
 namespace NDEngine {
-
-
 
 //#pragma mark ui脚本导出加载
 	void ScriptUiLoad()
@@ -1763,12 +1576,9 @@ namespace NDEngine {
 		ETCFUNC("RecursiveSVCM", RecursiveSVCM);
 		ETCFUNC("RecursiveSVM", RecursiveSVM);
 
-
-
 		//** chh 2012-07-24 **//
 		ETCFUNC("RecursiveSCE", RecursiveSCE);
 		ETCFUNC("RecursiveSCEV", RecursiveSCEV);
-
 
 		ETCFUNC("RecursiveHyperText", RecursiveHyperText);
 		ETCFUNC("RecursiveHyperBtn", RecursiveHyperBtn);
@@ -1835,37 +1645,37 @@ namespace NDEngine {
 		ETCFUNC("ConverToRadioGroup", ConverToRadioGroup);
 		ETCFUNC("ConverToEdit", ConverToEdit);
 		ETCFUNC("ConverToSprite", ConverToSprite);
-        
+
 		//++ Guosen 2012.6.3 //获得各种路径
 		ETCFUNC("NDPath_GetResourcePath",						NDPath_GetResourcePath);
-		ETCFUNC("NDPath_GetImagePath",							NDPath_GetImagePath);
-		ETCFUNC("NDPath_GetMapPath",							NDPath_GetMapPath);
+		ETCFUNC("NDPath_GetImagePath", NDPath_GetImagePath);
+		ETCFUNC("NDPath_GetMapPath", NDPath_GetMapPath);
 		ETCFUNC("NDPath_GetAnimationPath",						NDPath_GetAnimationPath);
-		ETCFUNC("NDPath_GetResPath",							NDPath_GetResPath);
-		ETCFUNC("NDPath_GetSoundPath",							NDPath_GetSoundPath);
+		ETCFUNC("NDPath_GetResPath", NDPath_GetResPath);
+		ETCFUNC("NDPath_GetSoundPath", NDPath_GetSoundPath);
 		//tanwt 20120913 //注册本地通知
 		ETCFUNC("RegisterLocalNotification",				    RegisterLocalNotification);
 	}
 
-	bool OnScriptUiEvent(NDUINode* uinode, int targetEvent, int param/*= 0*/)
+	bool OnScriptUiEvent(NDUINode* pkUINode, int nTargetEvent, int nParam/*= 0*/)
 	{
-		if (!uinode)
+		if (!pkUINode)
 		{
 			return false;
 		}
-		
-		LuaObject funcObj;
-		
-		if (!uinode->GetLuaDelegate(funcObj)
-			|| !funcObj.IsFunction())
+
+		LuaObject kFuncObject;
+
+		if (!pkUINode->GetLuaDelegate(kFuncObject)
+			|| !kFuncObject.IsFunction())
 		{
 			return false;
 		}
-		
-		LuaFunction<bool> luaUiEventCallBack = funcObj;
-		
-		bool bRet = luaUiEventCallBack(uinode, targetEvent, param);
-		
+
+		LuaFunction<bool> kLuaUIEventCallback = kFuncObject;
+
+		bool bRet = kLuaUIEventCallback(pkUINode, nTargetEvent, nParam);
+
 		return bRet;
 	}
 }

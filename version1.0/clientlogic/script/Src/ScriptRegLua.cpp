@@ -49,6 +49,7 @@
 #include "NDDirector.h"
 #include "NDUILoad.h"
 #include "NDJsonReader.h"
+#include "NDActionInterval.h"
 
 //@reglua: 没真正注册，只是记录了一堆函数回调，另外地方统一调用
 void NDScriptRegLua::doReg()
@@ -175,6 +176,65 @@ void NDScriptRegLua::doReg()
 	ETMEMBERFUNC("GetParam2",						&NDNode::GetParam2)
 	ETMEMBERFUNC("SetDestroyNotify",				&NDNode::SetDestroyNotify)
 	ETCLASSEND(NDNode)
+
+	/***
+	* Json新增動作類導出  郭浩
+	*/
+	ETCLASSBEGIN(NDActionInterval)
+	ETCFUNC("destroyAction",						&NDActionInterval::DestroyAction)
+	ETDESTRUCT("Free")
+	ETMEMBERFUNC("IsDone", &NDActionInterval::IsDone);
+	ETMEMBERFUNC("Stop", &NDActionInterval::Stop);
+	ETCLASSEND(NDActionInterval)
+
+	ETCLASSBEGIN(NDSequence)
+	ETCFUNC("destroyAction",						&NDSequence::DestroyAction)
+	ETDESTRUCT("Free")
+	ETMEMBERFUNC("InitWithTwoActions", &NDSequence::InitWithTwoActions);
+	ETMEMBERFUNC("IsDone", &NDSequence::IsDone);
+	ETMEMBERFUNC("Stop", &NDSequence::Stop);
+	ETCLASSEND(NDSequence)
+
+	ETCLASSBEGIN(NDRotateTo)
+	ETCFUNC("destroyAction",						&NDRotateTo::DestroyAction)
+	ETCFUNC("CreateRotateToAction",					&NDRotateTo::CreateRotateToAction)
+	ETDESTRUCT("Free")
+	ETMEMBERFUNC("IsDone", &NDRotateTo::IsDone);
+	ETMEMBERFUNC("Stop", &NDRotateTo::Stop);
+	ETCLASSEND(NDRotateTo)
+
+	ETCLASSBEGIN(NDRotateBy)
+	ETCFUNC("destroyAction",						&NDRotateBy::DestroyAction)
+	ETCFUNC("CreateRotateToAction",					&NDRotateBy::CreateRotateBy)
+	ETDESTRUCT("Free")
+	ETMEMBERFUNC("IsDone", &NDRotateBy::IsDone);
+	ETMEMBERFUNC("Stop", &NDRotateBy::Stop);
+	ETCLASSEND(NDRotateBy)
+
+	ETCLASSBEGIN(NDMoveTo)
+	ETCFUNC("destroyAction",						&NDMoveTo::DestroyAction)
+	ETCFUNC("CreateMoveTo",					&NDMoveTo::CreateMoveTo)
+	ETDESTRUCT("Free")
+	ETMEMBERFUNC("IsDone", &NDMoveTo::IsDone);
+	ETMEMBERFUNC("Stop", &NDMoveTo::Stop);
+	ETCLASSEND(NDMoveTo)
+
+	ETCLASSBEGIN(NDMoveBy)
+	ETCFUNC("destroyAction",						&NDMoveBy::DestroyAction)
+	ETCFUNC("CreateMoveBy",					&NDMoveBy::CreateMoveBy)
+	ETDESTRUCT("Free")
+	ETMEMBERFUNC("IsDone", &NDMoveBy::IsDone);
+	ETMEMBERFUNC("Stop", &NDMoveBy::Stop);
+	ETCLASSEND(NDMoveBy)
+
+	ETCLASSBEGIN(NDShake)
+	ETCFUNC("destroyAction",						&NDShake::DestroyAction)
+	ETCFUNC("CraeteShake",							&NDShake::CraeteShake)
+	ETCFUNC("CraeteShakeWithStrength",					&NDShake::CraeteShakeWithStrength)
+	ETDESTRUCT("Free")
+	ETMEMBERFUNC("IsDone", &NDShake::IsDone);
+	ETMEMBERFUNC("Stop", &NDShake::Stop);
+	ETCLASSEND(NDShake)
 
 	/***
 	* Json配置文件讀取類  郭浩
@@ -392,6 +452,12 @@ void NDScriptRegLua::doReg()
 	ETCONSTRUCT("createUIScrollViewContainer")
 	ETDESTRUCT("Free")
 	ETMEMBERFUNC("Init",						&NDUIScrollViewContainer::Initialization)
+	ETMEMBERFUNC("SetMaxScrollDistance", &NDUIScrollViewContainer::setMaxScrollDistance)
+	ETMEMBERFUNC("SetScrollSpeed", &NDUIScrollViewContainer::setScrollSpeed)
+	ETMEMBERFUNC("SetDragCoefficient", &NDUIScrollViewContainer::setDragCoefficient)
+	ETMEMBERFUNC("SetAcceleratedSpeed", &NDUIScrollViewContainer::setAcceleratedSpeed)
+	ETMEMBERFUNC("SetOpenBounce", &NDUIScrollViewContainer::setOpenBounce)
+	ETMEMBERFUNC("SetScrollInitialVelocity", &NDUIScrollViewContainer::setScrollInitialVelocity)
 	ETMEMBERFUNC("SetStyle",					&NDUIScrollViewContainer::SetStyle)
 	ETMEMBERFUNC("GetScrollStyle",				&NDUIScrollViewContainer::GetScrollStyle)
 	ETMEMBERFUNC("SetCenterAdjust",				&NDUIScrollViewContainer::SetCenterAdjust)

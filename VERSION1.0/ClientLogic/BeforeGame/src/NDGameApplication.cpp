@@ -195,13 +195,13 @@ bool NDGameApplication::applicationDidFinishLaunching()
 	}
 	else if (target == kTargetAndroid)
 	{
-		CCEGLView* eglView = CCDirector::sharedDirector()->getOpenGLView();
+		CCEGLView* pkEGLView = CCDirector::sharedDirector()->getOpenGLView();
 		CCLog("Entryu setDesignResolutionSize");
 		CCLog("@@ before setDesignResolutionSize(), frameSize=(%d,%d)\r\n",
-			(int) eglView->getFrameSize().width,
-			(int) eglView->getFrameSize().height);
+			(int) pkEGLView->getFrameSize().width,
+			(int) pkEGLView->getFrameSize().height);
 		CCEGLView::sharedOpenGLView()->setDesignResolutionSize(
-			eglView->getFrameSize().width, eglView->getFrameSize().height,
+			pkEGLView->getFrameSize().width, pkEGLView->getFrameSize().height,
 			kResolutionNoBorder);
 	}
 	else

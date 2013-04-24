@@ -21,13 +21,13 @@ IMPLEMENT_CLASS(ClickLayer, NDUILayer)
 
 bool ClickLayer::TouchBegin(NDTouch* touch)
 {
-	if (!this->IsVisibled()) return false;
+	if (!IsVisibled()) return false;
 	return true;
 }
 
 bool ClickLayer::TouchEnd(NDTouch* touch)
 {
-	if (!this->IsVisibled())
+	if (!IsVisibled())
 	{
 		return false;
 	}

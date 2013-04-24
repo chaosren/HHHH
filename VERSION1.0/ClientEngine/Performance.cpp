@@ -81,20 +81,21 @@ bool CPerformanceTest::BeginTestModule(const char *name, key64& key,
 	CHECK_START;
 
 	if (!name)
+	{
 		return false;
+	}
 
-	KEY mainKey = GetMainKey(name);
+	KEY uiMainKey = GetMainKey(name);
 
-	CHECK_KEY(mainKey);
+	CHECK_KEY(uiMainKey);
 
-	KEY helpKey = GetHelpKey();
+	KEY uiHelpKey = GetHelpKey();
 
-	CHECK_KEY(helpKey);
+	CHECK_KEY(uiHelpKey);
 
-	key = key64(mainKey, helpKey);
+	key = key64(uiMainKey, uiHelpKey);
 
 	NDAsssert(m_mapData.find(key) == m_mapData.end());
-
 	NDAsssert(m_cacl.find(key) == m_cacl.end());
 
 	m_mapData[key].consume = 0;
@@ -111,58 +112,34 @@ bool CPerformanceTest::EndTestModule(key64& key)
 	CHECK_START;
 
 	if (!key.valid())
+	{
 		return false;
+	}
 
 	std::map<key64, performance_data>::iterator it = m_mapData.find(key);
 
 	if (it == m_mapData.end())
+	{
 		return false;
+	}
 
 	std::map<key64, time_cacl>::iterator itCacl = m_cacl.find(key);
 
 	if (itCacl == m_cacl.end())
+	{
 		return false;
+	}
 
-	double tmp = time(0) - m_cacl[key].start;
-	m_mapData[key].consume = tmp;
+	double dbTemp = time(0) - m_cacl[key].start;
+	m_mapData[key].consume = dbTemp;
 
 	m_mapData[key].finish = true;
 
 	return true;
 }
 
-/** ��ʱͳ�ƽӿڽ��**/
-
 void CPerformanceTest::Output()
 {
-// 	NSError *outError;
-// 	
-// 	NSFileManager *fm = [NSFileManager defaultManager];
-// 	
-// 	/* Set up reasonable directory attributes */
-//     NSDictionary *attributes = [NSDictionary dictionaryWithObject: [NSNumber numberWithUnsignedLong: 0755] forKey: NSFilePosixPermissions];
-// 	
-// 	NSString *path = [NSString stringWithFormat:@"%@%s", DataFilePath, "Performance"];
-//     /* Create the top-level path */
-//     if (![fm fileExistsAtPath: path] &&
-//         ![fm createDirectoryAtPath: path withIntermediateDirectories: YES attributes: attributes error: &outError])
-//     {
-//         return;
-//     }
-// 	
-// 	char filename[256];
-// 	memset(filename, 0, sizeof(filename));
-// 	snprintf(filename, sizeof(filename), "%s/%ld%s", 
-// 			 [path UTF8String],
-// 			 time(NULL),
-// 			 "performance.txt");
-// 	
-// 	FILE* f = fopen(filename, "a");
-// 	
-// 	if (f) {
-// 		AverageOutput(f);
-// 		fclose(f);
-// 	}
 }
 
 void CPerformanceTest::Output(FILE* f)

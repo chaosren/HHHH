@@ -103,40 +103,10 @@ NDBaseRole::~NDBaseRole()
 	SAFE_DELETE (m_pkRingPic);
 	SAFE_DELETE (m_pkPicShadow);
 	SAFE_DELETE (m_pkPicShadowBig);
-	//if (ridepet)
-//	{
-//		delete ridepet;
-//		ridepet = NULL;
-//	}
-
-//if (m_talkBox)
-//	{
-//		if (m_talkBox->GetParent()) 
-//		{
-//			m_talkBox->RemoveFromParent(true);
-//			m_talkBox = NULL;
-//		}
-//		else 
-//		{
-//			delete m_talkBox;
-//			m_talkBox = NULL;
-//		}
-//	}
-	//if (!ms_bGameSceneRelease && m_pkTalkBox) 
-	//{
-	//	SAFE_DELETE_NODE(m_pkTalkBox);
-	//}
 }
 
 CCRect NDBaseRole::GetFocusRect()
 {
-	/*
-	 if (!IsFocus())
-	 {
-	 return CCRectZero;
-	 }
-	 */
-
 	CCPoint point;
 
 	if (m_pkRidePet)
@@ -210,7 +180,6 @@ int NDBaseRole::getFlagId(int index)
 
 void NDBaseRole::DrawRingImage(bool bDraw)
 {
-	//change by tangziqin 不需要调用
 	return;
 #if 0
 	if (IsKindOfClass (RUNTIME_CLASS(NDNpc)))

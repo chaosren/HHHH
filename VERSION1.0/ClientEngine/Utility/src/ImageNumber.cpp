@@ -368,13 +368,13 @@ ImageNumber::~ImageNumber()
 void ImageNumber::Initialization()
 {
 	NDUILayer::Initialization();
-	this->SetFrameRect(CCRectZero);
-	this->SetTouchEnabled(false);
+	SetFrameRect(CCRectZero);
+	SetTouchEnabled(false);
 }
 
 CCSize ImageNumber::GetNumberSize()
 {
-	return m_size;
+	return m_kSize;
 }
 
 unsigned int ImageNumber::SetTitleRedNumber(bool cleanUp, unsigned int number,
@@ -409,7 +409,7 @@ unsigned int ImageNumber::SetTitleRedNumber(bool cleanUp, unsigned int number,
                 pkPicture->GetSize().width * RESOURCE_SCALE_960,
 				pkPicture->GetSize().height * RESOURCE_SCALE_960));
             
-			this->AddChild(image);
+			AddChild(image);
 		}
 	}
 
@@ -420,36 +420,36 @@ unsigned int ImageNumber::SetTitleRedNumber(bool cleanUp, unsigned int number,
 
 void ImageNumber::SetTitleRedNumber(unsigned int number, unsigned int interval)
 {
-	m_size.width = this->SetTitleRedNumber(true, number, interval, 0);
-	m_size.height =
+	m_kSize.width = SetTitleRedNumber(true, number, interval, 0);
+	m_kSize.height =
 		PictureNumber::SharedInstance()->GetTitleRedNumberSize().height * RESOURCE_SCALE_960;
 }
 
 void ImageNumber::SetTitleRedTwoNumber(unsigned int number1,
 									   unsigned int number2, unsigned int interval)
 {
-	unsigned int len = this->SetTitleRedNumber(true, number1, interval, 0);
+	unsigned int len = SetTitleRedNumber(true, number1, interval, 0);
 
 	NDPicture* pic = PictureNumber::SharedInstance()->TitleSplit();
 	if (pic)
 	{
-		NDUIImage* image = new NDUIImage();
-		image->Initialization();
-		image->SetPicture(pic);
+		NDUIImage* pkImage = new NDUIImage();
+		pkImage->Initialization();
+		pkImage->SetPicture(pic);
 
-		image->SetFrameRect(
+		pkImage->SetFrameRect(
 			CCRectMake(len,
                        0,
                        pic->GetSize().width * RESOURCE_SCALE_960,
                        pic->GetSize().height * RESOURCE_SCALE_960));
 
-		this->AddChild(image);
+		AddChild(pkImage);
 
 		len += interval + pic->GetSize().width * RESOURCE_SCALE_960;
 	}
 
-	m_size.width = len + this->SetTitleRedNumber(false, number2, interval, len);
-	m_size.height =
+	m_kSize.width = len + SetTitleRedNumber(false, number2, interval, len);
+	m_kSize.height =
 		PictureNumber::SharedInstance()->GetTitleRedNumberSize().height * RESOURCE_SCALE_960;
 }
 
@@ -515,7 +515,7 @@ void ImageNumber::SetSmallRedNumber(int number, bool bWithSign)
                            pkPicSign->GetSize().width * RESOURCE_SCALE_960,
                            pkPicSign->GetSize().height * RESOURCE_SCALE_960));
 
-			this->AddChild(pkImage);
+			AddChild(pkImage);
             
 			nStartPosition += pkPicSign->GetSize().width * RESOURCE_SCALE_960;
 		}
@@ -545,27 +545,27 @@ void ImageNumber::SetSmallRedNumber(int number, bool bWithSign)
                            pkPicture->GetSize().width * RESOURCE_SCALE_960,
                            pkPicture->GetSize().height * RESOURCE_SCALE_960));
             
-			this->AddChild(pkImage);
+			AddChild(pkImage);
 		}
 	}
 
-	m_size.width = kBits.size()
+	m_kSize.width = kBits.size()
 		* PictureNumber::SharedInstance()->GetSmallRedSize().width * RESOURCE_SCALE_960;
     
-	m_size.height = PictureNumber::SharedInstance()->GetSmallRedSize().height * RESOURCE_SCALE_960;
+	m_kSize.height = PictureNumber::SharedInstance()->GetSmallRedSize().height * RESOURCE_SCALE_960;
 }
 
 void ImageNumber::SetSmallRedTwoNumber(unsigned int num1, unsigned int num2)
 {
-	bool bVisible = this->IsVisibled();
+	bool bVisible = IsVisibled();
 
-	this->RemoveAllChildren(true);
+	RemoveAllChildren(true);
 
 	int startPos = 0;
 
 	std::vector<unsigned int> bits;
 	// Êý×Ö1
-	this->NumberBits(num1, bits);
+	NumberBits(num1, bits);
 	for (unsigned int i = 0; i < bits.size(); i++)
 	{
 		unsigned int bit = bits.at(i);
@@ -582,7 +582,7 @@ void ImageNumber::SetSmallRedTwoNumber(unsigned int num1, unsigned int num2)
                            pic->GetSize().width * RESOURCE_SCALE_960,
                            pic->GetSize().height * RESOURCE_SCALE_960));
 			
-            this->AddChild(image);
+            AddChild(image);
 			
             image->SetVisible(bVisible);
 			
@@ -603,45 +603,45 @@ void ImageNumber::SetSmallRedTwoNumber(unsigned int num1, unsigned int num2)
                        picSlash->GetSize().width * RESOURCE_SCALE_960,
                        picSlash->GetSize().height * RESOURCE_SCALE_960));
 		
-        this->AddChild(pkImage);
+        AddChild(pkImage);
 		
         pkImage->SetVisible(bVisible);
 		
         startPos += picSlash->GetSize().width * RESOURCE_SCALE_960;
 	}
 
-	this->NumberBits(num2, bits);
+	NumberBits(num2, bits);
 	for (unsigned int i = 0; i < bits.size(); i++)
 	{
 		unsigned int bit = bits.at(i);
 		NDPicture* pic = PictureNumber::SharedInstance()->SmallRed(bit);
 		if (pic)
 		{
-			NDUIImage* image = new NDUIImage();
-			image->Initialization();
-			image->SetPicture(pic);
+			NDUIImage* pkImage = new NDUIImage();
+			pkImage->Initialization();
+			pkImage->SetPicture(pic);
             
-			image->SetFrameRect(
+			pkImage->SetFrameRect(
 				CCRectMake(startPos, 0,
                            pic->GetSize().width * RESOURCE_SCALE_960,
                            pic->GetSize().height * RESOURCE_SCALE_960));
             
-			this->AddChild(image);
-			image->SetVisible(bVisible);
+			AddChild(pkImage);
+			pkImage->SetVisible(bVisible);
             
 			startPos += pic->GetSize().width * RESOURCE_SCALE_960;
 		}
 	}
 
-	m_size.width = startPos;
-	m_size.height = PictureNumber::SharedInstance()->GetSmallRedSize().height * RESOURCE_SCALE_960;
+	m_kSize.width = startPos;
+	m_kSize.height = PictureNumber::SharedInstance()->GetSmallRedSize().height * RESOURCE_SCALE_960;
 }
 
 void ImageNumber::SetSmallWhiteNumber(int number, bool bWithSign)
 {
-	this->RemoveAllChildren(true);
+	RemoveAllChildren(true);
 
-	int startPos = 0;
+	int nStartPosition = 0;
 
 	if (bWithSign) // ÏÔÊ¾·ûºÅ
 	{
@@ -659,25 +659,25 @@ void ImageNumber::SetSmallWhiteNumber(int number, bool bWithSign)
         
 		if (picSign)
 		{
-			NDUIImage* image = new NDUIImage();
-			image->Initialization();
-			image->SetPicture(picSign);
+			NDUIImage* pkImage = new NDUIImage();
+			pkImage->Initialization();
+			pkImage->SetPicture(picSign);
 			
-            image->SetFrameRect(
-				CCRectMake(startPos, 0,
+            pkImage->SetFrameRect(
+				CCRectMake(nStartPosition, 0,
                            picSign->GetSize().width * RESOURCE_SCALE_960,
                            picSign->GetSize().height * RESOURCE_SCALE_960));
 
-			this->AddChild(image);
+			AddChild(pkImage);
             
-			startPos += picSign->GetSize().width * RESOURCE_SCALE_960;
+			nStartPosition += picSign->GetSize().width * RESOURCE_SCALE_960;
 		}
 	}
 
 	number = abs(number);
 
 	std::vector<unsigned int> bits;
-	this->NumberBits(number, bits);
+	NumberBits(number, bits);
 
 	for (unsigned int i = 0; i < bits.size(); i++)
 	{
@@ -685,34 +685,34 @@ void ImageNumber::SetSmallWhiteNumber(int number, bool bWithSign)
 		NDPicture* pic = PictureNumber::SharedInstance()->SmallWhite(bit);
 		if (pic)
 		{
-            int xPos = startPos
+            int xPos = nStartPosition
                         + i * PictureNumber::SharedInstance()->GetSmallWhiteSize().width
                             * RESOURCE_SCALE_960;
             
-			NDUIImage* image = new NDUIImage();
-			image->Initialization();
-			image->SetPicture(pic);
+			NDUIImage* pkImage = new NDUIImage();
+			pkImage->Initialization();
+			pkImage->SetPicture(pic);
             
-			image->SetFrameRect(
+			pkImage->SetFrameRect(
 				CCRectMake(
                            xPos,
                            0,
                            pic->GetSize().width * RESOURCE_SCALE_960,
                            pic->GetSize().height * RESOURCE_SCALE_960));
             
-			this->AddChild(image);
+			AddChild(pkImage);
 		}
 	}
 
-	m_size.width = bits.size()
+	m_kSize.width = bits.size()
 		* PictureNumber::SharedInstance()->GetSmallWhiteSize().width * RESOURCE_SCALE_960;
     
-	m_size.height = PictureNumber::SharedInstance()->GetSmallWhiteSize().height * RESOURCE_SCALE_960;
+	m_kSize.height = PictureNumber::SharedInstance()->GetSmallWhiteSize().height * RESOURCE_SCALE_960;
 }
 
 void ImageNumber::SetBigGreenNumber(int number, bool bWithSign)
 {
-	this->RemoveAllChildren(true);
+	RemoveAllChildren(true);
 
 	int startPos = 0;
 
@@ -742,7 +742,7 @@ void ImageNumber::SetBigGreenNumber(int number, bool bWithSign)
                            picSign->GetSize().width * RESOURCE_SCALE_960,
                            picSign->GetSize().height * RESOURCE_SCALE_960));
 			
-            this->AddChild(image);
+            AddChild(image);
 			
             startPos += picSign->GetSize().width * RESOURCE_SCALE_960;
 		}
@@ -751,7 +751,7 @@ void ImageNumber::SetBigGreenNumber(int number, bool bWithSign)
 	number = abs(number);
 
 	std::vector<unsigned int> bits;
-	this->NumberBits(number, bits);
+	NumberBits(number, bits);
 
 	for (unsigned int i = 0; i < bits.size(); i++)
 	{
@@ -774,20 +774,20 @@ void ImageNumber::SetBigGreenNumber(int number, bool bWithSign)
                            pic->GetSize().width * RESOURCE_SCALE_960,
                            pic->GetSize().height * RESOURCE_SCALE_960));
 			
-            this->AddChild(image);
+            AddChild(image);
 		}
 	}
 
-	m_size.width = startPos
+	m_kSize.width = startPos
 		+ bits.size()
 		* PictureNumber::SharedInstance()->GetBigRedSize().width * RESOURCE_SCALE_960;
 
-	m_size.height = PictureNumber::SharedInstance()->GetBigRedSize().height * RESOURCE_SCALE_960;
+	m_kSize.height = PictureNumber::SharedInstance()->GetBigRedSize().height * RESOURCE_SCALE_960;
 }
 
 void ImageNumber::SetSmallGreenNumber(int number, bool bWithSign)
 {
-	this->RemoveAllChildren(true);
+	RemoveAllChildren(true);
 
 	int startPos = 0;
 
@@ -818,7 +818,7 @@ void ImageNumber::SetSmallGreenNumber(int number, bool bWithSign)
                            picSign->GetSize().width * RESOURCE_SCALE_960,
                            picSign->GetSize().height * RESOURCE_SCALE_960));
 
-			this->AddChild(image);
+			AddChild(image);
             
 			startPos += picSign->GetSize().width * RESOURCE_SCALE_960;
 		}
@@ -827,7 +827,7 @@ void ImageNumber::SetSmallGreenNumber(int number, bool bWithSign)
 	number = abs(number);
 
 	std::vector<unsigned int> bits;
-	this->NumberBits(number, bits);
+	NumberBits(number, bits);
 
 	for (unsigned int i = 0; i < bits.size(); i++)
 	{
@@ -848,27 +848,27 @@ void ImageNumber::SetSmallGreenNumber(int number, bool bWithSign)
                            pic->GetSize().width * RESOURCE_SCALE_960,
                            pic->GetSize().height * RESOURCE_SCALE_960));
 
-			this->AddChild(image);
+			AddChild(image);
 		}
 	}
 
-	m_size.width = startPos
+	m_kSize.width = startPos
 		+ bits.size()
 		* PictureNumber::SharedInstance()->GetSmallRedSize().width * RESOURCE_SCALE_960;
     
-	m_size.height = PictureNumber::SharedInstance()->GetSmallRedSize().height * RESOURCE_SCALE_960;
+	m_kSize.height = PictureNumber::SharedInstance()->GetSmallRedSize().height * RESOURCE_SCALE_960;
 }
 
 void ImageNumber::SetSmallGoldNumber(int num)
 {
-	this->RemoveAllChildren(true);
+	RemoveAllChildren(true);
 
 	int startPos = 0;
 
 	num = abs(num);
 
 	std::vector<unsigned int> bits;
-	this->NumberBits(num, bits);
+	NumberBits(num, bits);
 
 	for (unsigned int i = 0; i < bits.size(); i++)
 	{
@@ -891,20 +891,20 @@ void ImageNumber::SetSmallGoldNumber(int num)
                            pic->GetSize().width * RESOURCE_SCALE_960,
                            pic->GetSize().height * RESOURCE_SCALE_960));
             
-			this->AddChild(image);
+			AddChild(image);
 		}
 	}
 
-	m_size.width = startPos
+	m_kSize.width = startPos
 		+ bits.size()
 		* PictureNumber::SharedInstance()->GetSmallGoldSize().width * RESOURCE_SCALE_960;
     
-	m_size.height = PictureNumber::SharedInstance()->GetSmallGoldSize().height * RESOURCE_SCALE_960;
+	m_kSize.height = PictureNumber::SharedInstance()->GetSmallGoldSize().height * RESOURCE_SCALE_960;
 }
 
 void ImageNumber::SetBigRedNumber(int number, bool bWithSign)
 {
-	this->RemoveAllChildren(true);
+	RemoveAllChildren(true);
 
 	int startPos = 0;
 
@@ -933,7 +933,7 @@ void ImageNumber::SetBigRedNumber(int number, bool bWithSign)
                            picSign->GetSize().width * RESOURCE_SCALE_960,
                            picSign->GetSize().height * RESOURCE_SCALE_960));
             
-			this->AddChild(image);
+			AddChild(image);
 			
             startPos += picSign->GetSize().width * RESOURCE_SCALE_960;
 		}
@@ -942,7 +942,7 @@ void ImageNumber::SetBigRedNumber(int number, bool bWithSign)
 	number = abs(number);
 
 	std::vector<unsigned int> bits;
-	this->NumberBits(number, bits);
+	NumberBits(number, bits);
 
 	for (unsigned int i = 0; i < bits.size(); i++)
 	{
@@ -964,20 +964,20 @@ void ImageNumber::SetBigRedNumber(int number, bool bWithSign)
                            pic->GetSize().width * RESOURCE_SCALE_960,
                            pic->GetSize().height * RESOURCE_SCALE_960));
 
-			this->AddChild(image);
+			AddChild(image);
 		}
 	}
 
-	m_size.width = startPos
+	m_kSize.width = startPos
 		+ bits.size()
 		* PictureNumber::SharedInstance()->GetBigRedSize().width * RESOURCE_SCALE_960;
     
-	m_size.height = PictureNumber::SharedInstance()->GetBigRedSize().height * RESOURCE_SCALE_960;
+	m_kSize.height = PictureNumber::SharedInstance()->GetBigRedSize().height * RESOURCE_SCALE_960;
 }
 
 void ImageNumber::SetBigRedTwoNumber(int number1, int number2)
 {
-	this->RemoveAllChildren(true);
+	RemoveAllChildren(true);
 
 	int startPos = 0;
 
@@ -986,7 +986,7 @@ void ImageNumber::SetBigRedTwoNumber(int number1, int number2)
 
 	std::vector<unsigned int> bits;
 	// Êý×Ö1
-	this->NumberBits(number1, bits);
+	NumberBits(number1, bits);
 	for (unsigned int i = 0; i < bits.size(); i++)
 	{
 		unsigned int bit = bits.at(i);
@@ -1003,7 +1003,7 @@ void ImageNumber::SetBigRedTwoNumber(int number1, int number2)
                            pic->GetSize().width * RESOURCE_SCALE_960,
                            pic->GetSize().height * RESOURCE_SCALE_960));
 			
-            this->AddChild(image);
+            AddChild(image);
 
 			startPos += pic->GetSize().width * RESOURCE_SCALE_960;
 		}
@@ -1023,12 +1023,12 @@ void ImageNumber::SetBigRedTwoNumber(int number1, int number2)
                        picSlash->GetSize().width * RESOURCE_SCALE_960,
                        picSlash->GetSize().height * RESOURCE_SCALE_960));
 		
-        this->AddChild(image);
+        AddChild(image);
 		
         startPos += picSlash->GetSize().width * RESOURCE_SCALE_960;
 	}
 
-	this->NumberBits(number2, bits);
+	NumberBits(number2, bits);
 	for (unsigned int i = 0; i < bits.size(); i++)
 	{
 		unsigned int bit = bits.at(i);
@@ -1046,12 +1046,12 @@ void ImageNumber::SetBigRedTwoNumber(int number1, int number2)
                            pic->GetSize().width * RESOURCE_SCALE_960,
                            pic->GetSize().height * RESOURCE_SCALE_960));
 
-			this->AddChild(image);
+			AddChild(image);
 			
             startPos += pic->GetSize().width * RESOURCE_SCALE_960;
 		}
 	}
 
-	m_size.width = startPos;
-	m_size.height = PictureNumber::SharedInstance()->GetBigRedSize().height * RESOURCE_SCALE_960;
+	m_kSize.width = startPos;
+	m_kSize.height = PictureNumber::SharedInstance()->GetBigRedSize().height * RESOURCE_SCALE_960;
 }

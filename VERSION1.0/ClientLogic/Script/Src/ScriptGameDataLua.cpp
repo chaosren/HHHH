@@ -20,203 +20,148 @@
 using namespace NDEngine;
 
 //#pragma mark 获取ID列表
-int GetGameDataIdList(LuaState* state)
+int GetGameDataIdList(LuaState* pkState)
 {
-	lua_State* L = state->GetCState();
-	
-	if (!L)
+	lua_State* pkLuaState = pkState->GetCState();
+
+	if (!pkLuaState)
 	{
-		state->PushNil();
+		pkState->PushNil();
 		return 1;
 	}
-	
-	lua_newtable(L);
-	
-	LuaStack args(state);
+
+	lua_newtable(pkLuaState);
+
+	LuaStack kArgsStack(pkState);
 	// eScriptData
-	LuaObject scriptdata = args[1];
+	LuaObject kScriptData = kArgsStack[1];
 	// nKey
-	LuaObject key = args[2];
+	LuaObject kKey = kArgsStack[2];
 	// eRoleData
-	LuaObject roledata = args[3];
-	
-	if (!scriptdata.IsNumber()	||
-		!key.IsNumber()			||
-		!roledata.IsNumber())
+	LuaObject kRoleData = kArgsStack[3];
+
+	if (!kScriptData.IsNumber() || !kKey.IsNumber() || !kRoleData.IsNumber())
 	{
 		return 1;
 	}
-	
-	ID_VEC idVec;
+
+	ID_VEC kIDVector;
 
 #if WITH_NEW_DB
-	NDGameDataUtil::getDataIdList( 
-		MAKE_NDTABLEPTR(
-					scriptdata.GetInteger(), 
-					key.GetInteger(), 
-					roledata.GetInteger()),
-		idVec);
+	NDGameDataUtil::getDataIdList(
+			MAKE_NDTABLEPTR(
+					kScriptData.GetInteger(),
+					kKey.GetInteger(),
+					kRoleData.GetInteger()),
+			kIDVector);
 #else
-	ScriptGameDataObj.GetDataIdList(
-		(eScriptData)scriptdata.GetInteger(), 
-		key.GetInteger(), 
-		(eRoleData)roledata.GetInteger(), 
-		idVec);
+	ScriptGameDataObj.GetDataIdList((eScriptData) kScriptData.GetInteger(),
+			kKey.GetInteger(), (eRoleData) kRoleData.GetInteger(), kIDVector);
 #endif
-	
-	size_t size = idVec.size();
-	for (size_t i = 0; i < size; i++) 
+
+	size_t uiSize = kIDVector.size();
+	for (size_t i = 0; i < uiSize; i++)
 	{
-		lua_pushnumber(L, i + 1);
-		lua_pushnumber(L, idVec[i]);
-		lua_settable(L, -3);
+		lua_pushnumber(pkLuaState, i + 1);
+		lua_pushnumber(pkLuaState, kIDVector[i]);
+		lua_settable(pkLuaState, -3);
 	}
 	return 1;
 }
 
-//#pragma mark 获取角色基本数据
-// 未使用，LUA实现了同名函数.
-// double GetRoleBasicDataN(int nRoleId, int dataIndex)
-// {
-// 	return GRDBasicN(nRoleId, dataIndex);
-// }
-
-// 未使用
-// double GetRoleBasicDataF(int nRoleId, int dataIndex)
-// {
-// 	return GRDBasicF(nRoleId, dataIndex);
-// }
-
-// 未使用
-// const char* GetRoleBasicDataS(int nRoleId, int dataIndex)
-// {
-// 	return GRDBasicS(nRoleId, dataIndex).c_str();
-// }
-
-// 未使用
-// int GetRoleBasicDataBig(LuaState* state)
-// {
-// 	LuaStack args(state);
-// 	LuaObject nRoleId = args[1];
-// 	LuaObject nDataIndex = args[2];
-// 	
-// 	if ( !(nRoleId.IsNumber() && nDataIndex.IsNumber()) )
-// 	{
-// 		state->PushNumber(0);
-// 		state->PushNumber(0);
-// 	}
-// 	else
-// 	{
-// 		unsigned long long ull = 
-// 		GRDBasicN(nRoleId.GetNumber(), 
-// 				  nDataIndex.GetNumber());
-// 		
-// 		state->PushNumber(ull >> 32);
-// 		state->PushNumber(ull);
-// 	}
-// 	
-// 	return 2;
-// }
-
-
-// 未使用！
-// //#pragma mark 设置角色基本数据
-// void SetRoleBasicDataN(int nRoleId, int dataIndex, double ulVal)
-// {
-// 	return SRDBasic(nRoleId, dataIndex, ulVal);
-// }
-// 
-// void SetRoleBasicDataF(int nRoleId, int dataIndex, double dVal)
-// {
-// 	return SRDBasic(nRoleId, dataIndex, dVal);
-// }
-// 
-// void SetRoleBasicDataS(int nRoleId, int dataIndex, const char* szVal)
-// {
-// 	return SRDBasic(nRoleId, dataIndex, szVal);
-// }
-
 #if WITH_NEW_DB
-void ModifyParam(int esd, unsigned int nKey, int& e)
+void ModifyParam(int nESD, unsigned int nKey, int& e)
 {
 	//说明：
 	//LUA传过来的参数，需要检查并稍作修改，之所以需要修改是因为LUA的调用很不规范：
 	//如：local nVal = GetGameDataN(NScriptData.eDataBase, nKey, NRoleData.ePet, nDataId, nDataIndex);
 	//上面这行是为了读取INI配置文件的一行，第3个参数本来应该是0，但是LUA传过来的NRoleData.ePet=1，后面在某个地方会-1变成0.
 
-	if (esd == (int)eMJR_DataBase ||
-		esd == (int)eMJR_TaskConfig)
+	if (nESD == (int)eMJR_DataBase ||
+			nESD == (int)eMJR_TaskConfig)
 	{
 		e = 0;
 	}
 }
 #endif
 
-void SetGameDataN(int esd, unsigned int nKey, int e,  int nId, unsigned short index, double dVal)
+void SetGameDataN(int esd, unsigned int nKey, int e, int nId,
+		unsigned short index, double dVal)
 {
 #if WITH_NEW_DB
 	ModifyParam(esd,nKey,e);
-	NDGameDataUtil::setDataN( MAKE_NDTABLEPTR( esd, nKey, e), 
-									MAKE_CELLPTR( nId, index ), dVal );
+	NDGameDataUtil::setDataN( MAKE_NDTABLEPTR( esd, nKey, e),
+			MAKE_CELLPTR( nId, index ), dVal );
 #else
-	return ScriptGameDataObj.SetData((eScriptData)esd, nKey, (eRoleData)e, nId, index, dVal);
+	return ScriptGameDataObj.SetData((eScriptData) esd, nKey, (eRoleData) e,
+			nId, index, dVal);
 #endif
 }
 
-void SetGameDataF(int esd, unsigned int nKey, int e,  int nId, unsigned short index, float fVal)
+void SetGameDataF(int esd, unsigned int nKey, int e, int nId,
+		unsigned short index, float fVal)
 {
 #if WITH_NEW_DB
 	ModifyParam(esd,nKey,e);
-	NDGameDataUtil::setDataF( MAKE_NDTABLEPTR( esd, nKey, e), 
-									MAKE_CELLPTR( nId, index ), fVal );
+	NDGameDataUtil::setDataF( MAKE_NDTABLEPTR( esd, nKey, e),
+			MAKE_CELLPTR( nId, index ), fVal );
 #else
-	return ScriptGameDataObj.SetData((eScriptData)esd, nKey, (eRoleData)e, nId, index, fVal);
+	return ScriptGameDataObj.SetData((eScriptData) esd, nKey, (eRoleData) e,
+			nId, index, fVal);
 #endif
 }
 
-void SetGameDataS(int esd, unsigned int nKey, int e,  int nId, unsigned short index, const char* szVal)
+void SetGameDataS(int esd, unsigned int nKey, int e, int nId,
+		unsigned short index, const char* szVal)
 {
 #if WITH_NEW_DB
 	ModifyParam(esd,nKey,e);
-	NDGameDataUtil::setDataS( MAKE_NDTABLEPTR( esd, nKey, e ), 
-									MAKE_CELLPTR( nId, index ), szVal );
+	NDGameDataUtil::setDataS( MAKE_NDTABLEPTR( esd, nKey, e ),
+			MAKE_CELLPTR( nId, index ), szVal );
 #else
-	return ScriptGameDataObj.SetData((eScriptData)esd, nKey, (eRoleData)e, nId, index, szVal);
+	return ScriptGameDataObj.SetData((eScriptData) esd, nKey, (eRoleData) e,
+			nId, index, szVal);
 #endif
 }
 
-double GetGameDataN(int esd, unsigned int nKey, int e,  int nId, unsigned short index)
+double GetGameDataN(int esd, unsigned int nKey, int e, int nId,
+		unsigned short index)
 {
 #if WITH_NEW_DB
 	ModifyParam(esd,nKey,e);
-	return NDGameDataUtil::getDataN( MAKE_NDTABLEPTR( esd, nKey, e ), 
-											MAKE_CELLPTR( nId, index ),false);
+	return NDGameDataUtil::getDataN( MAKE_NDTABLEPTR( esd, nKey, e ),
+			MAKE_CELLPTR( nId, index ),false);
 #else
-	double ulVal = ScriptGameDataObj.GetData<double>((eScriptData)esd, nKey, (eRoleData)e, nId, index);
+	double ulVal = ScriptGameDataObj.GetData<double>((eScriptData) esd, nKey,
+			(eRoleData) e, nId, index);
 	return ulVal;
 #endif
 }
 
-double GetGameDataF(int esd, unsigned int nKey, int e,  int nId, unsigned short index)
+double GetGameDataF(int esd, unsigned int nKey, int e, int nId,
+		unsigned short index)
 {
 #if WITH_NEW_DB
 	ModifyParam(esd,nKey,e);
-	return NDGameDataUtil::getDataF( MAKE_NDTABLEPTR( esd, nKey, e ), 
-											MAKE_CELLPTR( nId, index ),false);
+	return NDGameDataUtil::getDataF( MAKE_NDTABLEPTR( esd, nKey, e ),
+			MAKE_CELLPTR( nId, index ),false);
 #else
-	float fVal = ScriptGameDataObj.GetData<double>((eScriptData)esd, nKey, (eRoleData)e, nId, index);
+	float fVal = ScriptGameDataObj.GetData<double>((eScriptData) esd, nKey,
+			(eRoleData) e, nId, index);
 	return fVal;
 #endif
 }
 
-std::string GetGameDataS(int esd, unsigned int nKey, int e,  int nId, unsigned short index)
+std::string GetGameDataS(int esd, unsigned int nKey, int e, int nId,
+		unsigned short index)
 {
 #if WITH_NEW_DB
 	ModifyParam(esd,nKey,e);
-	return NDGameDataUtil::getDataS( MAKE_NDTABLEPTR( esd, nKey, e ), 
-											MAKE_CELLPTR( nId, index ),false);
+	return NDGameDataUtil::getDataS( MAKE_NDTABLEPTR( esd, nKey, e ),
+			MAKE_CELLPTR( nId, index ),false);
 #else
-	std::string strVal = ScriptGameDataObj.GetData<std::string>((eScriptData)esd, nKey, (eRoleData)e, nId, index);
+	std::string strVal = ScriptGameDataObj.GetData < std::string
+			> ((eScriptData) esd, nKey, (eRoleData) e, nId, index);
 	return strVal;
 #endif
 }
@@ -227,7 +172,7 @@ void DelRoleSubGameDataById(int esd, unsigned int nKey, int e, int nId)
 #if WITH_NEW_DB
 	NDGameDataUtil::delRecordById( MAKE_NDTABLEPTR(esd, nKey, e), nId );
 #else
-	ScriptGameDataObj.DelData((eScriptData)esd, nKey, (eRoleData)e, nId);
+	ScriptGameDataObj.DelData((eScriptData) esd, nKey, (eRoleData) e, nId);
 #endif
 }
 
@@ -237,7 +182,7 @@ void DelRoleSubGameData(int esd, unsigned int nKey, int e)
 #if WITH_NEW_DB
 	NDGameDataUtil::delTable( MAKE_NDTABLEPTR(esd, nKey, e));
 #else
-	ScriptGameDataObj.DelData((eScriptData)esd, nKey, (eRoleData)e);
+	ScriptGameDataObj.DelData((eScriptData) esd, nKey, (eRoleData) e);
 #endif
 }
 
@@ -247,7 +192,7 @@ void DelRoleGameDataById(int esd, unsigned int nKey)
 #if WITH_NEW_DB
 	NDGameDataUtil::delTableSet( (DATATYPE_MAJOR)esd, nKey );
 #else
-	ScriptGameDataObj.DelData((eScriptData)esd, nKey);
+	ScriptGameDataObj.DelData((eScriptData) esd, nKey);
 #endif
 }
 
@@ -257,9 +202,9 @@ void DelRoleGameData(int esd)
 #if WITH_NEW_DB
 	NDGameDataUtil::delTableSetGroup( (DATATYPE_MAJOR)esd );
 #else
-	ScriptGameDataObj.DelData((eScriptData)esd);
+	ScriptGameDataObj.DelData((eScriptData) esd);
 #endif
-} 
+}
 
 //删除所有数据
 void DelGameData()
@@ -277,7 +222,7 @@ void DumpGameData(int esd, unsigned int nKey, int e, int nId)
 #if WITH_NEW_DB
 	//@todo..
 #else
-	ScriptGameDataObj.LogOut((eScriptData)esd, nKey, (eRoleData)e, nId);
+	ScriptGameDataObj.LogOut((eScriptData) esd, nKey, (eRoleData) e, nId);
 #endif
 }
 
@@ -292,140 +237,139 @@ void DumpDataBaseData(const char* filename, int nId)
 }
 
 //测试
-void LogOutRoleDataIdTable(int esd, unsigned int nKey, int e, int nRoleId, eIDList eList)
+void LogOutRoleDataIdTable(int esd, unsigned int nKey, int e, int nRoleId,
+		eIDList eList)
 {
 #if WITH_NEW_DB
 	//@todo..
 #else
-	ScriptGameDataObj.LogOutRoleDataIdList((eScriptData)esd, nKey, (eRoleData)e, nRoleId, (eIDList)eList);
+	ScriptGameDataObj.LogOutRoleDataIdList((eScriptData) esd, nKey,
+			(eRoleData) e, nRoleId, (eIDList) eList);
 #endif
 }
 
 //获取角色id列表（这个角色所指的范围很广...）
-int GetRoleDataIdTable(LuaState* state)
+int GetRoleDataIdTable(LuaState* pkState)
 {
-	lua_State* L = state->GetCState();
-	
-	if (!L)
+	lua_State* pkLuaState = pkState->GetCState();
+
+	if (!pkLuaState)
 	{
-		state->PushNil();
+		pkState->PushNil();
 		return 1;
 	}
-	
-	lua_newtable(L);
-	
-	LuaStack args(state);
+
+	lua_newtable(pkLuaState);
+
+	LuaStack kArgsStack(pkState);
 	// eScriptData
-	LuaObject esd = args[1];
+	LuaObject pkEScriptData = kArgsStack[1];
 	// nKey
-	LuaObject nKey = args[2];
+	LuaObject nKey = kArgsStack[2];
 	// eRoleData
-	LuaObject e = args[3];
-	
-	LuaObject nRoleId = args[4];
-	
-	LuaObject eList = args[5];
-	
-	if (!esd.IsNumber()			||
-		!nKey.IsNumber()		||
-		!e.IsNumber()			||
-		!nRoleId.IsNumber()		||
-		!eList.IsNumber())
+	LuaObject kERoleData = kArgsStack[3];
+	LuaObject nRoleId = kArgsStack[4];
+	LuaObject kEList = kArgsStack[5];
+
+	if (!pkEScriptData.IsNumber() || !nKey.IsNumber() || !kERoleData.IsNumber()
+			|| !nRoleId.IsNumber() || !kEList.IsNumber())
 	{
 		return 1;
 	}
-	
-	ID_VEC idVec;
+
+	ID_VEC kIDVector;
 
 #if WITH_NEW_DB
-	NDGameDataUtil::getRoleDataIdList( MAKE_NDTABLEPTR(esd.GetInteger(),nKey.GetInteger(),e.GetInteger()), 
-					nRoleId.GetInteger(),(eIDList)eList.GetInteger(), idVec);
+	NDGameDataUtil::getRoleDataIdList( MAKE_NDTABLEPTR(pkEScriptData.GetInteger(),
+		nKey.GetInteger(),kERoleData.GetInteger()), nRoleId.GetInteger(),
+		(eIDList)kEList.GetInteger(), kIDVector);
 #else
-	ScriptGameDataObj.GetRoleDataIdList((eScriptData)esd.GetInteger(), 
-					nKey.GetInteger(), (eRoleData)e.GetInteger(), 
-					nRoleId.GetInteger(),(eIDList)eList.GetInteger(), idVec);
+	ScriptGameDataObj.GetRoleDataIdList(
+			(eScriptData) pkEScriptData.GetInteger(), nKey.GetInteger(),
+			(eRoleData) kERoleData.GetInteger(), nRoleId.GetInteger(),
+			(eIDList) kEList.GetInteger(), kIDVector);
 #endif
-		
-	size_t size = idVec.size();
-	
-	for (size_t i = 0; i < size; i++) 
+
+	size_t uiSize = kIDVector.size();
+
+	for (size_t i = 0; i < uiSize; i++)
 	{
-		lua_pushnumber(L, i + 1);
-		lua_pushnumber(L, idVec[i]);
-		lua_settable(L, -3);
+		lua_pushnumber(pkLuaState, i + 1);
+		lua_pushnumber(pkLuaState, kIDVector[i]);
+		lua_settable(pkLuaState, -3);
 	}
 	return 1;
 }
 
-void AddRoleDataId(int esd, unsigned int nKey, int e, int nRoleId, int eList, int nId)
+void AddRoleDataId(int esd, unsigned int nKey, int e, int nRoleId, int eList,
+		int nId)
 {
 #if WITH_NEW_DB
-	NDGameDataUtil::addRoleDataId( MAKE_NDTABLEPTR(esd,nKey,e), 
-											nRoleId, eList, nId );
+	NDGameDataUtil::addRoleDataId( MAKE_NDTABLEPTR(esd,nKey,e),
+			nRoleId, eList, nId );
 #else
-	ScriptGameDataObj.PushRoleDataId((eScriptData)esd, nKey, (eRoleData)e, nRoleId, (eIDList)eList, nId);
+	ScriptGameDataObj.PushRoleDataId((eScriptData) esd, nKey, (eRoleData) e,
+			nRoleId, (eIDList) eList, nId);
 #endif
 }
 
-void DelRoleDataId(int esd, unsigned int nKey, int e, int nRoleId, int eList, int nId)
+void DelRoleDataId(int esd, unsigned int nKey, int e, int nRoleId, int eList,
+		int nId)
 {
 #if WITH_NEW_DB
-	NDGameDataUtil::delRoleDataId( MAKE_NDTABLEPTR(esd,nKey,e), 
-											nRoleId, eList, nId );
+	NDGameDataUtil::delRoleDataId( MAKE_NDTABLEPTR(esd,nKey,e),
+			nRoleId, eList, nId );
 #else
-	ScriptGameDataObj.PopRoleDataId((eScriptData)esd, nKey, (eRoleData)e, nRoleId, (eIDList)eList, nId);
+	ScriptGameDataObj.PopRoleDataId((eScriptData) esd, nKey, (eRoleData) e,
+			nRoleId, (eIDList) eList, nId);
 #endif
 }
 
-void DelRoleDataIdList(int esd, unsigned int nKey, int e, int nRoleId, int eList)
+void DelRoleDataIdList(int esd, unsigned int nKey, int e, int nRoleId,
+		int eList)
 {
 #if WITH_NEW_DB
-	NDGameDataUtil::delRoleDataIdList( MAKE_NDTABLEPTR(esd,nKey,e), 
-												nRoleId, eList );
+	NDGameDataUtil::delRoleDataIdList( MAKE_NDTABLEPTR(esd,nKey,e),
+			nRoleId, eList );
 #else
-	ScriptGameDataObj.DelRoleDataIdList((eScriptData)esd, nKey, (eRoleData)e, nRoleId, (eIDList)eList);
+	ScriptGameDataObj.DelRoleDataIdList((eScriptData) esd, nKey, (eRoleData) e,
+			nRoleId, (eIDList) eList);
 #endif
 }
 
 int Sqlite_SelectData(const char* pszSql, int nColNum)
 {
-    return CSqliteDBMgr::shareInstance().SelectData(pszSql, nColNum);
+	return CSqliteDBMgr::shareInstance().SelectData(pszSql, nColNum);
 }
 bool Sqlite_ExcuteSql(const char* pszSql)
 {
-    return CSqliteDBMgr::shareInstance().ExcuteSql(pszSql);
+	return CSqliteDBMgr::shareInstance().ExcuteSql(pszSql);
 }
 int Sqlite_GetColDataN(int nRowIdx, int nFieldIdx)
 {
-    return CSqliteDBMgr::shareInstance().GetColDataN(nRowIdx, nFieldIdx);
+	return CSqliteDBMgr::shareInstance().GetColDataN(nRowIdx, nFieldIdx);
 }
 std::string Sqlite_GetColDataS(int nRowIdx, int nFieldIdx)
 {
-    return std::string(CSqliteDBMgr::shareInstance().GetColDataS(nRowIdx, nFieldIdx));
+	return std::string(
+			CSqliteDBMgr::shareInstance().GetColDataS(nRowIdx, nFieldIdx));
 }
 bool Sqlite_IsExistTable(const char* pszTableName)
 {
-    return CSqliteDBMgr::shareInstance().IsExistTable(pszTableName);
+	return CSqliteDBMgr::shareInstance().IsExistTable(pszTableName);
 }
 std::string GetTxtPub_Common(const char* pszTableName)
 {
-    return NDCommonCString(pszTableName);
-	//GetTxtPri(pszTableName);
+	return NDCommonCString(pszTableName);
 }
 std::string GetTxtPri(const char* pszTableName)
-{	
+{
 	return NDCommonCString2(pszTableName);
 }
 
 //NS_NDENGINE_BGN
 void NDScriptGameData::Load()
 {
-	/*
-	ETCFUNC("GetRoleBasicDataN", GetRoleBasicDataN);
-	ETCFUNC("GetRoleBasicDataF", GetRoleBasicDataF);
-	ETCFUNC("GetRoleBasicDataS", GetRoleBasicDataS);
-	ETLUAFUNC("GetRoleBasicDataBig", GetRoleBasicDataBig);
-	*/
 	ETLUAFUNC("GetGameDataIdList", GetGameDataIdList);
 	ETCFUNC("SetGameDataN", SetGameDataN);
 	ETCFUNC("SetGameDataF", SetGameDataF);

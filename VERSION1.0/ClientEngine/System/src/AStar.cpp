@@ -18,7 +18,7 @@ m_pGamemap(NULL)
 
 CAStar::~CAStar()
 {
-	this->ClearNodeSet();
+	ClearNodeSet();
 }
 
 void CAStar::SetCheckMethod(CHECK_FUN pFun)
@@ -67,7 +67,7 @@ BOOL CAStar::FindPath(NDMapLayer* pGamemap, const CMyPos& posStart,
 	m_pkNearestNode = NULL;
 
 	///\插入第一个节点
-	NodeInfo* pNode = this->CreateNewNode();
+	NodeInfo* pNode = CreateNewNode();
 	if (pNode)
 	{
 		pNode->nX = m_kPosStart.x;
@@ -102,7 +102,7 @@ BOOL CAStar::FindPath(NDMapLayer* pGamemap, const CMyPos& posStart,
 			return FALSE;
 		}
 
-		NodeInfo* pkCurrentNode = this->GetCurrentNode();
+		NodeInfo* pkCurrentNode = GetCurrentNode();
 
 		if (NULL == pkCurrentNode)
 		{ ///\open表已经空了
@@ -113,13 +113,13 @@ BOOL CAStar::FindPath(NDMapLayer* pGamemap, const CMyPos& posStart,
 				&& (pkCurrentNode->nY == m_kPosTarget.y))
 		{
 			///\终点放入close 表
-			this->GetPath(pkCurrentNode);
+			GetPath(pkCurrentNode);
 			break;
 		}
 
 		///\加入close表 
-		this->AddToList(m_kSetClose, pkCurrentNode);
-		this->SearchChild(pkCurrentNode);
+		AddToList(m_kSetClose, pkCurrentNode);
+		SearchChild(pkCurrentNode);
 
 		nPathStep++;
 	}
@@ -130,7 +130,7 @@ BOOL CAStar::FindPath(NDMapLayer* pGamemap, const CMyPos& posStart,
 	{
 		if (m_pkNearestNode && mustArrive)
 		{ ///\选择一条离终点最近的路径
-			this->GetPath(m_pkNearestNode);
+			GetPath(m_pkNearestNode);
 
 			return TRUE;
 		}
@@ -285,7 +285,7 @@ void CAStar::SearchChild(NodeInfo* pParentNode)
 		int nG = pParentNode->nG + 1;
 
 		NodeInfo* pCheck = NULL;
-		if (pCheck = this->CheckList(m_kSetOpen, nNumber)) //if没问题!
+		if (pCheck = CheckList(m_kSetOpen, nNumber)) //if没问题!
 		{ ///\已经存在open表中
 			pParentNode->pChildNode[pParentNode->nChildNum++] = pCheck;
 			if (nG < pCheck->nG)
@@ -298,7 +298,7 @@ void CAStar::SearchChild(NodeInfo* pParentNode)
 			}
 			//pCell[m_nMapWidth*posNewNode.y + posNewNode.x].nOpen =1;
 		}
-		else if (pCheck = this->CheckList(m_kSetClose, nNumber)) //if没问题!
+		else if (pCheck = CheckList(m_kSetClose, nNumber)) //if没问题!
 		{ ///\已经存在close表中
 			pParentNode->pChildNode[pParentNode->nChildNum++] = pCheck;
 			if (nG < pCheck->nG)
@@ -315,7 +315,7 @@ void CAStar::SearchChild(NodeInfo* pParentNode)
 		}
 		else
 		{ ///\创建一个新的点并放入open表中
-			NodeInfo* pNewNode = this->CreateNewNode();
+			NodeInfo* pNewNode = CreateNewNode();
 
 			if (!pNewNode)
 			{
@@ -336,7 +336,7 @@ void CAStar::SearchChild(NodeInfo* pParentNode)
 
 			pParentNode->pChildNode[pParentNode->nChildNum++] = pNewNode;
 			//pCell[m_nMapWidth*posNewNode.y + posNewNode.x].nOpen =1;
-			this->AddToList(m_kSetOpen, pNewNode);
+			AddToList(m_kSetOpen, pNewNode);
 
 			// 算最近点...
 			unsigned long dwOldV = (m_kPosRealTarget.x - m_kPosTarget.x)
@@ -371,7 +371,7 @@ void CAStar::GetPath(NodeInfo* pNode)
 
 	///\从当前所在位置开始算方向
 	//DEQUE_NODE setDirPath;	
-	NodeInfo* pFirstNode = this->CreateNewNode();
+	NodeInfo* pFirstNode = CreateNewNode();
 	if (pFirstNode)
 	{
 		pFirstNode->nX = m_kPosStart.x;

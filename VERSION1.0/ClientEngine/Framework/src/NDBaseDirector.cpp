@@ -23,23 +23,25 @@
 #include "NDConstant.h"
 #include "NDUtil.h"
 
-// 甯ф暟闄愬埗寮??鍏??
+// 不知道……
 #define FRAME_LIMIT_SWITCH 1
 
-// 甯ф暟闄愬埗:姣忕璺??甯??
+// 幀數限制？可是這麼個定義有用嘛？ @郭浩
 #define FRAME_LIMIT (24) ssss
 
 #if FRAME_LIMIT_SWITCH == 1
 #define FRAME_CACULATION \
 		do{ \
-		static NSTimeInterval frameBegin = 0.0f, frameEnd = 0.0f; \
-		frameEnd = [NSDate timeIntervalSinceReferenceDate]; \
-		if (frameBegin != 0.0f){ \
-		NSTimeInterval limit = 1.0f / FRAME_LIMIT; \
-		NSTimeInterval frame = frameEnd - frameBegin; \
-		if (frame < limit) \
-		usleep((limit-frame)*1000000); } \
-		frameBegin = [NSDate timeIntervalSinceReferenceDate]; \
+			static NSTimeInterval frameBegin = 0.0f, frameEnd = 0.0f; \
+			frameEnd = [NSDate timeIntervalSinceReferenceDate]; \
+			if (frameBegin != 0.0f) \
+			{ \
+				NSTimeInterval limit = 1.0f / FRAME_LIMIT; \
+				NSTimeInterval frame = frameEnd - frameBegin; \
+				if (frame < limit) \
+					usleep((limit-frame)*1000000);\
+			} \
+			frameBegin = [NSDate timeIntervalSinceReferenceDate]; \
 		} while (0)
 #else
 #define FRAME_CACULATION
@@ -89,11 +91,11 @@ void NDBaseDirector::mainLoop(void)
 {
 	if (true)
 	{
-		this->OnIdle();
+		OnIdle();
 
 		if (NDDebugOpt::getNetworkEnabled())
 		{
-			this->DispatchOneMessage();
+			DispatchOneMessage();
 		}
 
 		if (NDDataTransThread::DefaultThread()->GetQuitGame())
@@ -107,7 +109,7 @@ void NDBaseDirector::mainLoop(void)
 
 		//NDDirector::DefaultDirector()->DisibleScissor(); // 暂时先注释掉
 
-		m_pScheduler->setTickEnabled( NDDebugOpt::getTickEnabled() );
+		m_pScheduler->setTickEnabled( NDDebugOpt::getTickEnabled());
 
 		CCDisplayLinkDirector::mainLoop();
 	}
@@ -116,25 +118,29 @@ void NDBaseDirector::mainLoop(void)
 void NDBaseDirector::OnIdle()
 {
 	if (NDDebugOpt::getScriptEnabled())
+	{
 		BaseScriptMgrObj.update();
+	}
 }
 
 void NDBaseDirector::DispatchOneMessage()
 {
-    static NDTransData bao;
+    static NDTransData kPackage;
     //NDTransData* data = NDMessageCenter::DefaultMessageCenter()->GetMessage();
     for (int n = 0; n < 10; n++) 
     {
-        if (NDBaseNetMsgPoolObj.GetServerMsgPacket(bao))
+        if (NDBaseNetMsgPoolObj.GetServerMsgPacket(kPackage))
         {
-            NDBaseNetMsgPoolObj.Process(&bao);
-            if ( (bao.GetCode() != _MSG_WALK)			&& 
-                (bao.GetCode() != _MSG_PLAYER_EXT)		&&
-                (bao.GetCode() != _MSG_TALK)	
+            NDBaseNetMsgPoolObj.Process(&kPackage);
+
+            if ( (kPackage.GetCode() != _MSG_WALK)			&& 
+                (kPackage.GetCode() != _MSG_PLAYER_EXT)		&&
+                (kPackage.GetCode() != _MSG_TALK)	
                 )
-                break;
-            //NDMessageCenter::DefaultMessageCenter()->DelMessage();
-            //delete data;
+			{
+				break;
+			}
+                
         }
         else 
         {
@@ -142,36 +148,3 @@ void NDBaseDirector::DispatchOneMessage()
         }
     }
 }
-
-// - (void)drawScene
-// {
-// #ifdef VIEW_PERFORMACE
-// 	PERFORMANCE_DEBUG_1
-// #endif
-// 	
-// 	[self OnIdle];
-// 	[self dispatchOneMessage];
-// 	
-// #ifdef VIEW_PERFORMACE
-// 	PERFORMANCE_DEBUG_2
-// #endif
-// 
-// 	NDDirector::DefaultDirector()->DisibleScissor();
-// 	
-// 	FRAME_CACULATION;
-// 	
-// 	[super drawScene];
-// 	
-// #ifdef VIEW_PERFORMACE
-// 	PERFORMANCE_DEBUG_3
-// #endif
-// 
-// #ifdef DEBUG
-// 	static unsigned int s_frameCount = 0;
-// 	s_frameCount++;
-// 	if ( ( s_frameCount % (8 * 24) ) == 0 )
-// 	{
-// 		NDNetMsgMgr::GetSingleton().Report();
-// 	}
-// #endif
-// }

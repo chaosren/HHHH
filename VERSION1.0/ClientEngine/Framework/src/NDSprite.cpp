@@ -229,7 +229,7 @@ void NDSprite::RunAnimation_WithFrames(bool bDraw)
 	bool bIsOldTitleHightLight = IsTileHightLight();
 	TileSetHightLight (m_bHightLight);
 
-	bool bRet = this->OnDrawBegin(bDraw);
+	bool bRet = OnDrawBegin(bDraw);
 
 	if (bRet)
 	{
@@ -282,15 +282,13 @@ void NDSprite::RunAnimation_WithOnePic(bool bDraw)
 //@anim
 void NDSprite::RunAnimation(bool bDraw)
 {
-	//if (!NDDebugOpt::getDrawRoleEnabled()) return;//@todo
-
 	if (m_pkFrameRunRecord && m_pkAniGroup && m_pkCurrentAnimation)
 	{
-		this->RunAnimation_WithFrames(bDraw);
+		RunAnimation_WithFrames(bDraw);
 	}
 	else if (m_pkPicSprite)
 	{
-		this->RunAnimation_WithOnePic(bDraw);
+		RunAnimation_WithOnePic(bDraw);
 	}
 }
 
@@ -1109,7 +1107,7 @@ void NDSprite::RunBattleSubAnimation(NDBaseFighter* pkFighter)
 
 bool NDSprite::DrawSubAnimation(NDSubAniGroup& kSag)
 {
-	NDNode* layer = this->GetParent();
+	NDNode* layer = GetParent();
 	
 	if ( !layer )
 	{

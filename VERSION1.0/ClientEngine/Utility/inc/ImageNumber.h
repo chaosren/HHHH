@@ -18,11 +18,11 @@ class PictureNumber
 	~PictureNumber();
 public:
 	static PictureNumber* SharedInstance();
-	//number must between 0 and 9
-	NDPicture* TitleGoldNumber(unsigned int number);
+	//uiNumber must between 0 and 9
+	NDPicture* TitleGoldNumber(unsigned int uiNumber);
 	CCSize GetTitleGoldNumberSize();
 
-	NDPicture* TitleRedNumber(unsigned int number);
+	NDPicture* TitleRedNumber(unsigned int uiNumber);
 	CCSize GetTitleRedNumberSize();
 
 	NDPicture* TitleSplit();
@@ -35,6 +35,7 @@ public:
 	NDPicture* SmallRed(unsigned int index);
 	NDPicture* SmallGreen(unsigned int index);
 	NDPicture* SmallGold(unsigned int index);
+
 	CCSize GetBigRedSize();
 	CCSize GetSmallWhiteSize();
 	CCSize GetSmallRedSize();
@@ -55,34 +56,38 @@ private:
 	NDPicture* m_picSmallGreen[13];
 };
 
-class ImageNumber : public NDUILayer
+class ImageNumber: public NDUILayer
 {
-	DECLARE_CLASS(ImageNumber)
+	DECLARE_CLASS (ImageNumber)
 	ImageNumber();
 	virtual ~ImageNumber();
 public:
-	void SetTitleRedNumber(unsigned int number, unsigned int interval = 0);
-	void SetTitleRedTwoNumber(unsigned int number1, unsigned int number2,
+	void SetTitleRedNumber(unsigned int uiNumber, unsigned int interval = 0);
+	void SetTitleRedTwoNumber(unsigned int uiNumber_1, unsigned int uiNumber_2,
 			unsigned int interval = 0);
 
-	void SetBigRedNumber(int number, bool bWithSign = false);
-	void SetBigRedTwoNumber(int number1, int number2);
+	void SetBigRedNumber(int uiNumber, bool bWithSign = false);
+	void SetBigRedTwoNumber(int uiNumber_1, int uiNumber_2);
 
-	void SetBigGreenNumber(int number, bool bWithSign = false);
-	void SetSmallGreenNumber(int number, bool bWithSign = false);
-	void SetSmallWhiteNumber(int number, bool bWithSign = false);
-	void SetSmallRedNumber(int number, bool bWithSign = false);
-	void SetSmallRedTwoNumber(unsigned int num1, unsigned int num2);
+	void SetBigGreenNumber(int uiNumber, bool bWithSign = false);
+	void SetSmallGreenNumber(int uiNumber, bool bWithSign = false);
+	void SetSmallWhiteNumber(int uiNumber, bool bWithSign = false);
+	void SetSmallRedNumber(int uiNumber, bool bWithSign = false);
+	void SetSmallRedTwoNumber(unsigned int uiNumber_1, unsigned int uiNumber_2);
 	void SetSmallGoldNumber(int num);
 
 	void Initialization();
 	CCSize GetNumberSize();
 
+	void NumberBits(unsigned int uiNumber, /*out*/
+		std::vector<unsigned int>& kBits);
+	unsigned int exp(unsigned int uiValue, unsigned int uiNumber);
+	unsigned int SetTitleRedNumber(bool bCleanUp, unsigned int uiNumber,
+		unsigned int uiInterval, unsigned int uiStartPosition);
+
+	CCSize m_kSize;
+
 private:
-	CCSize m_size;
-	void NumberBits(unsigned int number, /*out*/std::vector<unsigned int>& bits);
-	unsigned int exp(unsigned int value, unsigned int n);
-	unsigned int SetTitleRedNumber(bool cleanUp, unsigned int number, unsigned int interval, unsigned int startPos);
 };
 
 #endif

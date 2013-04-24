@@ -63,7 +63,7 @@ GameSceneLoading::~GameSceneLoading()
 		m_timerNet->KillTimer(this, TIMER_TAG_NET);
 		delete m_timerNet;
 	}
-	//this->RemoveAllChildren(true);
+	//RemoveAllChildren(true);
 	
 	SAFE_DELETE(m_picBg);
 	
@@ -79,7 +79,7 @@ void GameSceneLoading::Initialization(bool connect/*=false*/, LoginType login/*=
 	m_layer = new NDUILayer();
 	m_layer->Initialization();
 	m_layer->SetFrameRect(CCRectMake(0, 0, winSize.width, winSize.height));
-	this->AddChild(m_layer);
+	AddChild(m_layer);
 	
 
 	NDUIImage* pkBackgroundImage	= new NDUIImage;
