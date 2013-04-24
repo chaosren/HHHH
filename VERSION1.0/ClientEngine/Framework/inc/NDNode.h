@@ -62,6 +62,7 @@ typedef CAutoLink<NDCommonProtocol> COMMON_VIEWER;
 typedef std::list<COMMON_VIEWER> LIST_COMMON_VIEWER;
 typedef LIST_COMMON_VIEWER::iterator LIST_COMMON_VIEWER_IT;
 
+class NDAction;
 class NDNode;
 class NDNodeDelegate
 {
@@ -229,6 +230,8 @@ public:
 	void SetParam2(int nParam2);
 	int GetParam1();
 	int GetParam2();
+
+	NDAction* RunAction(NDAction* pkAction);
 
 public: //@shader
 

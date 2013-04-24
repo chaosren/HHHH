@@ -19,7 +19,6 @@ extern "C"
 	{
 		LOGD("Entry Java_org_DeNA_DHLJ_NDVideoControl_onCompletionCallback");
 		CCDirector::sharedDirector()->startAnimation();
-		LOGD("Leave Java_org_DeNA_DHLJ_NDVideoControl_onCompletionCallback");
 	}
 
 	JNIEXPORT void JNICALL Java_org_DeNA_DHLJ_DaHuaLongJiang_pauseAllBackgroundMusic()

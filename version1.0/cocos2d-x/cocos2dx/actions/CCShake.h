@@ -19,17 +19,19 @@ NS_CC_BEGIN
 class CC_DLL CCShake : public CCActionInterval
 {
 public:
+
 	CCShake();
 	virtual ~CCShake();
 	static CCShake* create(float d, float strength );
 	static CCShake* createWithStrength(float d, float strength_x, float strength_y );
+
 	bool initWithDuration(float d, float strength_x, float strength_y );
+	void startWithTarget(CCNode *pTarget);
+	void stop(void);
 
 protected:
 
-	void startWithTarget(CCNode *pTarget);
-	void update(float time);
-	void stop(void);
+	void update(float fDeltaTime);
 
 	float m_fInitialX;
 	float m_fInitialY;

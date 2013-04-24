@@ -25,7 +25,7 @@
 #define  LOGERROR(...)
 #endif
 
-#define ISEQUAL(a,b)		(TAbs((a)-(b))<0.0001f)
+#define ISEQUAL(a,b)		(TAbs((a) - (b)) < 0.0001f)
 #define ISEQUAL_PT(pt,a,b)	(ISEQUAL(pt.x,a) && ISEQUAL(pt.y,b))
 
 IMPLEMENT_CLASS(NDUILoad, NDUILoadEngine)
@@ -198,7 +198,7 @@ NDUINode* NDUILoad::LoadCtrl( CUIData& uiData, const int ctrlIndex, NDUINode *pa
 	
 	// 创建控件
 	const char* ctrlTypeName = NULL;
-	NDUINode* node = this->CreateCtrl( uiInfo, sizeOffset, ctrlTypeName );
+	NDUINode* node = CreateCtrl( uiInfo, sizeOffset, ctrlTypeName );
 
 	if (!node)
 	{
@@ -215,7 +215,7 @@ NDUINode* NDUILoad::LoadCtrl( CUIData& uiData, const int ctrlIndex, NDUINode *pa
 	}
 
 	//优化关闭按钮手感
-	if (this->IsCloseButton( uiInfo ))
+	if (IsCloseButton( uiInfo ))
 	{
 		node->SetBoundScale(2);
 	}
@@ -239,175 +239,175 @@ bool NDUILoad::IsAnchorValid( const float anchor )
 
 NDUINode* NDUILoad::CreateCtrl( UIINFO& uiInfo, CCSize sizeOffset, const char*& ctrlTypeName )
 {
-	NDUINode* node = NULL;
+	NDUINode* pkUINode = NULL;
 
 	switch (uiInfo.nType) 
 	{
 	case MY_CONTROL_TYPE_UNKNOWN:
 		{
 			ControlHelp<MY_CONTROL_TYPE_UNKNOWN> help;
-			node = (NDUINode*)help.Create(uiInfo, sizeOffset);
+			pkUINode = (NDUINode*)help.Create(uiInfo, sizeOffset);
 			ctrlTypeName = "MY_CONTROL_TYPE_UNKNOWN";
 		}
 		break;
 	case MY_CONTROL_TYPE_PICTURE:
 		{
 			ControlHelp<MY_CONTROL_TYPE_PICTURE> help;
-			node = (NDUINode*)help.Create(uiInfo, sizeOffset);
+			pkUINode = (NDUINode*)help.Create(uiInfo, sizeOffset);
 			ctrlTypeName = "MY_CONTROL_TYPE_PICTURE";
 		}
 		break;
 	case MY_CONTROL_TYPE_BUTTON:
 		{
 			ControlHelp<MY_CONTROL_TYPE_BUTTON> help;
-			node = (NDUINode*)help.Create(uiInfo, sizeOffset);
+			pkUINode = (NDUINode*)help.Create(uiInfo, sizeOffset);
 			ctrlTypeName = "MY_CONTROL_TYPE_BUTTON";
 		}
 		break;
 	case MY_CONTROL_TYPE_CHECK_BUTTON:
 		{
 			ControlHelp<MY_CONTROL_TYPE_CHECK_BUTTON> help;
-			node = (NDUINode*)help.Create(uiInfo, sizeOffset);
+			pkUINode = (NDUINode*)help.Create(uiInfo, sizeOffset);
 			ctrlTypeName = "MY_CONTROL_TYPE_CHECK_BUTTON";
 		}
 		break;
 	case MY_CONTROL_TYPE_TEXT:
 		{
 			ControlHelp<MY_CONTROL_TYPE_TEXT> help;
-			node = (NDUINode*)help.Create(uiInfo, sizeOffset);
+			pkUINode = (NDUINode*)help.Create(uiInfo, sizeOffset);
 			ctrlTypeName = "MY_CONTROL_TYPE_TEXT";
 		}
 		break;
 	case MY_CONTROL_TYPE_LIST_HORZ: //@listbox
 		{
 			ControlHelp<MY_CONTROL_TYPE_LIST_HORZ> help;
-			node = (NDUINode*)help.Create(uiInfo, sizeOffset);
+			pkUINode = (NDUINode*)help.Create(uiInfo, sizeOffset);
 			ctrlTypeName = "MY_CONTROL_TYPE_LIST_HORZ";
 		}
 		break;
 	case MY_CONTROL_TYPE_PROGRESS:
 		{
 			ControlHelp<MY_CONTROL_TYPE_PROGRESS> help;
-			node = (NDUINode*)help.Create(uiInfo, sizeOffset);
+			pkUINode = (NDUINode*)help.Create(uiInfo, sizeOffset);
 			ctrlTypeName = "MY_CONTROL_TYPE_PROGRESS";
 		}
 		break;
 	case MY_CONTROL_TYPE_SLIDER:
 		{
 			ControlHelp<MY_CONTROL_TYPE_SLIDER> help;
-			node = (NDUINode*)help.Create(uiInfo, sizeOffset);
+			pkUINode = (NDUINode*)help.Create(uiInfo, sizeOffset);
 			ctrlTypeName = "MY_CONTROL_TYPE_SLIDER";
 		}
 		break;
 	case MY_CONTROL_TYPE_BACK:
 		{
 			ControlHelp<MY_CONTROL_TYPE_BACK> help;
-			node = (NDUINode*)help.Create(uiInfo, sizeOffset);
+			pkUINode = (NDUINode*)help.Create(uiInfo, sizeOffset);
 			ctrlTypeName = "MY_CONTROL_TYPE_BACK";
 		}
 		break;
 	case MY_CONTROL_TYPE_TABLE:
 		{
 			ControlHelp<MY_CONTROL_TYPE_TABLE> help;
-			node = (NDUINode*)help.Create(uiInfo, sizeOffset);
+			pkUINode = (NDUINode*)help.Create(uiInfo, sizeOffset);
 			ctrlTypeName = "MY_CONTROL_TYPE_TABLE";
 		}
 		break;
 	case MY_CONTROL_TYPE_UITEXT:
 		{
 			ControlHelp<MY_CONTROL_TYPE_UITEXT> help;
-			node = (NDUINode*)help.Create(uiInfo, sizeOffset);
+			pkUINode = (NDUINode*)help.Create(uiInfo, sizeOffset);
 			ctrlTypeName = "MY_CONTROL_TYPE_UITEXT";
 		}
 		break;
 	case MY_CONTROL_TYPE_HYPER_TEXT:
 		{
 			ControlHelp<MY_CONTROL_TYPE_HYPER_TEXT> help;
-			node = (NDUINode*)help.Create(uiInfo, sizeOffset);
+			pkUINode = (NDUINode*)help.Create(uiInfo, sizeOffset);
 			ctrlTypeName = "MY_CONTROL_TYPE_HYPER_TEXT";
 		}
 		break;
 	case MY_CONTROL_TYPE_HYPER_TEXT_BUTTON:
 		{
 			ControlHelp<MY_CONTROL_TYPE_HYPER_TEXT_BUTTON> help;
-			node = (NDUINode*)help.Create(uiInfo, sizeOffset);
+			pkUINode = (NDUINode*)help.Create(uiInfo, sizeOffset);
 			ctrlTypeName = "MY_CONTROL_TYPE_HYPER_TEXT_BUTTON";
 		}
 		break;
 	case MY_CONTROL_TYPE_LIST_VERT: //@listbox
 		{
 			ControlHelp<MY_CONTROL_TYPE_LIST_VERT> help;
-			node = (NDUINode*)help.Create(uiInfo, sizeOffset);
+			pkUINode = (NDUINode*)help.Create(uiInfo, sizeOffset);
 			ctrlTypeName = "MY_CONTROL_TYPE_LIST_VERT";
 		}
 		break;
 	case MY_CONTROL_TYPE_ITEM_BUTTON:
 		{
 			ControlHelp<MY_CONTROL_TYPE_ITEM_BUTTON> help;
-			node = (NDUINode*)help.Create(uiInfo, sizeOffset);
+			pkUINode = (NDUINode*)help.Create(uiInfo, sizeOffset);
 			ctrlTypeName = "MY_CONTROL_TYPE_ITEM_BUTTON";
 		}
 		break;
 	case MY_CONTROL_TYPE_EQUIP_BUTTON:
 		{
 			ControlHelp<MY_CONTROL_TYPE_EQUIP_BUTTON> help;
-			node = (NDUINode*)help.Create(uiInfo, sizeOffset);
+			pkUINode = (NDUINode*)help.Create(uiInfo, sizeOffset);
 			ctrlTypeName = "MY_CONTROL_TYPE_EQUIP_BUTTON";
 		}
 		break;
 	case MY_CONTROL_TYPE_RADIO_BUTTON:
 		{
 			ControlHelp<MY_CONTROL_TYPE_RADIO_BUTTON> help;
-			node = (NDUINode*)help.Create(uiInfo, sizeOffset);
+			pkUINode = (NDUINode*)help.Create(uiInfo, sizeOffset);
 			ctrlTypeName = "MY_CONTROL_TYPE_RADIO_BUTTON";
 		}
 		break;
 	case MY_CONTROL_TYPE_EXP:
 		{
 			ControlHelp<MY_CONTROL_TYPE_EXP> help;
-			node = (NDUINode*)help.Create(uiInfo, sizeOffset);
+			pkUINode = (NDUINode*)help.Create(uiInfo, sizeOffset);
 			ctrlTypeName = "MY_CONTROL_TYPE_EXP";
 		}
 		break;
 	case MY_CONTROL_TYPE_EDIT:
 		{
 			ControlHelp<MY_CONTROL_TYPE_EDIT> help;
-			node = (NDUINode*)help.Create(uiInfo, sizeOffset);
+			pkUINode = (NDUINode*)help.Create(uiInfo, sizeOffset);
 			ctrlTypeName = "MY_CONTROL_TYPE_EDIT";
 		}
 		break;
 	case MY_CONTROL_TYPE_SPRITE:
 		{
 			ControlHelp<MY_CONTROL_TYPE_SPRITE> help;
-			node = (NDUINode*)help.Create(uiInfo, sizeOffset);
+			pkUINode = (NDUINode*)help.Create(uiInfo, sizeOffset);
 			ctrlTypeName = "MY_CONTROL_TYPE_SPRITE";
 		}
 		break;
 	case MY_CONTROL_TYPE_LIST_HV:
 		{
 			ControlHelp<MY_CONTROL_TYPE_LIST_HV> help;
-			node = (NDUINode*)help.Create(uiInfo, sizeOffset);
+			pkUINode = (NDUINode*)help.Create(uiInfo, sizeOffset);
 			ctrlTypeName = "MY_CONTROL_TYPE_LIST_HV";
 		}
 		break;
 	case MY_CONTROL_TYPE_LIST_LOOP:
 		{
 			ControlHelp<MY_CONTROL_TYPE_LIST_LOOP> help;
-			node = (NDUINode*)help.Create(uiInfo, sizeOffset);
+			pkUINode = (NDUINode*)help.Create(uiInfo, sizeOffset);
 			ctrlTypeName = "MY_CONTROL_TYPE_LIST_LOOP";
 		}
         break;
     case MY_CONTROL_TYPE_9BLK_BACKGROUND:
 		{
 			ControlHelp<MY_CONTROL_TYPE_9BLK_BACKGROUND> help;
-			node = (NDUINode*)help.Create(uiInfo, sizeOffset);
+			pkUINode = (NDUINode*)help.Create(uiInfo, sizeOffset);
 			ctrlTypeName = "MY_CONTROL_TYPE_9BLK_BACKGROUND";
 		}
         break;
 	default:
 		break;
 	}
-	return node;
+	return pkUINode;
 }
 
 //重置锚点（统一到0,0点）

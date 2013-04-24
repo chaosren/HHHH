@@ -103,7 +103,7 @@ public:// twt
 	std::string m_strUpdateURL;
 	std::string m_strCachePath;
     void InitDownload( std::string & szUpdatePath );
-    int  PackageCount ;
+    int m_nPackageCount;
     bool ReadFile( const char* file, int begin, int end, char* buf );
 	char* GetPathFileName(char* src, char delitmit);
     

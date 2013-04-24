@@ -70,7 +70,7 @@ public:
 	CCSize GetViewSize();
     
     //list控件中添加view
-	virtual void AddView(CUIScrollView* view);
+	virtual void AddView(CUIScrollView* pkView);
     
     //删除索引为uiIndex的view
     virtual void RemoveView(unsigned int uiIndex);
@@ -100,16 +100,26 @@ public:
     }
 	
 private:
+
+	CC_SYNTHESIZE(float,m_fMaxScrollDistance,MaxScrollDistance); ///< 拉动的最大距离 @郭浩
+	CC_SYNTHESIZE(float,m_fScrollSpeed,ScrollSpeed);			 ///< 彈力速度 @郭浩
+	CC_SYNTHESIZE(float,m_fInitialVelocity,ScrollInitialVelocity); ///< 鬆開滾動條時的初速度 @郭浩
+	CC_SYNTHESIZE(float,m_fDragCoefficient,DragCoefficient);	 ///< 阻力係數 @郭浩
+	CC_SYNTHESIZE(float,m_fAcceleratedSpeed,AcceleratedSpeed);	 ///< 彈力加速度係數 @郭浩
+	CC_SYNTHESIZE(float,m_bOpenBounce,OpenBounce);				 ///< 是否打開滾動條彈力效果 @郭浩
+
 	float					m_fScrollDistance;
 	float					m_fScrollToCenterSpeed;
 	bool					m_bIsViewScrolling;
-	UIScrollStyle			m_style;
+	UIScrollStyle			m_eStyle;
 	ContainerClientLayer*	m_pClientUINode; // all view's parent
 	CCSize					m_sizeView;
 	unsigned int			m_unBeginIndex;
 	bool					m_bCenterAdjust;
 	bool					m_bIsBottomSpeedBar;
 	bool					m_bRecaclClientEventRect;
+	int						m_nBounceDir;
+
 	CAutoLink<CUIScrollView> m_linkCurView;
 	
 private:
@@ -118,8 +128,8 @@ private:
 	
 	void AdjustView();
 	unsigned int WhichViewToScroll();
-	void ScrollView(unsigned int uiIndex, bool bImmediatelySet=false);
-	bool CaclViewCenter(CUIScrollView* view, float& fCenter, bool bJudeOver=false);
+	void ScrollView(unsigned int uiIndex, bool bImmediatelySet = false);
+	bool CaclViewCenter(CUIScrollView* view, float& fCenter, bool bJudeOver = false);
 	CCRect GetClientRect(bool judgeOver);
 	float GetContainerCenter();
 	float GetViewLen();

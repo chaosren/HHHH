@@ -249,8 +249,8 @@ public class DaHuaLongJiang extends Cocos2dxActivity
 	{
 		Log.d("init", "@@ DaHuaLongJiang.onCreate()");
 
-		NDBitmap.test(); //@del
-		
+		NDBitmap.test(); // @del
+
 		if (isSDCardCanUse())
 		{
 			ms_pkDHLJ = this;
@@ -705,11 +705,11 @@ public class DaHuaLongJiang extends Cocos2dxActivity
 
 		return strRet;
 	}
-	
+
 	public static void deleteFiles(String strFilePath)
 	{
 		File pkFile = new File(strFilePath);
-		
+
 		delete(pkFile);
 	}
 

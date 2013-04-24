@@ -1030,7 +1030,19 @@
 					>
 				</File>
 				<File
+					RelativePath="..\Utility\inc\ImageNumber.h"
+					>
+				</File>
+				<File
 					RelativePath="..\Utility\inc\MD5checksum.h"
+					>
+				</File>
+				<File
+					RelativePath="..\Utility\inc\NDAction.h"
+					>
+				</File>
+				<File
+					RelativePath="..\Utility\inc\NDActionInterval.h"
 					>
 				</File>
 				<File
@@ -1043,6 +1055,14 @@
 				</File>
 				<File
 					RelativePath="..\Utility\inc\NDJsonReader.h"
+					>
+				</File>
+				<File
+					RelativePath="..\Utility\inc\NDScrollImageNumber.h"
+					>
+				</File>
+				<File
+					RelativePath="..\Utility\inc\NDShakeSprite.h"
 					>
 				</File>
 				<File
@@ -1094,7 +1114,19 @@
 					>
 				</File>
 				<File
+					RelativePath="..\Utility\src\ImageNumber.cpp"
+					>
+				</File>
+				<File
 					RelativePath="..\Utility\src\MD5checksum.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\Utility\src\NDAction.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\Utility\src\NDActionInterval.cpp"
 					>
 				</File>
 				<File
@@ -1103,6 +1135,14 @@
 				</File>
 				<File
 					RelativePath="..\Utility\src\NDJsonReader.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\Utility\src\NDScrollImageNumber.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\Utility\src\NDShakeSprite.cpp"
 					>
 				</File>
 				<File
@@ -1285,14 +1325,6 @@
 				</File>
 			</Filter>
 		</Filter>
-		<File
-			RelativePath="..\Utility\src\ImageNumber.cpp"
-			>
-		</File>
-		<File
-			RelativePath="..\Utility\inc\ImageNumber.h"
-			>
-		</File>
 		<File
 			RelativePath="..\TempClass\NDBaseBattle.h"
 			>

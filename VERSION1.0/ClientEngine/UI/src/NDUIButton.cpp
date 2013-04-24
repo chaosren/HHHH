@@ -1077,33 +1077,10 @@ void NDUIButton::SetBackgroundCombinePic(NDCombinePicture *combinepic,
 		NDCombinePicture *touchCombinePic/* = NULL*/,
 		bool clearPicOnFree/* = false*/)
 {
-	/*
-	 if (m_bClearBgOnFree)
-	 {
-	 delete m_picBG;
-	 
-	 delete m_picTouchBG;
-	 }
-	 
-	 m_picBG = NULL;
-	 
-	 m_picTouchBG = NULL;
-	 
-	 m_combinePicBG = combinepic;
-	 
-	 m_combinePicTouchBG = touchCombinePic;
-	 
-	 m_bClearBgOnFree = clearPicOnFree;
-	 */
 }
 
 void NDUIButton::SetTitle()
 {
-//		if (m_strTitle.empty()) 
-//		{
-//			return;
-//		}
-
 	CCRect rect = this->GetFrameRect();
 
 	CCSize sizetext = getStringSize(m_strTitle.c_str(), m_uiTitleFontSize);
@@ -1197,7 +1174,7 @@ void NDUIButton::SetText(const char* text1, const char* text2,
 	m_lbTitle2->SetFontSize(fontSize2);
 	m_lbTitle2->SetTextAlignment(LabelTextAlignmentLeft);
 	m_lbTitle2->SetFrameRect(CCRectZero);
-	this->AddChild(m_lbTitle2);
+	AddChild(m_lbTitle2);
 
 	m_uiTwoTitleInter = interaval;
 
@@ -1216,15 +1193,15 @@ void NDUIButton::SetTwoTitle()
 		return;
 	}
 
-	CCRect rect = this->GetFrameRect();
+	CCRect kRect = this->GetFrameRect();
 
-	CCSize size1 = getStringSize(m_lbTitle1->GetText().c_str(),
+	CCSize kSize_1 = getStringSize(m_lbTitle1->GetText().c_str(),
 			m_lbTitle1->GetFontSize());
 
-	CCSize size2 = getStringSize(
+	CCSize kSize_2 = getStringSize(
 			m_lbTitle2->GetText().c_str(), m_lbTitle2->GetFontSize());
 
-	int iStartX = (rect.size.width - size1.width - size2.width
+	int iStartX = (kRect.size.width - kSize_1.width - kSize_2.width
 			- m_uiTwoTitleInter) / 2;
 	if (iStartX < 0)
 	{
@@ -1232,12 +1209,12 @@ void NDUIButton::SetTwoTitle()
 	}
 
 	m_lbTitle1->SetFrameRect(
-			CCRectMake(iStartX, (rect.size.height - size1.height) / 2,
-					size1.width, size1.height));
+			CCRectMake(iStartX, (kRect.size.height - kSize_1.height) / 2,
+					kSize_1.width, kSize_1.height));
 	m_lbTitle2->SetFrameRect(
-			CCRectMake(iStartX + size1.width + m_uiTwoTitleInter,
-					(rect.size.height - size2.height) / 2, size2.width,
-					size2.height));
+			CCRectMake(iStartX + kSize_1.width + m_uiTwoTitleInter,
+					(kRect.size.height - kSize_2.height) / 2, kSize_2.width,
+					kSize_2.height));
 }
 
 void NDUIButton::SetDisImage(NDPicture *pic, bool useCustomRect /*= false*/,

@@ -48,16 +48,25 @@ void charToHex(unsigned char src, unsigned char *dest)
 unsigned char hexToChar(const unsigned char *hex)
 {
 	int hi = 0;
-	if (*hex >= '0' && *hex <= '9') 
-		hi = (*hex++ - '0') * 16;
-	else 
-		hi = (*hex++ - 'A' + 10) * 16;
-	
 	int lo = 0;
+
 	if (*hex >= '0' && *hex <= '9') 
-		lo = *hex++ - '0';
+	{
+		hi = (*hex++ - '0') * 16;
+	}
 	else 
+	{
+		hi = (*hex++ - 'A' + 10) * 16;
+	}
+
+	if (*hex >= '0' && *hex <= '9') 
+	{
+		lo = *hex++ - '0';
+	}
+	else 
+	{
 		lo = *hex++ - 'A' + 10;
+	}
 	return  (hi + lo);
 }
 

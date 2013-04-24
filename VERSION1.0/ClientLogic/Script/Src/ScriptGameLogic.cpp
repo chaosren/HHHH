@@ -155,9 +155,9 @@ void ReloadPlayer(int lookface)
 //++Guosen 2012.7.13
 //创建玩家附加骑乘状态和坐骑类型
 void CreatePlayerWithMount(int lookface, int x, int y, int userid,
-		std::string name, int nRideStatus, int nMountType)
+		std::string strName, int nRideStatus, int nMountType)
 {
-	NDLog("CreatePlayer:%s", name.c_str());
+	NDLog("CreatePlayer:%s", strName.c_str());
 	NDPlayer::pugeHero();
 	NDPlayer& kPlayer = NDPlayer::defaultHero(lookface, true);
 	kPlayer.ChangeModelWithMount(nRideStatus, nMountType);
@@ -165,7 +165,7 @@ void CreatePlayerWithMount(int lookface, int x, int y, int userid,
 	kPlayer.SetPositionEx(ConvertUtil::convertCellToDisplay(x, y));
 	kPlayer.SetServerPositon(x, y);
 	kPlayer.m_nID = userid;
-	kPlayer.SetName( name );
+	kPlayer.SetName( strName );
 }
 //玩家骑宠
 void PlayerRideMount(int nRideStatus, int nMountType)
@@ -254,12 +254,12 @@ void PlayerStopMove()
 bool RoleAddSMEffect(int nRoleId, std::string strEffectPath,
 		int nSMEffectAlignment, int nDrawOrder)
 {
-	NDManualRole* role = NDMapMgrObj.GetManualRole(nRoleId);
-	if (!role)
+	NDManualRole* pkRole = NDMapMgrObj.GetManualRole(nRoleId);
+	if (!pkRole)
 	{
 		return false;
 	}
-	return role->AddSMEffect(strEffectPath, nSMEffectAlignment, nDrawOrder);
+	return pkRole->AddSMEffect(strEffectPath, nSMEffectAlignment, nDrawOrder);
 }
 bool RoleRemoveSMEffect(int nRoleId, std::string strEffectPath)
 {
@@ -270,10 +270,12 @@ bool RoleRemoveSMEffect(int nRoleId, std::string strEffectPath)
 	}
 	return pkRole->RemoveSMEffect(strEffectPath);
 }
+
 unsigned long GetMapId()
 {
 	return NDMapMgrObj.GetMotherMapID();
 }
+
 int GetMapInstanceId()
 {
 	int a = NDMapMgrObj.GetMapID();
@@ -413,13 +415,13 @@ NDMapLayer* GetMapLayer()
 	{
 		return NULL;
 	}
-	NDMapLayer* layer = NDMapMgrObj.getMapLayerOfScene(scene);
-	if (!layer)
+	NDMapLayer* pkLayer = NDMapMgrObj.getMapLayerOfScene(scene);
+	if (!pkLayer)
 	{
 		return NULL;
 	}
 
-	return layer;
+	return pkLayer;
 }
 
 int GetSystemSetN(const char* key, int default_value)

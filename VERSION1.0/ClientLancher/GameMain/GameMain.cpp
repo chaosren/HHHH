@@ -58,9 +58,9 @@ int WINAPI WinMain (HINSTANCE hInstance,
 	NDGameApplication kApp;
 	NDBaseDirector kBaseDirector;
 
-	CCEGLView* eglView = CCEGLView::sharedOpenGLView();
-	eglView->SetTitle("大话龙将");
-	eglView->setFrameSize(480, 320); 
+	CCEGLView* pkEGLView = CCEGLView::sharedOpenGLView();
+	pkEGLView->SetTitle("大话龙将");
+	pkEGLView->setFrameSize(480, 320);
 	//eglView->setFrameSize(320, 480); 
 
 #if 0
@@ -72,6 +72,7 @@ int WINAPI WinMain (HINSTANCE hInstance,
 		NDGameDataUtil::destroyAll();
 		NDLocalXmlString::GetSingleton().destroy();
 	}
+
 	return ret;
 #endif
 }

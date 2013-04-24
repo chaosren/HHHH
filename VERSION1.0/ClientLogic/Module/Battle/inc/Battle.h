@@ -552,7 +552,7 @@ public:
 	void TurnStartPet();
 	int GetCurrentShowFighterId()
 	{
-		return currentShowFighter;
+		return m_nCurrentShowFigher;
 	}
 	CoolDownRecord& GetSkillCoolDownRecord()
 	{
@@ -615,9 +615,7 @@ private:
 	Fighter* m_mainFighter; // 玩家自己
 	Fighter* m_mainEudemon; // 玩家的宠物
 
-	Fighter* theActor;
-	Fighter* theTarget;
-	int currentShowFighter;
+	int m_nCurrentShowFigher;
 
 	//	NDPicture *m_picTalk; NDUIButton *m_btnTalk;
 	//	NDPicture *m_picQuickTalk; NDUIButton *m_btnQuickTalk;NDUILayer *m_layerBtnQuitTalk;

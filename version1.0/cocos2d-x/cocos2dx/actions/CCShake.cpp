@@ -3,18 +3,12 @@
 
 NS_CC_BEGIN
 
-// CCShake::CCShake():m_fStrengthX(0), m_StrengthY(0), m_fInitialX(0), m_fInitialY(0)
-// {
-// }
-// 
-// CCShake::~CCShake()
-// {
-// 
-// }
-
 CCShake::CCShake()
 {
-
+	m_fInitialX = 0.0f;
+	m_fInitialY = 0.0f;
+	m_fStrengthX = 0.0f;
+	m_StrengthY = 0.0f;
 }
 
 CCShake::~CCShake()
@@ -40,7 +34,6 @@ CCShake* CCShake::createWithStrength(float duration, float strength_x, float str
 		CC_SAFE_DELETE(pRet);
 	}
 
-
 	return pRet;
 }
 
@@ -59,30 +52,28 @@ bool CCShake::initWithDuration(float duration, float strength_x, float strength_
 static float fgRangeRand( float min, float max )
 {
 	float rnd = ((float)rand()/(float)RAND_MAX);
-	return rnd*(max-min)+min;
+	return rnd * (max - min) + min;
 }
 
-void CCShake::update(float dt)
+void CCShake::update(float fDeltaTime)
 {
-	float randx = fgRangeRand( -m_fStrengthX, m_fStrengthX )*dt;
-	float randy = fgRangeRand( -m_StrengthY, m_StrengthY )*dt;
+	float fRandX = fgRangeRand( -m_fStrengthX, m_fStrengthX ) * fDeltaTime;
+	float fRandY = fgRangeRand( -m_StrengthY, m_StrengthY ) * fDeltaTime;
 
-	m_pTarget->setPosition( ccpAdd(ccp(m_fInitialX, m_fInitialY),ccp( randx, randy)));
+	m_pTarget->setPosition( ccpAdd(ccp(m_fInitialX, m_fInitialY),ccp( fRandX, fRandY)));
 }
 
 void CCShake::startWithTarget(CCNode *pTarget)
 {
 	CCActionInterval::startWithTarget( pTarget );
 
-	// save the initial position
 	m_fInitialX = pTarget->getPosition().x;
 	m_fInitialY = pTarget->getPosition().y;
 }
 
 void CCShake::stop(void)
 {
-	// Action is done, reset clip position
-	this->getTarget()->setPosition( ccp( m_fInitialX, m_fInitialY ) );
+	getTarget()->setPosition( ccp( m_fInitialX, m_fInitialY ) );
 
 	CCActionInterval::stop();
 }

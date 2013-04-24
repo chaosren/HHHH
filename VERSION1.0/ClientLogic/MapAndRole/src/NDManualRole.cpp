@@ -293,10 +293,8 @@ void NDManualRole::ReLoadLookface(int lookface)
 
 	char aniPath[256];
 	_snprintf(aniPath, 256, "%smodel_%d.spr", NDPath::GetAnimationPath().c_str(), model_id);
-	this->reloadAni(aniPath);
-	this->SetCurrentAnimation(MANUELROLE_STAND, m_bFaceRight);
-
-	//defaultDeal();
+	reloadAni(aniPath);
+	SetCurrentAnimation(MANUELROLE_STAND, m_bFaceRight);
 }
 
 void NDManualRole::Walk(CCPoint toPos, SpriteSpeed speed)
@@ -309,28 +307,6 @@ void NDManualRole::Walk(CCPoint toPos, SpriteSpeed speed)
 	std::vector < CCPoint > vec_pos;
 	vec_pos.push_back(toPos);
 	WalkToPosition(vec_pos, speed, false);
-
-	//if (isTeamLeader())
-//		{
-//			std::vector<s_team_info> teamlist = NDMapMgrObj.GetTeamList();
-//			std::vector<s_team_info>::iterator it = teamlist.begin();
-//			for (; it != teamlist.end(); it++) 
-//			{
-//				s_team_info info = *it;
-//				if (info.team[0] == m_id) 
-//				{
-//					for (int i = 1; i < eTeamLen; i++) 
-//					{
-//						NDManualRole *role = NDMapMgrObj.GetTeamRole(info.team[i]);
-//						if (role) 
-//						{
-//							role->Walk(toPos, speed);
-//						}
-//					}
-//					break;
-//				}
-//			}
-//		}
 }
 
 void NDManualRole::OnMoving(bool bLastPos)
@@ -339,16 +315,11 @@ void NDManualRole::OnMoving(bool bLastPos)
 	{
 		m_pkRidePet->OnMoving(bLastPos);
 	}
-
-	//if (isTeamLeader())
-//	{
-//		processTeamMemberOnMove(eMoveTypeMoving);
-//	}
 }
 
 SpriteSpeed NDManualRole::GetSpeed()
 {
-	switch(this->m_nAccLevel)
+	switch(m_nAccLevel)
 	{
 	case 0:
 		return SpriteSpeedStep4;
@@ -1091,19 +1062,19 @@ void NDManualRole::SetAction(bool bMove, bool bIgnoreFighting/*=false*/)
 			//WriteCon( "NDManualRole::SetAction() -- Æï³èÕ¾Á¢\r\n" );
 
 			// Æï³èÕ¾Á¢
-			this->setStandActionWithRidePet();
+			setStandActionWithRidePet();
 		}
 		else 
 		{
 			NDPlayer& player = NDPlayer::defaultHero();
 			if (&player == this 
-				|| 0 == strcmp( player.m_strName.c_str(), this->m_strName.c_str() )) //hum: no unique id !?
+				|| 0 == strcmp( player.m_strName.c_str(), m_strName.c_str() )) //hum: no unique id !?
 			{
 				AnimationListObj.standAction(TYPE_MANUALROLE, this, m_bFaceRight);
 			}
 			else
 			{
-				this->standAction(true);
+				standAction(true);
 			}
 		}
 	}
@@ -1207,7 +1178,7 @@ bool NDManualRole::OnDrawBegin(bool bDraw)
 		NDMapLayer *layer = NDMapMgrObj.getMapLayerOfScene(pkScene);
 		if (GetParent() == layer)
 		{
-			if (!this->IsKindOfClass(RUNTIME_CLASS(NDPlayer))
+			if (!IsKindOfClass(RUNTIME_CLASS(NDPlayer))
 					&& !NDMapMgrObj.getIsShowOther())
 			{
 				return false;
@@ -1340,11 +1311,11 @@ bool NDManualRole::OnDrawBegin(bool bDraw)
 
 	if (AssuredRidePet())
 	{
-		m_pkRidePet->SetScale(this->GetScale());
+		m_pkRidePet->SetScale(GetScale());
 	}
 
 	//»­Æï³è
-	if (this->IsKindOfClass(RUNTIME_CLASS(NDPlayer)))
+	if (IsKindOfClass(RUNTIME_CLASS(NDPlayer)))
 	{
 		if (AssuredRidePet())
 		{
@@ -1385,7 +1356,7 @@ bool NDManualRole::OnDrawBegin(bool bDraw)
 #endif
 
 #if 8
-	if (this->IsKindOfClass(RUNTIME_CLASS(NDPlayer)) || NDMapMgrObj.getIsShowName())
+	if (IsKindOfClass(RUNTIME_CLASS(NDPlayer)) || NDMapMgrObj.getIsShowName())
 	{
 		DrawNameLabel(bDraw);
 	}
@@ -1717,7 +1688,7 @@ void NDManualRole::UpdateState(int nState, bool bSet)
 
 void NDManualRole::SetState(int nState)
 {
-	bool bOldInPractise	= this->IsInState(USERSTATE_PRACTISE);
+	bool bOldInPractise	= IsInState(USERSTATE_PRACTISE);
 	m_nState = nState;
 
 	if (IsInState (USERSTATE_BOOTH))
@@ -2123,7 +2094,7 @@ void NDManualRole::SetLable(LableType eLableType, int x, int y,
 	}
 
 	CCSize fontSize = getStringSize( in_utf8.c_str(), lable[0]->GetFontSize() * FONT_SCALE);
-	CCPoint posHead = this->getHeadPos();
+	CCPoint posHead = getHeadPos();
 
 	int newX = posHead.x - 0.5 * fontSize.width;
 	int newY = posHead.y - 1.0 * fontSize.height;
@@ -2763,7 +2734,7 @@ void NDManualRole::RunSMEffect(int nDrawOrder)
 	{
 		return;
 	}
-	NDNode* pParent = this->GetParent();
+	NDNode* pParent = GetParent();
 	if (!pParent) 
 	{
 		return;
@@ -2771,7 +2742,7 @@ void NDManualRole::RunSMEffect(int nDrawOrder)
 	NDDirector* director		= NDDirector::DefaultDirector();
 	float fScaleFactor			= RESOURCE_SCALE;
 	CCSize sizeEffectParent		= pParent->GetContentSize();
-	CCPoint posRole				= this->GetPosition();
+	CCPoint posRole				= GetPosition();
 	for (int j = eSM_EFFECT_ALIGNMENT_BEGIN; j < eSM_EFFECT_ALIGNMENT_END; j++) 
 	{
 		std::map<std::string, NDLightEffect*>& mapEffect	= m_kArrMapSMEffect[nDrawOrder][j];

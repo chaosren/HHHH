@@ -36,10 +36,10 @@ void NDLayer::Initialization()
 {
 	NDAsssert(m_pkCCNode == NULL);
 	m_pkCCNode = new NDBaseLayer();
-	NDBaseLayer *layer = (NDBaseLayer *) m_pkCCNode;
-	layer->SetLayer(this);
-	layer->setDebugName( "NDLayer" );
-	this->SetContentSize(CCSizeZero);
+	NDBaseLayer* pkLayer = (NDBaseLayer *) m_pkCCNode;
+	pkLayer->SetLayer(this);
+	pkLayer->setDebugName( "NDLayer" );
+	SetContentSize(CCSizeZero);
 }
 
 void NDLayer::draw()
@@ -51,8 +51,8 @@ void NDLayer::SetTouchEnabled(bool bEnabled)
 {
 	NDAsssert(m_pkCCNode != NULL);
 
-	NDBaseLayer *layer = (NDBaseLayer*) m_pkCCNode;
-	layer->setTouchEnabled(bEnabled);
+	NDBaseLayer* pkLayer = (NDBaseLayer*) m_pkCCNode;
+	pkLayer->setTouchEnabled(bEnabled);
 }
 
 bool NDLayer::TouchBegin(NDTouch* touch)
@@ -79,4 +79,5 @@ bool NDLayer::TouchDoubleClick(NDTouch* touch)
 {
 	return true;
 }
+
 }
