@@ -39,7 +39,7 @@ public:
 
 protected:
 
-	CC_PROPERTY(CCAction*,m_pkCCAction,CCAction);
+	CC_SYNTHESIZE(CCAction*,m_pkCCAction,CCAction);
 	
 	NDNode* m_pkTargetNode;
 
@@ -57,7 +57,7 @@ public:
 
 protected:
 
-	CC_PROPERTY(CCFiniteTimeAction*,m_pkCCFiniteTimeAction,CCFiniteTimeAction);
+	CC_SYNTHESIZE(CCFiniteTimeAction*,m_pkCCFiniteTimeAction,CCFiniteTimeAction);
 
 private:
 };
