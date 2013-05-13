@@ -357,7 +357,13 @@ end
 
 
 ------------------------------------------------------------------------------------------------
-function p.ShowInputDlg(tip, callback, param, nDefault, nMaxLength, nTitle)
+--tip标题文本
+--callback回调函数
+--nDefault输入控件默认显示文本
+--nMaxLength输入控件最大输入字符
+--nTitle输入控件前面提示文字
+--nTextFlag 使用的文本标示(数字1,英文2,英文数字3,没有限制0)
+function p.ShowInputDlg(tip, callback, param, nDefault, nMaxLength, nTitle, nTextFlag)
     local scene = GetRunningScene();
 	if not CheckP(scene) then
 		LogInfo("not CheckP(scene),load CommonDlg.ShowInputDlg failed!");
@@ -396,13 +402,17 @@ function p.ShowInputDlg(tip, callback, param, nDefault, nMaxLength, nTitle)
     local inputBox = GetUiNode(layer,p.InputNum);
     inputBox = ConverToEdit(inputBox);
     
+    if (nTextFlag ~= nil) then
+		inputBox:SetFlag( nTextFlag );
+    end
+    
     if(nMaxLength) then
         inputBox:SetMaxLength(nMaxLength);
     else
         inputBox:SetMaxLength(10);
     end
     
-    if(CheckN(nDefault)) then
+    if(CheckN(nDefault) or CheckS(nDefault)) then
         inputBox:SetText(nDefault.."");
     end
     
