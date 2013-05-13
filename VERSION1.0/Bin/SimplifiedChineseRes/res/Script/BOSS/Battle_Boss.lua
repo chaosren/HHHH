@@ -329,8 +329,14 @@ function p.RefreshUI( data )
     SetLabel( layer, TAG_BOSS_ENDTIME, FormatTime( data.nLeftTime, 0 ) );
     SetLabel( layer, TAG_HURT_LIFT, data.nDamage.."" );
     picBossTypeIcon:SetPicture( GetBossTypePic( p.nActivityId ) );
-    expCurrLift:SetProcess( data.nCurLife ); expCurrLift:SetTotal( data.nLifeLimit );
     
+    
+    --expCurrLift:SetProcess( data.nCurLife ); expCurrLift:SetTotal( data.nLifeLimit );
+    
+    expCurrLift:SetStyle(2);
+    expCurrLift:SetProcess( data.nCurLife/(data.nLifeLimit/100) ); expCurrLift:SetTotal( 100 );
+    SetLabel( layer, 37, string.format("%u/%u",data.nCurLife,data.nLifeLimit) );
+    LogInfo("data.nCurLife:[%d],data.nLifeLimit:[%d]",data.nCurLife,data.nLifeLimit);
     
     --排名刷新
 
