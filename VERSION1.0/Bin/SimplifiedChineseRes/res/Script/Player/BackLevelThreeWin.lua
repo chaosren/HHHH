@@ -930,7 +930,8 @@ function p.OnUIEventProp(uiNode, uiEventType, param)
                 
                 
             elseif(nType == 9) then     --改名道具使用
-                 p.nTagId = CommonDlgNew.ShowInputDlg(GetTxtPri("REALLY_CHANGE_NAME"), p.OnUIEventChangeName, {nItemId}, nil, 6, GetTxtPri("NEW_NAME"));
+					--字符个数暂时不去限制，服务端限制
+                 p.nTagId = CommonDlgNew.ShowInputDlg(GetTxtPri("REALLY_CHANGE_NAME"), p.OnUIEventChangeName, {nItemId}, nil, 20, GetTxtPri("NEW_NAME"));
             end
             
             
