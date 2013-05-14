@@ -484,7 +484,7 @@ function p.ShowUIProp(nItemId, nCurrPetId)
     local nType = ItemFunc.GetPropType(nItemType);
     
 
-    if(nType == 1 or nType == 4 or nType == 5 or nType == 6 or nType == 7 or  nType == 8) then
+    if(nType == 1 or nType == 4 or nType == 5 or nType == 6 or nType == 7 or  nType == 8 or nType == 9) then
         btn:SetVisible(true);
     else
         btn:SetVisible(false);
