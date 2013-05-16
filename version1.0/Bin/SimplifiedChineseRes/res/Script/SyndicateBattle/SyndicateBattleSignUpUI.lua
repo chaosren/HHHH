@@ -92,7 +92,7 @@ function p.LoadUI(signUpList,nLeftTime,nArmyGroupLev,nRank)
 		local pLabel = RecursiveLabel(bglayer, {140});
     
     	if nRank == 0 then
-        	pLabel:SetText("未报名");
+        	pLabel:SetText("未報名");
     	else
         	pLabel:SetText(""..nRank);
     	end
@@ -127,7 +127,7 @@ function p.LoadUI(signUpList,nLeftTime,nArmyGroupLev,nRank)
     
     
     if nRank == 0 then
-        pLabelrank:SetText("未报名");
+        pLabelrank:SetText("未報名");
     else
         pLabelrank:SetText(""..nRank);
     end

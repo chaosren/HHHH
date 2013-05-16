@@ -214,7 +214,7 @@ function p.OnUIEvent(uiNode,uiEventType,param)
                 CommonDlg.ShowWithConfirm(GetTxtPub("JinBiBuZhu"), p.onCommonDlg);
             else
                 --add_Time_Dlg_id=CommonDlg.ShowNoPrompt("是否花费"..SafeN2S(cost).."金币，增加1次挑战次数？", p.onCommonDlg1, true);
-                CommonDlgNew.ShowYesOrNoDlg("是否花费"..SafeN2S(cost).."金币，增加1次挑战次数？", p.onCommonDlg1, true);
+                CommonDlgNew.ShowYesOrNoDlg(string.format(GetTxtPri("AREAUI_T1"),cost), p.onCommonDlg1, true);
 			end
 		elseif ID_ARENA_CTRL_BUTTON_REMOVE_TIME == tag then
             LogInfo("+++++++++++ID_ARENA_CTRL_BUTTON_REMOVE_TIME+++++++");
