@@ -822,6 +822,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\Bin\SimplifiedChineseRes\res\Script\Msg\MsgRankList.lua"
+				>
+			</File>
+			<File
 				RelativePath="..\Bin\SimplifiedChineseRes\res\Script\Msg\MsgRealize.lua"
 				>
 			</File>
@@ -835,6 +839,10 @@
 			</File>
 			<File
 				RelativePath="..\Bin\SimplifiedChineseRes\res\Script\Msg\MsgShop.lua"
+				>
+			</File>
+			<File
+				RelativePath="..\Bin\SimplifiedChineseRes\res\Script\Msg\MsgSlave.lua"
 				>
 			</File>
 			<File
