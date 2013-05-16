@@ -9,6 +9,16 @@
 /* Begin PBXBuildFile section */
 		2043FC211717FC5900BE353F /* NDUI9BlkImage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2043FC201717FC5900BE353F /* NDUI9BlkImage.cpp */; };
 		2043FC241717FC6600BE353F /* NDUI9BlkImage.h in Headers */ = {isa = PBXBuildFile; fileRef = 2043FC231717FC6600BE353F /* NDUI9BlkImage.h */; };
+		204817711744CA0700DC926F /* NDAction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2048176C1744CA0700DC926F /* NDAction.cpp */; };
+		204817721744CA0700DC926F /* NDActionInterval.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2048176D1744CA0700DC926F /* NDActionInterval.cpp */; };
+		204817731744CA0700DC926F /* NDConsole.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2048176E1744CA0700DC926F /* NDConsole.cpp */; };
+		204817741744CA0700DC926F /* NDScrollImageNumber.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2048176F1744CA0700DC926F /* NDScrollImageNumber.cpp */; };
+		204817751744CA0700DC926F /* NDShakeSprite.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 204817701744CA0700DC926F /* NDShakeSprite.cpp */; };
+		2048177C1744CA5800DC926F /* NDAction.h in Headers */ = {isa = PBXBuildFile; fileRef = 204817771744CA5800DC926F /* NDAction.h */; };
+		2048177D1744CA5800DC926F /* NDActionInterval.h in Headers */ = {isa = PBXBuildFile; fileRef = 204817781744CA5800DC926F /* NDActionInterval.h */; };
+		2048177E1744CA5800DC926F /* NDConsole.h in Headers */ = {isa = PBXBuildFile; fileRef = 204817791744CA5800DC926F /* NDConsole.h */; };
+		2048177F1744CA5800DC926F /* NDScrollImageNumber.h in Headers */ = {isa = PBXBuildFile; fileRef = 2048177A1744CA5800DC926F /* NDScrollImageNumber.h */; };
+		204817801744CA5800DC926F /* NDShakeSprite.h in Headers */ = {isa = PBXBuildFile; fileRef = 2048177B1744CA5800DC926F /* NDShakeSprite.h */; };
 		207F78011701862400A141C6 /* CCShake.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 207F77FF1701862400A141C6 /* CCShake.cpp */; };
 		2085E89B16D6346D009DFA2E /* NDJsonReader.h in Headers */ = {isa = PBXBuildFile; fileRef = 2085E89A16D6346D009DFA2E /* NDJsonReader.h */; };
 		2085E89F16D635EB009DFA2E /* NDUIListHorz.h in Headers */ = {isa = PBXBuildFile; fileRef = 2085E89C16D635EB009DFA2E /* NDUIListHorz.h */; };
@@ -1152,6 +1162,16 @@
 /* Begin PBXFileReference section */
 		2043FC201717FC5900BE353F /* NDUI9BlkImage.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NDUI9BlkImage.cpp; sourceTree = "<group>"; };
 		2043FC231717FC6600BE353F /* NDUI9BlkImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NDUI9BlkImage.h; sourceTree = "<group>"; };
+		2048176C1744CA0700DC926F /* NDAction.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NDAction.cpp; sourceTree = "<group>"; };
+		2048176D1744CA0700DC926F /* NDActionInterval.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NDActionInterval.cpp; sourceTree = "<group>"; };
+		2048176E1744CA0700DC926F /* NDConsole.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NDConsole.cpp; sourceTree = "<group>"; };
+		2048176F1744CA0700DC926F /* NDScrollImageNumber.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NDScrollImageNumber.cpp; sourceTree = "<group>"; };
+		204817701744CA0700DC926F /* NDShakeSprite.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NDShakeSprite.cpp; sourceTree = "<group>"; };
+		204817771744CA5800DC926F /* NDAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NDAction.h; sourceTree = "<group>"; };
+		204817781744CA5800DC926F /* NDActionInterval.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NDActionInterval.h; sourceTree = "<group>"; };
+		204817791744CA5800DC926F /* NDConsole.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NDConsole.h; sourceTree = "<group>"; };
+		2048177A1744CA5800DC926F /* NDScrollImageNumber.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NDScrollImageNumber.h; sourceTree = "<group>"; };
+		2048177B1744CA5800DC926F /* NDShakeSprite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NDShakeSprite.h; sourceTree = "<group>"; };
 		207F77FF1701862400A141C6 /* CCShake.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CCShake.cpp; sourceTree = "<group>"; };
 		207F78001701862400A141C6 /* CCShake.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCShake.h; sourceTree = "<group>"; };
 		2085E89A16D6346D009DFA2E /* NDJsonReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NDJsonReader.h; sourceTree = "<group>"; };
@@ -1370,7 +1390,7 @@
 		5A1B4001164AB5C100C94D7F /* NDFrame.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; path = NDFrame.h; sourceTree = "<group>"; };
 		5A1B4002164AB5C100C94D7F /* NDPicture.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; path = NDPicture.h; sourceTree = "<group>"; };
 		5A1B4003164AB5C100C94D7F /* NDTextureMonitor.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; path = NDTextureMonitor.h; sourceTree = "<group>"; };
-		5A1B4004164AB5C100C94D7F /* NDTile.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; path = NDTile.h; sourceTree = "<group>"; };
+		5A1B4004164AB5C100C94D7F /* NDTile.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 2147483673; path = NDTile.h; sourceTree = "<group>"; };
 		5A1B4005164AB5C100C94D7F /* UIImageCombiner.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; path = UIImageCombiner.h; sourceTree = "<group>"; };
 		5A1B4006164AB5C100C94D7F /* UIImageExt.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; path = UIImageExt.h; sourceTree = "<group>"; };
 		5A1B4008164AB5C100C94D7F /* CCTexture2DExt.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; path = CCTexture2DExt.cpp; sourceTree = "<group>"; };
@@ -2222,8 +2242,8 @@
 		5A3FC0BD165279D1002166DD /* CCTouchDispatcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCTouchDispatcher.h; sourceTree = "<group>"; };
 		5A3FC0BE165279D1002166DD /* CCTouchHandler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CCTouchHandler.cpp; sourceTree = "<group>"; };
 		5A3FC0BF165279D1002166DD /* CCTouchHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCTouchHandler.h; sourceTree = "<group>"; };
-		5A3FC19316528229002166DD /* UsePointPls.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; path = UsePointPls.cpp; sourceTree = "<group>"; };
-		5A3FC19616528236002166DD /* UsePointPls.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UsePointPls.h; sourceTree = "<group>"; };
+		5A3FC19316528229002166DD /* UsePointPls.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 2147483673; path = UsePointPls.cpp; sourceTree = "<group>"; };
+		5A3FC19616528236002166DD /* UsePointPls.h */ = {isa = PBXFileReference; fileEncoding = 2147483673; lastKnownFileType = sourcecode.c.h; path = UsePointPls.h; sourceTree = "<group>"; };
 		5A3FC19916528B21002166DD /* TQPlatform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TQPlatform.h; sourceTree = "<group>"; };
 		5A3FC19B16528B2B002166DD /* TQPlatform.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; path = TQPlatform.cpp; sourceTree = "<group>"; };
 		5A3FC19D165292D2002166DD /* UtilityInc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UtilityInc.h; sourceTree = "<group>"; };
@@ -3167,6 +3187,11 @@
 		5A1B405B164AB5C100C94D7F /* inc */ = {
 			isa = PBXGroup;
 			children = (
+				204817771744CA5800DC926F /* NDAction.h */,
+				204817781744CA5800DC926F /* NDActionInterval.h */,
+				204817791744CA5800DC926F /* NDConsole.h */,
+				2048177A1744CA5800DC926F /* NDScrollImageNumber.h */,
+				2048177B1744CA5800DC926F /* NDShakeSprite.h */,
 				2085E89A16D6346D009DFA2E /* NDJsonReader.h */,
 				5A6302C11689DE2C002CA289 /* UTF8.h */,
 				5A5FF1F7167B2B5700E897F9 /* NDVideoEventListener.h */,
@@ -3195,6 +3220,11 @@
 		5A1B406D164AB5C100C94D7F /* src */ = {
 			isa = PBXGroup;
 			children = (
+				2048176C1744CA0700DC926F /* NDAction.cpp */,
+				2048176D1744CA0700DC926F /* NDActionInterval.cpp */,
+				2048176E1744CA0700DC926F /* NDConsole.cpp */,
+				2048176F1744CA0700DC926F /* NDScrollImageNumber.cpp */,
+				204817701744CA0700DC926F /* NDShakeSprite.cpp */,
 				5A5FF1FB167B2B6500E897F9 /* NDVideoEventListener.cpp */,
 				5A5FF1FC167B2B6500E897F9 /* NDVideoMgr.cpp */,
 				5AF6F5261663645C006834AF /* NDUtil.cpp */,
@@ -5514,6 +5544,11 @@
 				2085E8A116D635EB009DFA2E /* NDUIScrollViewContainer.h in Headers */,
 				20BBCE2116F9DC8E004E898C /* NDUIColorLabel.h in Headers */,
 				2043FC241717FC6600BE353F /* NDUI9BlkImage.h in Headers */,
+				2048177C1744CA5800DC926F /* NDAction.h in Headers */,
+				2048177D1744CA5800DC926F /* NDActionInterval.h in Headers */,
+				2048177E1744CA5800DC926F /* NDConsole.h in Headers */,
+				2048177F1744CA5800DC926F /* NDScrollImageNumber.h in Headers */,
+				204817801744CA5800DC926F /* NDShakeSprite.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6196,6 +6231,11 @@
 				20A59CF016D74E930008DBD0 /* NDControlHelp.cpp in Sources */,
 				20BBCE1E16F9DB8E004E898C /* NDUIColorLabel.cpp in Sources */,
 				2043FC211717FC5900BE353F /* NDUI9BlkImage.cpp in Sources */,
+				204817711744CA0700DC926F /* NDAction.cpp in Sources */,
+				204817721744CA0700DC926F /* NDActionInterval.cpp in Sources */,
+				204817731744CA0700DC926F /* NDConsole.cpp in Sources */,
+				204817741744CA0700DC926F /* NDScrollImageNumber.cpp in Sources */,
+				204817751744CA0700DC926F /* NDShakeSprite.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
