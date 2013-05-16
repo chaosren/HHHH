@@ -190,7 +190,8 @@ NMSG_Type =
 	_MSG_PRIZE_INFO							= _MSG_GENERAL + 6043,		-- 古迹寻宝-奖励内容
 	_MSG_QUESTION_INFO						= _MSG_GENERAL + 6044,		-- 古迹寻宝-问答
     _MSG_BANQUET                            = _MSG_GENERAL+6050,	--宴会
-    
+    _MSG_WARLORD                            = _MSG_GENERAL+6071,	--战神像
+
     _MSG_PLAYER_ACTION_INFO            =   _MSG_GENERAL + 7001,              --活动信息
     _MSG_PLAYER_ACTION_OPERATE   =   _MSG_GENERAL + 7002,               --活动操作
 
@@ -228,9 +229,10 @@ NMSG_Type =
 
     --==================名人堂=====================--
     _MSG_RANKING    = _MSG_GENERAL+8110,    --
+    
+    --==================日常任务=====================--
+    _MSG_DAILYTASK    = _MSG_GENERAL+6070,    --
 
-    
-    
     --==================断线重连=====================--
     _MSG_OPERATE_STATUS     = _MSG_GENERAL+7006,    --客户端操作状态
 

@@ -177,3 +177,6 @@ DoFile("TreasureHunt/define.lua");
 --ÊÞ»ê
 DoFile("MountSoul/define.lua");
 
+--Õ½ÉñÏñ
+DoFile("Warlord/define.lua");
+

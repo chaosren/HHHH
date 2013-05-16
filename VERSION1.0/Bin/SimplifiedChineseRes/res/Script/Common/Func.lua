@@ -294,6 +294,7 @@ StageFunc = {
     RepeatCoyp = 541,       --副本扫荡
     Sign = 0;     --每日签到
     Recharge = 0; --充值礼包
+    MISSION = 581; --充值礼包
 };
 
 

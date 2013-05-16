@@ -211,7 +211,8 @@ NMAINSCENECHILDTAG =
 	SlaveUI					= 2015,                   --斗地主
 
     Buff           = NUITAG_BEGIN + 186,                   --玩家状态
-
+    MissionUI       = NUITAG_BEGIN + 200,                   --日常任务
+    Warlord			= NUITAG_BEGIN + 201,                   --战神像
     CommonDlg				= NDLGTAG_BEGIN,						--通用对话框
 	CommonDlgNew              = NDLGTAGNEW_BEGIN,                     --新通用对话框
 	--后面都被对话框占用了,请不要使用

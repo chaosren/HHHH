@@ -23,6 +23,8 @@ p.TagIllusionList       = 44;
 p.TagIllsionItemBtn     = 457;
 p.TagIllsionItemPic     = 11;
 p.TagIllsionItemDis     = 12;
+---
+local ID_BTN_MOUNTSOUL			= 108; -- 兽魂按钮
 
 local TAG_BEGIN_ARROW   = 1411;
 local TAG_END_ARROW     = 1412;
@@ -180,6 +182,9 @@ function p.LoadUI(bIsSMB)
 	uiLoad:Load("Mount.ini", layer, p.OnUIEvent, CONTAINTER_X, CONTAINTER_Y);
     uiLoad:Free();
     
+    -- 设置兽魂按钮显示
+    p.ShowMountSoulButton( layer );
+    
     --初始化幻化UI层
     local layerIllsion = createNDUILayer();
 	if layerIllsion == nil then
@@ -235,11 +240,6 @@ function p.LoadUI(bIsSMB)
     n_s_lbl:SetVisible( false );
     c_s_txt:SetVisible( false );
     n_s_txt:SetVisible( false );
-    
-    --暂时屏蔽兽魂按钮
-    local btnShouHun = GetButton(layer, 108);
-    btnShouHun:SetVisible( false );
-        
     return true;
 end
 
@@ -271,6 +271,10 @@ function p.OnUIEvent(uiNode, uiEventType, param)
 			CloseUI(NMAINSCENECHILDTAG.PetUI);
         elseif (p.TagIllusion == tag) then
             p.clickIllusion();
+		elseif ( tag == ID_BTN_MOUNTSOUL ) then
+			p.freeData();
+			CloseUI(NMAINSCENECHILDTAG.PetUI);
+        	MountSoul.Entry();
         elseif (p.TagRide == tag) then
             p.clickRide();
         elseif (p.TagTrain == tag) then
@@ -378,7 +382,7 @@ function p.clickTrain()
     
     --金钱的判断
     local selectid = p.getSelectRadio();
-        
+    
     local nType = GetDataBaseDataN("mount_train_config",selectid,DB_MOUNT_TRAIN_CONFIG.TYPE);
     local nMoney = GetDataBaseDataN("mount_train_config",selectid,DB_MOUNT_TRAIN_CONFIG.PIRICE);
     
@@ -716,6 +720,9 @@ function p.OpenTutorial()
     local szAniPath = NDPath_GetAnimationPath();
     animate:ChangeSprite(szAniPath.."jiantx03.spr");
     animate:SetVisible(true);
+    --animate:SetZOrder(100);--无此方法
+    layer:RemoveChild(animate, false);
+    layer:AddChild(animate);
     
     --光效2
     local illusionLayer = p.GetIllusionLayer();
@@ -877,3 +884,27 @@ function p.refreshMoney()
 end
 
 GameDataEvent.Register(GAMEDATAEVENT.USERATTR,"PetUI.refreshMoney",p.refreshMoney);
+
+
+-- 设置兽魂按钮显示或隐藏
+function p.ShowMountSoulButton( pLayer )
+	local pBtn = GetButton( pLayer, ID_BTN_MOUNTSOUL );
+	if ( pBtn == nil ) then
+		return;
+	end
+	--
+	if ( MsgMount.RolePetInfo.star >= 21 ) and ( MainUIBottomSpeedBar.GetFuncIsOpen( 131 ) ) then --
+		pBtn:SetVisible( true );
+	else
+		pBtn:SetVisible( false );
+	end
+end
+
+-- 刷新显示兽魂按钮
+function p.RefreshDipBtnMountSoul()
+	local pLayer = p.getMainLayer();
+	if ( pLayer == nil ) then
+		return;
+	end
+	p.ShowMountSoulButton( pLayer );
+end

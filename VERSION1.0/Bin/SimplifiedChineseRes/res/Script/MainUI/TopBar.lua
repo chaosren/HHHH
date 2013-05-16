@@ -26,6 +26,7 @@ local TOOL_BTN = {
     {Tag=39,Rect=CGRectMake(305*fScalex,70*fScaley,40*fScalex,40*fScaley)},--在线礼包 
     {Tag=40,Rect=CGRectMake(265*fScalex,70*fScaley,40*fScalex,40*fScaley)},--运粮活动   
     {Tag=41,Rect=CGRectMake(225*fScalex,70*fScaley,40*fScalex,40*fScaley)},--名人堂
+    {Tag=42,Rect=CGRectMake(185*fScalex,70*fScaley,40*fScalex,40*fScaley)},--内政
 };
 
 local MAIN_UI_BUTTON_TOPUP = 17; 
@@ -225,6 +226,10 @@ function p.OnUIEvent(uiNode, uiEventType, param)
             _G.CloseMainUI();
             RankListUI.LoadUI();
             return ture;  
+        elseif TOOL_BTN[10].Tag == tag then          --内政
+            _G.CloseMainUI();
+            MsgRankList.SendDailytaskMsg(DAILYTASK_ACTION.OPEN);
+            return ture;  
         elseif ID_MAINUI_BTN_NEW_EMAIL == tag then          -- 新邮件
             _G.CloseMainUI();
             EmailList.LoadUI();
@@ -407,9 +412,11 @@ function p.RefreshFuncIsOpen()
     local btnRecharge = GetButton(topBarLayer,TOOL_BTN[6].Tag);
     local btnOL = 	GetButton(topBarLayer,TOOL_BTN[7].Tag);
     local btnDailyAct = 	GetButton(topBarLayer,TOOL_BTN[8].Tag); 
-            
+    local btnMission = 	GetButton(topBarLayer,TOOL_BTN[10].Tag);         
+    
     btnLevy:SetVisible(IsFunctionOpen(StageFunc.Levy));
     
+    btnMission:SetVisible(IsFunctionOpen(StageFunc.MISSION));
     
     local nGiftCount = #MsgActivityMix.GetGiftBackLists();
     if(nGiftCount <= 0) then
@@ -449,7 +456,8 @@ function p.AdjustToolPos()
     local btnDailyAct = GetButton(topBarLayer,TOOL_BTN[8].Tag);
     local btnRankList = GetButton(topBarLayer,TOOL_BTN[9].Tag);
     --btnRankList:SetVisible(false);
-    
+    local btnMission = GetButton(topBarLayer,TOOL_BTN[10].Tag);
+
     
     local btns = {};
     if(btnArena:IsVisibled()) then
@@ -484,7 +492,11 @@ function p.AdjustToolPos()
     if(btnRankList:IsVisibled()) then
         table.insert(btns, btnRankList);
     end
-       
+        
+    if(btnMission:IsVisibled()) then
+        table.insert(btns, btnMission);
+    end
+
     for i,v in ipairs(btns) do
         local rect = TOOL_BTN[i].Rect;
         LogInfo("x:[%d],y:[%d],w:[%d],h:[%d]",rect.origin.x,rect.origin.y,rect.size.w,rect.size.h);

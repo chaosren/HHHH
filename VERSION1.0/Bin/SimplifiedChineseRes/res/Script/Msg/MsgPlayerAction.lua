@@ -102,6 +102,9 @@ function p.MsgGetPlayerActionInfo(netdatas)
         local iType = nil;
    
         if RechargeReward.GetIfNeedDown() then
+			if RechargeReward.EventConfig == nil then
+				return;
+			end
 			 for i,v in pairs(RechargeReward.EventConfig) do
 				local id1 = v.Id;
 				local id2 = p.StrActionInfo.iDb_event_config_id;

@@ -289,7 +289,7 @@ function p.OnUIEventUseNum(nEventType, param, val)
     if(CommonDlgNew.BtnOk == nEventType) then
         LogInfo("p.OnUIEventUseNum val:[%s]",val);
         if( val == nil or val=="" ) then
-            CommonDlgNew.ShowYesDlg(GetTxtPri("RLUI_T11"));
+            CommonDlgNew.ShowYesDlg(GetTxtPri("RLUI_T13"));
             return;
         end
         MsgRankList.SendGetListInfoMsg(MsgRankList.RANKING_ACT.ATC_ACTIVITY_CODE, val);

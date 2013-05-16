@@ -334,6 +334,14 @@ GetTxtPri("SYN_D17"),
 GetTxtPri("SYN_D18"),
 GetTxtPri("SYN_D19"),
 GetTxtPri("SYN_D_NULL"),
+GetTxtPri("SYN_D17"),
+GetTxtPri("SYN_D18"),
+GetTxtPri("SYN_D19"),
+GetTxtPri("SYN_D_NULL"),
+GetTxtPri("SYN_D1901"),
+GetTxtPri("SYN_D1902"),
+GetTxtPri("SYN_D1903"),
+GetTxtPri("SYN_D_NULL"),
 }
 
 --[[     

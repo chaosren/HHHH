@@ -1791,7 +1791,8 @@ DB_PET_CONFIG=
 	REQ_VIP				=36,	-- VIPµ»º∂
 	REQ_LEVEL			=37,	
 	BODY_PIC			=38,	--半身像
-    QUALITY             =39,    --武将品质
+    QUALITY           =39,    --武将品质
+    SPIRIT            = 40,   --武魂
 };
 --++ Guosen ++-- 2012.6.2
 DB_RANK_CONFIG=
@@ -2151,4 +2152,43 @@ DB_MOUNT_SOUL_CONFIG = {
 	EXTREME_TRAIN_CRIT_ODDS		= 24,
 	EXTREME_TRAIN_CRIT_EXP		= 25,
 };
+
+
+DB_DAILYTASK_SCORE_CONFIG = {
+    ID = 0,
+    SCORE = 1,
+    TYPE = 2,
+    DATA1 = 3,
+    DATA2 = 4,
+}
+
+DB_DAILYTASK_CONFIG = {
+    ID = 0,
+    COMBO_TYPE = 1,
+    REQ_LEVEL = 2,
+    BASE_VALUE = 3,
+    GROW_VALUE = 4,
+    COMMENT = 5,
+    TYPE_NAME = 6,
+}
+
+DB_DAILYTASK_LEVEL_CONFIG = {
+    ID = 0,
+    APPEAR_ODDS = 1,
+    SCORE = 2,
+    MONEY = 3,
+    MONEY_ODDS = 4,
+    REPUTE = 5,
+    REPUTE_ODDS = 6,
+    SOPH = 7,
+    SOPH_ODDS = 8,
+    STAMINA = 9,
+    STAMINA_ODDS = 10,
+    ITEMTYPE = 11,
+    ITEMTYPE_COUNT = 12,
+    ITEMTYPE_ODDS = 13,
+    DAILYTASK_NUM = 14,
+    DAILYTASK_NUM_ODDS = 15,
+}
+
 

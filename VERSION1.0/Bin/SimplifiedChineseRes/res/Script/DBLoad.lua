@@ -76,3 +76,9 @@ LoadDataBaseTable("daofa_config","daofa_configTable");
 LoadDataBaseTable("stamina_config","stamina_configTable");
 
 LoadDataBaseTable("mount_soul_config", "mount_soul_configTable");
+
+
+LoadDataBaseTable("dailytask_config","dailytask_configTable");
+LoadDataBaseTable("dailytask_score_config","dailytask_score_configTable");
+LoadDataBaseTable("dailytask_level_config","dailytask_level_configTable");
+

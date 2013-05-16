@@ -119,4 +119,212 @@ function p.ProcessGetListInfo(netdata)
 end
 
 
+
+
+DAILYTASK_ACTION = {
+    OPEN = 1,               --打开界面
+    REFRESH_TASK = 2,       --刷新任务
+    REFRESH_COMBO = 3,      --刷新政绩
+    GET_SCORE_PRIZE = 4,    --获取积分
+    UPDATE_TASK = 5,        --升级任务
+    GIVEUP_TASK = 6,        --放弃任务
+    ACCEPT_TASK = 7,        --接受任务
+    FINISH_TASK = 8,        --完成任务
+    FAST_FINISH_TASK = 9,   --立即完成
+    USER_COMBO_IFNO = 10,   --积分信息
+    USER_TASK_INFO = 11,    --任务信息
+    USER_STATIC_INFO = 12,  --服务端静态数据
+    GIFT_RESPONE = 13,      --礼包反馈
+    REFRESH_COMBOXDOME  = 14,--完成combo
+}
+
+function p.SendDailytaskMsg( nAction, nData )
+    LogInfo("p.SendDailytaskMsg nAction:[%d]",nAction);
+    ShowLoadBar();
+    local netdata = createNDTransData(NMSG_Type._MSG_DAILYTASK);
+    if nil == netdata then
+        return false;
+    end
+    netdata:WriteByte(nAction);
+    
+    if(DAILYTASK_ACTION.GET_SCORE_PRIZE == nAction or DAILYTASK_ACTION.ACCEPT_TASK == nAction or DAILYTASK_ACTION.UPDATE_TASK == nAction) then
+        netdata:WriteByte(nData);
+    end
+    
+    SendMsg(netdata);
+    netdata:Free();
+    return true;
+end
+
+
+p.ComboInfo = nil;
+p.TaskInfo = nil;
+p.StaticInfo = nil;
+
+function p.GetComboInfo()
+    return p.ComboInfo;
+end
+
+function p.GetTaskInfo()
+    return p.TaskInfo;
+end
+
+function p.GetStaticInfo()
+    return p.StaticInfo;
+end
+
+function p.ProcessSendDailytaskMsg(netdata) 
+    LogInfo("p.ProcessGetListInfo");
+    local nAction = netdata:ReadByte();
+    LogInfo("nAction:[%d]",nAction);
+    
+    if(nAction == DAILYTASK_ACTION.OPEN) then
+        MissionUI.LoadUI();
+    elseif(nAction == DAILYTASK_ACTION.REFRESH_TASK) then
+        
+    elseif(nAction == DAILYTASK_ACTION.REFRESH_COMBO) then
+        
+    elseif(nAction == DAILYTASK_ACTION.GET_SCORE_PRIZE) then
+        
+    elseif(nAction == DAILYTASK_ACTION.UPDATE_TASK) then
+        
+    elseif(nAction == DAILYTASK_ACTION.GIVEUP_TASK) then
+        
+    elseif(nAction == DAILYTASK_ACTION.ACCEPT_TASK) then
+        
+    elseif(nAction == DAILYTASK_ACTION.FINISH_TASK) then
+        
+    elseif(nAction == DAILYTASK_ACTION.FAST_FINISH_TASK) then
+        
+    elseif(nAction == DAILYTASK_ACTION.USER_COMBO_IFNO) then
+        p.ComboInfo = {};
+        p.ComboInfo.nComboSelect = netdata:ReadInt();
+        p.ComboInfo.nComboxDone = netdata:ReadInt();
+        p.ComboInfo.nUserScore = netdata:ReadInt();
+        p.ComboInfo.nScorePrize = netdata:ReadInt();
+        
+        LogInfo("nComboSelect:[%d],nComboxDone:[%d],nUserScore:[%d],nScorePrize:[%d]",p.ComboInfo.nComboSelect,p.ComboInfo.nComboxDone,p.ComboInfo.nUserScore,p.ComboInfo.nScorePrize);
+        
+        MissionUI.RefreshCombo();
+    elseif(nAction == DAILYTASK_ACTION.USER_TASK_INFO) then
+        p.TaskInfo = {};
+        p.TaskInfo.nDoneTaskNum = netdata:ReadInt();
+        p.TaskInfo.nTaskType = netdata:ReadInt();
+        p.TaskInfo.nTaskStatus = netdata:ReadInt();
+        p.TaskInfo.nTaskTask = netdata:ReadInt();
+        p.TaskInfo.nDoItemCount = netdata:ReadInt();
+
+        p.TaskInfo.nTaskSelect1 = netdata:ReadInt();
+        p.TaskInfo.nTaskSelect2 = netdata:ReadInt();
+        p.TaskInfo.nTaskSelect3 = netdata:ReadInt();
+        p.TaskInfo.nTaskSelect4 = netdata:ReadInt();
+        
+        p.TaskInfo.nTaskType1 = netdata:ReadInt();
+        p.TaskInfo.nTaskType2 = netdata:ReadInt();
+        p.TaskInfo.nTaskType3 = netdata:ReadInt();
+        p.TaskInfo.nTaskType4 = netdata:ReadInt();
+        
+        LogInfo("p.TaskInfo.nTaskTask:[%d]",p.TaskInfo.nTaskTask);
+        LogInfo("nDoneTaskNum:[%d],nTaskType:[%d],nTaskStatus:[%d],nDoItemCount:[%d],nTaskSelect1:[%d],nTaskSelect2:[%d],nTaskSelect3:[%d],nTaskSelect4:[%d]",p.TaskInfo.nDoneTaskNum,p.TaskInfo.nTaskType,p.TaskInfo.nTaskStatus,p.TaskInfo.nTaskStatus,p.TaskInfo.nTaskStatus,p.TaskInfo.nDoItemCount,p.TaskInfo.nTaskSelect1,p.TaskInfo.nTaskSelect2,p.TaskInfo.nTaskSelect3,p.TaskInfo.nTaskSelect4);
+        
+        
+        MissionUI.RefreshTask();
+    elseif(nAction == DAILYTASK_ACTION.USER_STATIC_INFO) then
+        p.StaticInfo = {};
+        p.StaticInfo.nMaxTaskNum = netdata:ReadInt();           --最大任务数量
+        p.StaticInfo.nRandomTaskNum = netdata:ReadInt();        --
+        p.StaticInfo.nMasTaskLevel = netdata:ReadInt();
+        p.StaticInfo.nRefreshTaskEmoney = netdata:ReadInt();
+        p.StaticInfo.nUpdateTaskEmoney = netdata:ReadInt();
+        p.StaticInfo.nFastFinishEmoney = netdata:ReadInt();
+        p.StaticInfo.nRefreshComboEmoney = netdata:ReadInt();
+        p.StaticInfo.nComboAwardScore1 = netdata:ReadInt();
+        p.StaticInfo.nComboAwardScore2 = netdata:ReadInt();
+        p.StaticInfo.nComboAwardScore3 = netdata:ReadInt();
+        p.StaticInfo.nComboAwardScore4 = netdata:ReadInt();
+    elseif(nAction == DAILYTASK_ACTION.GIFT_RESPONE) then
+        
+        local infos = {};
+        local nYinBi = netdata:ReadInt();
+        local nJinBi = netdata:ReadInt();
+        local nRepute = netdata:ReadInt();
+        local nStamina = netdata:ReadInt();
+        local nSoph = netdata:ReadInt();
+        local nExp = netdata:ReadInt();
+        
+        local nSpirit = netdata:ReadInt();
+        local nScore = netdata:ReadInt();
+        local nTaskNum = netdata:ReadInt();
+        
+        if(nYinBi>0) then
+            table.insert(infos,{string.format(GetTxtPub("coin").." +%d",nYinBi),FontColor.Silver});
+        end
+        if(nJinBi>0) then
+            table.insert(infos,{string.format(GetTxtPub("shoe").." +%d",nJinBi),FontColor.Coin});
+        end
+        if(nRepute>0) then
+            table.insert(infos,{string.format(GetTxtPub("ShenWan").." +%d",nRepute),FontColor.Reput});
+        end
+        if(nStamina>0) then
+            table.insert(infos,{string.format(GetTxtPub("Stamina").." +%d",nStamina),FontColor.Stamina});
+        end
+        if(nSoph>0) then
+            table.insert(infos,{string.format(GetTxtPub("JianHun").." +%d",nSoph),FontColor.Soul});
+        end
+        if(nExp>0) then
+            table.insert(infos,{string.format(GetTxtPub("exp").." +%d",nExp),FontColor.Exp});
+        end
+        
+        if(nSpirit>0) then
+            table.insert(infos,{string.format(GetTxtPri("ZJ_T19").." +%d",nSpirit),FontColor.Spirit});
+        end
+        if(nScore>0) then
+            table.insert(infos,{string.format(GetTxtPri("ZJ_T20").." +%d",nScore),FontColor.Score});
+        end
+        if(nTaskNum>0) then
+            table.insert(infos,{string.format(GetTxtPri("ZJ_T21").." +%d",nTaskNum),FontColor.TaskNum});
+        end
+
+        
+        LogInfo("nYinBi:[%d],nJinBi:[%d],nRepute:[%d],nStamina:[%d],nSoph:[%d],nExp:[%d]",nYinBi,nJinBi,nRepute,nStamina,nSoph,nExp);
+        
+        local nItemCount = netdata:ReadInt();
+        
+        LogInfo("nItemCount:[%d]",nItemCount);
+        
+        for i=1,nItemCount do
+            local nItemType = netdata:ReadInt();
+            local nNum = netdata:ReadInt();
+            if(nNum>0) then
+                local n7 = Num7(nItemType);
+                local n8 = Num8(nItemType);
+                
+                if(n7 == 3 and n8 == 0) then
+                    table.insert(infos,{string.format(ItemFunc.GetName(nItemType).." x%d",nNum),ItemFunc.GetDaoFaItemColor(nItemType)});
+                else
+                    table.insert(infos,{string.format(ItemFunc.GetName(nItemType).." x%d",nNum),ItemFunc.GetItemColor(nItemType)});
+                end
+            end
+        end
+        
+        CommonDlgNew.ShowTipsDlg(infos);
+    elseif(nAction == DAILYTASK_ACTION.REFRESH_COMBOXDOME) then
+        p.ComboInfo.nComboxDone = netdata:ReadInt();
+        
+        LogInfo("DAILYTASK_ACTION.REFRESH_COMBOXDOME p.ComboInfo.nComboxDone:[%d]",p.ComboInfo.nComboxDone);
+        
+        local nScore = netdata:ReadInt();
+        MissionUI.RefreshCombo();
+        MissionUI.SetAward(nScore);
+    end
+    
+    CloseLoadBar();
+end
+
+
+
+RegisterNetMsgHandler(NMSG_Type._MSG_DAILYTASK, "p.ProcessSendDailytaskMsg", p.ProcessSendDailytaskMsg);
+
+
+
 RegisterNetMsgHandler(NMSG_Type._MSG_RANKING, "p.ProcessGetListInfo", p.ProcessGetListInfo);
