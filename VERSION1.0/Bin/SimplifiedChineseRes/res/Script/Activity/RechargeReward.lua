@@ -8,7 +8,8 @@ local p = RechargeReward;
 
 
 
-p.UiCtr = {btnClose = 533, btnGet = 24, btnRecharge = 26, contText = 23, timeText = 27, broadText = 22, awardText = 34, rightListTitleText = 31,};
+p.UiCtr = {btnClose = 533, btnGet = 24, btnRecharge = 26, contText = 23, timeText = 27, broadText = 22, awardText = 34, 
+rightListTitleText = 31,};
 
 p.UiList = {ListLeft = {ListContaner = nil, ListCtrId = 20, btnId = 2, crtlText = 3, CurFocus = 1,}, 
                    ListRight = {ListContaner = nil, ListCtrId = 30, btnId = 4, crtlText = 3, CurFocus = 1, listTitle = 31, }};
@@ -362,10 +363,13 @@ function p.SetLeftListFocus(nIndex)
         return;
     end
     SetLabel(layer, p.UiCtr.contText, Info.Content);
-    SetLabel(layer, p.UiCtr.broadText, Info.Broad);  
-    
+    SetLabel(layer, p.UiCtr.broadText, Info.Broad);    
 	if Info.Type ==  p.ActionType.VIP_RETURN  then -- vip累计礼包
 		SetLabel(layer, p.UiCtr.rightListTitleText, GetTxtPub("vip_grade")); 
+	elseif Info.Type ==  p.ActionType.DAILY_RETURN  then -- 每日返还
+		SetLabel(layer, p.UiCtr.rightListTitleText, GetTxtPri("recharge_num")); 
+	elseif Info.Type ==  p.ActionType.ONLINE_RETURN  then -- 在线返还
+		SetLabel(layer, p.UiCtr.rightListTitleText, GetTxtPri("recharge_num")); 		
 	else
 		SetLabel(layer, p.UiCtr.rightListTitleText, Info.Name .. GetTxtPub("shoe")); 
 	end    
@@ -573,7 +577,7 @@ function p.refreshRightListViewItem(view, iNum)
     btn:SetParam1(iNum);   
     
     local  Textlabel = GetLabel(view, p.UiList.ListRight.crtlText); 
-    Textlabel:SetFontColor(ccc4(255,255,255, 255));
+    --Textlabel:SetFontColor(ccc4(255,255,255, 255));
     
     return;
 end

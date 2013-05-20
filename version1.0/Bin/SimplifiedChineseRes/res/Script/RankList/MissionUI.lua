@@ -276,7 +276,7 @@ function p.ViewInfo()
     containter:RemoveAllView();
     containter:EnableScrollBar(true);
     local size = containter:GetFrameRect().size;
-    containter:SetViewSize(CGSizeMake(size.w,24));
+    containter:SetViewSize(CGSizeMake(size.w, 24*CoordScaleY_960));
 	for i,v in ipairs(DesInfos2) do
         local view = createUIScrollView();
         view:Init(false);
@@ -289,7 +289,7 @@ function p.ViewInfo()
         containter:AddView(view);
         
         --local pLabelTips = _G.CreateColorLabel( v, 10, size.w );
-        local pLabelTips = CreateLabel(v,CGRectMake(0,0,size.w,24),12,ccc4(255,255,255,255));
+        local pLabelTips = CreateLabel(v,CGRectMake(0, 0, size.w, 24*CoordScaleY_960), 12, ccc4(255,255,255,255));
         view:AddChild(pLabelTips);
     end
     
@@ -690,7 +690,14 @@ function p.RefreshOneTask(nt, ntType, nIdx)
     local nBigType = GetDataBaseDataN("dailytask_config", nType, DB_DAILYTASK_CONFIG.COMBO_TYPE);
     local sName = GetDataBaseDataS("dailytask_config", nType, DB_DAILYTASK_CONFIG.TYPE_NAME);
     local sDes = GetDataBaseDataS("dailytask_config", nType, DB_DAILYTASK_CONFIG.COMMENT);
-    local nCount = nLevel*GetDataBaseDataN("dailytask_config", nType, DB_DAILYTASK_CONFIG.GROW_VALUE)+GetDataBaseDataN("dailytask_config", nType, DB_DAILYTASK_CONFIG.BASE_VALUE);
+	
+	local nGrowValue = GetDataBaseDataN("dailytask_config", nType, DB_DAILYTASK_CONFIG.GROW_VALUE);
+	local nBaseValue = GetDataBaseDataN("dailytask_config", nType, DB_DAILYTASK_CONFIG.BASE_VALUE);
+	if nBaseValue > 1000000 then
+		nBaseValue = nBaseValue - 4294967296;
+	end
+	
+    local nCount = nLevel*nGrowValue+nBaseValue;
 
     local nScore =  GetDataBaseDataN("dailytask_level_config", nLevel, DB_DAILYTASK_LEVEL_CONFIG.SCORE);
     
@@ -749,7 +756,16 @@ function p.RefreshTask02()
     local nBigType = GetDataBaseDataN("dailytask_config", nType, DB_DAILYTASK_CONFIG.COMBO_TYPE);
     local sName = GetDataBaseDataS("dailytask_config", nType, DB_DAILYTASK_CONFIG.TYPE_NAME);
     local sDes = GetDataBaseDataS("dailytask_config", nType, DB_DAILYTASK_CONFIG.COMMENT);
-    local nCount = nLevel*GetDataBaseDataN("dailytask_config", nType, DB_DAILYTASK_CONFIG.GROW_VALUE)+GetDataBaseDataN("dailytask_config", nType, DB_DAILYTASK_CONFIG.BASE_VALUE);
+    
+    local nGrowValue = GetDataBaseDataN("dailytask_config", nType, DB_DAILYTASK_CONFIG.GROW_VALUE);
+	local nBaseValue = GetDataBaseDataN("dailytask_config", nType, DB_DAILYTASK_CONFIG.BASE_VALUE);
+	if nBaseValue > 1000000 then
+		nBaseValue = nBaseValue - 4294967296;
+	end
+	
+    local nCount = nLevel*nGrowValue+nBaseValue;
+   
+   -- local nCount = nLevel*GetDataBaseDataN("dailytask_config", nType, DB_DAILYTASK_CONFIG.GROW_VALUE)+GetDataBaseDataN("dailytask_config", nType, DB_DAILYTASK_CONFIG.BASE_VALUE);
     local nScore =  GetDataBaseDataN("dailytask_level_config", nLevel, DB_DAILYTASK_LEVEL_CONFIG.SCORE);
     
     

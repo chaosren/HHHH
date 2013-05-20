@@ -630,19 +630,19 @@ function p.InitPetInfoUI( pLayerInfor, tPetInfor )
 	elseif ( nPos == 1 or nPos == 0 ) then
 		-- 力量
 		value = RolePet.GetTotalPhy( nPetID );
-		SetLabel( pLayerTips, ID_TIPS_LABEL_PET_STR, SafeN2S(value) );
+		SetLabel( pLayerInfor, ID_TIPS_LABEL_PET_STR, SafeN2S(value) );
 		
 		-- 敏捷
 		value = RolePet.GetPetInfoN( nPetID, PET_ATTR.PET_ATTR_DEX );
-		SetLabel( pLayerTips, ID_TIPS_LABEL_PET_AGI, SafeN2S(value) );
+		SetLabel( pLayerInfor, ID_TIPS_LABEL_PET_AGI, SafeN2S(value) );
 		
 		-- 智力
 		value = RolePet.GetTotalMagic( nPetID );
-		SetLabel( pLayerTips, ID_TIPS_LABEL_PET_INT, SafeN2S(value) );
+		SetLabel( pLayerInfor, ID_TIPS_LABEL_PET_INT, SafeN2S(value) );
 		
 		-- 生命
 		value = RolePet.GetPetInfoN( nPetID, PET_ATTR.PET_ATTR_LIFE_LIMIT );
-		SetLabel( pLayerTips, ID_TIPS_LABEL_PET_HP, value );
+		SetLabel( pLayerInfor, ID_TIPS_LABEL_PET_HP, SafeN2S(value) );
 	end
 
 	-- 力量加成

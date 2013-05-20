@@ -1865,6 +1865,78 @@
 				RelativePath="..\Bin\SimplifiedChineseRes\res\UI\VIPgift_2_L.ini"
 				>
 			</File>
+			<Filter
+				Name="mission"
+				>
+				<File
+					RelativePath="..\Bin\SimplifiedChineseRes\res\UI\mission\mission.ini"
+					>
+				</File>
+				<File
+					RelativePath="..\Bin\SimplifiedChineseRes\res\UI\mission\mission_1.ini"
+					>
+				</File>
+				<File
+					RelativePath="..\Bin\SimplifiedChineseRes\res\UI\mission\mission_2.ini"
+					>
+				</File>
+				<File
+					RelativePath="..\Bin\SimplifiedChineseRes\res\UI\mission\missionl_Intro.ini"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="ArmyGroupBattle"
+				>
+				<File
+					RelativePath="..\Bin\SimplifiedChineseRes\res\UI\ArmyGroupBattle\ArmyGroupBattle.ini"
+					>
+				</File>
+				<File
+					RelativePath="..\Bin\SimplifiedChineseRes\res\UI\ArmyGroupBattle\ArmyGroupBattle_L_1.ini"
+					>
+				</File>
+				<File
+					RelativePath="..\Bin\SimplifiedChineseRes\res\UI\ArmyGroupBattle\ArmyGroupBattle_L_2_L.ini"
+					>
+				</File>
+				<File
+					RelativePath="..\Bin\SimplifiedChineseRes\res\UI\ArmyGroupBattle\ArmyGroupBattle_L_3.ini"
+					>
+				</File>
+				<File
+					RelativePath="..\Bin\SimplifiedChineseRes\res\UI\ArmyGroupBattle\ArmyGroupBattleApply.ini"
+					>
+				</File>
+				<File
+					RelativePath="..\Bin\SimplifiedChineseRes\res\UI\ArmyGroupBattle\ArmyGroupBattleApply_L.ini"
+					>
+				</File>
+				<File
+					RelativePath="..\Bin\SimplifiedChineseRes\res\UI\ArmyGroupBattle\ArmyGroupBattleReport.ini"
+					>
+				</File>
+				<File
+					RelativePath="..\Bin\SimplifiedChineseRes\res\UI\ArmyGroupBattle\ArmyGroupBattleReport_L.ini"
+					>
+				</File>
+				<File
+					RelativePath="..\Bin\SimplifiedChineseRes\res\UI\ArmyGroupBattle\ArmyGroupBattleSchedule.ini"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="Warlord"
+				>
+				<File
+					RelativePath="..\Bin\SimplifiedChineseRes\res\UI\Warlord\PetInfo.ini"
+					>
+				</File>
+				<File
+					RelativePath="..\Bin\SimplifiedChineseRes\res\UI\Warlord\Warlord.ini"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="TreasureHunt"
@@ -1895,6 +1967,38 @@
 			</File>
 			<File
 				RelativePath="..\Bin\SimplifiedChineseRes\res\Script\MountSoul\MsgMountSoul.lua"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="RankList"
+			>
+			<File
+				RelativePath="..\Bin\SimplifiedChineseRes\res\Script\RankList\define.lua"
+				>
+			</File>
+			<File
+				RelativePath="..\Bin\SimplifiedChineseRes\res\Script\RankList\MissionUI.lua"
+				>
+			</File>
+			<File
+				RelativePath="..\Bin\SimplifiedChineseRes\res\Script\RankList\RankListUI.lua"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="Warlord"
+			>
+			<File
+				RelativePath="..\Bin\SimplifiedChineseRes\res\Script\Warlord\define.lua"
+				>
+			</File>
+			<File
+				RelativePath="..\Bin\SimplifiedChineseRes\res\Script\Warlord\MsgWarlord.lua"
+				>
+			</File>
+			<File
+				RelativePath="..\Bin\SimplifiedChineseRes\res\Script\Warlord\Warlord.lua"
 				>
 			</File>
 		</Filter>
