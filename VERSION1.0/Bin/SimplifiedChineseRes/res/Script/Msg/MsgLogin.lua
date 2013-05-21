@@ -131,6 +131,12 @@ function p.ProcessNotifyClient(netdata)
         --Login_RegRoleUI.LoadUI();
         LogInfo("名字非法!");
         CommonDlgNew.ShowTipDlg(GetTxtPri("ML_T10"),2);
+    elseif ret == 4 then
+        --名字非法
+        --g_Create_Role_Reason = 1;
+        --Login_RegRoleUI.LoadUI();
+        LogInfo("名字必须为1到5个汉字或1到10个英文字符!");
+        CommonDlgNew.ShowTipDlg(GetTxtPri("ML_T11"),2);   
     end
     return true
 end

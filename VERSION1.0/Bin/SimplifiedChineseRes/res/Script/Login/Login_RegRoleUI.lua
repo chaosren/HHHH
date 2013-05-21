@@ -171,7 +171,7 @@ function p.InitUI()
     local pNameEditUiNode = RecursiveUINode(p.getUiLayer(),{ID_ROLE_EDIT_NAME});
     local pNameEdit = ConverToEdit(pNameEditUiNode);
     if CheckP(pNameEdit) then
-        pNameEdit:SetMaxLength(5);
+        pNameEdit:SetMaxLength(55);
         pNameEdit:SetMinLength(2);
     end
 
