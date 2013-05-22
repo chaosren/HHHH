@@ -13,7 +13,7 @@ local container	=nil;
 local scroll	=nil;
 local contentHight=0;
 
-local gRectScaleY = 0.225;
+local gRectScaleY = 0.25;
 --延迟显示ui时间
 p.mTimerTaskTag = nil;
 
@@ -143,9 +143,9 @@ function p.AddChatText(speakerId,channel,speaker,text,nindex)
 		chatText:SetContent(speakerId,channel,speaker,text,1,6,color);
 		chatText:SetTag(nindex);
 		--chatText:SetContent(speakerId,channel,speaker,text,1,6,ccc4(0,0,255,255));
-		local rect  = CGRectMake(0, contentHight, winsize.w*0.7, winsize.h*0.05); 
+		local rect  = CGRectMake(0, contentHight, winsize.w*0.7, winsize.h*gRectScaleY/5); 
 		chatText:SetFrameRect(rect);
-		contentHight=contentHight+winsize.h*gRectScaleY/5.0; --chatText:GetContentHeight();
+		contentHight=contentHight+chatText:GetContentHeight();
 		
 		LogInfo("gamescene chat AddChatText3")
 		

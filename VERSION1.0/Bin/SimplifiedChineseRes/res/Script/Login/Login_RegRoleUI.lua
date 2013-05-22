@@ -171,7 +171,7 @@ function p.InitUI()
     local pNameEditUiNode = RecursiveUINode(p.getUiLayer(),{ID_ROLE_EDIT_NAME});
     local pNameEdit = ConverToEdit(pNameEditUiNode);
     if CheckP(pNameEdit) then
-        pNameEdit:SetMaxLength(55);
+        pNameEdit:SetMaxLength(9);
         pNameEdit:SetMinLength(2);
     end
 
@@ -201,6 +201,7 @@ function p.OnUIEvent(uiNode, uiEventType, param)
 	local tag = uiNode:GetTag();
 	if uiEventType == NUIEventType.TE_TOUCH_BTN_CLICK then
         if tag == ID_ROLE_START_GAME then
+			p.Name = "总共有十一个汉字的名字";
             --检查
             if nil == p.Name then
                 --报提示
