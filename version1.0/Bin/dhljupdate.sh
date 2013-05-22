@@ -28,10 +28,10 @@ if test -f "del.txt"
 then
 cp del.txt update_dir/
 fi
-grep -i .lua add.txt|sed -e "s/SimplifiedChineseRes/update_dir\/SimplifiedChineseRes/g" >add_grep_lua.txt
+grep -i '\.lua$' add.txt|sed -e "s/SimplifiedChineseRes/update_dir\/SimplifiedChineseRes/g" >add_grep_lua.txt
 #过滤DBData文件夹的数据，这部分文件不进行加密
-grep -i .ini add.txt|sed -e "s/SimplifiedChineseRes/update_dir\/SimplifiedChineseRes/g"|grep -v "/DBData"|grep -v "version.ini" >add_grep_ini.txt
-grep -i .png add.txt|sed -e "s/SimplifiedChineseRes/update_dir\/SimplifiedChineseRes/g" >add_grep_png.txt
+grep -i '\.ini$' add.txt|sed -e "s/SimplifiedChineseRes/update_dir\/SimplifiedChineseRes/g"|grep -v "/DBData"|grep -v "version.ini" >add_grep_ini.txt
+grep -i '\.png$' add.txt|sed -e "s/SimplifiedChineseRes/update_dir\/SimplifiedChineseRes/g" >add_grep_png.txt
 echo "开始编译lua文件:"
 if test -f "add_grep_lua.txt"
 then
