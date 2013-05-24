@@ -317,16 +317,23 @@ function p.OnUIEventTask02(uiNode, uiEventType, param)
     if uiEventType == NUIEventType.TE_TOUCH_BTN_CLICK then
         if(tag == TAG_LJWC) then
             
-            local pTaskInfo = MsgRankList.GetTaskInfo();
-            local nLevel = Num1(pTaskInfo.nTaskType);
-            local nType = math.floor(pTaskInfo.nTaskType/10);
-            local nCount = nLevel*GetDataBaseDataN("dailytask_config", nType, DB_DAILYTASK_CONFIG.GROW_VALUE)+GetDataBaseDataN("dailytask_config", nType, DB_DAILYTASK_CONFIG.BASE_VALUE);
+			local pTaskInfo = MsgRankList.GetTaskInfo();
+			local nLevel = Num1(pTaskInfo.nTaskType);
+			local nType = math.floor(pTaskInfo.nTaskType/10);
+            
+			local nGrowValue = GetDataBaseDataN("dailytask_config", nType, DB_DAILYTASK_CONFIG.GROW_VALUE);
+			local nBaseValue = GetDataBaseDataN("dailytask_config", nType, DB_DAILYTASK_CONFIG.BASE_VALUE);
+			if nBaseValue > 1000000 then
+				nBaseValue = nBaseValue - 4294967296;
+			end
 
-            if(pTaskInfo.nDoItemCount>=nCount) then
-                MsgRankList.SendDailytaskMsg(DAILYTASK_ACTION.FINISH_TASK);
-            else
-                p.FastTaskTip();
-            end
+			local nCount = nLevel*nGrowValue+nBaseValue;  
+            
+			if(pTaskInfo.nDoItemCount>=nCount) then
+				MsgRankList.SendDailytaskMsg(DAILYTASK_ACTION.FINISH_TASK);
+			else
+				p.FastTaskTip();
+			end
             
         elseif(tag == TAG_FQRW) then
             p.FQRWTip();
