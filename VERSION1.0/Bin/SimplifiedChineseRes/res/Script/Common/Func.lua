@@ -294,6 +294,7 @@ StageFunc = {
     RepeatCoyp = 541,       --副本扫荡
     Sign = 0;     --每日签到
     Recharge = 0; --充值礼包
+    MISSION = 581; --充值礼包
 };
 
 
@@ -410,5 +411,22 @@ function GetDaoFaOpenLevel()
     local nEMoney = GetDataBaseDataN("daofa_static_config",DB_DAOFA_STATIC_CONFIG_ID.DAOFA_OPEN_LEVEL,DB_DAOFA_STATIC_CONFIG.VALUE);
     
     return nEMoney;
+end
+
+function GetVipLevel2( nType )
+    local nVip = GetDataBaseDataN("vip_static_config",nType,DB_VIP_STATUC_COFIG.VIP);
+    local nLevel = GetDataBaseDataN("vip_static_config",nType,DB_VIP_STATUC_COFIG.LEVLE);
+    
+    local btVipLevel = GetRoleBasicDataN(GetPlayerId(),USER_ATTR.USER_ATTR_VIP_RANK);
+    
+    
+    local nPlayerId     = GetPlayerId();
+    local mainpetid 	= RolePetUser.GetMainPetId(nPlayerId);
+    local btLevel			= _G.SafeS2N(RolePetFunc.GetPropDesc(mainpetid, PET_ATTR.PET_ATTR_LEVEL));
+    
+    LogInfo("nVip:[%d],nLevel:[%d],btVipLevel:[%d],btLevel:[%d]",nVip,nLevel,btVipLevel,btLevel);
+    
+    
+    return nVip,nLevel,btVipLevel>=nVip,btLevel>=nLevel;
 end
 

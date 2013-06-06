@@ -11,6 +11,7 @@ local MSG_PET_SHOP_ACT_BUY			=1; --初次招募
 local MSG_PET_SHOP_ACT_BUY_BACK		=2;	--归队
 local MSG_PET_SHOP_ACT_DROP			=3;	--离队
 local MSG_PET_SHOP_ACT_BUY_GOLD		=4; --直接用金币购买
+local MSG_PET_SHOP_ACT_BUY_SPIRIT		=5; --
 
 function p.SendPetLeaveAction(nPetId)
 	p.SendShopPetAction(nPetId, MSG_PET_SHOP_ACT_DROP);
@@ -38,14 +39,20 @@ end
 
 
 -- 银币购买
-function p.SendBuyPet(nPetId)
-	return p.SendShopPetAction(nPetId, MSG_PET_SHOP_ACT_BUY);
+function p.SendBuyPet(nPetTypeId)
+	return p.SendShopPetAction(nPetTypeId, MSG_PET_SHOP_ACT_BUY);
 end
 
 -- 金币购买
-function p.SendBuyPetWithGold(nPetId)
-	return p.SendShopPetAction(nPetId, MSG_PET_SHOP_ACT_BUY_GOLD);
+function p.SendBuyPetWithGold(nPetTypeId)
+	return p.SendShopPetAction(nPetTypeId, MSG_PET_SHOP_ACT_BUY_GOLD);
 end
+
+-- 武魂购买
+function p.SendBuyPetWithSpirit(nPetTypeId)
+	return p.SendShopPetAction(nPetTypeId, MSG_PET_SHOP_ACT_BUY_SPIRIT);
+end
+
 
 function p.SendImpartPet(idPet,idTarget,vip)
 	if not CheckN(idPet) or not CheckN(idTarget) or not CheckN(vip) then
@@ -269,6 +276,10 @@ function p.ProcessPetInfo(netdata)
     		if ( pLayer ~= nil and pLayer:IsVisibled() ) then
 				PlayEffectAnimation.ShowAnimation(2);
     			Music.PlayEffectSound(Music.SoundEffect.LEVUP);
+                
+                --Buff刷新
+                Buff.SendRequest();
+        
     		else
     			p.bShowLevelUpAnimation = true;--先置状态到特定界面里播放++Guosen 2012.8.6 有待判定战斗中
     		end
@@ -344,6 +355,9 @@ function p.ProcessPetInfoUpdate(netdata)
 			PlayEffectAnimation.ShowAnimation(2);
 			--成功音效    
     		Music.PlayEffectSound(Music.SoundEffect.LEVUP);
+    		
+    		--Buff刷新
+    		Buff.SendRequest();
 		end
 		
 		--主角切换技能
@@ -369,7 +383,14 @@ function p.ProcessPetShop(netdata)
     if( btAction == MSG_PET_SHOP_ACT_BUY or btAction == MSG_PET_SHOP_ACT_BUY_BACK ) then
         --PlayEffectAnimation.ShowAnimation(6);
 		if ( GetSMGameScene() ~= nil ) then
-			RoleInvite.InviteSucess( btAction, nPetId  );
+            local nPetType	= RolePet.GetPetInfoN( nPetId, PET_ATTR.PET_ATTR_TYPE );
+			local nCamp		= GetDataBaseDataN( "pet_config", nPetType, DB_PET_CONFIG.CAMP );
+			if ( nCamp == 80 ) then--战神类型
+				Warlord.InviteSucess( btAction, nPetId  );
+			else
+				RoleInvite.InviteSucess( btAction, nPetId  );
+			end
+
     	    --音效
     	    Music.PlayEffectSound(Music.SoundEffect.RECRUIT);
     	    --引导任务事件触发

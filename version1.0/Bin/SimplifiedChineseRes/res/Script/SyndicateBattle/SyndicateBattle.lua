@@ -553,7 +553,7 @@ function p.updateCount(restCount)
 			CDlabel:SetTitle(FormatTime(restCount,1));
 			CDlabel:SetChecked( false );
 		else
-			CDlabel:SetTitle(GetTxtPri("SYN_D28"));
+			CDlabel:SetTitle(GetTxtPri("SYN_D28").."...");
 			CDlabel:SetChecked( true );
 		end
 	end
@@ -1153,10 +1153,12 @@ GetTxtPri("CB2_T28"),
 GetTxtPri("CB2_T29"),GetTxtPri("CB2_T291"),GetTxtPri("CB2_T292"),
 GetTxtPri("CB2_T30"),
 GetTxtPri("CB2_T31"),
-GetTxtPri("CB2_T32"),
 GetTxtPri("CB2_T33"),
 GetTxtPri("CB2_T34"),
-GetTxtPri("CB2_T35"),GetTxtPri("CB2_T351"),GetTxtPri("CB2_T352"),
+GetTxtPri("CB2_T35"),
+GetTxtPri("CB2_T352"),
+GetTxtPri("CB2_T4211"),
+GetTxtPri("CB2_T4311"),
 }
 
 local Tiptag = 9998;
@@ -1761,10 +1763,10 @@ end
 
 p.SignUpList = {}
 -----------------报名---------------------
-function p.SignUpInfo(signUpList,nLeftTime,nArmyGroupLev)	
+function p.SignUpInfo(signUpList,nLeftTime,nArmyGroupLev,nRank)
 	p.SignUpList = signUpList;
 	LogInfo("qboy SignUpInfo n:"..table.getn(signUpList));
-	SyndicateBattleSignUpUI.LoadUI(signUpList,nLeftTime,nArmyGroupLev);
+	SyndicateBattleSignUpUI.LoadUI(signUpList,nLeftTime,nArmyGroupLev,nRank);
 end
 
 

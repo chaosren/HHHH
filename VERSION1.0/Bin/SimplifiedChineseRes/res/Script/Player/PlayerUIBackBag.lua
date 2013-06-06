@@ -455,13 +455,6 @@ function p.LoadUI(tab,nPetId)
         p.ShowPetInfo(nPetId);
     end
     
-    --stage限制判断
-    if not MainUIBottomSpeedBar.GetFuncIsOpen(129) then
-        local btn = GetButton(layer, TAG_DESTINY_BAG);
-        btn:SetImage(nil);
-        btn:SetTouchDownImage(nil);
-    end
-    
     p.refreshMoney();
 	return true;
 end
@@ -1242,8 +1235,9 @@ function p.ContainerRemovePetName(nPetId)
 end
 
 function p.GetPetParent()
-	local scene = GetSMGameScene();
+	local scene = GetRunningScene();
 	if nil == scene then
+        LogInfo("sssfadfaf");
 		return nil;
 	end
 	
@@ -1304,8 +1298,8 @@ function p.RefreshContainer()
 		LogInfo("nil == container");
 		return;
 	end
-	container:RemoveAllView();
-	
+    local nCurrIndex = container:GetBeginIndex();
+	--container:RemoveAllView();
 	local nPlayerId = GetPlayerId();
 	if nil == nPlayerId then
 		LogInfo("nil == nPlayerId");
@@ -1326,23 +1320,34 @@ function p.RefreshContainer()
 		return;
 	end
 	for i, v in ipairs(idTable) do
-		local view = createUIScrollView();
-		if view == nil then
-			LogInfo("view == nil");
-			return;
-		end
-		view:Init(false);
-		view:SetViewId(v);
-		container:AddView(view);
-		
-		local uiLoad = createNDUILoad();
-		if uiLoad ~= nil then
-			uiLoad:Load("RoleAttr_L.ini", view, p.OnUIEvenPet, 0, 0);
-			uiLoad:Free();
-		else
-			return;
-		end
-		
+        p.RefreshPetPanel(v);
+	end
+    container:ShowViewByIndex(nCurrIndex);
+end
+
+function p.RefreshPetPanel(v)
+        local container = p.GetPetParent();
+        local view = container:GetViewById(v);
+        if(view == nil) then
+            view = createUIScrollView();
+            if view == nil then
+                LogInfo("view == nil");
+                return;
+            end
+            view:Init(false);
+            view:SetViewId(v);
+            container:AddView(view);
+            local uiLoad = createNDUILoad();
+            if uiLoad ~= nil then
+                uiLoad:Load("RoleAttr_L.ini", view, p.OnUIEvenPet, 0, 0);
+                uiLoad:Free();
+            else
+                return;
+            end
+        end
+        
+        
+        
 		--加上人物名字
 		p.ContainerAddPetName(v);
 		
@@ -1375,8 +1380,6 @@ function p.RefreshContainer()
         LogInfo("petId:v[%d]",v);
         
 		p.RefreshPetEquip(v);
-		
-	end
 end
 
 --刷新当前背包
@@ -1430,6 +1433,7 @@ function p.RefreshPetEquip(nPetId)
     
     --装备
     local idlist	= ItemPet.GetEquipItemList(nPlayerId, nPetId);
+    LogInfo("chh_idlist:[%d]",#idlist);
     for i, v in ipairs(idlist) do
         local nPos	= Item.GetItemInfoN(v, Item.ITEM_POSITION);
         local nTag	= p.GetEquipTag(nPos);
@@ -1598,32 +1602,34 @@ function p.SetPetAttr(petView, nPetDataIndex, str)
 end
 
 function p.UpdatePetAttrById(nPetId)
+    LogInfo("p.UpdatePetAttrById1");
 	if not CheckN(nPetId) then
 		return;
 	end
-	
+	LogInfo("p.UpdatePetAttrById1");
 	if not RolePet.IsExistPet(nPetId) then
 		return;
 	end
-	
+	LogInfo("p.UpdatePetAttrById2");
 	local container = p.GetPetParent();
 	if not CheckP(container) then
 		return;
 	end
-	
+	LogInfo("p.UpdatePetAttrById3");
 	local nPlayerId = GetPlayerId();
 	if not CheckN(nPlayerId) then
 		return;
 	end
-	
+	LogInfo("p.UpdatePetAttrById4");
 	if not RolePetUser.IsExistPet(nPlayerId, nPetId) then
 		return;
 	end
-	
+	LogInfo("p.UpdatePetAttrById5");
 	local view	= container:GetViewById(nPetId);
 	if not CheckP(view) then
 		return;
 	end
+    LogInfo("p.UpdatePetAttrById6:nPetId:[%d],[%s]",nPetId,RolePetFunc.GetPropDesc(nPetId, PET_ATTR.PET_ATTR_NAME));
 	--名字
 	p.SetPetAttr(view, PET_ATTR.PET_ATTR_NAME, RolePetFunc.GetPropDesc(nPetId, PET_ATTR.PET_ATTR_NAME));
 	--职业
@@ -1632,7 +1638,7 @@ function p.UpdatePetAttrById(nPetId)
 	p.SetPetAttr(view, PET_ATTR.PET_ATTR_LIFE, RolePetFunc.GetPropDesc(nPetId, PET_ATTR.PET_ATTR_LIFE));
 	--绝技
 	p.SetPetAttr(view, PET_ATTR.PET_ATTR_SUPER_SKILL, RolePetFunc.GetPropDesc(nPetId, PET_ATTR.PET_ATTR_SKILL));
-	
+	LogInfo("p.UpdatePetAttrById7:nPetId:[%d],[%s]",nPetId,RolePetFunc.GetPropDesc(nPetId, PET_ATTR.PET_ATTR_SPEED).."");
 	--速度
 	p.SetPetAttr(view, PET_ATTR.PET_ATTR_SPEED, RolePetFunc.GetPropDesc(nPetId, PET_ATTR.PET_ATTR_SPEED));
 	
@@ -1671,6 +1677,7 @@ function p.UpdatePetAttrById(nPetId)
 		expUI:SetProcess(ConvertN(RolePet.GetPetInfoN(nPetId, PET_ATTR.PET_ATTR_EXP)));
 		expUI:SetTotal(ConvertN(RolePetFunc.GetNextLvlExp(nPetId)));
 	end
+    LogInfo("p.UpdatePetAttrById8");
 end
 
 function p.UpdatePetAttr()
@@ -2174,19 +2181,28 @@ function p.GetLayer()
 end
 
 function p.GameDataPetInfoRefresh(nPetId)
+    LogInfo("p.GameDataPetInfoRefresh");
 	if not CheckN(nPetId) then
 		return;
 	end
+    LogInfo("p.GameDataPetInfoRefresh1");
 	if not IsUIShow(NMAINSCENECHILDTAG.PlayerBackBag) then
 		return;
 	end
+    
+    p.RefreshPetPanel(nPetId);
+    
+    LogInfo("p.GameDataPetInfoRefresh3");
 	p.UpdatePetAttrById(nPetId);
+    LogInfo("p.GameDataPetInfoRefresh4");
 end
 
 function p.GameDataPetAttrRefresh(datalist)
+    LogInfo("p.GameDataPetAttrRefresh1");
 	if not CheckT(datalist) then
 		return;
 	end
+    LogInfo("p.GameDataPetAttrRefresh2");
 	if not IsUIShow(NMAINSCENECHILDTAG.PlayerBackBag) then
 		return;
 	end
@@ -2195,7 +2211,9 @@ function p.GameDataPetAttrRefresh(datalist)
 		LogError("PlayerUIBackBag.GameDataPetAttrRefresh data invalid!");
 		return;
 	end
+    LogInfo("p.GameDataPetAttrRefresh3");
 	p.UpdatePetAttrById(nPetId);
+    LogInfo("p.GameDataPetAttrRefresh4");
 	for i=2, #datalist, 2 do
 		if datalist[i] and datalist[i] == PET_ATTR.PET_ATTR_POSITION then
 			local container = p.GetPetParent();
@@ -2221,6 +2239,7 @@ function p.GameDataPetAttrRefresh(datalist)
 end
 
 function p.GameDataUserInfoRefresh(datalist)
+    LogInfo("p.GameDataUserInfoRefresh");
 	if not CheckT(datalist) then
 		LogError("p.GameDataUserInfoRefresh invalid arg");
 		return;

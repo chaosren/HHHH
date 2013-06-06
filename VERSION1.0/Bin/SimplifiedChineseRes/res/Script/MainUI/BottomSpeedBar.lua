@@ -61,6 +61,7 @@ p.BtnTag =
     114,    --阵法
     115,    --将星
     117,    --坐骑
+    131,    --兽魂---
     129,    --占星
     116,    --军团
     119,    --助手
@@ -105,7 +106,7 @@ p.BtnFunc =
     127,    --征收
     128,    --祭祀
     129,    --占星
-    131,    --删号
+    131,    --兽魂
     132,    --退出
     133,    --神秘商人
 
@@ -225,7 +226,7 @@ function p.LoadUI()
     sayListBtn:SetTag(p.BtnSayTag);
     sayListBtn:SetVisible(true);
    
-     --提交gm问题按钮
+     --[[提交gm问题按钮
     local gmPic	= pool:AddPicture(GetSMImg00Path(p.BtnGm), true);
     gmPic:Cut(p.BtnGMFindRect.cutNor);
     
@@ -235,7 +236,7 @@ function p.LoadUI()
     local gmBtn = p.CreateSceneButton(gmPic,gmSelPic,p.BtnGMRect,NMAINSCENECHILDTAG.GMProblemBtn);
     gmBtn:SetTag(p.BtnGMTag);
     gmBtn:SetVisible(false);  
-   
+   --]]
    
 
     --显示隐藏底
@@ -276,6 +277,18 @@ function p.refreshScroll()
                 bIsSkip = true;
             end
         end
+		if ( bIsSkip == false ) and ( v == 131 ) then    --兽魂按钮
+			--local nPlayerPetID	= RolePetFunc.GetMainPetId( GetPlayerId() );
+			--local nPlayerLevel	= RolePet.GetPetInfoN( nPlayerPetID, PET_ATTR.PET_ATTR_LEVEL );
+			--if ( nPlayerLevel < 50 ) then-- 50级及以上才显示兽魂按钮
+			--	bIsSkip = true;
+			--else
+				if ( MsgMount.RolePetInfo.star < 21 ) then--2转1星及以上才显示兽魂按钮
+					bIsSkip = true;
+				end
+			--LogInfo("MainUIBottomSpeedBar: MountSoul:"..MsgMount.RolePetInfo.star);
+			--end
+		end
     
         if(bIsSkip == false) then
             p.nTotalFunc = p.nTotalFunc + 1;
@@ -430,17 +443,19 @@ function p.OnUIEvent(uiNode, uiEventType, param)
             MsgArena.SendOpenArena();
         elseif( p.BtnFunc[16] == tag ) then  --征收
             Levy.LoadUI();
+        elseif( p.BtnFunc[17] == tag ) then  --祭祀
+            Fete.LoadUI();
         elseif( p.BtnFunc[18] == tag ) then  --占星--GM问题
             --GMProblemUI.LoadUI();
             MsgRealize.sendRealizeOp();
-        elseif( p.BtnFunc[18] == tag ) then  --GM问题
-            GMProblemUI.LoadUI();
-        elseif( p.BtnFunc[19] == tag ) then  --删号
-            --p.TestButtonClick();
-        elseif( p.BtnFunc[20] == tag ) then  --退出
-            QuitGame();
-        elseif( p.BtnFunc[21] == tag ) then  --神秘商人
-            SecretShopUI.LoadUI();
+        elseif( p.BtnFunc[19] == tag ) then  --兽魂
+        	MountSoul.Entry();
+        --elseif( p.BtnFunc[19] == tag ) then  --删号
+        --    p.TestButtonClick();
+        --elseif( p.BtnFunc[20] == tag ) then  --退出
+        --    QuitGame();
+        --elseif( p.BtnFunc[21] == tag ) then  --神秘商人
+        --    SecretShopUI.LoadUI();
         
         
         
@@ -589,6 +604,8 @@ function p.GetContainer()
         LogInfo("container is nil!");
 		return nil;
 	end
+	
+	--container:SetBottomSpeedBar(true);
 	return container;
 end
 function p.findBtn()

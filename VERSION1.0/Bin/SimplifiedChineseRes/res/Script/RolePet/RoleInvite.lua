@@ -49,7 +49,7 @@ p.nPlayerID				= 0;
 
 ---------------------------------------------------
 -- 阵营
-local CAMP_NONE			= 0;	-- 群雄
+local CAMP_NONE			= 4;	-- 群雄
 local CAMP_WEI			= 1;	-- 魏
 local CAMP_SHU			= 2;	-- 蜀
 local CAMP_WU			= 3;	-- 吴
@@ -143,6 +143,33 @@ local ID_TIPS_LABEL_PET_RANK				= 60;	-- 该武将招募需求军衔
 local ID_TIPS_LABEL_PET_SILVER 				= 59;	-- 该武将招募需求银币
 local ID_TIPS_LABEL_PET_GOLD				= 31;	-- 该武将招募需求金币
 local ID_TIPS_LABEL_SKILL_DESC				= 75;	-- 绝招介绍
+
+---------------------------------------------------
+local tAllPetIDList = GetDataBaseIdList( "pet_config" );
+
+function p.GetPetIDListByCamp( nCampType )
+	if nil == tAllPetIDList then
+		return nil;
+	end
+
+	-- 可被招募武将列表
+	local tPetIDCampList = {};
+	for i, v in ipairs(tAllPetIDList) do
+		local nCamp = GetDataBaseDataN( "pet_config", v, DB_PET_CONFIG.CAMP );
+		if ( nCampType == nCamp ) then
+			table.insert( tPetIDCampList, v );
+			LogInfo( "RoleInvite: GetPetIDListByCamp() id:%d", v );
+		end
+	end
+	return tPetIDCampList;
+end
+
+local tPetIDListNone	= p.GetPetIDListByCamp(CAMP_NONE);
+local tPetIDListWei		= p.GetPetIDListByCamp(CAMP_WEI);
+local tPetIDListShu		= p.GetPetIDListByCamp(CAMP_SHU);
+local tPetIDListWu		= p.GetPetIDListByCamp(CAMP_WU);
+
+
 
 ---------------------------------------------------
 function p.LoadUI()

@@ -870,11 +870,13 @@ function p.SetPlayerInfo(info)
     local layer = p.GetParent();
     local num = table.getn(p.tbMsgInfo);
     LogInfo("tzq Transport.SetPlayerInfo info = %s, num = %d", info, num);
-    if num < p.TotalMsgNum then
+	 
+	if num < p.TotalMsgNum then
         table.insert(p.tbMsgInfo, info);
     else
-        p.tbMsgInfo[1] = nil;
-        p.tbMsgInfo[p.TotalMsgNum] = info;
+		--删除掉第一个元素
+		 table.remove(p.tbMsgInfo, 1);
+		 table.insert(p.tbMsgInfo, info);
     end
     
     for i, v in pairs(p.tbMsgInfo) do

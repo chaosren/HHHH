@@ -23,14 +23,53 @@ function p.LoadUI()
      if ArenaUI.isInChallenge == 6 or
         ArenaUI.isInChallenge == 3 or
         ArenaUI.isInChallenge == 5 then
+        
+        if(p.BattleEndTimerTag == nil) then
+            p.BattleEndTimerTag=RegisterTimer(p.szsjinit,10, "p.szsjinit()");
+        end
         return;
     end
     
     --首先判断是否已经开启快速战斗vip功能
-   if not GetVipIsOpen(DB_VIP_CONFIG.BATTLE_FAST_FLAG) then 
+   
+   local nVip,nLevel,bVip,bLevel = GetVipLevel2(DB_VIP_STATUC_VALUE.BATTLE_FAST_FLAG);
+   if not (bVip or bLevel) then 
        return;
     end
 
+    p.szsjinit();
+    
+    return true;
+end
+
+p.BattleEndTimerTag = nil;
+
+
+function p.szsjinit()
+
+    if(p.BattleEndTimerTag) then
+        UnRegisterTimer(p.BattleEndTimerTag);
+        p.BattleEndTimerTag = nil;
+    end
+
+--
+            local scene = GetSMGameScene();
+            if(scene) then
+                local bs = GetUiLayer(scene,NMAINSCENECHILDTAG.BottomSpeedBar);
+                if(bs) then
+                    if(bs:IsVisibled()) then
+                        LogInfo("BottomSpeedBar visible return");  
+                        return;
+                    end
+                else
+                	LogInfo("BottomSpeedBar nil go on");     
+                end
+            end
+            
+           
+--          
+            
+            
     LogInfo("BattleMapCtrl function p.LoadUI()");  
     --------------------获得游戏主场景------------------------------------------
     local scene = GetSMGameScene();	
@@ -63,9 +102,9 @@ function p.LoadUI()
     
     local btnFastBattle = GetButton(layer, CTRL_BTN_1);
     btnFastBattle:SetFrameRect(RectFastBtn);
-    
-    return true;
+
 end
+
 
 -----------------------------UI层的事件处理---------------------------------
 function p.OnUIEvent(uiNode, uiEventType, param)

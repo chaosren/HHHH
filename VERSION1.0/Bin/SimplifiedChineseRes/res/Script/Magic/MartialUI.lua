@@ -53,7 +53,7 @@ local TagClose          = 533;      --关闭
 local TagDes            = 649;      --已出战人数描述
 local TagSkillList      = 1000;     --技能控件列表
 local TagMartialDesc    = 28;       --布阵说明
-
+local TAG_SWAP_EQUIP    = 36;       --快速换装
 
 local SkillDescFormat   = "";
 local TagSkillDesc = 26;    --技能描述
@@ -234,7 +234,7 @@ function p.LoadUI()
     p.clearData();
     
     MsgMagic.mUIListener = p.processNet;
-    
+    MsgItem.mUIListener = p.processNet;
     
     
     --设置关闭音效
@@ -381,8 +381,19 @@ function p.OnUIEventPet(uiNode, uiEventType, param)
 			local layer = p.GetPetInfoLayer();
             layer:SetVisible(false);
             p.PutData = {};
-        
+        elseif(TAG_SWAP_EQUIP == tag) then
+            local layer = p.GetPetInfoLayer();
+            local btn =GetButton(layer, TagPetInfBtn);
+            QuickSwapEquipUI.LoadUI(p.GetCurrLayer(), btn:GetParam1());
+            
+            --关闭层
+            local layer = p.GetPetInfoLayer();
+            layer:SetVisible(false);
+            p.PutData = {};
         elseif(TagPetInfBtn == tag) then  
+            local layer = p.GetPetInfoLayer();
+            layer:SetVisible(false);
+            
             local btn = ConverToButton(uiNode);
             local nPetId = btn:GetParam1();
             local bMatrix = p.isMartialByPetId(nPetId);
@@ -1389,6 +1400,7 @@ function p.freeData()
     p.MartialUsers  = nil;
     p.AllAlertSkill = nil;
     MsgMagic.mUIListener = nil;
+    MsgItem.mUIListener  = nil;
 end
 
 
@@ -1400,6 +1412,12 @@ function p.processNet(msgId, m)
 		p.initData();
         p.refreshAllUser();
         p.refreshMartialUser();
+        if(QuickSwapEquipUI.bIsSwapMar) then
+            LogInfo("2p.processNet msgId == NMSG_Type._MSG_MATRIX_STATION");
+            CommonDlgNew.ShowTipDlg(GetTxtPri("MSG_ITEM_T0111111"));
+            QuickSwapEquipUI.CloseUI();
+            QuickSwapEquipUI.bIsSwapMar = nil;
+        end
     elseif msgId == NMSG_Type._MSG_USER_CURRENT_SKILL then
         CloseLoadBar();
         
@@ -1413,6 +1431,66 @@ function p.processNet(msgId, m)
         p.clickAllSkillList(nSkillId);
         p.setSkillChecked(nSkillId);
         p.TipChangeSkill();
+    elseif(msgId == NMSG_Type._MSG_ITEM_ACTION) then
+        if(m == 11) then
+            LogInfo("msgId == NMSG_Type._MSG_ITEM_ACTION");
+            if(QuickSwapEquipUI.bIsSwapMar) then
+                LogInfo("true");
+                local pMartialUsers, count    = MsgMagic.getRoleMatrixList();
+                pMartialUsers = pMartialUsers[1];
+                
+                
+                local bIsA = false;
+                local bIsB = false;
+                for i,v in ipairs(pMartialUsers) do
+                    if(v == QuickSwapEquipUI.nPetId) then
+                        bIsA = true;
+                    end
+                    if(v == QuickSwapEquipUI.nPetIdTarget) then
+                        bIsB = true;
+                    end
+                end
+                
+                local nPetId1,nPetId2;
+                if(bIsA) then
+                    nPetId1 = QuickSwapEquipUI.nPetId;
+                    nPetId2 = QuickSwapEquipUI.nPetIdTarget;
+                end
+                if(bIsB) then
+                    nPetId2 = QuickSwapEquipUI.nPetId;
+                    nPetId1 = QuickSwapEquipUI.nPetIdTarget;
+                end
+                
+                
+                
+                for i,v in ipairs(pMartialUsers) do
+                    if(v == nPetId1) then
+                        pMartialUsers[i] = 0;
+                    end
+                end
+                
+                local Pos = {
+                    {2},
+                    {4,5,6},
+                    {7,8,9},
+                };
+                local stand_type = RolePet.GetPetInfoN(nPetId2, PET_ATTR.PET_ATTR_STAND_TYPE);
+                LogInfo("stand_type:[%d],nPetId1:[%d],nPetId2:[2]",stand_type,nPetId1,nPetId2);
+                for i,v in ipairs(Pos[stand_type]) do
+                    if(pMartialUsers[v] == nil or pMartialUsers[v] == 0 or v == p.nPetId) then
+                        pMartialUsers[v] = nPetId2;
+                        break;
+                    end
+                end
+                
+                
+                MsgMagic.sendSetStation(pMartialUsers);
+            else
+                LogInfo("false");
+                CommonDlgNew.ShowTipDlg(GetTxtPri("MSG_ITEM_T01"));
+                QuickSwapEquipUI.CloseUI();
+            end
+        end
 	end
     p.clearData();
 	CloseLoadBar();

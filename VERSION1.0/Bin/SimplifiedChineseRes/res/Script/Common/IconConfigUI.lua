@@ -41,6 +41,42 @@ function GetPlayerMainUIPotraitPic(petTypeId)
 return GetPotraitPic(petTypeId, "pet_config", DB_PET_CONFIG.ICON, "PlayerHeadMainUI", 150, 126, -1, 0);
 end
 
+function GetComboImg( nIdx )
+    local pool = _G.DefaultPicPool();
+    local pic = pool:AddPicture(_G.GetSMImgPath("mission/mission_button1.png"), false);
+    pic:Cut(_G.CGRectMake((nIdx-1)*80, 0, 80, 80));
+    return pic;
+end
+
+function GetComboImgB( nIdx )
+    local pool = _G.DefaultPicPool();
+    local pic = pool:AddPicture(_G.GetSMImgPath("mission/mission_button2.png"), false);
+    pic:Cut(_G.CGRectMake((nIdx-1)*80, 0, 80, 80));
+    return pic;
+end
+
+function GetBoxGray( nIdx )
+    local pool = _G.DefaultPicPool();
+    local pic = pool:AddPicture(_G.GetSMImgPath("mission/box_button2.png"), false);
+    pic:Cut(_G.CGRectMake((nIdx-1)*80, 0, 80, 80));
+    return pic;
+end
+
+function GetBoxColor( nIdx )
+    local pool = _G.DefaultPicPool();
+    local pic = pool:AddPicture(_G.GetSMImgPath("mission/box_button1.png"), false);
+    pic:Cut(_G.CGRectMake((nIdx-1)*80, 0, 80, 80));
+    return pic;
+end
+
+function GetBoxOpen( nIdx )
+    local pool = _G.DefaultPicPool();
+    local pic = pool:AddPicture(_G.GetSMImgPath("mission/box_button3.png"), false);
+    pic:Cut(_G.CGRectMake((nIdx-1)*80, 0, 80, 80));
+    return pic;
+end
+
+
 
 --获得竞技场头像
 function GetArenaUIPlayerHeadPic(petTypeId)

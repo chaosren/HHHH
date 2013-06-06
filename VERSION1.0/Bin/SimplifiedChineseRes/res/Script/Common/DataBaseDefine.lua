@@ -1791,7 +1791,8 @@ DB_PET_CONFIG=
 	REQ_VIP				=36,	-- VIPµ»º∂
 	REQ_LEVEL			=37,	
 	BODY_PIC			=38,	--半身像
-    QUALITY             =39,    --武将品质
+    QUALITY           =39,    --武将品质
+    SPIRIT            = 40,   --武魂
 };
 --++ Guosen ++-- 2012.6.2
 DB_RANK_CONFIG=
@@ -1837,29 +1838,45 @@ DB_ACHIEVEMENT_CONFIG=
     DESCRIBE               =6,
 };
 
+
 DB_VIP_CONFIG= 
 {
     ID                      =0,
     EMONEY                  =1,     --升级VIP需要的金币
     LEVY_NUM                =2,     --征收次数
     STAMINA_NUM             =3,     --军令够买上线
-    BATCH_LEVY              =4,     --是否可以批量征收
-    EQUIP_EDU               =5,     --装备的洗炼类型
-    INS_CLEARUP_CLEARTIME   =6,     --是否有副本扫荡时间
-    TRAIN_PET               =7,     --武将培养类型
-    ENHANCE_CLEARTIME       =8,     --是否有强化冷却时间
-    SPORTS_CHALLENGE_NUM    =9,     --竞技场挑战次数
-    ELITE_MAP_RESET_NUM     =10,    --精英副本重置数量
-    BATTLE_FAST_FLAG        =11,    --快速战斗
-    BAG_NUM                 =12,    --背包
-    ENHANCE_CRIT_FLAG       =13,    --是否开启暴击功能
-    ENHANCE_REDUCE_PECENT   =14,    --节约强化费的百分比
-    FIGHT_AUTO              =15,    --自动战斗（boss战，大乱斗等自动战斗开启）
-    DESTINY_BAG_NUM         =16,    --
-    DESTINY_CALL_QIMEN      =17,    --
-    DESTINY_ASTROLOGY_AUTO  =18,    --
-
+    SPORTS_CHALLENGE_NUM    =4,     --竞技场挑战次数
+    ELITE_MAP_RESET_NUM     =5,    --精英副本重置数量
+    BAG_NUM                 =6,    --背包
+    ENHANCE_REDUCE_PECENT   =7,    --节约强化费的百分比
+    DESTINY_BAG_NUM         =8,    --道法背包容量
+    DESTINY_CALL_QIMEN      =9,    --激活奇门遁甲总次数
 };
+DB_VIP_STATUC_COFIG         = {
+    ID  = 0,
+    VIP = 1,
+    LEVLE = 2,
+    COMMENT = 3,
+}
+
+DB_VIP_STATUC_VALUE         = {
+    BATCH_LEVY              =1,     --是否可以批量征收
+    EQUIP_EDU_1             =2,     --装备的洗炼类型
+    EQUIP_EDU_2             =3,     --装备的洗炼类型
+    EQUIP_EDU_3             =4,     --装备的洗炼类型
+    INS_CLEARUP_CLEARTIME   =5,     --是否有副本扫荡时间
+    TRAIN_PET_1               =6,     --武将培养类型
+    TRAIN_PET_2               =7,     --武将培养类型
+    TRAIN_PET_3               =8,     --武将培养类型
+    TRAIN_PET_4               =9,     --武将培养类型
+    ENHANCE_CLEARTIME       =10,     --是否有强化冷却时间
+    BATTLE_FAST_FLAG        =11,    --快速战斗
+    ENHANCE_CRIT_FLAG       =12,    --是否开启暴击功能
+    FIGHT_AUTO              =13,    --自动战斗（boss战，大乱斗等自动战斗开启）
+    DESTINY_ASTROLOGY_AUTO  =14,    --是否可一键占星
+    DESTINY_SELECT_AYTO     =15,    --自动占星
+}
+
 
 DB_VIP_CONFIG_EQUIP_EDU = {
     NORMAL      = 1,        --正常洗炼
@@ -2097,3 +2114,81 @@ DB_MOUNT_TRAIN_TYPE_DESC = {
     MONEY   = 0,    
     EMONEY  = 1,   
 }
+
+
+DB_FINDBOX_CONFIG = {
+	ID			= 0,
+	VALUE		= 1,
+	COMMENT		= 2,
+};
+
+
+--兽魂配置
+DB_MOUNT_SOUL_CONFIG = {
+	ID							= 0,
+	NAME						= 1,
+	TYPE						= 2,
+	LEVEL						= 3,
+	STR_MILLI					= 4,
+	AGI_MILLI					= 5,
+	INI_MILLI					= 6,
+	LIFE_MILLI					= 7,
+	IMMUNE_DAMAGE_MILLI			= 8,
+	REQ_EXP						= 9,
+	NORMAL_TRAIN_MONEY			= 10,	-- 普通培养需要的银币
+	NORMAL_TRAIN_EXP			= 11,
+	NORMAL_TRAIN_CRIT_ODDS		= 12,
+	NORMAL_TRAIN_CRIT_EXP		= 13,
+	ADVANCED_TRAIN_EMONEY		= 14,	-- 高级培养需要的金币
+	ADVANCED_TRAIN_EXP			= 15,
+	ADVANCED_TRAIN_CRIT_ODDS	= 16,
+	ADVANCED_TRAIN_CRIT_EXP		= 17,
+	GOLD_TRAIN_EMONEY			= 18,	-- 白金培养需要的金币
+	GOLD_TRAIN_EXP				= 19,
+	GOLD_TRAIN_CRIT_ODDS		= 20,
+	GOLD_TRAIN_CRIT_EXP			= 21,
+	EXTREME_TRAIN_EMONEY		= 22,	-- 至尊培养需要的金币
+	EXTREME_TRAIN_EXP			= 23,
+	EXTREME_TRAIN_CRIT_ODDS		= 24,
+	EXTREME_TRAIN_CRIT_EXP		= 25,
+};
+
+
+DB_DAILYTASK_SCORE_CONFIG = {
+    ID = 0,
+    SCORE = 1,
+    TYPE = 2,
+    DATA1 = 3,
+    DATA2 = 4,
+}
+
+DB_DAILYTASK_CONFIG = {
+    ID = 0,
+    COMBO_TYPE = 1,
+    REQ_LEVEL = 2,
+    BASE_VALUE = 3,
+    GROW_VALUE = 4,
+    COMMENT = 5,
+    TYPE_NAME = 6,
+}
+
+DB_DAILYTASK_LEVEL_CONFIG = {
+    ID = 0,
+    APPEAR_ODDS = 1,
+    SCORE = 2,
+    MONEY = 3,
+    MONEY_ODDS = 4,
+    REPUTE = 5,
+    REPUTE_ODDS = 6,
+    SOPH = 7,
+    SOPH_ODDS = 8,
+    STAMINA = 9,
+    STAMINA_ODDS = 10,
+    ITEMTYPE = 11,
+    ITEMTYPE_COUNT = 12,
+    ITEMTYPE_ODDS = 13,
+    DAILYTASK_NUM = 14,
+    DAILYTASK_NUM_ODDS = 15,
+}
+
+

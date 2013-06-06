@@ -102,10 +102,10 @@ p.ATTR_TYPE_MANA				= p.ATTR_TYPE_NONE + 22;	--士气
 
 --** chh 2012-12-5 **--
 p.STATUS_ATTR_TYPE_NONE			= 0;
-p.STATUS_ATTR_TYPE_CONTROL_ADD	= p.STATUS_ATTR_TYPE_NONE + 11;  --增加控制几率
-p.STATUS_ATTR_TYPE_CONTROL_SUB	= p.STATUS_ATTR_TYPE_NONE + 12;  --抵抗控制几率
-p.STATUS_ATTR_TYPE_MORALE_ADD       = p.STATUS_ATTR_TYPE_NONE + 21;  --增加降低士气效果
-p.STATUS_ATTR_TYPE_MORALE_SUB       = p.STATUS_ATTR_TYPE_NONE + 22;  --抵抗降低士气效果
+p.STATUS_ATTR_TYPE_CONTROL_ADD	= p.STATUS_ATTR_TYPE_NONE + 1;  --增加控制几率
+p.STATUS_ATTR_TYPE_CONTROL_SUB	= p.STATUS_ATTR_TYPE_NONE + 2;  --抵抗控制几率
+p.STATUS_ATTR_TYPE_MORALE_ADD       = p.STATUS_ATTR_TYPE_NONE + 3;  --增加降低士气效果
+p.STATUS_ATTR_TYPE_MORALE_SUB       = p.STATUS_ATTR_TYPE_NONE + 4;  --抵抗降低士气效果
 
 --物品分类枚举
 p.TypeInvalid					= 0;
@@ -168,6 +168,10 @@ FontColor = {
     Soul = ccc4(36,255,0,255),             --将魂
     Silver = ccc4(237,240,0,255),          --银币
     Coin = ccc4(237,240,0,255),            --金币
+    
+    Spirit = ccc4(36,255,0,255),              --橙魂
+    Score = ccc4(36,255,0,255),              --政绩
+    TaskNum = ccc4(36,255,0,255),              --日常任务数量
 }
 
 --粮车品质

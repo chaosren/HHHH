@@ -67,7 +67,7 @@ local NameColor = {
 
 local g_Count = 0;
 local g_ArmyLev = 0;
-
+local g_Rank = 0;
 --重置所有数据
 function p.ResetAllData()
 	signUpList ={}
@@ -77,15 +77,26 @@ end
 
 
 --加载主界面
-function p.LoadUI(signUpList,nLeftTime,nArmyGroupLev)
+function p.LoadUI(signUpList,nLeftTime,nArmyGroupLev,nRank)
 	--SyndicateBattleUI.LoadUI();
 --
 	p.ResetAllData();
 	g_ArmyLev = nArmyGroupLev;
-	if IsUIShow(NMAINSCENECHILDTAG.SyndicateBattleSignUpUI) then
+    g_Rank = nRank;
+    
+    
+    if IsUIShow(NMAINSCENECHILDTAG.SyndicateBattleSignUpUI) then
 		p.refreshArmylist(signUpList);--刷新军团列表
 		p.updateSignUpEndCount(nLeftTime);
-    	return true;	
+		local bglayer = p.GetParent();
+		local pLabel = RecursiveLabel(bglayer, {140});
+    
+    	if nRank == 0 then
+        	pLabel:SetText("未報名");
+    	else
+        	pLabel:SetText(""..nRank);
+    	end
+    	return true;
 	end
 	
     --------------------获得游戏主场景------------------------------------------
@@ -111,7 +122,16 @@ function p.LoadUI(signUpList,nLeftTime,nArmyGroupLev)
 	end
 	uiLoad:Load("ArmyGroupBattle/ArmyGroupBattleApply.ini", layer, p.OnUIEvent, 0, 0);
 
-	
+
+	local pLabelrank = RecursiveLabel(layer, {140});
+    
+    
+    if nRank == 0 then
+        pLabelrank:SetText("未報名");
+    else
+        pLabelrank:SetText(""..nRank);
+    end
+
 	--初始化列表
 	local ArmyContainer = p.GetArmyContainer();
 	if ArmyContainer then
@@ -169,19 +189,24 @@ function p.refreshArmylist(signUpList)
 	local nAGID			= MsgArmyGroup.GetUserArmyGroupID( nUserID );
 	
 	--先加入未入场玩家
+	
 	for i ,v in pairs(signUpList) do
 		p.AddArmy(ArmyContainer, v);	
-		if v.id == nAGID then
+		--if v.id == nAGID then
 			
-			local layer = p.GetParent();
-			local btn = RecursiveButton(layer, {19});
-			btn:SetChecked( true );
-			btn:SetTitle(GetTxtPri("SYN_D20"));	
-		end		
-	end	
+			--local layer = p.GetParent();
+			--local btn = RecursiveButton(layer, {19});
+			--btn:SetChecked( true );
+			--btn:SetTitle("已报名");	
+		--end		
+	end
 	
-	
-	
+	local layer = p.GetParent();
+	local btn = RecursiveButton(layer, {19});
+	if g_Rank ~= 0  then	
+		btn:SetChecked( true );
+		btn:SetTitle("已报名");
+	end
 end
 
 
@@ -308,6 +333,10 @@ GetTxtPri("SYN_D_NULL"),
 GetTxtPri("SYN_D17"),
 GetTxtPri("SYN_D18"),
 GetTxtPri("SYN_D19"),
+GetTxtPri("SYN_D_NULL"),
+GetTxtPri("SYN_D1901"),
+GetTxtPri("SYN_D1902"),
+GetTxtPri("SYN_D1903"),
 GetTxtPri("SYN_D_NULL"),
 }
 

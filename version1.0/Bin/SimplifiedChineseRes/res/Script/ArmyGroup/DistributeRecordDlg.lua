@@ -24,7 +24,7 @@ local tRecordList = {
  { 11111, "O","T", 111,22, 31000082, 30 },
 };
 
-local szTest = "2012年12月12日 22:22【军团长名字】将【什么什么物品X数量】分发给【接受者名字】";
+local szTest = "2012年12月12日 22:22【軍團戰名字】將【什麽什麽物品X數量】分發給【接受者名字】";
 
 ---------------------------------------------------
 p.pLayerDistributeRecordDlg		= nil;
@@ -305,8 +305,8 @@ function p.ShowDistributeRecordList( tRecordList, nIndex )
         local tTime			= os.date( "*t", nTime )
         local szTime		= tTime["year"] .. "年" .. tTime["month"] .. "月" .. tTime["day"] .. "日" .. tTime["hour"] ..":"..tTime["min"];
 		local szItemName	= ItemFunc.GetName( nItemType );
-        local szText = szTime .. "【" .. szOName .. "】将【" .. szItemName .."×" .. nItemAmount .. "】分发给【" .. szTName.. "】";
-        local szText = "<c54ff04" .. szTime .."/e<c35ffff【" .. szOName .. "】/e将<cfff815【" .. szItemName .."×" .. nItemAmount .. "】/e分发给<cff30ff【" .. szTName.. "】/e";
+        local szText = szTime .. "【" .. szOName .. "】將【" .. szItemName .."×" .. nItemAmount .. "】分發給【" .. szTName.. "】";
+        local szText = "<c54ff04" .. szTime .."/e<c35ffff【" .. szOName .. "】/e將<cfff815【" .. szItemName .."×" .. nItemAmount .. "】/e分發給<cff30ff【" .. szTName.. "】/e";
         local pColorLabel	= _G.CreateColorLabel( szText, nFontSize, nWidthLimit );
         pColorLabel:SetFrameRect( CGRectMake( 0, 0, tTextSize.w, tTextSize.h ) );
         

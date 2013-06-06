@@ -264,7 +264,9 @@ function p.SetVipFunc()
     local btnOkVip = GetButton(p.getUiLayer(), p.TagOKVip);
     local btnBatchOkVip = GetButton(p.getUiLayer(), p.TagBatchOKVip);
     
-    if(GetVipIsOpen(DB_VIP_CONFIG.BATCH_LEVY)) then
+    local nVip,nLevel,bVip,bLevel = GetVipLevel2(DB_VIP_STATUC_VALUE.BATCH_LEVY);
+    
+    if( bVip or bLevel) then
         btnOk:SetVisible(false);
         btnOkVip:SetVisible(true);
         btnBatchOkVip:SetVisible(true);

@@ -44,6 +44,7 @@ LoadDataBaseTable("giftpack_config","giftpack_configTable");
 --** chh 2012-7-14 **--
 LoadDataBaseTable("guide_config","guide_configTable");
 LoadDataBaseTable("vip_config","vip_configTable");
+LoadDataBaseTable("vip_static_config","vip_static_configTable");
 
 --** chh 2012-10-09 **--
 LoadDataBaseTable("event_activity","event_activityTable");
@@ -65,10 +66,19 @@ LoadDataBaseTable("event_activity","event_activityTable");
 LoadDataBaseTable("sports_prize","sports_prizeTable");
 
 
-
-
 LoadDataBaseTable("encourage_config","encourage_configTable");
+
+LoadDataBaseTable("findbox_static_config","findbox_static_configTable");
+
 LoadDataBaseTable("dao_levelup_exp","dao_levelup_expTable");
 LoadDataBaseTable("daofa_static_config","daofa_static_configTable");
 LoadDataBaseTable("daofa_config","daofa_configTable");
 LoadDataBaseTable("stamina_config","stamina_configTable");
+
+LoadDataBaseTable("mount_soul_config", "mount_soul_configTable");
+
+
+LoadDataBaseTable("dailytask_config","dailytask_configTable");
+LoadDataBaseTable("dailytask_score_config","dailytask_score_configTable");
+LoadDataBaseTable("dailytask_level_config","dailytask_level_configTable");
+

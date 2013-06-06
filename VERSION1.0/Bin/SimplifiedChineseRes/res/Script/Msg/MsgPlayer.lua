@@ -110,7 +110,7 @@ function p.ProcessUserInfo(netdata)
     local usSaveMoney			= netdata:ReadInt();                    --装备强化暴击节省银币数	
     local usCritCount			= netdata:ReadInt();                    --装备强化暴击累加次数
     local usQuality             = netdata:ReadByte();
-    
+    local uiSpirit				= netdata:ReadInt();					-- 武魂
     
     
 	local strName				= netdata:ReadUnicodeString();
@@ -155,7 +155,8 @@ function p.ProcessUserInfo(netdata)
     SetRoleBasicDataN(idUser, USER_ATTR.USER_ATTR_EQUIP_CRIT_SAVE_MONEY, usSaveMoney);
     SetRoleBasicDataN(idUser, USER_ATTR.USER_ATTR_EQUIP_CRIT_COUNT, usCritCount);
     SetRoleBasicDataN(idUser, USER_ATTR.USER_ATTR_AUTO_EXERCISE, usQuality);
-	
+    SetRoleBasicDataN(idUser, USER_ATTR.USER_ATTR_SPIRIT, uiSpirit);
+
 	--++Guosen 2012.7.15
 	local nRideStatus	= usEquipTime2;
 	local nMountType	= usEquipTime3;

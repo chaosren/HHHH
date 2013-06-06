@@ -293,15 +293,21 @@ function p.ProcessCompleteBattle(netdata)
     
 end
 
-
+local signUpList = {}
 function p.ProcessSignUpInfo(netdata)
     --LogInfo("qboy SyndicateBattle:ProcessSignUpInfo count:"..count)
     local count = netdata:ReadShort()
     local nLeftTime = netdata:ReadInt()
     local nArmyGroupLev = netdata:ReadInt()
+    local nFlag = netdata:ReadByte();
+    local nRank = netdata:ReadInt();
+
+    if nFlag == 3 or nFlag == 0 then
+    	signUpList = {}
+    end
     
-    LogInfo("qboy SyndicateBattle:ProcessSignUpInfo count:"..count.." nArmyGroupLev"..nArmyGroupLev)
-    local signUpList = {}
+    LogInfo("qboy SyndicateBattle:ProcessSignUpInfo count:"..count.." nArmyGroupLev"..nArmyGroupLev.." nRank:"..nRank)
+    
     for i=1,count do
         local signUp = {}
         
@@ -318,7 +324,9 @@ function p.ProcessSignUpInfo(netdata)
     --LogInfo("qboy qqqqq11 n:"..table.getn(signUpList));
      
     if(SyndicateBattle.SignUpInfo ~= nil) then
-        SyndicateBattle.SignUpInfo(signUpList,nLeftTime,nArmyGroupLev)
+    	if nFlag == 2 or nFlag == 3 then
+        	SyndicateBattle.SignUpInfo(signUpList,nLeftTime,nArmyGroupLev,nRank)
+        end	
     end
 end
 

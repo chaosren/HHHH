@@ -8,7 +8,8 @@ local p = RechargeReward;
 
 
 
-p.UiCtr = {btnClose = 533, btnGet = 24, btnRecharge = 26, contText = 23, timeText = 27, broadText = 22, awardText = 34, rightListTitleText = 31,};
+p.UiCtr = {btnClose = 533, btnGet = 24, btnRecharge = 26, contText = 23, timeText = 27, broadText = 22, awardText = 34, 
+rightListTitleText = 31,};
 
 p.UiList = {ListLeft = {ListContaner = nil, ListCtrId = 20, btnId = 2, crtlText = 3, CurFocus = 1,}, 
                    ListRight = {ListContaner = nil, ListCtrId = 30, btnId = 4, crtlText = 3, CurFocus = 1, listTitle = 31, }};
@@ -18,11 +19,18 @@ local LeftListSize = CGSizeMake(110*CoordScaleX, 40*CoordScaleY);
 local RightListSize = CGSizeMake(100*CoordScaleX, 28*CoordScaleY);                      
                    
 p.LeftTitleLIst = {};   --存储左边列表数据
+p.EventConfig = {};   
+p.EventReward = {};  
+
+--活动数据是否下发标志
+p.NeedDownFlag = true;  
+
 
 p.RechargeState = { First = {Num = 0, Flag = 0,},
                                    OnceFlag = {0, 0 , 0, 0, 0, 0, 0, 0, 0, 0,0, 0 , 0, 0, 0, 0, 0, 0, 0, 0,0, 0 , 0, 0, 0, 0, 0, 0, 0, 0,}, 
                                    TotalFlag = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0 , 0, 0, 0, 0, 0, 0, 0, 0,},
-                                   DailyFlag = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0 , 0, 0, 0, 0, 0, 0, 0, 0,0, 0 , 0, 0, 0, 0, 0, 0, 0, 0,},};
+                                   DailyFlag = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0 , 0, 0, 0, 0, 0, 0, 0, 0,0, 0 , 0, 0, 0, 0, 0, 0, 0, 0,},
+                                   VipFlag = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0 , 0, 0, 0, 0, 0, 0, 0, 0,0, 0 , 0, 0, 0, 0, 0, 0, 0, 0,},};
 
 p.RechargeTimeBegin = {First = 0,  OnceFlag = 0, TotalFlag = 0, DailyFlag = 0,};                                
 
@@ -34,7 +42,10 @@ p.ActionType =
     ONCE_PAY = 4,             --单次充值  
     TOTAL_PAY = 5,           --累计充值
     DAILY_PAY = 7,           --每日充值
-};               
+    DAILY_RETURN = 8,           --每日返還   
+    ONLINE_RETURN = 9,           --在線返還 
+    VIP_RETURN = 10,         --vip累計禮包   
+};           
 
 --加载充值活动主界面
 function p.LoadUI()
@@ -72,6 +83,55 @@ end
 
 -----------------------------获取父层layer---------------------------------
 function p.InitData()
+	if p.NeedDownFlag then
+		p.InitDataWhenDown();
+	else
+		p.InitDataWhenReadDb();
+	end
+end
+
+function p.InitDataWhenDown()
+
+    p.LeftTitleLIst = {};   --存储左边列表数据
+ 
+    if p.EventConfig ~= nil then
+        table.sort(p.EventConfig, function(a,b) return a.Id < b.Id   end);
+    end 
+    
+    if p.EventReward ~= nil then
+        table.sort(p.EventReward, function(a,b) return a.Id < b.Id   end);
+    end 
+	
+    for i,v in pairs(p.EventConfig) do
+        --获取活动的类型
+        local nType = v.Type;
+        
+        local delFlag = 0;
+        for j, k in pairs(MsgPlayerAction.PLAYER_ACTION_STATION) do
+            if k.type == nType and k.IsExit == 0 then
+                LogInfo("initdata type  = %d, IsExit  = %d has been delete",  k.type,  k.IsExit);    
+                delFlag = 1;  --说明这个活动已经删除
+                break;
+            end
+        end 
+
+        --获取所有活动所属的组别,同一组别在同一个列表显示
+        local nUiGroup = v.Group;
+        if nUiGroup == 3 and delFlag ~= 1 then   
+			 v.RightListTable = {}; 
+		      --获取右侧列表要显示的内容      
+            for j, k in pairs(p.EventReward) do
+                if v.Id == k.IdEventConfig then
+					table.insert(v.RightListTable, k);
+                end
+            end   
+            
+            table.insert(p.LeftTitleLIst, v);               			        
+        end
+    end
+end
+
+function p.InitDataWhenReadDb()
 
     p.LeftTitleLIst = {};   --存储左边列表数据
     --左边标题列表数据的获取
@@ -304,7 +364,15 @@ function p.SetLeftListFocus(nIndex)
     end
     SetLabel(layer, p.UiCtr.contText, Info.Content);
     SetLabel(layer, p.UiCtr.broadText, Info.Broad);    
-    SetLabel(layer, p.UiCtr.rightListTitleText, Info.Name .. GetTxtPub("shoe"));     
+	if Info.Type ==  p.ActionType.VIP_RETURN  then -- vip累计礼包
+		SetLabel(layer, p.UiCtr.rightListTitleText, GetTxtPub("vip_grade")); 
+	elseif Info.Type ==  p.ActionType.DAILY_RETURN  then -- 每日返还
+		SetLabel(layer, p.UiCtr.rightListTitleText, GetTxtPri("recharge_num")); 
+	elseif Info.Type ==  p.ActionType.ONLINE_RETURN  then -- 在线返还
+		SetLabel(layer, p.UiCtr.rightListTitleText, GetTxtPri("recharge_num")); 		
+	else
+		SetLabel(layer, p.UiCtr.rightListTitleText, Info.Name .. GetTxtPub("shoe")); 
+	end    
 
     local strTime = "";    
     LogInfo("TimeType = %d, InfoType = %d, First = %d, once = %d, total = %d", 
@@ -395,11 +463,23 @@ function p.SetRightListFocus(nIndex)
             btnGet:EnalbeGray(true);
        else
             btnGet:EnalbeGray(false);
-       end    
+       end  
+	elseif InfoLeft.Type ==  p.ActionType.VIP_RETURN  then -- VIP充值禮包
+		if p.RechargeState.VipFlag[p.UiList.ListRight.CurFocus] < 1 then 
+			btnGet:EnalbeGray(true);
+		else
+			btnGet:EnalbeGray(false);
+		end         
     end
     
     --领取的奖励提示
     local ShowText = "";
+    
+    if InfoLeft.Type == p.ActionType.DAILY_RETURN 
+       or InfoLeft.Type == p.ActionType.ONLINE_RETURN  then
+       ShowText = ShowText ..GetTxtPri("Daily_return").."\n";
+       btnGet:EnalbeGray(true);
+    end
     
     --奖励物品
     if (Info.ItemType ~= 0) and  (Info.ItemCount ~= 0) then
@@ -425,6 +505,11 @@ function p.SetRightListFocus(nIndex)
     if Info.Repute ~= 0 then
         ShowText = ShowText .."  "..GetTxtPub("ShenWan").."X"..Info.Repute.."\n";
     end  
+    
+    if InfoLeft.Type == p.ActionType.DAILY_RETURN 
+       or InfoLeft.Type == p.ActionType.ONLINE_RETURN  then
+       ShowText = ShowText ..string.format(GetTxtPri("Return_day"), Info.Param1).."\n";
+    end
     
     SetLabel(layer, p.UiCtr.awardText, ShowText);
 end
@@ -492,7 +577,7 @@ function p.refreshRightListViewItem(view, iNum)
     btn:SetParam1(iNum);   
     
     local  Textlabel = GetLabel(view, p.UiList.ListRight.crtlText); 
-    Textlabel:SetFontColor(ccc4(255,255,255, 255));
+    --Textlabel:SetFontColor(ccc4(255,255,255, 255));
     
     return;
 end
@@ -655,6 +740,34 @@ function p.SetDailyRechargeInfo(iData, iBeginTime)
     LogInfo("daily end");                                                                                                                                                                                              
 end
 
+------------------vip充值禮包-----------------iData从后开始每一位代表一个阶梯是否已经领取---------------
+function p.SetVipReturnInfo(iData, iBeginTime)
+    local ReceiveData = iData;
+    local temp = ReceiveData;
+    LogInfo("Total ReceiveData = %d, temp = %d", ReceiveData, temp);
+    
+    for i = 25, 1, -1 do
+        local num1 = 1;
+        for j = i - 1, 1, -1 do
+            num1 = num1*2;
+        end
+        
+        local num2 = math.floor(temp/num1);
+        p.RechargeState.VipFlag[i] =  num2;
+        
+        if num2 > 0 then
+            temp = temp - num1;
+        end
+   end
+   
+   for i, v in pairs(p.RechargeState.VipFlag) do
+       LogInfo("daily v = %d", v);
+   end    
+
+    p.Refresh();     
+    
+    LogInfo("daily end");                                                                                                                                                                                              
+end
 ------------------首次充值消息响应-------------------------------
 function p.SendRechargeInfo()  
     LogInfo("send begin"); 
@@ -677,7 +790,11 @@ function p.SendRechargeInfo()
     elseif InfoLeft.Type ==  p.ActionType.DAILY_PAY  then -- 每日充值
         LogInfo("send 8"); 
         netdata:WriteByte(8);   
+	elseif InfoLeft.Type ==  p.ActionType.VIP_RETURN  then -- 每日充值
+		LogInfo("send 11"); 
+		netdata:WriteByte(11);   
     end
+    
     local Num = p.UiList.ListRight.CurFocus;
     netdata:WriteInt(Num);	
     netdata:WriteInt(0);	   
@@ -688,3 +805,7 @@ function p.SendRechargeInfo()
 end
 
 
+--获取活动数据是否需要下发的标志
+function p.GetIfNeedDown()  
+	return p.NeedDownFlag;
+end

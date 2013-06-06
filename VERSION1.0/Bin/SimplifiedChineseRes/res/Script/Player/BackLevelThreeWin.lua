@@ -72,12 +72,10 @@ local TAG_EQUIP_EQUIP_TIP   = {equip=GetTxtPri("BLTW_T1"),unsnatch=GetTxtPri("BL
 p.parent = nil;
 
 function p.LoadUI(parent)
+    
     p.parent = parent;
-    
-    
-    
-    
     ----------------------------------------------------------------------
+    
     --初始化层
     local equip_layer = createNDUILayer(); 
 	if equip_layer == nil then
@@ -88,7 +86,7 @@ function p.LoadUI(parent)
 	equip_layer:Init();
 	equip_layer:bringToTop();
 	equip_layer:SetTag(EQUIP_LAYER);
-    equip_layer:SetVisible(false);
+	equip_layer:SetVisible(false);
 	equip_layer:SetFrameRect(RectFullScreenUILayer);
 	equip_layer:SetDebugName("equip_layer");
 	p.parent:AddChildZ(equip_layer,1);
@@ -104,7 +102,6 @@ function p.LoadUI(parent)
 	uiLoad:Load("Equip.ini", equip_layer, p.OnUIEventEquip, 0, 0);
     uiLoad:Free();
     ----------------------------------------------------------------------
-    
     
     
     ----------------------------------------------------------------------
@@ -190,7 +187,7 @@ function p.LoadUI(parent)
 		return false;
 	end
 	
-	--bg
+	--bg 经验卡 
 	uiLoad:Load("Prop.ini", prop_layer, p.OnUIEventProp, 0, 0);
     uiLoad:Free();
     ----------------------------------------------------------------------
@@ -198,7 +195,7 @@ function p.LoadUI(parent)
     
     
     
-        
+    --   
     ----------------------------------------------------------------------
     local destiny_layer = createNDUILayer();
 	if destiny_layer == nil then
@@ -217,7 +214,7 @@ function p.LoadUI(parent)
 		return false;
 	end
 	
-	--bg
+	--bg 星运属性
 	uiLoad:Load("destiny/Destiny_Info.ini", destiny_layer, p.OnUIEventDestiny, 0, 0);
     uiLoad:Free();
     ----------------------------------------------------------------------
@@ -486,7 +483,8 @@ function p.ShowUIProp(nItemId, nCurrPetId)
     local nItemType	= Item.GetItemInfoN(nItemId, Item.ITEM_TYPE);
     local nType = ItemFunc.GetPropType(nItemType);
     
-    if(nType == 1 or nType == 4 or nType == 5 or nType == 6) then
+
+    if(nType == 1 or nType == 4 or nType == 5 or nType == 6 or nType == 7 or  nType == 8 or nType == 9) then
         btn:SetVisible(true);
     else
         btn:SetVisible(false);
@@ -839,10 +837,9 @@ function p.OnUIEventProp(uiNode, uiEventType, param)
             
             
             
-            
-            
-            
             local nType = ItemFunc.GetPropType(nItemType);
+            
+            
             
             if(nType == 1) then     --礼包使用
                 
@@ -904,6 +901,37 @@ function p.OnUIEventProp(uiNode, uiEventType, param)
             elseif(nType == 6) then     --神马鞭
                 CloseMainUI();
                 PetUI.LoadUI(true);
+           elseif nType == 7 then	--斗地主道具
+            	local count = Item.GetItemInfoN(nItemId, Item.ITEM_AMOUNT);
+            	p.nTagId = CommonDlgNew.ShowInputDlg(GetTxtPri("PLAYER_T3"), p.OnUIEventUseNum, {nItemId}, count, 2);               
+
+                
+            elseif(nType == 8) then     --武将卡使用
+                
+                --使用等级限制
+                local nPlayerId     = GetPlayerId();
+                local nPetId        = RolePetFunc.GetMainPetId(nPlayerId);
+                --判断宠物等级是否到达物品要求等级
+                if(p.equipMinimumLevel(nPetId, nItemId) == false) then
+                    return;
+                end
+                
+                --人员上限限制
+                local nRank = _G.GetRoleBasicDataN(nPlayerId, USER_ATTR.USER_ATTR_RANK);
+                local nTot = GetDataBaseDataN("rank_config",nRank,DB_RANK.MAX_OWN_PET);
+                local nAlert = #RolePetUser.GetPetListPlayer(nPlayerId);
+                if(nAlert>=nTot) then
+                    CommonDlgNew.ShowYesDlg(GetTxtPri("MarCount"));
+                    return true;
+                end
+                
+                ShowLoadBar();
+                MsgItem.SendUseItem(nItemId,1,0);
+                
+                
+            elseif(nType == 9) then     --改名道具使用
+					--字符个数暂时不去限制，服务端限制
+                 p.nTagId = CommonDlgNew.ShowInputDlg(GetTxtPri("REALLY_CHANGE_NAME"), p.OnUIEventChangeName, {nItemId}, nil, 20, GetTxtPri("NEW_NAME"));
             end
             
             
@@ -1014,6 +1042,30 @@ function p.DestinyEquipOperate(nItemId, nPetId, nPosition, bIsEquip)
 
     ShowLoadBar();
 end
+
+
+p.tbParme = {};
+--改名回调函数
+function p.OnUIEventChangeName(nEventType, param, szNewName)
+	p.tbParme = {};
+	if(CommonDlgNew.BtnOk == nEventType) then
+		if szNewName ~= nil then
+			 p.tbParme[1] = param[1];
+			 p.tbParme[2] = szNewName;
+		    CommonDlgNew.ShowYesOrNoDlg(string.format(GetTxtPri("CHECK_CHANGE_NEAM"), szNewName), p.onChangeName, true);
+		else
+			CommonDlgNew.ShowYesDlg(GetTxtPri("NEW_NAME_CANT_EMPTY"), nil, nil, 3);
+		end
+	end
+end
+
+
+function p.onChangeName(nId, param)
+	if ( CommonDlgNew.BtnOk == nId ) then
+		MsgItem.SendUseItem(p.tbParme[1], 1, nil, p.tbParme[2]);
+	end
+end
+
 
 function p.OnUIEventUseNum(nEventType, param, val)
     if(CommonDlgNew.BtnOk == nEventType) then

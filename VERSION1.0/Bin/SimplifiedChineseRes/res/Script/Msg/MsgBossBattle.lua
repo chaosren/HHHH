@@ -115,7 +115,7 @@ function p.ProcessActivity( netdata )
             if ACTIVITY_TYPE.BOSS == nType then
                 Battle_Boss.LoadUI( nActivityId );
             elseif ACTIVITY_TYPE.CHAOS == nType then    --大乱斗
-            	CampBattle.LoadUI();
+            	CampBattle.LoadUI(nActivityId);
             end
             
         elseif nActivityStatus == ACTIVITY_STATUS.END then
@@ -169,6 +169,12 @@ function p.ProcessBossBattleInfo( netdata )
     --m.nAuto         = netdata:ReadByte();   --自动战斗状态(0:未开启, 1:开启)
     local nAmount   = netdata:ReadByte();   --排名前N玩家数据个数
     
+    if(m.nCurLife<0) then
+        m.nCurLife = m.nCurLife + 4294967296;
+    end
+    if(m.nLifeLimit<0) then
+        m.nLifeLimit = m.nLifeLimit + 4294967296;
+    end
     
     LogInfo( "m.nActivityId:[%d],m.nCurLife:[%d],m.nLifeLimit:[%d],m.nLeftTime:[%d],m.nCDTime:[%d],m.nDamage:[%d],m.nUpData:[%d],nAmount:[%d]",m.nActivityId,m.nCurLife,m.nLifeLimit,m.nLeftTime,m.nCDTime,m.nDamage,m.nUpData,nAmount );
     

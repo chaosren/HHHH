@@ -70,7 +70,6 @@ function p.ProcessArenaInfo(netdatas)
 		obj.rank=netdatas:ReadInt();
 		obj.name=netdatas:ReadUnicodeString();
         table.insert(lst,obj);
-		--ArenaUI.SetChallengeList(i,id,user_name,level,rank,lookface);
 	end
 
     if(userCount>0) then

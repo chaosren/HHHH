@@ -141,6 +141,8 @@ local TAG_GEM_DESC         = 402;               --宝石描述
 local TAG_GEM_USE          = 55;                --镶嵌
 local TAG_GEM_SYNTHESIS    = 19;                --合成
 local TAG_GEM_CLOSE        = 533;               --关闭
+
+local TAG_GEM_UNALLGEM      = 16;               --全部卸下
 --宝石操作类型
 local GEM_OPER_TYPE = {MOSAIC = 0, UNSNATCH = 1,};
 
@@ -640,8 +642,12 @@ function p.RefreshEachView()
     if(layer == nil) then
         return;
     end
-    local bIsEnHanceOpen = GetVipIsOpen(DB_VIP_CONFIG.ENHANCE_CLEARTIME);
-    local nCritFlag = GetVipIsOpen(DB_VIP_CONFIG.ENHANCE_CRIT_FLAG);
+    local nVip,nLevel,bVip,bLevel = GetVipLevel2(DB_VIP_STATUC_VALUE.ENHANCE_CLEARTIME);
+    local bIsEnHanceOpen = bVip or bLevel;
+    
+    local nVip,nLevel,bVip,bLevel = GetVipLevel2(DB_VIP_STATUC_VALUE.ENHANCE_CRIT_FLAG);
+    local nCritFlag = bVip or bLevel;
+    
     local nReducePecent = GetVipVal(DB_VIP_CONFIG.ENHANCE_REDUCE_PECENT);
     
     local strangLayer = p.GetLayerByTag(p.TAG.STRENGTHEN);
@@ -698,8 +704,9 @@ function p.RefreshEachView()
     local l_VipTipPlatinum = GetLabel(baptizeLayer,TAG_VIP_PLATINUM);
     local l_VipExtreme = GetLabel(baptizeLayer,TAG_VIP_EXTREME);
     
-    local bIsPlatinum = Is_EQUIP_EDU(BaptizeType.Coin);    
-    if(bIsPlatinum) then
+    
+    local nVip,nLevel,bVip,bLevel = GetVipLevel2(DB_VIP_STATUC_VALUE.EQUIP_EDU_2);
+    if(bVip or bLevel) then
         r_Platinum:SetVisible(true);
         l_Platinum:SetVisible(true);
         l_VipTipPlatinum:SetVisible(false);
@@ -709,9 +716,8 @@ function p.RefreshEachView()
         l_VipTipPlatinum:SetVisible(true);
     end
     
-    
-    local bIsExtreme = Is_EQUIP_EDU(BaptizeType.Extreme);
-    if(bIsExtreme) then
+    local nVip,nLevel,bVip,bLevel = GetVipLevel2(DB_VIP_STATUC_VALUE.EQUIP_EDU_3);
+    if(bVip or bLevel) then
         r_Extreme:SetVisible(true);
         l_Extreme:SetVisible(true);
         l_VipExtreme:SetVisible(false);
@@ -1378,6 +1384,14 @@ function p.refreshMosaicView(equipId)
     local sEquipName = ItemFunc.GetName(nItemTypeId);
     btnName:SetText(sEquipName);
     
+    
+    --设置全部卸下状态
+    local btnUnAllGem = GetButton(mosaicLayer, TAG_GEM_UNALLGEM);
+    if(bGenCount>0) then
+        btnUnAllGem:EnalbeGray(false);
+    else
+        btnUnAllGem:EnalbeGray(true);
+    end
     p.resetEduBtnDisplay();
 end
 
@@ -1722,7 +1736,8 @@ function p.OnProcessTimer(nTag)
     end
     
     
-    local bIsEnHanceOpen = GetVipIsOpen(DB_VIP_CONFIG.ENHANCE_CLEARTIME);
+    local nVip,nLevel,bVip,bLevel = GetVipLevel2(DB_VIP_STATUC_VALUE.ENHANCE_CLEARTIME);
+    local bIsEnHanceOpen = bVip or bLevel;
     if(bIsEnHanceOpen) then
         UnRegisterTimer(p.TimerHander);
         p.TimerHander = nil;
@@ -1886,8 +1901,20 @@ function p.OnEventEdu()
         local nPrice = GetDataBaseDataN("equip_edu_config",selectRadio,DB_EQUIP_EDU_CONFIG.PRICE);
         
         
+        
         --Vip判断
-        local bIsEdu = Is_EQUIP_EDU(selectRadio);    
+        --local bIsEdu = Is_EQUIP_EDU(selectRadio);    
+        
+        
+        local bIsEdu = true;
+        if(selectRadio == BaptizeType.Coin) then
+            local nVip,nLevel,bVip,bLevel = GetVipLevel2(DB_VIP_STATUC_VALUE.EQUIP_EDU_2);
+            bIsEdu = bVip or bLevel;
+        elseif(selectRadio == BaptizeType.Extreme) then
+            local nVip,nLevel,bVip,bLevel = GetVipLevel2(DB_VIP_STATUC_VALUE.EQUIP_EDU_3);
+            bIsEdu = bVip or bLevel;
+        end
+        
         if(not bIsEdu) then
             local nNeedVip = GetVipLevel_EQUIP_EDU(selectRadio);
             local sNeedName = GetDataBaseDataS("equip_edu_config",selectRadio,DB_EQUIP_EDU_CONFIG.NAME);
@@ -2021,10 +2048,22 @@ function p.OnUIEventMosaic(uiNode, uiEventType, param)
     local tag = uiNode:GetTag();
     LogInfo("镶嵌事件p.OnUIEventMosaic[%d], event:%d", tag, uiEventType);
     if uiEventType == NUIEventType.TE_TOUCH_BTN_CLICK then
-    
+        
+        if(tag == TAG_GEM_UNALLGEM) then
+            --判断背包满
+            local bGenCount = Item.GetItemInfoN(p.nItemIdTemp, Item.ITEM_GEN_NUM);
+            if(ItemFunc.IsBagFull(bGenCount-1)) then
+                return true;
+            end
+            
+            MsgCompose.unAllEmbedGem(p.nItemIdTemp);
+            return true;
+        end
+        
+        
         if(p.isBackGemList(tag) == false) then
             LogInfo("p.OnUIEventMosaic not mosaic!");
-            return;
+            return true;
         end
         
         local btn = ConverToItemButton(uiNode);
@@ -2072,15 +2111,24 @@ function p.OnUIEventUnMosaic(uiNode, uiEventType, param)
     if uiEventType == NUIEventType.TE_TOUCH_BTN_CLICK then
     
         if tag == TAG_M_GEM_EQUIP then
-            return;
+            return true;
+        elseif( tag == TAG_GEM_UNALLGEM ) then
+            local btAttrAmount = Item.GetItemInfoN(p.nItemIdTemp, Item.ITEM_GEN_NUM);
+            LogInfo("ch btAttrAmount:[%d]",btAttrAmount);
+            --判断背包是否已满
+            if(ItemFunc.IsBagFull(btAttrAmount-1)) then
+                return true;
+            end
+        
+            --卸下全部的宝石
+            MsgCompose.unAllEmbedGem(p.nItemIdTemp);
+        else
+            local btn = ConverToItemButton(uiNode);
+            local nGemTypeId = btn:GetItemType();
+            
+            --查看宝石信息
+            p.LoadGemInfo(nGemTypeId, GEM_OPER_TYPE.UNSNATCH);
         end
-    
-        local btn = ConverToItemButton(uiNode);
-        local nGemTypeId = btn:GetItemType();
-        
-        --查看宝石信息
-        p.LoadGemInfo(nGemTypeId, GEM_OPER_TYPE.UNSNATCH);
-        
     elseif(uiEventType == NUIEventType.TE_TOUCH_SC_VIEW_IN_BEGIN) then
         
         if(tag == TAG_M_GEM_LIST) then
