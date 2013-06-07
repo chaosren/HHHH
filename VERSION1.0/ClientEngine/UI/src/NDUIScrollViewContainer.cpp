@@ -584,33 +584,52 @@ unsigned int NDUIScrollViewContainer::WhichViewToScroll()
 
 	if (UIScrollStyleHorzontal == GetScrollStyle())
 	{
-		//獲取當前移動的距離
-		NDNode *child			= children[0];
-		if (!child || !child->IsKindOfClass(RUNTIME_CLASS(CUIScrollView)))
+   		//獲取當前移動的距離
+		NDNode* pkChild = children[0];
+		if (!pkChild || !pkChild->IsKindOfClass(RUNTIME_CLASS(CUIScrollView)))
 		{
 			return 0;
 		}
-		CUIScrollView* view		= (CUIScrollView*)child;
-		CCRect rectClient		= GetClientRect(true);
-		CCRect viewrect			= view->GetFrameRect();
+
+		CUIScrollView* pkViewScrollView = (CUIScrollView*) pkChild;
+		CCRect kClientRect = GetClientRect(true);
+		CCRect kViewRect = pkViewScrollView->GetFrameRect();
 		int iCurShowIndex = GetBeginIndex();
-		int iCurMoveDis = rectClient.origin.x - (-iCurShowIndex*viewrect.size.width);  
 
+		float iCurMoveDis = kClientRect.origin.x
+				- (-iCurShowIndex * kViewRect.size.width);
+
+	  	CCLog( "tzqtest origin.x = %04f, size.width = %04f \r\n", kClientRect.origin.x, kViewRect.size.width);
+		CCLog( "tzqtest iCurMoveDis = %04f, iCurShowIndex = %d \r\n", iCurMoveDis, iCurShowIndex);
 		//獲取的移動距離如果小於0，那麼向右移動，索引增加
-		if(iCurMoveDis < 0)
+		if (iCurMoveDis < 0)
 		{
-			if(abs(iCurMoveDis) > viewrect.size.width/6)
+			if (fabs(iCurMoveDis) > kViewRect.size.width / 8)
 			{
-				iCurShowIndex = iCurShowIndex + 1 > size ? iCurShowIndex : iCurShowIndex + 1;
-			}
+				/***
+				* 在這裡修正iCurshowIndex為0計算不對的問題
+				* 郭浩
+				*/
+				int iMoveNum = (fabs(iCurMoveDis) - 1) / kViewRect.size.width + 1;
 
+				CCLog( "tzqtest iMoveNum = %d \r\n", iMoveNum);
+
+				iCurShowIndex =
+					iCurShowIndex + iMoveNum > size - 1 ?
+					size - 1 : iCurShowIndex + iMoveNum;
+			}
 		}
 		//獲取的移動距離如果大於0，那麼向左移動，索引減少
-		else if(iCurMoveDis > 0)
+		else if (iCurMoveDis > 0)
 		{
-			if(iCurMoveDis > viewrect.size.width/6)
+			if (iCurMoveDis > kViewRect.size.width / 8)
 			{
-				iCurShowIndex = iCurShowIndex - 1 < 0 ? iCurShowIndex : iCurShowIndex - 1;
+				//iCurShowIndex = iCurShowIndex - 1 < 0 ? iCurShowIndex : iCurShowIndex - 1;
+				int iMoveNum = (fabs(iCurMoveDis)  - 1)/ kViewRect.size.width + 1;
+				CCLog( "tzqtest iCurMoveDis > 0  iMoveNum = %d \r\n", iMoveNum);
+				iCurShowIndex =
+					iCurShowIndex - iMoveNum < 0 ?
+					0 : iCurShowIndex - iMoveNum;
 			}
 		}
 

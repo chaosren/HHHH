@@ -403,6 +403,9 @@ void CSMLoginScene::OnTimer( OBJID idTag )
 #endif
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
                     notifyProcess(100);
+
+					//此时资源才完整,别忘记初始化数据库
+					CSqliteDBMgr::shareInstance().InitDataBase("DNSG.sqlite");
 #endif
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
 					usleep(200);

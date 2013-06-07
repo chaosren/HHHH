@@ -282,7 +282,8 @@ end
 
 --激活碼
 function p.ShowInputBox()
-    CommonDlgNew.ShowInputDlg(GetTxtPri("RLUI_T6"), p.OnUIEventUseNum, nil, GetTxtPri("RLUI_T7"),10);
+    --CommonDlgNew.ShowInputDlg(GetTxtPri("RLUI_T6"), p.OnUIEventUseNum, nil, GetTxtPri("RLUI_T7"),10);
+    CommonDlgNew.ShowInputDlg(GetTxtPri("RLUI_T6"), p.OnUIEventUseNum, nil, nil,10,GetTxtPri("RLUI_T7"));
 end
 
 function p.OnUIEventUseNum(nEventType, param, val)
