@@ -14,7 +14,7 @@
         android:id="@+id/menu_item_btn"
         android:layout_width="fill_parent"
         android:layout_height="40dp"
-        android:background="@drawable/bar_btn_bg"
+        android:background="@drawable/mobage_bar_btn_bg"
         android:gravity="center_vertical"
         android:scaleType="fitCenter"/>
 

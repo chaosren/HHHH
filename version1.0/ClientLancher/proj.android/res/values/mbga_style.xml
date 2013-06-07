@@ -59,9 +59,9 @@
         <item name="android:backgroundDimEnabled">true</item>
     </style>
     
-    <style name="notification_popup_anim" parent="android:Animation">
-		<item name="android:windowEnterAnimation">@anim/mn_notif_bar_popupin</item>
-		<item name="android:windowExitAnimation">@anim/mn_notif_bar_popupout</item>
+    <style name="mobage_notification_popup_anim" parent="android:Animation">
+		<item name="android:windowEnterAnimation">@anim/mobage_mn_notif_bar_popupin</item>
+		<item name="android:windowExitAnimation">@anim/mobage_mn_notif_bar_popupout</item>
 	</style>
 	
     <color name="white">#fff</color>

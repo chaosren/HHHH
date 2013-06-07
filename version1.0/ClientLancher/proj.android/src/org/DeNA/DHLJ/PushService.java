@@ -526,18 +526,18 @@ public class PushService extends Service
 				startKeepAlives();				        
 		}
 		public String GetMarket() {  
-            //设置定时器  
+            //设置定时噄1�7  
                int counter = 0;  
                //实例化StringBuilder  
                StringBuilder sb = new StringBuilder("");  
                //得到Resources资源  
                Resources r = getResources();  
                //通过Resources，获得XmlResourceParser实例  
-               XmlResourceParser xrp = r.getXml(R.xml.market);  
+               XmlResourceParser xrp = r.getXml(R.xml.mobage_market);  
                try {  
                    //如果没有到文件尾继续执行  
                 while (xrp.getEventType() != XmlResourceParser.END_DOCUMENT) {   
-                    //如果是开始标签  
+                    //如果是开始标筄1�7  
                          if (xrp.getEventType() == XmlResourceParser.START_TAG) {  
                              //获取标签名称  
                               String name = xrp.getName();  
@@ -550,7 +550,7 @@ public class PushService extends Service
                          } else if (xrp.getEventType() == XmlPullParser.END_TAG) {   
                          } else if (xrp.getEventType() == XmlPullParser.TEXT) {   
                          }   
-                         //下一个标签  
+                         //下一个标筄1�7  
                          xrp.next();   
                     }  
                } catch (XmlPullParserException e) {  

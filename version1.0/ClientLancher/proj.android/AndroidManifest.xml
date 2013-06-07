@@ -19,6 +19,7 @@
 	<uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
 	<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="com.android.vending.BILLING" />
     
 
@@ -87,6 +88,8 @@
                 <category android:name="android.intent.category.BROWSABLE" />
             </intent-filter>
         </activity>
+        
+         
         <activity android:name="com.denachina.account.weakaccount.WeakAccountActivity"
                   android:screenOrientation="landscape"
                   android:configChanges="keyboardHidden|orientation"
@@ -95,6 +98,7 @@
                >
         </activity>
         <service android:name="com.mobage.android.cn.autoupdate.DownloadService" />
+        
         
         <receiver android:name="com.mobage.android.cn.autoupdate.InstallSDKReceiver">
         	<intent-filter>
@@ -110,6 +114,12 @@
         </intent-filter>
 		</receiver>
         
+        <receiver android:name="com.mobage.android.cn.autoupdate.OnlineChangeReceiver" >
+        <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+        </receiver>
+ 
 		<service android:name="com.mobage.android.iab.MobageBillingService"/>
         
 		<receiver android:name="org.DeNA.DHLJ.BootReceiver"

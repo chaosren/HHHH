@@ -65,7 +65,7 @@ public class SocialUtils {
 	private static void initCN(Cocos2dxActivity activity) {
 		try {
 			ServerMode serverMode = Mobage.getPlatformEnvironment(mActivity,
-					R.xml.init);
+					R.xml.mobage_init);
 			mServerMode =  serverMode ;
 
 			if (serverMode == ServerMode.SANDBOX) {
@@ -188,7 +188,7 @@ public class SocialUtils {
 
 			public void onDashboardClose() {
 				// TODO Auto-generated method stub
-//				Toast.makeText(mActivity, "å·²ï¿½1ï¿„1ï¿½7ï¿½1ï¿½7ï¿½1ï¿½7ï¿½ç¤¾åŒ„1ï¿½7ï¿½1ï¿½7, Toast.LENGTH_LONG).show();
+//				Toast.makeText(mActivity, "å·²ï¿½1ï¿„1¤7„1¤7„1¤7„1¤7„1¤7„1¤7½ç¤¾åŒ„1¤7„1¤7„1¤7„1¤7 Toast.LENGTH_LONG).show();
 			}
 		};
 
