@@ -42,6 +42,7 @@ using namespace CocosDenshion;
 #include <jni.h>
 #include <android/log.h>
 #include "android/jni/JniHelper.h"
+#include "SqliteDBMgr.h"
 
 #define  LOG_TAG    "DaHuaLongJiang"
 #define  LOGD(...)  __android_log_print(ANDROID_LOG_DEBUG,LOG_TAG,__VA_ARGS__)
