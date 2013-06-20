@@ -20,7 +20,7 @@ import com.mobage.android.social.cn.Feeds.OnActivityFeedsComplete;
 import org.DeNA.DHLJ.SocialUtils;
 import org.cocos2dx.lib.Cocos2dxActivity;
 
-import tw.mobage.g23000052.R;
+import tw.mobage.g23000092.R;
 
 public class FeedsView extends Cocos2dxActivity{
 	protected static final String TAG = "FeedsView";

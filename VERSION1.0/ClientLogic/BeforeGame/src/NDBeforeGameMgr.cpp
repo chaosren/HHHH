@@ -106,6 +106,15 @@ enum
 	MOBILE_TYPE_IPHONE_91_CH = 5,			//IOS简体91版
 };
 
+enum MobagePayType
+{
+	undefined,
+	chs,
+	app_store_chs,
+	cht,
+	cht_deluxe,
+};
+
 //资源类型
 #if 0
 enum 
@@ -2078,7 +2087,7 @@ void* CopyLoginResThread(void* ptr)
 	CZipUnZip* pkUnzip = new CZipUnZip;
 
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
-	pkUnzip->UnZipFile("../SimplifiedChineseRes.zip","dhlj/");
+	pkUnzip->UnZipFile("../SimplifiedChineseRes.zip","dhlj_luxury/");
 	NDBeforeGameMgr::ms_nCopyStatus = 1;
 #elif (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
 
@@ -2124,7 +2133,7 @@ void* CopyLoginResThread(void* ptr)
 	nMaxIndex = kZipEntry.index;
 
 	LOGD("nMaxIndex = %d",kZipEntry.index);
-	string strPath = "/sdcard/dhlj/";
+	string strPath = "/sdcard/dhlj_luxury/";
 
 	for (int i = 0;i < nMaxIndex;i++)
 	{
@@ -2198,9 +2207,9 @@ void* CopyResThread(void* ptr)
 	pkUnzip->UnZipFile("../copy/SimplifiedChineseRes.zip","../");
 	pkUnzip->SetExtStatus(&NDBeforeGameMgr::ms_nCopyStatus);
 #elif (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
-	//pkUnzip->UnZipFile("assets/SimplifiedChineseRes.zip","/sdcard/dhlj/");
+	//pkUnzip->UnZipFile("assets/SimplifiedChineseRes.zip","/sdcard/dhlj_luxury/");
     
-    recursiveDelete("/sdcard/dhlj");
+    recursiveDelete("/sdcard/dhlj_luxury");
     
 	unsigned char* pszZipData = 0;
 	unsigned long ulZipLength = 0;
@@ -2245,7 +2254,7 @@ void* CopyResThread(void* ptr)
 	nMaxIndex = kZipEntry.index;
 
 	LOGD("nMaxIndex = %d",kZipEntry.index);
-	string strPath = "/sdcard/dhlj/";
+	string strPath = "/sdcard/dhlj_luxury/";
 
 	for (int i = 0;i < nMaxIndex;i++)
 	{
@@ -2289,8 +2298,15 @@ int NDEngine::NDBeforeGameMgr::GetLoginCopyStatus()
 	return NDBeforeGameMgr::ms_nCopyLoginResStatus; 
 }
 
+
+int NDEngine::NDBeforeGameMgr::GetPayType()
+{
+  	return cht_deluxe; 
+}
+
 void NDEngine::NDBeforeGameMgr::CopyLoginRes()
 {
 	pthread_t pid = {0};
 	CopyLoginResThread(0);
 }
+

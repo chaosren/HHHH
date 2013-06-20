@@ -83,7 +83,7 @@ void PlayVideo(const char* videofilepath, bool bSkip)
 		return ;
 	}
 
-	VideoMgrPtr->PlayVideo("/sdcard/dhlj/SimplifiedChineseRes/res/Video/480_0.mp4");
+	VideoMgrPtr->PlayVideo("/sdcard/dhlj_luxury/SimplifiedChineseRes/res/Video/480_0.mp4");
 
 #if 0
 	if(!videofilepath || 0 == strlen(videofilepath))
@@ -776,15 +776,29 @@ void doHideMobageBalance()
 }
 
 void doExchangeEmoney(int nQuantity)
-{
+{	
+	CCLog("SEND_DATA1194 doExchangeEmoney");
+	CCLog("SEND_DATA1194 doExchangeEmoney nQuantity = %d", nQuantity);
 	int idAccount = NDBeforeGameMgrObj.GetCurrentUser();
+	CCLog("SEND_DATA1194 doExchangeEmoney idAccount = %d", idAccount);
+	int iPayType = NDBeforeGameMgrObj.GetPayType();
+	CCLog("SEND_DATA1194 doExchangeEmoney iPayType = %d", iPayType);
 	if(idAccount <= 0)
-        return;
+	{
+		CCLog("SEND_DATA1194 idAccount <= 0 return");
+       return;
+	}
 	if(!NDBeforeGameMgrObj.IsOAuthTokenOK())
-        return;
+	{
+		CCLog("SEND_DATA1194 !NDBeforeGameMgrObj.IsOAuthTokenOK() return");
+       return;
+	}
 	NDTransData bao(_MSG_CREATE_TRANSACTION);
 	bao << idAccount;
 	bao << nQuantity;
+	bao << iPayType;
+
+	CCLog("SEND_DATA1194 idAccount = %d, iPayType = %d", idAccount, iPayType);
 	SEND_DATA(bao);
 }
 
@@ -820,11 +834,17 @@ void sendMsgCreateTempCredential()
 {
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS) || (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
 	int idAccount = NDBeforeGameMgrObj.GetCurrentUser();
+	int iPayType = NDBeforeGameMgrObj.GetPayType();
 	if(idAccount <= 0)
-	return;
+	{
+ 		return;
+	}
 	NDTransData data(_MSG_CREATE_TEMP_CREDENTIAL);
 
 	data << idAccount;
+  	data << iPayType;
+	NDLog("SEND_DATA1190 idAccount = %d, iPayType = %d", idAccount, iPayType);
+
 	NDDataTransThread::DefaultThread()->GetSocket()->Send(&data);
 #endif
 }

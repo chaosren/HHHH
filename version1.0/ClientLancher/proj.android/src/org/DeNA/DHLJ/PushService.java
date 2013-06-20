@@ -6,8 +6,8 @@ import java.io.UnsupportedEncodingException;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
-import tw.mobage.g23000052.MainActivity;
-import tw.mobage.g23000052.R;
+import tw.mobage.g23000092.MainActivity;
+import tw.mobage.g23000092.R;
 
 import com.ibm.mqtt.IMqttClient;
 import com.ibm.mqtt.MqttClient;
@@ -450,7 +450,7 @@ public class PushService extends Service
 		 n.flags |= Notification.FLAG_ONGOING_EVENT; // 设置常驻 Flag
 
 		 n.defaults = Notification.DEFAULT_ALL;
-		 n.icon = tw.mobage.g23000052.R.drawable.dhlj_icon;
+		 n.icon = tw.mobage.g23000092.R.drawable.dhlj_icon;
 		 n.when = System.currentTimeMillis();
 		 Intent intent = new Intent(this, MainActivity.class); 
 		 intent.setAction(ACTION_START);
@@ -478,7 +478,7 @@ public class PushService extends Service
 	{
 		int versionNumber = 0;
 		try {
-		        PackageInfo pinfo = getPackageManager().getPackageInfo("tw.mobage.g23000052", PackageManager.GET_CONFIGURATIONS);
+		        PackageInfo pinfo = getPackageManager().getPackageInfo("tw.mobage.g23000092", PackageManager.GET_CONFIGURATIONS);
 		        String versionCode = pinfo.versionName;
 		        versionNumber = pinfo.versionCode;
 		} catch (NameNotFoundException e) {

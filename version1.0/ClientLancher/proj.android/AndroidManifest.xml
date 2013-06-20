@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest package="tw.mobage.g23000052"
+<manifest package="tw.mobage.g23000092"
       android:installLocation="auto"
-      android:versionCode="7071"
-      android:versionName="7.0.7.1" xmlns:android="http://schemas.android.com/apk/res/android">
+      android:versionCode="1000"
+      android:versionName="1.0.0.0" xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-sdk android:minSdkVersion="7" android:targetSdkVersion="8"/>
     <uses-permission android:name="android.permission.INTERNET"/>
@@ -41,10 +41,10 @@
             	<action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data  android:scheme="mobage-tw-23000052" />
+                <data  android:scheme="mobage-tw-23000092" />
             </intent-filter>
             <intent-filter>
-                <action android:name="tw.mobage.g23000052.RUN" />
+                <action android:name="tw.mobage.g23000092.RUN" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>

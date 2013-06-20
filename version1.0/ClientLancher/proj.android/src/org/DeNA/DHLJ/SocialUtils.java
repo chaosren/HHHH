@@ -22,7 +22,7 @@ import org.apache.http.util.EntityUtils;
 import org.cocos2dx.lib.Cocos2dxActivity;
 import org.xmlpull.v1.XmlPullParserException;
 
-import tw.mobage.g23000052.R;
+import tw.mobage.g23000092.R;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -70,13 +70,13 @@ public class SocialUtils {
 
 			if (serverMode == ServerMode.SANDBOX) {
 				Mobage.initialize(Mobage.Region.TW, Mobage.ServerMode.SANDBOX,
-						"sdk_app_id:23000052",
-						"7512ae70a3bb19ecb6c6ddf87611b6aa", "23000052",
+						"sdk_app_id:23000092",
+						"35b6ca6e52f09db056171e66b7a28689", "23000092",
 						activity);
 			} else if (serverMode == ServerMode.PRODUCTION) {
 				Mobage.initialize(Mobage.Region.TW,
-						Mobage.ServerMode.PRODUCTION, "sdk_app_id:23000052",
-						"e25f32276192dca071e175771f02c78b", "23000052",
+						Mobage.ServerMode.PRODUCTION, "sdk_app_id:23000092",
+						"	 44be4433058d321a860dd38efd992bb9", "23000092",
 						activity);
 			}
 		} catch (NameNotFoundException e) {

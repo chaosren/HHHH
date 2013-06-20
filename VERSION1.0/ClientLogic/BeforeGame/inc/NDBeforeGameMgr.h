@@ -129,6 +129,7 @@ namespace NDEngine
         
         void  SetCurrentUser(unsigned int User_id) { m_CurrentUser_id = User_id; }
         unsigned int  GetCurrentUser() { return m_CurrentUser_id; }
+		 int GetPayType();
         void  SetLoginTry(bool b)   { m_bLoginTry = b; }
         bool  GetLoginTry()         { return m_bLoginTry; }
         

@@ -4044,6 +4044,7 @@ void  NDMapMgr::TransactionError(MBGError *error)
 void  NDMapMgr::CloseTransaction()
 {
     int idAccount = NDBeforeGameMgrObj.GetCurrentUser();
+	int iPayType = NDBeforeGameMgrObj.GetPayType();
     if(idAccount <= 0)
         return;
     std::string transactionId = NDBeforeGameMgrObj.GetCurrentTransactionID();
@@ -4053,8 +4054,11 @@ void  NDMapMgr::CloseTransaction()
     const unsigned char* szUnSignedTransactionID = (const unsigned char*)strTransactionID;
     NDTransData bao(_MSG_CLOSE_TRANSACTION);
     bao << idAccount;
-    bao.Write(szUnSignedTransactionID, strlen(strTransactionID));
+    bao.Write(szUnSignedTransactionID, 37);
+	bao << iPayType;
     SEND_DATA(bao);
+
+	NDLog("SEND_DATA1196 idAccount = %d, iPayType = %d", idAccount, iPayType);
     CloseProgressBar;
 }
 
@@ -4254,6 +4258,7 @@ void  NDMapMgr::sendVerifier(NSString *verifier)
     NDTransData bao(_MSG_REQUEST_ACCESS_TOKEN);
     bao << idAccount;
     bao.Write(szUnSignedVerifier, strlen(szVerifier));
+
     SEND_DATA(bao);
 }
 #endif
@@ -4261,16 +4266,26 @@ void  NDMapMgr::sendVerifier(NSString *verifier)
 #if(CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
 void  NDMapMgr::sendVerifier(std::string verifier)
 {
+	char strVer[66] = {0};
+	CCLog("SEND_DATA1192 sendVerifier");
     int idAccount = NDBeforeGameMgrObj.GetCurrentUser();
+	CCLog("SEND_DATA1192 sendVerifier idAccount = %d", idAccount);
+	int iPayType = NDBeforeGameMgrObj.GetPayType();
+	CCLog("SEND_DATA1192 sendVerifier iPayType = %d", iPayType);
     if(idAccount <= 0)
         return;
     
     const char* szVerifier = verifier.c_str();
     const unsigned char* szUnSignedVerifier = (const unsigned char*)szVerifier;
-    
+    //strcpy(strVer, szVerifier);
+
     NDTransData bao(_MSG_REQUEST_ACCESS_TOKEN);
     bao << idAccount;
-    bao.Write(szUnSignedVerifier, strlen(szVerifier));
+    bao.Write(szUnSignedVerifier, sizeof(strVer));
+	bao << iPayType;
+
+ //CCLog("SEND_DATA1192 szUnSignedVerifier = %s, szVerifier = %d", szUnSignedVerifier, strlen(szVerifier));
+	CCLog("SEND_DATA1192 idAccount = %d, iPayType = %d", idAccount, iPayType);
     SEND_DATA(bao);
 }
 #endif
