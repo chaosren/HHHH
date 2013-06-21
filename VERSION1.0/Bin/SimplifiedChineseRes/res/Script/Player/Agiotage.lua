@@ -82,16 +82,17 @@ function p.LoadUI()
 	p.pEditInput	= ConverToEdit( pUINode ) 
 	p.pEditInput:SetFlag( 1 );		-- 仅可输入数字
 	p.pEditInput:SetMaxLength( 9 );	-- 最多9位数
-	p.pEditInput:SetText( "0" );
-	
+LogInfo( "test111: 204" );
+	--p.pEditInput:SetText( "0" );
+			LogInfo( "test111: 21" );
 	-- 兑换XX金币
 	p.pLabelGold	= GetLabel( pLayer, ID_LABEL_GOLD );
 	p.pLabelGold:SetText( "0" .. szDestGold );
-	
+				LogInfo( "test111: 22" );
 	-- 您账户有XX元宝
 	local pLabelBalance	= GetLabel( pLayer, ID_LABEL_BALANCE );
 	pLabelBalance:SetVisible(false);
-    
+    				LogInfo( "test111: 23" );
 	doShowMobageBalance();
 	
 	return true;

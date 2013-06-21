@@ -1953,7 +1953,7 @@ bool NDBeforeGameMgr::CheckClientVersion( const char* szURL,unsigned int uiPort 
 
 	NDTransData kData(_MSG_CLIENT_VERSION);
     
-	LOGD("Send the _MSG_CLIENT_VERSION message to server!");
+	LOGD("Send the _MSG_CLIENT_VERSION message to server! s_nVersion = %d", s_nVersion);
 
 	kData << s_nVersion;
     kData << ucResType;
