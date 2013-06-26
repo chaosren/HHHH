@@ -3,7 +3,7 @@
  *  DragonDrive
  *
  *  Created by wq on 11-1-5.
- *  Copyright 2011 (ç½‘é¾™)DeNA. All rights reserved.
+ *  Copyright 2011 (ÍøÁú)DeNA. All rights reserved.
  *
  */
 
@@ -17,7 +17,7 @@
 using namespace std;
 
 enum ITME_TYPE {
-	IT_RECOVER = 28000004,		// è‡ªåŠ¨æ¢å¤è¯
+	IT_RECOVER = 28000004,		// ×Ô¶¯»Ö¸´Ò©
 };
 
 namespace NDEngine
@@ -41,7 +41,7 @@ namespace NDEngine
 			PROFESSION_LEN = 4,
 			MONOPOLY_LEN = 2,
 		};
-		/** 0=ä¸æ˜¾ç¤ºè¯¥é¡¹ï¼Œ1=é™æˆ˜å£«ä½¿ç”¨ï¼Œ2=é™æ³•å¸ˆä½¿ç”¨ï¼Œ3=é™ç›—è´¼ä½¿ç”¨ï¼Œæ˜¾ç¤ºæ ¼å¼ä¸ºï¼šâ€œï¼ˆé™æˆ˜å£«ä½¿ç”¨ï¼‰ */
+		/** 0=²»ÏÔÊ¾¸ÃÏî£¬1=ÏŞÕ½Ê¿Ê¹ÓÃ£¬2=ÏŞ·¨Ê¦Ê¹ÓÃ£¬3=ÏŞµÁÔôÊ¹ÓÃ£¬ÏÔÊ¾¸ñÊ½Îª£º¡°£¨ÏŞÕ½Ê¿Ê¹ÓÃ£© */
 		static std::string PROFESSION[PROFESSION_LEN];
 		
 		static std::string MONOPOLY[MONOPOLY_LEN];
@@ -185,10 +185,10 @@ namespace NDEngine
 			unsigned short m_amount_limit;
 			unsigned short m_hard_hitrate;
 			unsigned short m_mana_limit;
-			unsigned short m_atk_point_add;	// åŠ›é‡
-			unsigned short m_def_point_add; // ä½“è´¨
-			unsigned short m_mag_point_add; // æ™ºåŠ›
-			unsigned short m_dex_point_add; // æ•æ·
+			unsigned short m_atk_point_add;	// Á¦Á¿
+			unsigned short m_def_point_add; // ÌåÖÊ
+			unsigned short m_mag_point_add; // ÖÇÁ¦
+			unsigned short m_dex_point_add; // Ãô½İ
 			unsigned short m_atk;
 			unsigned short m_mag_atk;
 			unsigned short m_def;

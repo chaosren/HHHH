@@ -50,7 +50,7 @@ GatherPoint::GatherPoint(int iID, int iTypeID, int xx, int yy,bool isBoss ,std::
 // 	monster_type_info info;
 // 	if ( !NDMapMgrObj.GetMonsterInfo(info, m_iTypeID) )
 // 	{
-// 		NDLog(@"é‡‡é›†ç‚¹åˆå§‹åŒ–å¤±è´¥,åŸå› æ˜¯æ²¡æœ‰æ‰¾åˆ°ç±»å‹[%d]ä¿¡æ¯", m_iTypeID);
+// 		NDLog(@"²É¼¯µã³õÊ¼»¯Ê§°Ü,Ô­ÒòÊÇÃ»ÓĞÕÒµ½ÀàĞÍ[%d]ĞÅÏ¢", m_iTypeID);
 // 		return;
 // 	}
 // 	else
@@ -195,7 +195,7 @@ string GatherPoint::getName() {
 void GatherPoint::setGatherName(string gatherName) {
 	this->gatherName = gatherName;
 }
-//å¸¦å…‰ç¯
+//´ø¹â»·
 void GatherPoint::enableRing(bool b) {
 	if (b) {
 		if (this->bossRing == NULL) {
@@ -220,7 +220,7 @@ void GatherPoint::enableRing(bool b) {
 	}
 }
 
-void GatherPoint::sendCollection() { // å‘é€é‡‡é›†
+void GatherPoint::sendCollection() { // ·¢ËÍ²É¼¯
 	NDTransData bao(_MSG_COLLECTION);
 	bao << (int)m_iID;
 	SEND_DATA(bao);

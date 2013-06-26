@@ -3,7 +3,7 @@
  *  DragonDrive
  *
  *  Created by jhzheng on 11-1-24.
- *  Copyright 2011 (ç½‘é¾™)DeNA. All rights reserved.
+ *  Copyright 2011 (ÍøÁú)DeNA. All rights reserved.
  *
  */
 
@@ -59,7 +59,7 @@ ItemMgr::ItemMgr()
 	}
 
 	NDNetMsgPoolObj->RegMsg(_MSG_ITEMINFO, this);
-	NDNetMsgPoolObj->RegMsg(_MSG_EQUIP_EFFECT, this); // è£…å¤‡æ˜¯å¦å¤±æ•ˆ
+	NDNetMsgPoolObj->RegMsg(_MSG_EQUIP_EFFECT, this); // ×°±¸ÊÇ·ñÊ§Ğ§
 	NDNetMsgPoolObj->RegMsg(_MSG_ITEM_ATTRIB, this);
 	NDNetMsgPoolObj->RegMsg(_MSG_ITEM_DEL, this);
 	NDNetMsgPoolObj->RegMsg(_MSG_ITEM, this);
@@ -69,7 +69,7 @@ ItemMgr::ItemMgr()
 	NDNetMsgPoolObj->RegMsg(_MSG_QUERY_DESC, this);
 	NDNetMsgPoolObj->RegMsg(_MSG_TIDY_UP_BAG, this);
 	NDNetMsgPoolObj->RegMsg(_MSG_ITEMKEEPER, this);
-	NDNetMsgPoolObj->RegMsg(_MSG_SHOP_CENTER, this); // å•†åŸ
+	NDNetMsgPoolObj->RegMsg(_MSG_SHOP_CENTER, this); // ÉÌ³Ç
 	NDNetMsgPoolObj->RegMsg(_MSG_EQUIP_SET_CFG, this);
 	NDNetMsgPoolObj->RegMsg(_MSG_EQUIP_BIND, this);
 	NDNetMsgPoolObj->RegMsg(_MSG_SHOP_CENTER_GOODS_TYPE, this);
@@ -155,7 +155,7 @@ void ItemMgr::quitGame()
 	ClearVipItem();
 }
 
-/*å¤„ç†æ„Ÿå…´è¶£çš„ç½‘ç»œæ¶ˆæ¯*/
+/*´¦Àí¸ĞĞËÈ¤µÄÍøÂçÏûÏ¢*/
 bool ItemMgr::process(MSGID msgID, NDTransData* data, int len)
 {
 	switch (msgID)
@@ -246,30 +246,30 @@ void ItemMgr::processItemInfo(NDTransData* data, int len)
 					RUNTIME_CLASS(GameScene)));
 
 	unsigned char itemCount = 0;
-	(*data) >> itemCount; // æ¥æ”¶çš„ç‰©å“ä¸ªæ•°
+	(*data) >> itemCount; // ½ÓÊÕµÄÎïÆ·¸öÊı
 
 	for (int j = 0; j < itemCount; j++)
 	{
 		int itemID = 0;
-		(*data) >> itemID; // ç‰©å“çš„Id 4ä¸ªå­—èŠ‚
+		(*data) >> itemID; // ÎïÆ·µÄId 4¸ö×Ö½Ú
 		int ownerID = 0;
-		(*data) >> ownerID; // ç‰©å“çš„æ‰€æœ‰è€…id 4ä¸ªå­—èŠ‚
+		(*data) >> ownerID; // ÎïÆ·µÄËùÓĞÕßid 4¸ö×Ö½Ú
 		int itemType = 0;
-		(*data) >> itemType; // ç‰©å“ç±»å‹ id 4ä¸ªå­—èŠ‚
+		(*data) >> itemType; // ÎïÆ·ÀàĞÍ id 4¸ö×Ö½Ú
 		int dwAmount = 0;
-		(*data) >> dwAmount; // ç‰©å“æ•°é‡/è€ä¹…åº¦ 4ä¸ªå­—èŠ‚
+		(*data) >> dwAmount; // ÎïÆ·ÊıÁ¿/ÄÍ¾Ã¶È 4¸ö×Ö½Ú
 		int itemPosition = 0;
-		(*data) >> itemPosition; // ç‰©å“ä½ç½® 4ä¸ªå­—èŠ‚
+		(*data) >> itemPosition; // ÎïÆ·Î»ÖÃ 4¸ö×Ö½Ú
 		int btAddition = 0;
-		(*data) >> btAddition; // è£…å¤‡è¿½åŠ  4ä¸ªå­—èŠ‚
+		(*data) >> btAddition; // ×°±¸×·¼Ó 4¸ö×Ö½Ú
 		unsigned char bindState = 0;
-		(*data) >> bindState; // ç»‘å®šçŠ¶æ€
+		(*data) >> bindState; // °ó¶¨×´Ì¬
 		unsigned char btHole = 0;
-		(*data) >> btHole; // è£…å¤‡æœ‰å‡ ä¸ªæ´
+		(*data) >> btHole; // ×°±¸ÓĞ¼¸¸ö¶´
 		int createTime = 0;
-		(*data) >> createTime; // åˆ›å»ºæ—¶é—´
+		(*data) >> createTime; // ´´½¨Ê±¼ä
 		unsigned short sAge = 0;
-		(*data) >> sAge; // éª‘å® å¯¿å‘½
+		(*data) >> sAge; // Æï³èÊÙÃü
 		unsigned char stoneCount = 0;
 		(*data) >> stoneCount;
 
@@ -297,7 +297,7 @@ void ItemMgr::processItemInfo(NDTransData* data, int len)
 		}
 
 		if (itemPosition == POSITION_STORAGE)
-		{ // ä»“åº“
+		{ // ²Ö¿â
 			bool bolHas = false;
 			for (int i = 0; i < int(m_vecStorage.size()); i++)
 			{
@@ -319,24 +319,24 @@ void ItemMgr::processItemInfo(NDTransData* data, int len)
 			continue;
 		}
 		else if (itemPosition == POSITION_MAIL)
-		{ // é‚®ä»¶ç‰©å“
+		{ // ÓÊ¼şÎïÆ·
 			m_vOtherItems.push_back(item);
 		}
 		else if (itemPosition == POSITION_AUCTION)
-		{ // ä¹‹å‰æ‹å–çš„,æš‚æ—¶å…ˆåŠ ä¸Š,é˜²æ­¢æ•°æ®åº“ æœ‰ä¹‹å‰çš„è„æ•°æ®,
-		  // å¦‚æœæ­£å¸¸è¿è¡Œæ˜¯ä¸ä¼šæœ‰91çš„å€¼å‡ºç°
-			delete item; //åŠŸèƒ½æœªå¼€ï¼Œæš‚æ—¶delete
+		{ // Ö®Ç°ÅÄÂôµÄ,ÔİÊ±ÏÈ¼ÓÉÏ,·ÀÖ¹Êı¾İ¿â ÓĞÖ®Ç°µÄÔàÊı¾İ,
+		  // Èç¹ûÕı³£ÔËĞĞÊÇ²»»áÓĞ91µÄÖµ³öÏÖ
+			delete item; //¹¦ÄÜÎ´¿ª£¬ÔİÊ±delete
 		}
 		else if (itemPosition == POSITION_SOLD)
-		{ // å·²å‡ºå”®çš„ç‰©å“
+		{ // ÒÑ³öÊÛµÄÎïÆ·
 			m_mapSoldItems[item->m_nID] = item;
 		}
 		else
-		{ // å¢åŠ çš„æ˜¯èƒŒåŒ…ä¸­çš„ç‰©å“
-		  // å…¶ä»–ç©å®¶ç‰©å“
+		{ // Ôö¼ÓµÄÊÇ±³°üÖĞµÄÎïÆ·
+		  // ÆäËûÍæ¼ÒÎïÆ·
 			NDPlayer& role = NDPlayer::defaultHero();
 			if (role.m_nID != item->m_nOwnerID)
-			{ // å…¶ä»–ç©å®¶ç‰©å“
+			{ // ÆäËûÍæ¼ÒÎïÆ·
 				m_vOtherItems.push_back(item);
 			}
 			else
@@ -364,9 +364,9 @@ void ItemMgr::processItemInfo(NDTransData* data, int len)
 
 				if (!bolHandle)
 				{
-					// å¢åŠ åˆ°èƒŒåŒ…ä¸­
+					// Ôö¼Óµ½±³°üÖĞ
 					if (itemPosition == POSITION_PACK)
-					{ // èƒŒåŒ…ä¸­çš„
+					{ // ±³°üÖĞµÄ
 						m_vecBag.push_back(item);
 
 						if (bagscene)
@@ -380,7 +380,7 @@ void ItemMgr::processItemInfo(NDTransData* data, int len)
 								nItemTypeUseInScript);
 					}
 					else
-					{ // è£…å¤‡ä¸Šçš„
+					{ // ×°±¸ÉÏµÄ
 
 						Item::eEquip_Pos pos = getEquipListPos(item);
 						if (pos == Item::eEP_End)
@@ -416,7 +416,7 @@ void ItemMgr::processItemInfo(NDTransData* data, int len)
 						if (aniId >= 1900 && aniId < 2000
 								|| nID >= 19000 && nID < 20000 || nID == 1210
 								|| nID == 1220)
-						{ // æˆ˜å® 
+						{ // Õ½³è
 						}
 						else
 						{
@@ -468,13 +468,13 @@ void ItemMgr::processEquipEffect(NDTransData* data, int len)
 void ItemMgr::processItemAttrib(NDTransData* data, int len)
 {
 	int itemID = 0;
-	(*data) >> itemID; // ç‰©å“çš„Id 4ä¸ªå­—èŠ‚
+	(*data) >> itemID; // ÎïÆ·µÄId 4¸ö×Ö½Ú
 
 	int action = 0;
-	(*data) >> action; // è¡Œä¸º,ç›®å‰åªæœ‰_ITEM _AMOUNT
+	(*data) >> action; // ĞĞÎª,Ä¿Ç°Ö»ÓĞ_ITEM _AMOUNT
 
 	int amount = 0;
-	(*data) >> amount; // ç‰©å“æ•°é‡
+	(*data) >> amount; // ÎïÆ·ÊıÁ¿
 
 	GameScene* gamescene =
 			(GameScene*) (NDDirector::DefaultDirector()->GetScene(
@@ -510,7 +510,7 @@ void ItemMgr::processItemAttrib(NDTransData* data, int len)
 
 		if (!bolProed)
 		{
-			// æ›´æ–°ä»“åº“ä¸­çš„ç‰©å“
+			// ¸üĞÂ²Ö¿âÖĞµÄÎïÆ·
 
 			Item *itemStorage = NULL;
 
@@ -538,7 +538,7 @@ void ItemMgr::processItemAttrib(NDTransData* data, int len)
 				itemEquip->m_nAmount = amount;
 
 				if (bSetEquipState)
-				{				// å¦‚æœè€ä¹…åº¦ä¸º0ï¼Œæ£€æµ‹ä¸‹æœ‰æ— æŸå
+				{				// Èç¹ûÄÍ¾Ã¶ÈÎª0£¬¼ì²âÏÂÓĞÎŞËğ»µ
 					setEquipState();
 				}
 				//bolProed = true;
@@ -549,7 +549,7 @@ void ItemMgr::processItemAttrib(NDTransData* data, int len)
 		break;
 	}
 	case ITEMDATA_POSITION:
-	{ // action==2æ—¶,ç©¿ä¸Šè£…å¤‡ amountè¡¨ç¤ºç‰©å“çš„ä½ç½®ç›¸å½“äºpostion
+	{ // action==2Ê±,´©ÉÏ×°±¸ amount±íÊ¾ÎïÆ·µÄÎ»ÖÃÏàµ±ÓÚpostion
 		if (ChangeItemPosSold(itemID, amount))
 		{
 			return;
@@ -560,74 +560,74 @@ void ItemMgr::processItemAttrib(NDTransData* data, int len)
 		if (HasItemByType(ITEM_BAG, itemID, itemBag))
 		{
 			int itemType = itemBag->m_nItemType;
-			int equipType = Item::getIdRule(itemType, Item::ITEM_EQUIP); // è£…å¤‡ç±»å‹
+			int equipType = Item::getIdRule(itemType, Item::ITEM_EQUIP); // ×°±¸ÀàĞÍ
 			int equipItem = -1;
 			int changeItem = -1;
 
 			switch (amount)
 			{
 			case 1:
-			{ // å¤´ç›”
+			{ // Í·¿ø
 				equipItem = Item::eEP_Head;
 				break;
 			}
 			case 2:
-			{ // è‚©è†€
+			{ // ¼ç°ò
 				equipItem = Item::eEP_Shoulder;
 				break;
 			}
 			case 3:
-			{ // èƒ¸ç”²
+			{ // ĞØ¼×
 				equipItem = Item::eEP_Armor;
 				break;
 			}
 			case 4:
-			{ // æŠ¤è…•
+			{ // »¤Íó
 				equipItem = Item::eEP_Shou;
 				break;
 			}
 			case 5:
-			{ // è…°å¸¦--æŠ«é£
+			{ // Ñü´ø--Åû·ç
 				equipItem = Item::eEP_YaoDai;
 				break;
 			}
 			case 6:
-			{ // æŠ¤è…¿
+			{ // »¤ÍÈ
 				equipItem = Item::eEP_HuTui;
 				break;
 			}
 			case 7:
-			{ // é‹å­
+			{ // Ğ¬×Ó
 				equipItem = Item::eEP_Shoes;
 				break;
 			}
 			case 8:
-			{ // é¡¹é“¾
+			{ // ÏîÁ´
 				equipItem = Item::eEP_XianLian;
 				break;
 			}
 			case 9:
-			{ // è€³ç¯
+			{ // ¶ú»·
 				equipItem = Item::eEP_ErHuan;
 				break;
 			}
 			case 10:
-			{ // æŠ¤ç¬¦ å¾½è®°
+			{ // »¤·û »Õ¼Ç
 				equipItem = Item::eEP_HuiJi;
 				break;
 			}
 			case 11:
-			{ // å·¦æˆ’æŒ‡
+			{ // ×ó½äÖ¸
 				equipItem = Item::eEP_LeftRing;
 				break;
 			}
 			case 12:
-			{ // å³æˆ’æŒ‡
+			{ // ÓÒ½äÖ¸
 				equipItem = Item::eEP_RightRing;
 				break;
 			}
 			case 13:
-			{ // å·¦æ­¦å™¨
+			{ // ×óÎäÆ÷
 				equipItem = Item::eEP_MainArmor;
 
 				if (equipType == 1)
@@ -638,9 +638,9 @@ void ItemMgr::processItemAttrib(NDTransData* data, int len)
 					}
 				}
 				else if (m_EquipList[Item::eEP_FuArmor] != NULL)
-				{ // ä¸æ˜¯è£…åŒæ‰‹æ­¦å™¨ï¼Œåˆ¤æ–­æ˜¯å¦è£…å¤‡å‰¯æ‰‹æ­¦å™¨ã€‚
+				{ // ²»ÊÇ×°Ë«ÊÖÎäÆ÷£¬ÅĞ¶ÏÊÇ·ñ×°±¸¸±ÊÖÎäÆ÷¡£
 					int itemtype = m_EquipList[Item::eEP_FuArmor]->m_nItemType;
-					int type1 = Item::getIdRule(itemtype, Item::ITEM_CLASS); // è£…å¤‡ç±»å‹
+					int type1 = Item::getIdRule(itemtype, Item::ITEM_CLASS); // ×°±¸ÀàĞÍ
 					int type2 = Item::getIdRule(itemType, Item::ITEM_CLASS);
 
 					if (type1 != type2)
@@ -652,7 +652,7 @@ void ItemMgr::processItemAttrib(NDTransData* data, int len)
 				break;
 			}
 			case 14:
-			{ // å³æ­¦å™¨
+			{ // ÓÒÎäÆ÷
 				equipItem = Item::eEP_FuArmor;
 
 				Item *tempI = m_EquipList[Item::eEP_MainArmor];
@@ -671,12 +671,12 @@ void ItemMgr::processItemAttrib(NDTransData* data, int len)
 				break;
 			}
 			case 80:
-			{ // åéª‘
+			{ // ×øÆï
 				equipItem = Item::eEP_Ride;
 				break;
 			}
 			case 81:
-			{ // å‹‹ç« 
+			{ // Ñ«ÕÂ
 				equipItem = Item::eEP_Decoration;
 				break;
 			}
@@ -752,7 +752,7 @@ void ItemMgr::processItemDel(NDTransData* data, int len)
 		vecItemID.push_back(itemID);
 	}
 
-	// å¸è½½è£…å¤‡, æ³¨:è¿™é‡Œçš„ç‰©å“åˆ é™¤ä¸æ˜¯å› ä¸ºåšäº†å¸è½½è£…å¤‡æ“ä½œ,å¯èƒ½æ˜¯PKç­‰,æ‰€ä»¥è¿™é‡Œä¸ç”¨å¯¹èƒŒåŒ…ç•Œé¢è¿›è¡Œå¤„ç†
+	// Ğ¶ÔØ×°±¸, ×¢:ÕâÀïµÄÎïÆ·É¾³ı²»ÊÇÒòÎª×öÁËĞ¶ÔØ×°±¸²Ù×÷,¿ÉÄÜÊÇPKµÈ,ËùÒÔÕâÀï²»ÓÃ¶Ô±³°ü½çÃæ½øĞĞ´¦Àí
 	bool bUnpack = false;
 	std::vector<int>::iterator it = vecItemID.begin();
 	for (; it != vecItemID.end(); it++)
@@ -777,14 +777,14 @@ void ItemMgr::processItemDel(NDTransData* data, int len)
 		{
 			DelItem(ITEM_BAG, *it);
 			//updateTaskItemData(*itemBag, true);
-			//å…¶å®ƒæ“ä½œ
+			//ÆäËü²Ù×÷
 		}
 
 		Item *itemStorage = NULL;
 		if (HasItemByType(ITEM_STORAGE, *it, itemStorage))
 		{
 			DelItem(ITEM_STORAGE, *it);
-			//å…¶å®ƒæ“ä½œ
+			//ÆäËü²Ù×÷
 		}
 
 		Item *itemSold = NULL;
@@ -810,7 +810,7 @@ void ItemMgr::processItem(NDTransData* data, int len)
 	switch (action)
 	{
 	case Item::ITEM_UNEQUIP:
-	{ // è£…å¤‡å¸ä¸‹
+	{ // ×°±¸Ğ¶ÏÂ
 		for (int i = Item::eEP_Begin; i < Item::eEP_End; i++)
 		{
 			Item* item = m_EquipList[i];
@@ -878,8 +878,8 @@ void ItemMgr::processItem(NDTransData* data, int len)
 //			}
 		break;
 	case Item::_ITEMACT_USETYPE:
-		//if (itemID == Item.CLEAR_POINT) { // æ´—ç‚¹ä¹‹ç¬¦
-//				dialog = new Dialog("æ´—ç‚¹æˆåŠŸ", "ä½ å·²æˆåŠŸæ¸…æ´—äº†æ‰€æœ‰å±æ€§ç‚¹", Dialog.PRIV_HIGH);
+		//if (itemID == Item.CLEAR_POINT) { // Ï´µãÖ®·û
+//				dialog = new Dialog("Ï´µã³É¹¦", "ÄãÒÑ³É¹¦ÇåÏ´ÁËËùÓĞÊôĞÔµã", Dialog.PRIV_HIGH);
 //				T.addDialog(dialog);
 //			}
 		break;
@@ -957,7 +957,7 @@ void ItemMgr::processStone(NDTransData* data, int len)
 void ItemMgr::processStoneInfo(NDTransData* data, int len)
 {
 	unsigned char btAmount = 0;
-	(*data) >> btAmount; // é•¶åµŒçš„æ•°é‡
+	(*data) >> btAmount; // ÏâÇ¶µÄÊıÁ¿
 	for (int i = 0; i < btAmount; i++)
 	{
 		int idItem = 0;
@@ -1005,7 +1005,7 @@ void ItemMgr::processLimit(NDTransData* data, int len)
 ////		}
 ////		GameStorageUpdateLimit(eGameStorage_Bag);
 //	
-//		// æœ‰ç”¨åˆ°GameItemBagçš„ç•Œé¢ä¸ç”¨æ›´æ–°èƒŒåŒ…æ•°äº†,ç»Ÿä¸€ç”±è¯¥é™æ€æ–¹æ³•æ›´æ–°
+//		// ÓĞÓÃµ½GameItemBagµÄ½çÃæ²»ÓÃ¸üĞÂ±³°üÊıÁË,Í³Ò»ÓÉ¸Ã¾²Ì¬·½·¨¸üĞÂ
 //		GameItemBag::UpdateBagNum(m_iBags);
 //		NewGameItemBag::UpdateBagNum(m_iBags);
 //		NewGamePetBag::UpdateBagNum(m_iBags);
@@ -1103,7 +1103,7 @@ void ItemMgr::processShopCenter(NDTransData* data, int len)
 		int itemID = data->ReadInt();
 		int price = data->ReadInt();
 
-		// é¢„å…ˆåŠ è½½item typeä¿¡æ¯
+		// Ô¤ÏÈ¼ÓÔØitem typeĞÅÏ¢
 		QueryItemType(itemID);
 
 		VipItem *vItem = new VipItem();
@@ -1130,7 +1130,7 @@ void ItemMgr::processShopCenter(NDTransData* data, int len)
 	}
 
 	//if (DepolyCfg.debug) {
-//		ChatUI.addChatRecodeChatList(new ChatRecord(1, "å•†åº—ç‰©å“", sb
+//		ChatUI.addChatRecodeChatList(new ChatRecord(1, "ÉÌµêÎïÆ·", sb
 //													.toString()));
 //	}
 
@@ -1150,14 +1150,14 @@ void ItemMgr::processEquipBind(NDTransData* data, int len)
 	int result = data->ReadByte();
 	int itemId = data->ReadInt();
 	if (result == 0)
-	{ // ç»‘å®šæˆåŠŸ
+	{ // °ó¶¨³É¹¦
 		Item *res = NULL;
 		if (HasItemByType(ITEM_BAG, itemId, res))
 		{
 		}
 	}
 	else if (result == 1)
-	{ // è§£é™¤ç»‘å®šæˆåŠŸ
+	{ // ½â³ı°ó¶¨³É¹¦
 		Item* pkResource = NULL;
 		if (HasItemByType(ITEM_BAG, itemId, pkResource))
 		{
@@ -1210,82 +1210,82 @@ Item::eEquip_Pos ItemMgr::getEquipListPos(Item* item)
 	switch (item->m_nPosition)
 	{
 	case 1:
-	{ // å¤´ç›”
+	{ // Í·¿ø
 		pos = Item::eEP_Head;
 		break;
 	}
 	case 2:
-	{ // è‚©è†€
+	{ // ¼ç°ò
 		pos = Item::eEP_Shoulder;
 		break;
 	}
 	case 3:
-	{ // èƒ¸ç”²
+	{ // ĞØ¼×
 		pos = Item::eEP_Armor;
 		break;
 	}
 	case 4:
-	{ // æ‰‹
+	{ // ÊÖ
 		pos = Item::eEP_Shou;
 		break;
 	}
 	case 5:
-	{ // è…°å¸¦--æŠ«é£
+	{ // Ñü´ø--Åû·ç
 		pos = Item::eEP_YaoDai;
 		break;
 	}
 	case 6:
-	{ // æŠ¤è…¿
+	{ // »¤ÍÈ
 		pos = Item::eEP_HuTui;
 		break;
 	}
 	case 7:
-	{ // é‹å­
+	{ // Ğ¬×Ó
 		pos = Item::eEP_Shoes;
 		break;
 	}
 	case 8:
-	{ // é¡¹é“¾
+	{ // ÏîÁ´
 		pos = Item::eEP_XianLian;
 		break;
 	}
 	case 9:
-	{ // è€³ç¯
+	{ // ¶ú»·
 		pos = Item::eEP_ErHuan;
 		break;
 	}
 	case 10:
-	{ // æŠ¤ç¬¦ å¾½è®°
+	{ // »¤·û »Õ¼Ç
 		pos = Item::eEP_HuiJi;
 		break;
 	}
 	case 11:
-	{ // å·¦æˆ’æŒ‡
+	{ // ×ó½äÖ¸
 		pos = Item::eEP_LeftRing;
 		break;
 	}
 	case 12:
-	{ // å³æˆ’æŒ‡
+	{ // ÓÒ½äÖ¸
 		pos = Item::eEP_RightRing;
 		break;
 	}
 	case 13:
-	{ // ä¸»æ­¦å™¨
+	{ // Ö÷ÎäÆ÷
 		pos = Item::eEP_MainArmor;
 		break;
 	}
 	case 14:
-	{ // å‰¯æ­¦å™¨
+	{ // ¸±ÎäÆ÷
 		pos = Item::eEP_FuArmor;
 		break;
 	}
 	case 80:
-	{ // åéª‘
+	{ // ×øÆï
 		pos = Item::eEP_Ride;
 		break;
 	}
 	case 81:
-	{ // å‹‹ç« 
+	{ // Ñ«ÕÂ
 		pos = Item::eEP_Decoration;
 		break;
 	}
@@ -1308,7 +1308,7 @@ EnhancedObj* ItemMgr::QueryEnhancedType(int idEnhancedType)
 		{
 			//NSString *resPath = [NSString stringWithUTF8String:NDPath::GetResPath().c_str()];
 // 			NSString *type = [NSString stringWithFormat:@"%s", NDPath::GetResPath("enhancedtype.ini")];
-// 			NSInputStream *stream  = [NSInputStream inputStreamWithFileAtPath:type]; ///<ä¸´æ—¶æ³¨é‡Šæ‰ --éƒ­æµ©
+// 			NSInputStream *stream  = [NSInputStream inputStreamWithFileAtPath:type]; ///<ÁÙÊ±×¢ÊÍµô --¹ùºÆ
 
 // 			if (stream)
 // 			{
@@ -1463,30 +1463,30 @@ void ItemMgr::unpackEquip(int iPos, bool bUpdateGui)
 void ItemMgr::unpackEquipOfRole(int itemType)
 {
 	NDPlayer& player = NDPlayer::defaultHero();
-	// å¸ä¸‹åæ”¹å˜è§’è‰²å¤–è§‚
-	std::vector<int> idRule = Item::getItemType(itemType); // åˆ†æç‰©å“id
-	// ï¼Œ
+	// Ğ¶ÏÂºó¸Ä±ä½ÇÉ«Íâ¹Û
+	std::vector<int> idRule = Item::getItemType(itemType); // ·ÖÎöÎïÆ·id
+	// £¬
 	// 1
-	// å’Œ2ä½æ˜¯è£…å¤‡ç±»å‹
+	// ºÍ2Î»ÊÇ×°±¸ÀàĞÍ
 	if (idRule[0] == 0)
-	{	// è£…å¤‡
+	{	// ×°±¸
 		int equipType = idRule[1] * 10 + idRule[2];
 		if (equipType < 30)
-		{	// æ­¦å™¨
+		{	// ÎäÆ÷
 
 			if (m_EquipList[Item::eEP_MainArmor] == NULL)
-			{	// å¸ä¸‹ä¸»æ­¦å™¨
+			{	// Ğ¶ÏÂÖ÷ÎäÆ÷
 				player.unpackEquip(Item::eEP_MainArmor);
-				//if (m_EquipList[Item::eEP_FuArmor] != NULL) {// å‰¯æ­¦å™¨è¿˜åœ¨
+				//if (m_EquipList[Item::eEP_FuArmor] != NULL) {// ¸±ÎäÆ÷»¹ÔÚ
 //					player.SetSecWeaponType(ONE_HAND_WEAPON);
 //				} else {
 //					player.SetSecWeaponType(WEAPON_NONE);
 //				}
 			}
 			if (m_EquipList[Item::eEP_FuArmor] == NULL)
-			{	// å¸ä¸‹å‰¯æ­¦å™¨
+			{	// Ğ¶ÏÂ¸±ÎäÆ÷
 				player.unpackEquip(Item::eEP_FuArmor);
-				//if (m_EquipList[Item::eEP_MainArmor] != NULL) {// ä¸»æ­¦å™¨è¿˜åœ¨
+				//if (m_EquipList[Item::eEP_MainArmor] != NULL) {// Ö÷ÎäÆ÷»¹ÔÚ
 //					player.SetWeaponType(ONE_HAND_WEAPON);
 //				} else {
 //					player.SetWeaponType(WEAPON_NONE);
@@ -1495,33 +1495,33 @@ void ItemMgr::unpackEquipOfRole(int itemType)
 
 		}
 		else if (equipType == 41)
-		{	// å¤´ç›”
+		{	// Í·¿ø
 			player.unpackEquip(Item::eEP_Head);
 		}
 		else if (equipType == 43)
-		{	// èƒ¸ç”²
+		{	// ĞØ¼×
 			player.unpackEquip(Item::eEP_Armor);
 		}
 		else if (equipType == 31)
-		{	// ç›¾
+		{	// ¶Ü
 			player.unpackEquip(Item::eEP_FuArmor);
 		}
 		else if (equipType == 32)
-		{	// æ³•å™¨
+		{	// ·¨Æ÷
 			player.unpackEquip(Item::eEP_FuArmor);
 		}
 		else if (equipType == 45)
-		{	// è…°å¸¦ -- æŠ«é£
+		{	// Ñü´ø -- Åû·ç
 			player.unpackEquip(Item::eEP_YaoDai);
 		}
 	}
 	int petType = idRule[0] * 10 + idRule[1];
 	if (petType == 11)
-	{	// å¸ä¸‹æºœå® 
+	{	// Ğ¶ÏÂÁï³è
 		//player.uppackBattlePet();
 	}
 	else if (petType == 14)
-	{		// å¸ä¸‹éª‘å® 
+	{		// Ğ¶ÏÂÆï³è
 		player.unpackEquip(Item::eEP_Ride);
 	}
 }
@@ -1594,7 +1594,7 @@ void ItemMgr::refreshEquipAmount(int itemId, int type)
 
 	}
 	case 1:
-	{ // ä¿®èº«ä¸Šå…¨éƒ¨
+	{ // ĞŞÉíÉÏÈ«²¿
 		for (int i = Item::eEP_Begin; i < Item::eEP_End; i++)
 		{
 			Item *item = m_EquipList[i];
@@ -1775,7 +1775,7 @@ bool ItemMgr::HasItemByType(int iType, int iItemID, Item*& itemRes)
 	bool bRet = false;
 
 	if (iType == ITEM_BAG)
-	{ // èƒŒåŒ…
+	{ // ±³°ü
 		std::vector<Item*>::iterator it = m_vecBag.begin();
 		for (; it != m_vecBag.end(); it++)
 		{
@@ -1789,7 +1789,7 @@ bool ItemMgr::HasItemByType(int iType, int iItemID, Item*& itemRes)
 		}
 	}
 	else if (iType == ITEM_STORAGE)
-	{ //ä»“åº“
+	{ //²Ö¿â
 		std::vector<Item*>::iterator it = m_vecStorage.begin();
 		for (; it != m_vecStorage.end(); it++)
 		{
@@ -1803,7 +1803,7 @@ bool ItemMgr::HasItemByType(int iType, int iItemID, Item*& itemRes)
 		}
 	}
 	else if (iType == ITEM_EQUIP)
-	{ //è£…å¤‡
+	{ //×°±¸
 		for (int i = Item::eEP_Begin; i < Item::eEP_End; i++)
 		{
 			Item *item = m_EquipList[i];
@@ -1816,7 +1816,7 @@ bool ItemMgr::HasItemByType(int iType, int iItemID, Item*& itemRes)
 		}
 	}
 	else if (iType == ITEM_SOLD)
-	{ // å·²å”®å‡º
+	{ // ÒÑÊÛ³ö
 		MAP_ITEM::iterator itSold = m_mapSoldItems.find(iItemID);
 		if (itSold != m_mapSoldItems.end())
 		{
@@ -1833,7 +1833,7 @@ bool ItemMgr::DelItem(int iType, int iItemID, bool bClear/*=true*/)
 	bool bRet = false;
 
 	if (iType == ITEM_BAG)
-	{ // èƒŒåŒ…
+	{ // ±³°ü
 		std::vector<Item*>::iterator it = m_vecBag.begin();
 		for (; it != m_vecBag.end(); it++)
 		{
@@ -1874,7 +1874,7 @@ bool ItemMgr::DelItem(int iType, int iItemID, bool bClear/*=true*/)
 		}
 	}
 	else if (iType == ITEM_STORAGE)
-	{ //ä»“åº“
+	{ //²Ö¿â
 		std::vector<Item*>::iterator it = m_vecStorage.begin();
 		for (; it != m_vecStorage.end(); it++)
 		{
@@ -1898,7 +1898,7 @@ bool ItemMgr::DelItem(int iType, int iItemID, bool bClear/*=true*/)
 		}
 	}
 	else if (iType == ITEM_EQUIP)
-	{ //è£…å¤‡
+	{ //×°±¸
 		for (int i = Item::eEP_Begin; i < Item::eEP_End; i++)
 		{
 			Item *item = m_EquipList[i];
@@ -1923,7 +1923,7 @@ bool ItemMgr::DelItem(int iType, int iItemID, bool bClear/*=true*/)
 
 	}
 	else if (iType == ITEM_SOLD)
-	{ // å·²å”®å‡º
+	{ // ÒÑÊÛ³ö
 		MAP_ITEM::iterator itSold = m_mapSoldItems.find(iItemID);
 		if (itSold != m_mapSoldItems.end())
 		{
@@ -1967,7 +1967,7 @@ void ItemMgr::ClearVipItem()
 ///////////////////////////////////////////////////////////////////
 Item* ItemMgr::QueryItem(OBJID idItem)
 {
-	// èƒŒåŒ…
+	// ±³°ü
 	VEC_ITEM::iterator it = m_vecBag.begin();
 	for (; it != m_vecBag.end(); it++)
 	{
@@ -1978,7 +1978,7 @@ Item* ItemMgr::QueryItem(OBJID idItem)
 		}
 	}
 
-	//ä»“åº“
+	//²Ö¿â
 	it = m_vecStorage.begin();
 	for (; it != m_vecStorage.end(); it++)
 	{
@@ -1989,7 +1989,7 @@ Item* ItemMgr::QueryItem(OBJID idItem)
 		}
 	}
 
-	//è£…å¤‡
+	//×°±¸
 	for (int i = Item::eEP_Begin; i < Item::eEP_End; i++)
 	{
 		Item *item = m_EquipList[i];
@@ -1999,7 +1999,7 @@ Item* ItemMgr::QueryItem(OBJID idItem)
 		}
 	}
 
-	// å·²å”®å‡º
+	// ÒÑÊÛ³ö
 	MAP_ITEM::iterator itSold = m_mapSoldItems.find(idItem);
 	if (itSold != m_mapSoldItems.end())
 	{
@@ -2090,82 +2090,82 @@ int GetItemPos(Item& item)
 	switch (item.m_nPosition)
 	{
 	case 1:
-	{ // å¤´ç›”
+	{ // Í·¿ø
 		iRes = Item::eEP_Head;
 		break;
 	}
 	case 2:
-	{ // è‚©è†€
+	{ // ¼ç°ò
 		iRes = Item::eEP_Shoulder;
 		break;
 	}
 	case 3:
-	{ // èƒ¸ç”²
+	{ // ĞØ¼×
 		iRes = Item::eEP_Armor;
 		break;
 	}
 	case 4:
-	{ // æŠ¤è…•
+	{ // »¤Íó
 		iRes = Item::eEP_Shou;
 		break;
 	}
 	case 5:
-	{ // è…°å¸¦--æŠ«é£
+	{ // Ñü´ø--Åû·ç
 		iRes = Item::eEP_YaoDai;
 		break;
 	}
 	case 6:
-	{ // æŠ¤è…¿
+	{ // »¤ÍÈ
 		iRes = Item::eEP_HuTui;
 		break;
 	}
 	case 7:
-	{ // é‹å­
+	{ // Ğ¬×Ó
 		iRes = Item::eEP_Shoes;
 		break;
 	}
 	case 8:
-	{ // é¡¹é“¾
+	{ // ÏîÁ´
 		iRes = Item::eEP_XianLian;
 		break;
 	}
 	case 9:
-	{ // è€³ç¯
+	{ // ¶ú»·
 		iRes = Item::eEP_ErHuan;
 		break;
 	}
 	case 10:
-	{ // æŠ¤ç¬¦ å¾½è®°
+	{ // »¤·û »Õ¼Ç
 		iRes = Item::eEP_HuiJi;
 		break;
 	}
 	case 11:
-	{ // å·¦æˆ’æŒ‡
+	{ // ×ó½äÖ¸
 		iRes = Item::eEP_LeftRing;
 		break;
 	}
 	case 12:
-	{ // å³æˆ’æŒ‡
+	{ // ÓÒ½äÖ¸
 		iRes = Item::eEP_RightRing;
 		break;
 	}
 	case 13:
-	{ // å·¦æ­¦å™¨
+	{ // ×óÎäÆ÷
 		iRes = Item::eEP_MainArmor;
 		break;
 	}
 	case 14:
-	{ // å³æ­¦å™¨
+	{ // ÓÒÎäÆ÷
 		iRes = Item::eEP_FuArmor;
 		break;
 	}
 	case 80:
-	{ // åéª‘
+	{ // ×øÆï
 		iRes = Item::eEP_Ride;
 		break;
 	}
 	case 81:
-	{ // å‹‹ç« 
+	{ // Ñ«ÕÂ
 		iRes = Item::eEP_Decoration;
 		break;
 	}

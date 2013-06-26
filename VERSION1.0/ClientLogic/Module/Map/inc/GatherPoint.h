@@ -39,7 +39,7 @@ public:
 	std::string getName();
 	
 	void setGatherName(std::string gatherName);
-	//å¸¦å…‰çŽ¯
+	//´ø¹â»·
 	void enableRing(bool b);
 	
 	void sendCollection();
@@ -89,8 +89,8 @@ private:
 	std::string gatherName;
 	int x, y;
 	NDSprite  *bossRing;
-	int m_iTypeID; //ç±»åž‹
-	int m_iID; //å”¯ä¸€æ ‡ç¤º
+	int m_iTypeID; //ÀàÐÍ
+	int m_iID; //Î¨Ò»±êÊ¾
 	bool m_isJustCollided;
 	int  m_state;
 	bool m_isCanDraw;

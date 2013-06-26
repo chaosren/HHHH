@@ -3,7 +3,7 @@
  *  DragonDrive
  *
  *  Created by jhzheng on 12-1-14.
- *  Copyright 2012 (ç½‘é¾™)DeNA. All rights reserved.
+ *  Copyright 2012 (ÍøÁú)DeNA. All rights reserved.
  *
  */
 
@@ -19,73 +19,73 @@
 
 enum PET_POSITION
 {
-	PET_POSITION_PETBAG = 0x01,	//å® ç‰©èƒŒåŒ…ä½(1)
-	PET_POSITION_MAIN	= 0x02,	//ä¸»å°†ä½(2)
-	PET_POSITION_FIGHT	= 0x04,	//å‡ºæˆ˜ä½(4)
-	PET_POSITION_SHOW	= 0x08,	//é›å® ä½(8)
-	PET_POSITION_BAG	= 0x10,	//èƒŒåŒ…ä½(16)
-	PET_POSITION_REST	= 0x20,	//ä¼‘æ¯(32)
-	PET_POSITION_UNSHOW	= 0x40,	//æ”¶å›(64)	
+	PET_POSITION_PETBAG = 0x01,	//³èÎï±³°üÎ»(1)
+	PET_POSITION_MAIN	= 0x02,	//Ö÷½«Î»(2)
+	PET_POSITION_FIGHT	= 0x04,	//³öÕ½Î»(4)
+	PET_POSITION_SHOW	= 0x08,	//åŞ³èÎ»(8)
+	PET_POSITION_BAG	= 0x10,	//±³°üÎ»(16)
+	PET_POSITION_REST	= 0x20,	//ĞİÏ¢(32)
+	PET_POSITION_UNSHOW	= 0x40,	//ÊÕ»Ø(64)	
 };
 
-// è‹±é›„å® ç‰©ä¿¡æ¯
+// Ó¢ĞÛ³èÎïĞÅÏ¢
 typedef struct _tagPetInfo
 {
-	std::string str_PET_ATTR_NAME; // åå­—STRING
+	std::string str_PET_ATTR_NAME; // Ãû×ÖSTRING
 	
 	typedef struct _tagPetData{
 		int int_PET_ID;
-		int int_PET_ATTR_LEVEL; // ç­‰çº§INT
-		int int_PET_ATTR_EXP; // ç»éªŒINT
-		int int_PET_ATTR_LIFE; // ç”Ÿå‘½å€¼INT
-		int int_PET_ATTR_MAX_LIFE; // æœ€å¤§ç”Ÿå‘½å€¼INT
-		int int_PET_ATTR_MANA; // é­”æ³•å€¼INT
-		int int_PET_ATTR_MAX_MANA; // æœ€å¤§é­”æ³•å€¼INT
-		int int_PET_ATTR_STR; // åŠ›é‡INT
-		int int_PET_ATTR_STA; // ä½“è´¨INT
-		int int_PET_ATTR_AGI; // æ•æ·INT
-		int int_PET_ATTR_INI; // æ™ºåŠ›INT
-		int int_PET_ATTR_LEVEL_INIT; // åˆå§‹ç­‰çº§INT
-		int int_PET_ATTR_STR_INIT; // åˆå§‹åŠ›é‡INT
-		int int_PET_ATTR_STA_INIT; // åˆå§‹ä½“è´¨INT
-		int int_PET_ATTR_AGI_INIT; // åˆå§‹æ•æ·INT
-		int int_PET_ATTR_INI_INIT; // åˆå§‹æ™ºåŠ›INT
-		int  int_PET_ATTR_LOYAL; // å¿ è¯šåº¦INT
-		int int_PET_ATTR_AGE; // å¯¿å‘½INT
-		int int_PET_ATTR_FREE_SP; // å‰©ä½™æŠ€èƒ½ç‚¹æ•°INT
-		int int_PET_PHY_ATK_RATE;//ç‰©æ”»èµ„è´¨
-		int int_PET_PHY_DEF_RATE;//ç‰©é˜²èµ„è´¨
-		int int_PET_MAG_ATK_RATE;//æ³•æ”»èµ„è´¨
-		int int_PET_MAG_DEF_RATE;//æ³•é˜²èµ„è´¨
-		int int_PET_ATTR_HP_RATE; // ç”Ÿå‘½èµ„è´¨
-		int int_PET_ATTR_MP_RATE; // é­”æ³•èµ„è´¨
-		int int_PET_MAX_SKILL_NUM;//æœ€å¤§å¯å­¦æŠ€èƒ½æ•°
-		int int_PET_SPEED_RATE;//é€Ÿåº¦èµ„è´¨
+		int int_PET_ATTR_LEVEL; // µÈ¼¶INT
+		int int_PET_ATTR_EXP; // ¾­ÑéINT
+		int int_PET_ATTR_LIFE; // ÉúÃüÖµINT
+		int int_PET_ATTR_MAX_LIFE; // ×î´óÉúÃüÖµINT
+		int int_PET_ATTR_MANA; // Ä§·¨ÖµINT
+		int int_PET_ATTR_MAX_MANA; // ×î´óÄ§·¨ÖµINT
+		int int_PET_ATTR_STR; // Á¦Á¿INT
+		int int_PET_ATTR_STA; // ÌåÖÊINT
+		int int_PET_ATTR_AGI; // Ãô½İINT
+		int int_PET_ATTR_INI; // ÖÇÁ¦INT
+		int int_PET_ATTR_LEVEL_INIT; // ³õÊ¼µÈ¼¶INT
+		int int_PET_ATTR_STR_INIT; // ³õÊ¼Á¦Á¿INT
+		int int_PET_ATTR_STA_INIT; // ³õÊ¼ÌåÖÊINT
+		int int_PET_ATTR_AGI_INIT; // ³õÊ¼Ãô½İINT
+		int int_PET_ATTR_INI_INIT; // ³õÊ¼ÖÇÁ¦INT
+		int  int_PET_ATTR_LOYAL; // ÖÒ³Ï¶ÈINT
+		int int_PET_ATTR_AGE; // ÊÙÃüINT
+		int int_PET_ATTR_FREE_SP; // Ê£Óà¼¼ÄÜµãÊıINT
+		int int_PET_PHY_ATK_RATE;//Îï¹¥×ÊÖÊ
+		int int_PET_PHY_DEF_RATE;//Îï·À×ÊÖÊ
+		int int_PET_MAG_ATK_RATE;//·¨¹¥×ÊÖÊ
+		int int_PET_MAG_DEF_RATE;//·¨·À×ÊÖÊ
+		int int_PET_ATTR_HP_RATE; // ÉúÃü×ÊÖÊ
+		int int_PET_ATTR_MP_RATE; // Ä§·¨×ÊÖÊ
+		int int_PET_MAX_SKILL_NUM;//×î´ó¿ÉÑ§¼¼ÄÜÊı
+		int int_PET_SPEED_RATE;//ËÙ¶È×ÊÖÊ
 		
-		int int_PET_PHY_ATK_RATE_MAX;//ç‰©æ”»èµ„è´¨ä¸Šé™
-		int int_PET_PHY_DEF_RATE_MAX;//ç‰©é˜²èµ„è´¨ä¸Šé™
-		int int_PET_MAG_ATK_RATE_MAX;//æ³•æ”»èµ„è´¨ä¸Šé™
-		int int_PET_MAG_DEF_RATE_MAX;//æ³•é˜²èµ„è´¨ä¸Šé™
-		int int_PET_ATTR_HP_RATE_MAX; // ç”Ÿå‘½èµ„è´¨ä¸Šé™
-		int int_PET_ATTR_MP_RATE_MAX; // é­”æ³•èµ„è´¨ä¸Šé™
-		int int_PET_SPEED_RATE_MAX;//é€Ÿåº¦èµ„è´¨ä¸Šé™
+		int int_PET_PHY_ATK_RATE_MAX;//Îï¹¥×ÊÖÊÉÏÏŞ
+		int int_PET_PHY_DEF_RATE_MAX;//Îï·À×ÊÖÊÉÏÏŞ
+		int int_PET_MAG_ATK_RATE_MAX;//·¨¹¥×ÊÖÊÉÏÏŞ
+		int int_PET_MAG_DEF_RATE_MAX;//·¨·À×ÊÖÊÉÏÏŞ
+		int int_PET_ATTR_HP_RATE_MAX; // ÉúÃü×ÊÖÊÉÏÏŞ
+		int int_PET_ATTR_MP_RATE_MAX; // Ä§·¨×ÊÖÊÉÏÏŞ
+		int int_PET_SPEED_RATE_MAX;//ËÙ¶È×ÊÖÊÉÏÏŞ
 		
-		int int_PET_GROW_RATE;// æˆé•¿ç‡
-		int int_PET_GROW_RATE_MAX;// æˆé•¿ç‡
-		int int_PET_HIT ;//å‘½ä¸­
+		int int_PET_GROW_RATE;// ³É³¤ÂÊ
+		int int_PET_GROW_RATE_MAX;// ³É³¤ÂÊ
+		int int_PET_HIT ;//ÃüÖĞ
 		
-		int int_ATTR_FREE_POINT; //è‡ªç”±ç‚¹æ•°
-		int int_PET_ATTR_LEVEUP_EXP; // å‡çº§ç»éªŒ
-		int int_PET_ATTR_PHY_ATK; // ç‰©ç†æ”»å‡»åŠ›INT
-		int int_PET_ATTR_PHY_DEF; // ç‰©ç†é˜²å¾¡INT
-		int int_PET_ATTR_MAG_ATK; // æ³•æœ¯æ”»å‡»åŠ›INT
-		int int_PET_ATTR_MAG_DEF; // æ³•æœ¯æŠ—æ€§INT
-		int int_PET_ATTR_HARD_HIT;// æš´å‡»
-		int int_PET_ATTR_DODGE;// é—ªé¿
-		int int_PET_ATTR_ATK_SPEED;// æ”»å‡»é€Ÿåº¦
-		int int_PET_ATTR_TYPE;// ç±»å‹
-		int int_PET_ATTR_LOOKFACE;//å¤–è§‚
-		int bindStatus;//ç»‘å®šçŠ¶æ€
+		int int_ATTR_FREE_POINT; //×ÔÓÉµãÊı
+		int int_PET_ATTR_LEVEUP_EXP; // Éı¼¶¾­Ñé
+		int int_PET_ATTR_PHY_ATK; // ÎïÀí¹¥»÷Á¦INT
+		int int_PET_ATTR_PHY_DEF; // ÎïÀí·ÀÓùINT
+		int int_PET_ATTR_MAG_ATK; // ·¨Êõ¹¥»÷Á¦INT
+		int int_PET_ATTR_MAG_DEF; // ·¨Êõ¿¹ĞÔINT
+		int int_PET_ATTR_HARD_HIT;// ±©»÷
+		int int_PET_ATTR_DODGE;// ÉÁ±Ü
+		int int_PET_ATTR_ATK_SPEED;// ¹¥»÷ËÙ¶È
+		int int_PET_ATTR_TYPE;// ÀàĞÍ
+		int int_PET_ATTR_LOOKFACE;//Íâ¹Û
+		int bindStatus;//°ó¶¨×´Ì¬
 		int int_PET_ATTR_POSITION;
 		_tagPetData(){ memset(this, 0, sizeof(*this)); }
 	}PetData;
@@ -101,42 +101,42 @@ public:
 	CPetMgr();
 	~CPetMgr();
 	
-	// å•çº¯å–æ“ä½œ
+	// µ¥´¿È¡²Ù×÷
 	PetInfo*				GetPet(OBJID idPet);
 	
-	// æ— åˆ™åˆ›å»º
+	// ÎŞÔò´´½¨
 	PetInfo*				GetPetWithCreate(OBJID idRoleID, OBJID idPet);
 	
-	// è·å–æŸä¸ªè§’è‰²æ‰€æœ‰çš„å® ç‰©æ•°æ®
+	// »ñÈ¡Ä³¸ö½ÇÉ«ËùÓĞµÄ³èÎïÊı¾İ
 	bool					GetPets(OBJID idRoleID, ID_VEC& vecid);
 	
-	// è·å–æŸä¸ªä½ç½®å® ç‰©çš„æ•°æ®
+	// »ñÈ¡Ä³¸öÎ»ÖÃ³èÎïµÄÊı¾İ
 	bool					GetPetWithPos(OBJID idRoleID, PET_POSITION pos, ID_VEC& vecid);
 	
-	// è·å–æŸä¸ªç©å®¶çš„å® ç‰©ä¸»å°†
+	// »ñÈ¡Ä³¸öÍæ¼ÒµÄ³èÎïÖ÷½«
 	PetInfo*				GetMainPet(OBJID idRoleID);
 	
-	// è·å–æŸä¸ªç©å®¶çš„æºœå® 
+	// »ñÈ¡Ä³¸öÍæ¼ÒµÄÁï³è
 	PetInfo*				GetShowPet(OBJID idRoleID);
 	
-	// æ¸…é™¤æŸä¸ªè§’è‰²çš„æ‰€æœ‰å® ç‰©æ•°æ®
+	// Çå³ıÄ³¸ö½ÇÉ«µÄËùÓĞ³èÎïÊı¾İ
 	bool					DelPets(OBJID idRoleID);
 	
-	// æ¸…é™¤å® ç‰©æ•°æ®
+	// Çå³ı³èÎïÊı¾İ
 	bool					DelPet(OBJID idPet);
 	
 	bool					DelAll();
 	
-	// å¢åŠ æŸåªå® ç‰©æŸä¸ªæŠ€èƒ½
+	// Ôö¼ÓÄ³Ö»³èÎïÄ³¸ö¼¼ÄÜ
 	void					AddSkill(OBJID idRoleID, OBJID idPet, OBJID idSkill);
 	
-	// åˆ é™¤æŸåªå® ç‰©æŸä¸ªæŠ€èƒ½
+	// É¾³ıÄ³Ö»³èÎïÄ³¸ö¼¼ÄÜ
 	bool					DelSkill(OBJID idRoleID, OBJID idPet, OBJID idSkill);
 	
-	// åˆ é™¤æŸä¸ªè§’è‰²æŸåªå® ç‰©çš„æ‰€æœ‰æŠ€èƒ½
+	// É¾³ıÄ³¸ö½ÇÉ«Ä³Ö»³èÎïµÄËùÓĞ¼¼ÄÜ
 	bool					DelSkill(OBJID idRoleID, OBJID idPet);
 	
-	// åˆ é™¤æŸä¸ªè§’è‰²çš„æ‰€æœ‰å® ç‰©æ‰€æœ‰æŠ€èƒ½
+	// É¾³ıÄ³¸ö½ÇÉ«µÄËùÓĞ³èÎïËùÓĞ¼¼ÄÜ
 	bool					DelSkills(OBJID idRoleID);
 	
 	bool					DelSkill(OBJID idPet);

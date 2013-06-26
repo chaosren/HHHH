@@ -5,7 +5,7 @@
  *  Created by jhzheng on 12-1-6.
  *  Copyright 2012 __MyCompanyName__. All rights reserved.
  *
- *	è¯´æ˜ï¼šæ—§çš„æ•°æ®åº“
+ *	ËµÃ÷£º¾ÉµÄÊı¾İ¿â
  */
  
 #pragma once
@@ -21,37 +21,37 @@
 #define ScriptGameDataObj (NDScriptGameData::GetSingleton())
 
 //#pragma mark set role data 
-//#pragma mark (è®¾ç½®è§’è‰²æ•°æ®,åŒ…æ‹¬ä¸»è§’è·Ÿå…¶å®ƒç©å®¶)
+//#pragma mark (ÉèÖÃ½ÇÉ«Êı¾İ,°üÀ¨Ö÷½Ç¸úÆäËüÍæ¼Ò)
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// è®¾ç½®è§’è‰²åŸºæœ¬æ•°æ®
+// ÉèÖÃ½ÇÉ«»ù±¾Êı¾İ
 //#define SRDBasic(nRoleId, dataIndex, val) \
 //NDScriptGameData::GetSingleton().SetRoleBasicData(nRoleId, dataIndex, val)
 
-// è®¾ç½®è§’è‰²æŠ€èƒ½æ•°æ®
+// ÉèÖÃ½ÇÉ«¼¼ÄÜÊı¾İ
 //#define SRDSkill(nRoleId, nSkillId, dataIndex, val) \
 //NDScriptGameData::GetSingleton().SetRoleSkillData(nRoleId, nSkillId, dataIndex, val)
 
-// è®¾ç½®è§’è‰²çŠ¶æ€æ•°æ®
+// ÉèÖÃ½ÇÉ«×´Ì¬Êı¾İ
 //#define SRDState(nRoleId, nStateId, dataIndex, val) \
 //NDScriptGameData::GetSingleton().SetRoleStateData(nRoleId, nStateId, dataIndex, val)
 
-// è®¾ç½®è§’è‰²ç‰©å“æ•°æ®
+// ÉèÖÃ½ÇÉ«ÎïÆ·Êı¾İ
 //#define SRDItem(nRoleId, nItemId, dataIndex, val) \
 //NDScriptGameData::GetSingleton().SetRoleItemData(nRoleId, nItemId, dataIndex, val)
 
-// è®¾ç½®è§’è‰²å® ç‰©æ•°æ®
+// ÉèÖÃ½ÇÉ«³èÎïÊı¾İ
 //#define SRDPet(nRoleId, nPetId, dataIndex, val) \
 //NDScriptGameData::GetSingleton().SetRolePetData(nRoleId, nPetId, dataIndex, val)
 
-// è®¾ç½®è§’è‰²ä»»åŠ¡æ•°æ®
+// ÉèÖÃ½ÇÉ«ÈÎÎñÊı¾İ
 //#define SRDTask(nRoleId, nTaskId, dataIndex, val) \
 //NDScriptGameData::GetSingleton().SetRoleTaskData(nRoleId, nTaskId, dataIndex, val)
 
 //#pragma mark get role data 
-//#pragma mark (è·å–è§’è‰²æ•°æ®,åŒ…æ‹¬ä¸»è§’è·Ÿå…¶å®ƒç©å®¶)(ä»¥Nç»“å°¾ä¸ºæ•°å€¼å‹æ•°æ®, ä»¥Fç»“å°¾ä¸ºæµ®ç‚¹å‹æ•°æ®, ä»¥Sç»“å°¾ä¸ºå­—ç¬¦ä¸²å‹æ•°æ®)
+//#pragma mark (»ñÈ¡½ÇÉ«Êı¾İ,°üÀ¨Ö÷½Ç¸úÆäËüÍæ¼Ò)(ÒÔN½áÎ²ÎªÊıÖµĞÍÊı¾İ, ÒÔF½áÎ²Îª¸¡µãĞÍÊı¾İ, ÒÔS½áÎ²Îª×Ö·û´®ĞÍÊı¾İ)
 
-// è·å–è§’è‰²åŸºæœ¬æ•°æ®
+// »ñÈ¡½ÇÉ«»ù±¾Êı¾İ
 //#define GRDBasicN(nRoleId, dataIndex) \
 //NDScriptGameData::GetSingleton().GetRoleBasicData<unsigned long long>(nRoleId, dataIndex)
 //#define GRDBasicF(nRoleId, dataIndex) \
@@ -59,7 +59,7 @@
 //#define GRDBasicS(nRoleId, dataIndex) \
 //NDScriptGameData::GetSingleton().GetRoleBasicData<std::string>(nRoleId, dataIndex)
 
-// è·å–è§’è‰²æŠ€èƒ½æ•°æ®
+// »ñÈ¡½ÇÉ«¼¼ÄÜÊı¾İ
 //#define GRDSkillN(nRoleId, nSkillId, dataIndex) \
 //NDScriptGameData::GetSingleton().GetRoleSkillData<unsigned long long>(nRoleId, nSkillId, dataIndex)
 //#define GRDSkillF(nRoleId, nSkillId, dataIndex) \
@@ -67,7 +67,7 @@
 //#define GRDSkillS(nRoleId, nSkillId, dataIndex) \
 //NDScriptGameData::GetSingleton().GetRoleSkillData<std::string>(nRoleId, nSkillId, dataIndex)
 
-// è·å–è§’è‰²çŠ¶æ€æ•°æ®
+// »ñÈ¡½ÇÉ«×´Ì¬Êı¾İ
 //#define GRDStateN(nRoleId, nStateId, dataIndex) \
 //NDScriptGameData::GetSingleton().GetRoleStateData<unsigned long long>(nRoleId, nStateId, dataIndex)
 //#define GRDStateF(nRoleId, nStateId, dataIndex) \
@@ -75,7 +75,7 @@
 //#define GRDStateS(nRoleId, nStateId, dataIndex) \
 //NDScriptGameData::GetSingleton().GetRoleStateData<std::string>(nRoleId, nStateId, dataIndex)
 
-// è·å–è§’è‰²ç‰©å“æ•°æ®
+// »ñÈ¡½ÇÉ«ÎïÆ·Êı¾İ
 //#define GRDItemN(nRoleId, nItemId, dataIndex) \
 //NDScriptGameData::GetSingleton().GetRoleItemData<unsigned long long>(nRoleId, nItemId, dataIndex)
 //#define GRDItemF(nRoleId, nItemId, dataIndex) \
@@ -83,7 +83,7 @@
 //#define GRDItemS(nRoleId, nItemId, dataIndex) \
 //NDScriptGameData::GetSingleton().GetRoleItemData<std::string>(nRoleId, nItemId, dataIndex)
 
-// è·å–è§’è‰²å® ç‰©æ•°æ®
+// »ñÈ¡½ÇÉ«³èÎïÊı¾İ
 //#define GRDPetN(nRoleId, nPetId, dataIndex) \
 //NDScriptGameData::GetSingleton().GetRolePetData<unsigned long long>(nRoleId, nPetId, dataIndex)
 //#define GRDPetF(nRoleId, nPetId, dataIndex) \
@@ -91,7 +91,7 @@
 //#define GRDPetS(nRoleId, nPetId, dataIndex) \
 //NDScriptGameData::GetSingleton().GetRolePetData<std::string>(nRoleId, nPetId, dataIndex)
 
-// è·å–è§’è‰²ä»»åŠ¡æ•°æ®
+// »ñÈ¡½ÇÉ«ÈÎÎñÊı¾İ
 //#define GRDTaskN(nRoleId, nTaskId, dataIndex) \
 //NDScriptGameData::GetSingleton().GetRoleTaskData<unsigned long long>(nRoleId, nTaskId, dataIndex)
 //#define GRDTaskF(nRoleId, nTaskId, dataIndex) \
@@ -100,24 +100,24 @@
 //NDScriptGameData::GetSingleton().GetRoleTaskData<std::string>(nRoleId, nTaskId, dataIndex)
 
 //#pragma mark del role data
-//#pragma mark åˆ é™¤è§’è‰²æ•°æ®
+//#pragma mark É¾³ı½ÇÉ«Êı¾İ
 
 //#define DRD(nRoleId) \
 //NDScriptGameData::GetSingleton().DelRoleData(nRoleId)
 
 //#pragma mark set npc data
-//#pragma mark è®¾ç½®NPCæ•°æ®
+//#pragma mark ÉèÖÃNPCÊı¾İ
 
-// è®¾ç½®NPCåŸºæœ¬æ•°æ®
+// ÉèÖÃNPC»ù±¾Êı¾İ
 //#define SNPCDBasic(nNpcId, dataIndex, val) \
 //NDScriptGameData::GetSingleton().SetData(eScriptDataNpc, nNpcId, eRoleDataBasic, 0, dataIndex, val)
 
-// è®¾ç½®NPCå…¶å®ƒæ•°æ®... ToDo
+// ÉèÖÃNPCÆäËüÊı¾İ... ToDo
 
 //#pragma mark get npc data
-//#pragma mark è·å–NPCæ•°æ®
+//#pragma mark »ñÈ¡NPCÊı¾İ
 
-// è·å–NPCåŸºæœ¬æ•°æ®
+// »ñÈ¡NPC»ù±¾Êı¾İ
 //#define GNPCDBasicN(nNpcId, dataIndex) \
 //NDScriptGameData::GetSingleton().GetData<unsigned long long>(eScriptDataNpc, nNpcId, eRoleDataBasic, 0, dataIndex)
 //#define GNPCDBasicF(nNpcId, dataIndex) \
@@ -126,26 +126,26 @@
 //NDScriptGameData::GetSingleton().GetData<std::string>(eScriptDataNpc, nNpcId, eRoleDataBasic, 0, dataIndex)
 
 //#pragma mark del npc data
-//#pragma mark åˆ é™¤ npc æ•°æ®
+//#pragma mark É¾³ı npc Êı¾İ
 
-// åˆ é™¤NPCæ•°æ®
+// É¾³ıNPCÊı¾İ
 //#define DNPCD(nNpcId) \
 //NDScriptGameData::GetSingleton().DelData(eScriptDataNpc, nNpcId)
 
 
 //#pragma mark set monster data
-//#pragma mark è®¾ç½®æ€ªç‰©æ•°æ®
+//#pragma mark ÉèÖÃ¹ÖÎïÊı¾İ
 
-// è®¾ç½®æ€ªç‰©åŸºæœ¬æ•°æ®
+// ÉèÖÃ¹ÖÎï»ù±¾Êı¾İ
 //#define SMonsterDBasic(nMonsterId, dataIndex, val) \
 //NDScriptGameData::GetSingleton().SetData(eScriptDataMonster, nMonsterId, eRoleDataBasic, 0, dataIndex, val)
 
-// è®¾ç½®æ€ªç‰©å…¶å®ƒæ•°æ®... ToDo
+// ÉèÖÃ¹ÖÎïÆäËüÊı¾İ... ToDo
 
 //#pragma mark get monster data
-//#pragma mark è·å–æ€ªç‰©æ•°æ®
+//#pragma mark »ñÈ¡¹ÖÎïÊı¾İ
 
-// è·å–æ€ªç‰©åŸºæœ¬æ•°æ®
+// »ñÈ¡¹ÖÎï»ù±¾Êı¾İ
 //#define GMonsterDBasicN(nMonsterId, dataIndex) \
 //NDScriptGameData::GetSingleton().GetData<unsigned long long>(eScriptDataMonster, nMonsterId, eRoleDataBasic, 0, dataIndex)
 //#define GMonsterDBasicF(nMonsterId, dataIndex) \
@@ -154,9 +154,9 @@
 //NDScriptGameData::GetSingleton().GetData<std::string>(eScriptDataMonster, nMonsterId, eRoleDataBasic, 0, dataIndex)
 
 //#pragma mark del mosnter data
-//#pragma mark åˆ é™¤ æ€ªç‰© æ•°æ®
+//#pragma mark É¾³ı ¹ÖÎï Êı¾İ
 
-// åˆ é™¤æ€ªç‰©æ•°æ®
+// É¾³ı¹ÖÎïÊı¾İ
 //#define DMonsterD(nMonsterId) \
 //NDScriptGameData::GetSingleton().DelData(eScriptDataMonster, nMonsterId)
 
@@ -245,12 +245,12 @@ _tagScriptGameData
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-// æŠŠå­˜å‚¨ç±»å‹ç”±mapæ”¹æˆvector
+// °Ñ´æ´¢ÀàĞÍÓÉmap¸Ä³Évector
 typedef std::map<unsigned int, ScriptGameData>				VecScriptGameData;
 typedef VecScriptGameData::iterator							VecScriptGameDataIt;
 typedef VecScriptGameData::value_type						VecScriptGameDataVt;
 
-// æŠŠå­˜å‚¨ç±»å‹ç”±mapæ”¹æˆvector,ç›®çš„æ˜¯æ¯æ¬¡è·å–å‡ºæ¥çš„idåˆ—è¡¨éƒ½æ˜¯æœ‰åºçš„
+// °Ñ´æ´¢ÀàĞÍÓÉmap¸Ä³Évector,Ä¿µÄÊÇÃ¿´Î»ñÈ¡³öÀ´µÄidÁĞ±í¶¼ÊÇÓĞĞòµÄ
 typedef struct  _tagSTScriptGameData
 {
 	unsigned int nId;
@@ -329,12 +329,12 @@ public:
 	
 	void LogOutMemory();
 	
-//#pragma mark æ‰“å°æ¸¸æˆæ•°æ®
+//#pragma mark ´òÓ¡ÓÎÏ·Êı¾İ
 	void LogOut(eScriptData esd, unsigned int nKey, eRoleData e, int nId);
 private:
 	void LogOut(VecScriptGameData& vSGD);
 	
-//#pragma mark è§’è‰²æ•°æ®idåˆ—è¡¨ç®¡ç†
+//#pragma mark ½ÇÉ«Êı¾İidÁĞ±í¹ÜÀí
 public:
 	bool			GetRoleDataIdList(eScriptData esd, unsigned int nKey, eRoleData e, int nRoleId, eIDList eList, ID_VEC& idVec);
 	bool			DelRoleDataIdList(eScriptData esd, unsigned int nKey, eRoleData e, int nRoleId, eIDList eList);
@@ -343,10 +343,10 @@ public:
 	void			LogOutRoleDataIdList(eScriptData esd, unsigned int nKey, eRoleData e, int nRoleId, eIDList eList);
 
 public:
-//#pragma mark è·å–idåˆ—è¡¨
+//#pragma mark »ñÈ¡idÁĞ±í
 	bool			GetDataIdList(eScriptData esd, unsigned int nKey, eRoleData e, ID_VEC& idVec);
 	
-//#pragma mark è„šæœ¬æ•°æ®æ¥å£
+//#pragma mark ½Å±¾Êı¾İ½Ó¿Ú
 	template<typename T>
 	void			SetData(eScriptData esd, unsigned int nKey, eRoleData e,  int nId, unsigned short index, const T& data);
 	
@@ -364,7 +364,7 @@ public:
 	void			DelData(eScriptData esd);
 	void			DelAllData();
 
-//#pragma mark è§’è‰²åŸºç¡€æ•°æ®æ¥å£
+//#pragma mark ½ÇÉ«»ù´¡Êı¾İ½Ó¿Ú
 	template<typename T>
 	void			SetRoleBasicData(unsigned int nKey, unsigned short index, const T& data);
 	template<typename RT>
@@ -375,7 +375,7 @@ public:
 	std::string		GetRoleBasicStrData(unsigned int nKey, unsigned short index);
 	void			DelRoleData(unsigned int nKey);
 	
-//#pragma mark è§’è‰²æŠ€èƒ½æ•°æ®æ¥å£
+//#pragma mark ½ÇÉ«¼¼ÄÜÊı¾İ½Ó¿Ú
 	template<typename T>
 	void			SetRoleSkillData(unsigned int nKey, int nId, unsigned short index, const T& data);
 	template<typename RT>
@@ -387,7 +387,7 @@ public:
 	void			DelRoleSkillData(unsigned int nKey, int nId);
 	void			DelRoleSkillData(unsigned int nKey);
 	
-//#pragma mark è§’è‰²çŠ¶æ€æ•°æ®æ¥å£
+//#pragma mark ½ÇÉ«×´Ì¬Êı¾İ½Ó¿Ú
 	template<typename T>
 	void			SetRoleStateData(unsigned int nKey, int nId, unsigned short index, const T& data);
 	template<typename RT>
@@ -399,7 +399,7 @@ public:
 	void			DelRoleStateData(unsigned int nKey, int nId);
 	void			DelRoleStateData(unsigned int nKey);
 
-//#pragma mark è§’è‰²ç‰©å“æ•°æ®æ¥å£
+//#pragma mark ½ÇÉ«ÎïÆ·Êı¾İ½Ó¿Ú
 	template<typename T>
 	void			SetRoleItemData(unsigned int nKey, int nId, unsigned short index, const T& data);
 	template<typename RT>
@@ -411,7 +411,7 @@ public:
 	void			DelRoleItemData(unsigned int nKey, int nId);
 	void			DelRoleItemData(unsigned int nKey);
 	
-//#pragma mark è§’è‰²å® ç‰©æ•°æ®æ¥å£
+//#pragma mark ½ÇÉ«³èÎïÊı¾İ½Ó¿Ú
 	template<typename T>
 	void			SetRolePetData(unsigned int nKey, int nId, unsigned short index, const T& data);
 	template<typename RT>
@@ -423,7 +423,7 @@ public:
 	void			DelRolePetData(unsigned int nKey, int nId);
 	void			DelRolePetData(unsigned int nKey);
 
-//#pragma mark è§’è‰²ä»»åŠ¡æ•°æ®æ¥å£
+//#pragma mark ½ÇÉ«ÈÎÎñÊı¾İ½Ó¿Ú
 	template<typename T>
 	void			SetRoleTaskData(unsigned int nKey, int nId, unsigned short index, const T& data);
 	template<typename RT>

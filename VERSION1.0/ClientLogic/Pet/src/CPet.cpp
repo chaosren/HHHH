@@ -3,7 +3,7 @@
  *  DragonDrive
  *
  *  Created by jhzheng on 12-1-14.
- *  Copyright 2012 (ç½‘é¾™)DeNA. All rights reserved.
+ *  Copyright 2012 (ÍøÁú)DeNA. All rights reserved.
  *
  */
 
@@ -21,7 +21,7 @@ CPetMgr::~CPetMgr()
 	DEC_NDOBJ("CPetMgr");
 }
 
-// å•çº¯å–æ“ä½œ
+// µ¥´¿È¡²Ù×÷
 PetInfo*				
 CPetMgr::GetPet(OBJID idPet)
 {
@@ -40,7 +40,7 @@ CPetMgr::GetPet(OBJID idPet)
 	return NULL;
 }
 
-// æ— åˆ™åˆ›å»º
+// ÎŞÔò´´½¨
 PetInfo*				
 CPetMgr::GetPetWithCreate(OBJID idRoleID, OBJID idPet)
 {
@@ -65,7 +65,7 @@ CPetMgr::GetPetWithCreate(OBJID idRoleID, OBJID idPet)
 	return pets[idPet];
 }
 
-// è·å–æŸä¸ªè§’è‰²æ‰€æœ‰çš„å® ç‰©æ•°æ®
+// »ñÈ¡Ä³¸ö½ÇÉ«ËùÓĞµÄ³èÎïÊı¾İ
 bool					
 CPetMgr::GetPets(OBJID idRoleID, ID_VEC& vecid)
 {
@@ -88,7 +88,7 @@ CPetMgr::GetPets(OBJID idRoleID, ID_VEC& vecid)
 	return false;
 }
 
-// è·å–æŸä¸ªç©å®¶çš„å® ç‰©ä¸»å°†
+// »ñÈ¡Ä³¸öÍæ¼ÒµÄ³èÎïÖ÷½«
 PetInfo*				
 CPetMgr::GetMainPet(OBJID idRoleID)
 {
@@ -110,7 +110,7 @@ CPetMgr::GetMainPet(OBJID idRoleID)
 	return NULL;
 }
 
-// è·å–æŸä¸ªç©å®¶çš„æºœå® 
+// »ñÈ¡Ä³¸öÍæ¼ÒµÄÁï³è
 PetInfo*				
 CPetMgr::GetShowPet(OBJID idRoleID)
 {
@@ -132,7 +132,7 @@ CPetMgr::GetShowPet(OBJID idRoleID)
 	return NULL;
 }
 
-// è·å–æŸä¸ªä½ç½®å® ç‰©çš„æ•°æ®				
+// »ñÈ¡Ä³¸öÎ»ÖÃ³èÎïµÄÊı¾İ				
 bool					
 CPetMgr::GetPetWithPos(OBJID idRoleID, PET_POSITION pos, ID_VEC& vecid)
 {
@@ -160,7 +160,7 @@ CPetMgr::GetPetWithPos(OBJID idRoleID, PET_POSITION pos, ID_VEC& vecid)
 	return ret;
 }
 
-// æ¸…é™¤æŸä¸ªè§’è‰²çš„æ‰€æœ‰å® ç‰©æ•°æ®
+// Çå³ıÄ³¸ö½ÇÉ«µÄËùÓĞ³èÎïÊı¾İ
 bool					
 CPetMgr::DelPets(OBJID idRoleID)
 {
@@ -183,7 +183,7 @@ CPetMgr::DelPets(OBJID idRoleID)
 	return true;
 }
 
-// æ¸…é™¤å® ç‰©æ•°æ®
+// Çå³ı³èÎïÊı¾İ
 bool					
 CPetMgr::DelPet(OBJID idPet)
 {
@@ -236,7 +236,7 @@ CPetMgr::DelAll()
 	return false;
 }
 
-// å¢åŠ æŸåªå® ç‰©æŸä¸ªæŠ€èƒ½
+// Ôö¼ÓÄ³Ö»³èÎïÄ³¸ö¼¼ÄÜ
 void					
 CPetMgr::AddSkill(OBJID idRoleID, OBJID idPet, OBJID idSkill)
 {
@@ -261,7 +261,7 @@ CPetMgr::AddSkill(OBJID idRoleID, OBJID idPet, OBJID idSkill)
 	setid.insert(idSkill);
 }
 
-// åˆ é™¤æŸåªå® ç‰©æŸä¸ªæŠ€èƒ½
+// É¾³ıÄ³Ö»³èÎïÄ³¸ö¼¼ÄÜ
 bool					
 CPetMgr::DelSkill(OBJID idRoleID, OBJID idPet, OBJID idSkill)
 {
@@ -288,7 +288,7 @@ CPetMgr::DelSkill(OBJID idRoleID, OBJID idPet, OBJID idSkill)
 	return true;
 }
 
-// åˆ é™¤æŸä¸ªè§’è‰²æŸåªå® ç‰©çš„æ‰€æœ‰æŠ€èƒ½
+// É¾³ıÄ³¸ö½ÇÉ«Ä³Ö»³èÎïµÄËùÓĞ¼¼ÄÜ
 bool					
 CPetMgr::DelSkill(OBJID idRoleID, OBJID idPet)
 {
@@ -312,7 +312,7 @@ CPetMgr::DelSkill(OBJID idRoleID, OBJID idPet)
 	return true;
 }
 
-// åˆ é™¤æŸä¸ªè§’è‰²çš„æ‰€æœ‰å® ç‰©æ‰€æœ‰æŠ€èƒ½
+// É¾³ıÄ³¸ö½ÇÉ«µÄËùÓĞ³èÎïËùÓĞ¼¼ÄÜ
 bool					
 CPetMgr::DelSkills(OBJID idRoleID)
 {

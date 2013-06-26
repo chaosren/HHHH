@@ -10,12 +10,12 @@
 #endif // _MSC_VER > 1000
 
 //////////////////////////////////////////////////////////////////////////
-const int ANALYST_LOGTIMER		= 1*60*1000;	//å¤šä¹…ç»Ÿè®¡ä¸€æ¬¡
+const int ANALYST_LOGTIMER		= 1*60*1000;	//¶à¾ÃÍ³¼ÆÒ»´Î
 
-const int ANALYST_MASK_INVALID	= 0;		//æ— æ•ˆ
-const int ANALYST_MASK_TICKS	= 1;		//ç»Ÿè®¡ticksæ¶ˆè€—
-const int ANALYST_MASK_SIZE		= 2;		//ç»Ÿè®¡size/bytes
-//const int ANALYST_MASK_AMOUNT	= 4;		//ç»Ÿè®¡æ•°é‡
+const int ANALYST_MASK_INVALID	= 0;		//ÎŞĞ§
+const int ANALYST_MASK_TICKS	= 1;		//Í³¼ÆticksÏûºÄ
+const int ANALYST_MASK_SIZE		= 2;		//Í³¼Æsize/bytes
+//const int ANALYST_MASK_AMOUNT	= 4;		//Í³¼ÆÊıÁ¿
 
 //////////////////////////////////////////////////////////////////////////
 class CAnalyst
@@ -29,7 +29,7 @@ public:
 	void	SizeAdd		(int idx, int size);
 	//void	AmountAdd	(int idx, int nAmount);
 
-public:		//æŒ‰nameç´¢å¼•ï¼Œæ¶ˆè€—ä¼šå¤§ä¸€äº›
+public:		//°´nameË÷Òı£¬ÏûºÄ»á´óÒ»Ğ©
 	void	TicksAdd	(const char* szKey, int ticks);
 
 public:

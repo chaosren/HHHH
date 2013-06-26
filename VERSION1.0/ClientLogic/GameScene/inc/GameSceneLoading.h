@@ -20,9 +20,9 @@ using namespace NDEngine;
 
 typedef enum 
 {
-	LoginTypeNone,		// æ— 
-	LoginTypeFirst,		// å½“å‰è¿æ¥æ˜¯cmwap,åˆ™å…ˆåˆ‡æ¢åˆ°cmnet,è¿æ¥,å¤±è´¥åˆ™downloadlist,å†å¤±è´¥æŠ¥é”™
-	LoginTypeSecond,    // ç›´æ¥è¿æ¥å·²æœ‰çš„, å¤±è´¥æŠ¥é”™
+	LoginTypeNone,		// ÎŞ
+	LoginTypeFirst,		// µ±Ç°Á¬½ÓÊÇcmwap,ÔòÏÈÇĞ»»µ½cmnet,Á¬½Ó,Ê§°ÜÔòdownloadlist,ÔÙÊ§°Ü±¨´í
+	LoginTypeSecond,    // Ö±½ÓÁ¬½ÓÒÑÓĞµÄ, Ê§°Ü±¨´í
 }LoginType;
 
 

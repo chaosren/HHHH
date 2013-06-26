@@ -42,14 +42,14 @@ static void dump_size(const char* name, int count, int total, int max)
 ////////////////////////////////////////////////////////////////////////////
 typedef struct Statis_s {
 	int			mask;			// the mask of type
-	long		totalTicks;		// æ€»å…±ticksæ¶ˆè€—
-	long		maxTicks;		// æœ€å¤§ticksæ¶ˆè€—
-	long		totalSize;		// æ€»å…±size/bytes
-	long		maxSize;		// æœ€å¤§size/bytes
-	long		amount;			// æ•°é‡
-	long		countTicks;		// ticks ç»Ÿè®¡æ¬¡æ•°
-	long		countSize;		// size ç»Ÿè®¡æ¬¡æ•°
-	long		countAmount;	// amount ç»Ÿè®¡æ¬¡æ•°
+	long		totalTicks;		// ×Ü¹²ticksÏûºÄ
+	long		maxTicks;		// ×î´óticksÏûºÄ
+	long		totalSize;		// ×Ü¹²size/bytes
+	long		maxSize;		// ×î´ósize/bytes
+	long		amount;			// ÊıÁ¿
+	long		countTicks;		// ticks Í³¼Æ´ÎÊı
+	long		countSize;		// size Í³¼Æ´ÎÊı
+	long		countAmount;	// amount Í³¼Æ´ÎÊı
 	char*		name;			// alloc/free by hand
 } Statis_t;
 
@@ -181,9 +181,9 @@ void statis_dump(vecStatis_t* obj)
 /////////////////////////////////////////////////////////////////////
 typedef struct Statis2_s {
 	int			mask;			// the mask of type
-	long		total_ticks;	// æ€»å…±ticksæ¶ˆè€—
-	long		max_tick;		// æœ€å¤§ticksæ¶ˆè€—
-	long		tick_count;		// tick ç»Ÿè®¡æ¬¡æ•°
+	long		total_ticks;	// ×Ü¹²ticksÏûºÄ
+	long		max_tick;		// ×î´óticksÏûºÄ
+	long		tick_count;		// tick Í³¼Æ´ÎÊı
 	char*		name;			// alloc/free by hand
 	struct Statis2_s* hashNext;
 } Statis2_t;
@@ -367,7 +367,7 @@ bool CAnalyst::AnalystAdd(int idx, int mask, const char* name)
 }
 
 //////////////////////////////////////////////////////////////////////////
-//éçº¿ç¨‹å®‰å…¨
+//·ÇÏß³Ì°²È«
 void
 CAnalyst::OnTimer()
 {

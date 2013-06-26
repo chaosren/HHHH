@@ -321,7 +321,7 @@ int ContainerClientLayerM::WhichViewToScroll()
 }
 
 bool ContainerClientLayerM::TouchMoved(NDTouch* touch){
-// 	if (!this->IsVisibled()) //@zd å¿…é¡»æ³¨é‡Šæ‰ï¼Œä¸ç„¶ä¼šå½±å“æ»šåŠ¨æ§ä»¶çš„æ‹–åŠ¨
+// 	if (!this->IsVisibled()) //@zd ±ØĞë×¢ÊÍµô£¬²»È»»áÓ°Ïì¹ö¶¯¿Ø¼şµÄÍÏ¶¯
 // 	{
 // 		return false;
 // 	}
@@ -367,14 +367,14 @@ void ContainerClientLayerM::draw() //  m_fScrollDistance += speed; only to zero;
         return;
     }
     
-    //å°äºæœ€å°ç§»åŠ¨è·ç¦»æ—¶
+    //Ğ¡ÓÚ×îĞ¡ÒÆ¶¯¾àÀëÊ±
     if(fabs(m_fScrollDistance)<=m_fScrollToCenterSpeed){
         MoveClient(-m_fScrollDistance);
         m_fScrollDistance = 0;
         return;
     }
     
-    //ä¸Šä¸‹æ»‘åŠ¨
+    //ÉÏÏÂ»¬¶¯
     if(m_fScrollDistance>0){
         MoveClient(-m_fScrollToCenterSpeed);
         m_fScrollDistance -= m_fScrollToCenterSpeed;
@@ -493,13 +493,13 @@ void CUIScrollViewContainerM::AddView(ContainerClientLayerM* container)
 {
 	container->EnableEvent(false);
     
-    //è®¾ç½®æ¯ç»„èŠ‚ç‚¹çš„å¤§å°
+    //ÉèÖÃÃ¿×é½ÚµãµÄ´óĞ¡
     unsigned int count = m_pClientUINodes.size();
     CCRect rect;
     rect.origin.x = m_sizeView.width*count;
     rect.origin.y = 0;
     rect.size = m_sizeView;
-    if(count>0){//è®¾ç½®åç§»
+    if(count>0){//ÉèÖÃÆ«ÒÆ
         rect.origin.x += m_pClientUINodes[0]->GetFrameRect().origin.x;
     }
 	this->AddChild(container);
@@ -529,7 +529,7 @@ void CUIScrollViewContainerM::RemoveView(unsigned int uiIndex)
 	unsigned int nBeginIndex	= 0;
 	if (uiIndex >=  childsize - 1)
 	{
-		//æœ€åä¸€ä¸ªview
+		//×îºóÒ»¸öview
 		nBeginIndex = childsize <= 1 ? 0 : childsize - 2;
 	}
 	else
@@ -858,7 +858,7 @@ int CUIScrollViewContainerM::WhichViewToScroll()
 
 		CCLog("tzq iCurMoveDis = %d, viewrect.size.width = %05f, iCurShowIndex = %d", iCurMoveDis, viewrect.size.width, iCurShowIndex);
 
-		//ç²å–çš„ç§»å‹•è·é›¢å¦‚æœå°æ–¼0ï¼Œé‚£éº¼å‘å³ç§»å‹•ï¼Œç´¢å¼•å¢åŠ 
+		//«@È¡µÄÒÆ„Ó¾àëxÈç¹ûĞ¡ì¶0£¬ÄÇüNÏòÓÒÒÆ„Ó£¬Ë÷ÒıÔö¼Ó
 		if(iCurMoveDis < 0)
 		{
 			if(abs(iCurMoveDis) > viewrect.size.width/8)
@@ -868,7 +868,7 @@ int CUIScrollViewContainerM::WhichViewToScroll()
 				iCurShowIndex = iCurShowIndex + iMoveNum > size - 1 ? size - 1 : iCurShowIndex + iMoveNum;
 			}
 		}
-		//ç²å–çš„ç§»å‹•è·é›¢å¦‚æœå¤§æ–¼0ï¼Œé‚£éº¼å‘å·¦ç§»å‹•ï¼Œç´¢å¼•æ¸›å°‘
+		//«@È¡µÄÒÆ„Ó¾àëxÈç¹û´óì¶0£¬ÄÇüNÏò×óÒÆ„Ó£¬Ë÷ÒıœpÉÙ
 		else if(iCurMoveDis > 0)
 		{
 			if(iCurMoveDis > viewrect.size.width/8)
@@ -1104,7 +1104,7 @@ void CUIScrollViewContainerM::draw() //  m_fScrollDistance += speed; only to zer
         return;
     }
     
-    //å°äºæœ€å°ç§»åŠ¨è·ç¦»æ—¶
+    //Ğ¡ÓÚ×îĞ¡ÒÆ¶¯¾àÀëÊ±
     if(fabs(m_fScrollDistance)<=m_fScrollToCenterSpeed){
         MoveClient(-m_fScrollDistance);
         m_fScrollDistance = 0;
@@ -1112,7 +1112,7 @@ void CUIScrollViewContainerM::draw() //  m_fScrollDistance += speed; only to zer
         return;
     }
     
-    //å·¦å³æ»‘åŠ¨
+    //×óÓÒ»¬¶¯
     if(m_fScrollDistance>0){
         MoveClient(-m_fScrollToCenterSpeed);
         m_fScrollDistance -= m_fScrollToCenterSpeed;
@@ -1160,17 +1160,17 @@ void CUIScrollViewContainerM::OnScrollViewMove(NDObject* object, float fVertical
 // when call back, just call AdjustView
 void CUIScrollViewContainerM::OnScrollViewScrollMoveStop(NDObject* object)
 {
-    //è°ƒæ•´æ°´å¹³ä½ç½®
+    //µ÷ÕûË®Æ½Î»ÖÃ
 	AdjustView();
     
     
-    //è°ƒæ•´å‚ç›´ä½ç½®
+    //µ÷Õû´¹Ö±Î»ÖÃ
     int uiIndex = this->WhichViewToScroll();
     ContainerClientLayerM *m_pClientUINode = m_pClientUINodes[uiIndex];
     m_pClientUINode->AdjustView();
     
 }
-//** åˆ é™¤è¿™ä¸¤æ–¹æ³• **//
+//** É¾³ıÕâÁ½·½·¨ **//
 bool CUIScrollViewContainerM::CanHorizontalMove(NDObject* object, float& hDistance)
 {
     return false;
@@ -1287,23 +1287,23 @@ void CUIScrollViewContainerM::DrawScrollBar(ContainerClientLayerM *layer)
     
     CUIScroll* itemView	= (CUIScroll*)pNode;
     
-    CCSize sizePic		= m_picScroll->GetSize();       //æ»šåŠ¨æ¡å›¾ç‰‡å¤§å°
-    CCRect itemRect     = itemView->GetFrameRect();     //æ¯ä¸€é¡¹çš„åŒºåŸŸ
-    CCRect itemBoxRect  = layer->GetFrameRect();     //æ¯ä¸€é¡¹çš„åŒºåŸŸ
-    CCRect boxRext     = GetSrcRectCache(); //m_scrRect;         //æ¡†çš„åŒºåŸŸ
+    CCSize sizePic		= m_picScroll->GetSize();       //¹ö¶¯ÌõÍ¼Æ¬´óĞ¡
+    CCRect itemRect     = itemView->GetFrameRect();     //Ã¿Ò»ÏîµÄÇøÓò
+    CCRect itemBoxRect  = layer->GetFrameRect();     //Ã¿Ò»ÏîµÄÇøÓò
+    CCRect boxRext     = GetSrcRectCache(); //m_scrRect;         //¿òµÄÇøÓò
 	
     
     
     
     int nViewHeight = m_pClientUINodes[m_unBeginIndex]->GetViewSize().height;
     int nCount = m_pClientUINodes[m_unBeginIndex]->GetChildren().size();
-    //åˆ¤æ–­ä¸€é¡µçš„å¤§å°
+    //ÅĞ¶ÏÒ»Ò³µÄ´óĞ¡
     if(nCount*nViewHeight<=boxRext.size.height){
         return;
     }
     
     
-    CCRect rect			= CCRectZero;               //è¦æ˜¾ç¤ºæ»šåŠ¨æ¡çš„åŒºåŸŸ
+    CCRect rect			= CCRectZero;               //ÒªÏÔÊ¾¹ö¶¯ÌõµÄÇøÓò
     rect.size           = sizePic;
     
     float itemTotalHeight = layer->GetViewCount() * itemRect.size.height - itemBoxRect.size.height;

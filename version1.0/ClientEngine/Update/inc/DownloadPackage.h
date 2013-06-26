@@ -6,7 +6,7 @@
 //  Copyright 2011 __MyCompanyName__. All rights reserved.
 //
 /*
- æ–‡ä»¶ä¸‹è½½å™¨ï¼Œä¸»è¦ç”¨äºä¸‹è½½æ›´æ–°åŒ…
+ ÎÄ¼şÏÂÔØÆ÷£¬Ö÷ÒªÓÃÓÚÏÂÔØ¸üĞÂ°ü
  */
 
 #ifndef __DownloadPackage_H
@@ -19,16 +19,16 @@
 
 using namespace NDEngine;
 
-bool isWifiNetWork();//åˆ¤æ–­wifiæ˜¯å¦å¤„äºå·¥ä½œçŠ¶æ€
-KData getHttpProxy();//è·å–httpä»£ç†
+bool isWifiNetWork();//ÅĞ¶ÏwifiÊÇ·ñ´¦ÓÚ¹¤×÷×´Ì¬
+KData getHttpProxy();//»ñÈ¡http´úÀí
 #define  RECONNECTCOUNT  5;
 typedef enum
 {
-	DownloadStatusResNotFound,	//ä¸‹è½½èµ„æºä¸å­˜åœ¨
-	DownloadStatusSuccess,		//ä¸‹è½½æˆåŠŸ
-	DownloadStatusFailed,		//ä¸‹è½½å¤±è´¥
+	DownloadStatusResNotFound,	//ÏÂÔØ×ÊÔ´²»´æÔÚ
+	DownloadStatusSuccess,		//ÏÂÔØ³É¹¦
+	DownloadStatusFailed,		//ÏÂÔØÊ§°Ü
 }DownloadStatus;
-//DownloadPackageç±»å†…éƒ¨è°ƒç”¨çš„objective-cæ–¹æ³•ï¼Œå¤–éƒ¨æ— éœ€å…³å¿ƒ
+//DownloadPackageÀàÄÚ²¿µ÷ÓÃµÄobjective-c·½·¨£¬Íâ²¿ÎŞĞè¹ØĞÄ
 // @interface MainThreadSelector : NSObject
 // - (void)runWithParam:(NSArray *)param;
 // @end
@@ -39,7 +39,7 @@ class DownloadPackageDelegate
 	virtual void ReflashPercent(int percent, int pos, int filelen){};
 };
 */
-//æ–‡ä»¶ä¸‹è½½å™¨ç±»
+//ÎÄ¼şÏÂÔØÆ÷Àà
 class DownloadPackage 
 {
 	//DECLARE_CLASS(DownloadPackage)
@@ -50,18 +50,18 @@ public:
 
 public:
 
-	//è¢«ä¸‹è½½çš„æ–‡ä»¶httpåœ°å€
+	//±»ÏÂÔØµÄÎÄ¼şhttpµØÖ·
 	void FromUrl(const char* url);
-	//è¢«ä¸‹è½½çš„æ–‡ä»¶ä¿å­˜è·¯å¾„
+	//±»ÏÂÔØµÄÎÄ¼ş±£´æÂ·¾¶
 	void ToPath(const char* path);
-	//ä¸‹è½½æ“ä½œ
+	//ÏÂÔØ²Ù×÷
 	void Download();
-    //è·å–æ–‡ä»¶å¤§å°
+    //»ñÈ¡ÎÄ¼ş´óĞ¡
 	int GetFileSize(const char* filepath);
 public:
 
 	int m_nFileLen;
-	//ä¸€ä¸‹ä¸‰ä¸ªæ–¹æ³•å¯çœ‹ä½œæ˜¯ç§æœ‰æ–¹æ³•ï¼Œå¤–éƒ¨æ— éœ€å…³å¿ƒ
+	//Ò»ÏÂÈı¸ö·½·¨¿É¿´×÷ÊÇË½ÓĞ·½·¨£¬Íâ²¿ÎŞĞè¹ØĞÄ
 	void DownloadThreadExcute();
 	virtual void DidDownloadStatus(DownloadStatus status){};
 	virtual void ReflashPercent(int percent, int pos, int filelen){};

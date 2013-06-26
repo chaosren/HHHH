@@ -21,25 +21,25 @@
 using namespace NDEngine;
 
 typedef enum{
-	ChatTypeAll,		//å…¨éƒ¨
-	ChatTypeTip,		//å°è´´å£«
-	ChatTypeImportant,	//é‡è¦æç¤º
-	ChatTypeWorld,		//ä¸–
-	ChatTypeSection,	//åŒº
-	ChatTypeQueue,		//é˜Ÿ
-	ChatTypeArmy,		//å†›
-	ChatTypeSecret,		//å¯†
-	ChatTypeSystem		//ç³»
+	ChatTypeAll,		//È«²¿
+	ChatTypeTip,		//Ğ¡ÌùÊ¿
+	ChatTypeImportant,	//ÖØÒªÌáÊ¾
+	ChatTypeWorld,		//ÊÀ
+	ChatTypeSection,	//Çø
+	ChatTypeQueue,		//¶Ó
+	ChatTypeArmy,		//¾ü
+	ChatTypeSecret,		//ÃÜ
+	ChatTypeSystem		//Ïµ
 }ChatType;
 
 /*
- ä»¥ä¸‹ä¸‰ä¸ªæ–¹æ³•å†…éƒ¨è°ƒç”¨ï¼Œå¤–éƒ¨å¯æ— é¡»å…³å¿ƒï¼Œäº†è§£å…·ä½“ä½¿ç”¨ï¼Œå¯å‚è€ƒè¯¥æ–¹æ³•è¢«è°ƒç”¨çš„åœ°æ–¹
+ ÒÔÏÂÈı¸ö·½·¨ÄÚ²¿µ÷ÓÃ£¬Íâ²¿¿ÉÎŞĞë¹ØĞÄ£¬ÁË½â¾ßÌåÊ¹ÓÃ£¬¿É²Î¿¼¸Ã·½·¨±»µ÷ÓÃµÄµØ·½
  */
 ChatType GetChatTypeFromChannel(int channel);
 int GetChannelFromChatType(ChatType type);
 ccColor4B GetColorWithChatType(ChatType type);
 
-//èŠå¤©ä¿¡æ¯æç¤ºæ§ä»¶
+//ÁÄÌìĞÅÏ¢ÌáÊ¾¿Ø¼ş
 class TextControl : public NDUILayer//, public ITimerCallback
 {
 	DECLARE_CLASS(TextControl)
@@ -47,9 +47,9 @@ class TextControl : public NDUILayer//, public ITimerCallback
 	~TextControl();
 public:
 	void Initialization(unsigned int displaySecond); hide
-	//å†…å®¹
+	//ÄÚÈİ
 	void SetText(const char* text);
-	//é¢œè‰²
+	//ÑÕÉ«
 	void SetFontColor(ccColor4B color);
 	
 	void OnFrameRectChange(CCRect srcRect, CCRect dstRect); override
@@ -61,7 +61,7 @@ private:
 	NDTimer* m_timer;
 };
 
-//èŠå¤©ç±»å‹å’ŒèŠå¤©å†…å®¹ç»„åˆçš„ç»“æ„ä½“ï¼Œå†…éƒ¨ä½¿ç”¨
+//ÁÄÌìÀàĞÍºÍÁÄÌìÄÚÈİ×éºÏµÄ½á¹¹Ìå£¬ÄÚ²¿Ê¹ÓÃ
 typedef struct MESSAGE_STRUCT{
 	ChatType chatType;
 	std::string message;
@@ -72,26 +72,26 @@ typedef struct MESSAGE_STRUCT{
 	}
 }MessageStruct;
 
-//èŠå¤©çš„åŠŸèƒ½ç±»ï¼Œ
-//å•ä¾‹
+//ÁÄÌìµÄ¹¦ÄÜÀà£¬
+//µ¥Àı
 class Chat : public NDObject, public ITimerCallback, public NDDirectorDelegate
 {
 	DECLARE_CLASS(Chat)
 	Chat();
 	~Chat();
 public:
-	//å•ä¾‹å¯¹è±¡æŒ‡é’ˆ
+	//µ¥Àı¶ÔÏóÖ¸Õë
 	static Chat* DefaultChat();
     static void  Release();
-	//è®¾ç½®æœ€å¤šåŒæ—¶æ˜¾ç¤ºèŠå¤©è®°å½•æ•°
+	//ÉèÖÃ×î¶àÍ¬Ê±ÏÔÊ¾ÁÄÌì¼ÇÂ¼Êı
 	void SetRecordCount(unsigned int count);
-	//è®¾ç½®æ¯æ¡è®°å½•çš„æ˜¾ç¤ºæ—¶é•¿ï¼Œå•ä½ï¼šç§’
+	//ÉèÖÃÃ¿Ìõ¼ÇÂ¼µÄÏÔÊ¾Ê±³¤£¬µ¥Î»£ºÃë
 	void SetAppearTime(float second);
-	//å¦‚æœä»æœåŠ¡å™¨æ¥æ”¶åˆ°ä¸€æ¡èŠå¤©è®°å½•ï¼Œå¯è°ƒç”¨æ­¤æ¥å£ï¼Œå‰©ä½™çš„äº‹æƒ…å†…éƒ¨éƒ½å¸®ä½ å¤„ç†äº†ï¼Œæ‰€ä»¥å¤–éƒ¨åŸºæœ¬åªè¦ä½¿ç”¨æ­¤æ¥å£å°±å¯ä»¥
+	//Èç¹û´Ó·şÎñÆ÷½ÓÊÕµ½Ò»ÌõÁÄÌì¼ÇÂ¼£¬¿Éµ÷ÓÃ´Ë½Ó¿Ú£¬Ê£ÓàµÄÊÂÇéÄÚ²¿¶¼°ïÄã´¦ÀíÁË£¬ËùÒÔÍâ²¿»ù±¾Ö»ÒªÊ¹ÓÃ´Ë½Ó¿Ú¾Í¿ÉÒÔ
 	void AddMessage(ChatType type, const char* message, const char* speaker=NULL, bool bRecord=true);
 	
 	/*
-	 ä»¥ä¸‹æ–¹æ³•å†…éƒ¨è°ƒç”¨ï¼Œå¤–éƒ¨æ— é¡»å…³å¿ƒ
+	 ÒÔÏÂ·½·¨ÄÚ²¿µ÷ÓÃ£¬Íâ²¿ÎŞĞë¹ØĞÄ
 	 */
 	void OnTimer(OBJID tag); override
 	void BeforeDirectorPopScene(NDDirector* director, NDScene* scene, bool cleanScene); override

@@ -3,7 +3,7 @@
 //  DragonDrive
 //
 //  Created by xiezhenghai on 10-12-9.
-//  Copyright 2010 (ç½‘é¾™)DeNA. All rights reserved.
+//  Copyright 2010 (ÍøÁú)DeNA. All rights reserved.
 //
 
 #ifndef __NDPath_H
@@ -66,7 +66,7 @@ public:
  	static const string GetUIPath(const char* fileName);
 	static const string GetUIPath();
 	static const string GetGameConfigPath(const char* pszConfFileName,bool bPackage = false);
-	//ï¼ï¼ï¼end
+	//£­£­£­end
 	static void SetResDirPos( int iPos );
 	static int GetResDirPos(){ return s_iResDirPos; }
 	static const char* GetRootResDirName();
@@ -78,7 +78,7 @@ public:
 
 protected:
 
-	static int s_iResDirPos;//èµ„æºç›®å½•æ‰€å¤„ä½ç½® 0:Appç›®å½•ä¸‹,1:Documentç›®å½•ä¸‹
+	static int s_iResDirPos;//×ÊÔ´Ä¿Â¼Ëù´¦Î»ÖÃ 0:AppÄ¿Â¼ÏÂ,1:DocumentÄ¿Â¼ÏÂ
 };
 
 NS_NDENGINE_END

@@ -19,13 +19,13 @@
 enum BATTLE_GOODS_TYPE
 {
 	BATTLE_GOODS_TYPE_NONE = 0,
-	BATTLE_GOODS_TYPE_XINLUO,		// å…´æ´›äº‰å¤ºæˆ˜
-	BATTLE_GOODS_TYPE_LUOYANG,		// æ´›é˜³æ”»é˜²æˆ˜
+	BATTLE_GOODS_TYPE_XINLUO,		// ÐËÂåÕù¶áÕ½
+	BATTLE_GOODS_TYPE_LUOYANG,		// ÂåÑô¹¥·ÀÕ½
 };
 
 typedef struct _tagBFItemInfo
 {
-	int goodType;					// æˆ˜åœºç±»åž‹
+	int goodType;					// Õ½³¡ÀàÐÍ
 	int itemType;
 	int medalItemType;
 	int medalReq;

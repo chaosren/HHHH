@@ -5,7 +5,7 @@
  *  Created by jhzheng on 12-1-13.
  *  Copyright 2012 __MyCompanyName__. All rights reserved.
  *
- *	è¯´æ˜Žï¼šæ³¨å†Œæ•°æ®åº“LUAæŽ¥å£
+ *	ËµÃ÷£º×¢²áÊý¾Ý¿âLUA½Ó¿Ú
  */
 
 #include "ScriptGameData.h"
@@ -19,7 +19,7 @@
 //@loadini
 using namespace NDEngine;
 
-//#pragma mark èŽ·å–IDåˆ—è¡¨
+//#pragma mark »ñÈ¡IDÁÐ±í
 int GetGameDataIdList(LuaState* pkState)
 {
 	lua_State* pkLuaState = pkState->GetCState();
@@ -72,10 +72,10 @@ int GetGameDataIdList(LuaState* pkState)
 #if WITH_NEW_DB
 void ModifyParam(int nESD, unsigned int nKey, int& e)
 {
-	//è¯´æ˜Žï¼š
-	//LUAä¼ è¿‡æ¥çš„å‚æ•°ï¼Œéœ€è¦æ£€æŸ¥å¹¶ç¨ä½œä¿®æ”¹ï¼Œä¹‹æ‰€ä»¥éœ€è¦ä¿®æ”¹æ˜¯å› ä¸ºLUAçš„è°ƒç”¨å¾ˆä¸è§„èŒƒï¼š
-	//å¦‚ï¼šlocal nVal = GetGameDataN(NScriptData.eDataBase, nKey, NRoleData.ePet, nDataId, nDataIndex);
-	//ä¸Šé¢è¿™è¡Œæ˜¯ä¸ºäº†è¯»å–INIé…ç½®æ–‡ä»¶çš„ä¸€è¡Œï¼Œç¬¬3ä¸ªå‚æ•°æœ¬æ¥åº”è¯¥æ˜¯0ï¼Œä½†æ˜¯LUAä¼ è¿‡æ¥çš„NRoleData.ePet=1ï¼ŒåŽé¢åœ¨æŸä¸ªåœ°æ–¹ä¼š-1å˜æˆ0.
+	//ËµÃ÷£º
+	//LUA´«¹ýÀ´µÄ²ÎÊý£¬ÐèÒª¼ì²é²¢ÉÔ×÷ÐÞ¸Ä£¬Ö®ËùÒÔÐèÒªÐÞ¸ÄÊÇÒòÎªLUAµÄµ÷ÓÃºÜ²»¹æ·¶£º
+	//Èç£ºlocal nVal = GetGameDataN(NScriptData.eDataBase, nKey, NRoleData.ePet, nDataId, nDataIndex);
+	//ÉÏÃæÕâÐÐÊÇÎªÁË¶ÁÈ¡INIÅäÖÃÎÄ¼þµÄÒ»ÐÐ£¬µÚ3¸ö²ÎÊý±¾À´Ó¦¸ÃÊÇ0£¬µ«ÊÇLUA´«¹ýÀ´µÄNRoleData.ePet=1£¬ºóÃæÔÚÄ³¸öµØ·½»á-1±ä³É0.
 
 	if (nESD == (int)eMJR_DataBase ||
 			nESD == (int)eMJR_TaskConfig)
@@ -166,7 +166,7 @@ std::string GetGameDataS(int esd, unsigned int nKey, int e, int nId,
 #endif
 }
 
-//åˆ é™¤ä¸€æ¡è®°å½•
+//É¾³ýÒ»Ìõ¼ÇÂ¼
 void DelRoleSubGameDataById(int esd, unsigned int nKey, int e, int nId)
 {
 #if WITH_NEW_DB
@@ -176,7 +176,7 @@ void DelRoleSubGameDataById(int esd, unsigned int nKey, int e, int nId)
 #endif
 }
 
-//åˆ é™¤ä¸€å¼ è¡¨
+//É¾³ýÒ»ÕÅ±í
 void DelRoleSubGameData(int esd, unsigned int nKey, int e)
 {
 #if WITH_NEW_DB
@@ -186,7 +186,7 @@ void DelRoleSubGameData(int esd, unsigned int nKey, int e)
 #endif
 }
 
-//åˆ é™¤è¡¨é›†ï¼ˆå¦‚æŸä¸ªrole/monsterå¯¹åº”çš„çš„è¡¨é›†ï¼‰
+//É¾³ý±í¼¯£¨ÈçÄ³¸örole/monster¶ÔÓ¦µÄµÄ±í¼¯£©
 void DelRoleGameDataById(int esd, unsigned int nKey)
 {
 #if WITH_NEW_DB
@@ -196,7 +196,7 @@ void DelRoleGameDataById(int esd, unsigned int nKey)
 #endif
 }
 
-//åˆ é™¤æŸä¸ªä¸»ç±»çš„æ‰€æœ‰è¡¨ï¼ˆåˆ é™¤è¡¨é›†ç¾¤ï¼‰
+//É¾³ýÄ³¸öÖ÷ÀàµÄËùÓÐ±í£¨É¾³ý±í¼¯Èº£©
 void DelRoleGameData(int esd)
 {
 #if WITH_NEW_DB
@@ -206,7 +206,7 @@ void DelRoleGameData(int esd)
 #endif
 }
 
-//åˆ é™¤æ‰€æœ‰æ•°æ®
+//É¾³ýËùÓÐÊý¾Ý
 void DelGameData()
 {
 #if WITH_NEW_DB
@@ -216,7 +216,7 @@ void DelGameData()
 #endif
 }
 
-//æµ‹è¯•
+//²âÊÔ
 void DumpGameData(int esd, unsigned int nKey, int e, int nId)
 {
 #if WITH_NEW_DB
@@ -226,7 +226,7 @@ void DumpGameData(int esd, unsigned int nKey, int e, int nId)
 #endif
 }
 
-//æµ‹è¯•
+//²âÊÔ
 void DumpDataBaseData(const char* filename, int nId)
 {
 #if WITH_NEW_DB
@@ -236,7 +236,7 @@ void DumpDataBaseData(const char* filename, int nId)
 #endif
 }
 
-//æµ‹è¯•
+//²âÊÔ
 void LogOutRoleDataIdTable(int esd, unsigned int nKey, int e, int nRoleId,
 		eIDList eList)
 {
@@ -248,7 +248,7 @@ void LogOutRoleDataIdTable(int esd, unsigned int nKey, int e, int nRoleId,
 #endif
 }
 
-//èŽ·å–è§’è‰²idåˆ—è¡¨ï¼ˆè¿™ä¸ªè§’è‰²æ‰€æŒ‡çš„èŒƒå›´å¾ˆå¹¿...ï¼‰
+//»ñÈ¡½ÇÉ«idÁÐ±í£¨Õâ¸ö½ÇÉ«ËùÖ¸µÄ·¶Î§ºÜ¹ã...£©
 int GetRoleDataIdTable(LuaState* pkState)
 {
 	lua_State* pkLuaState = pkState->GetCState();

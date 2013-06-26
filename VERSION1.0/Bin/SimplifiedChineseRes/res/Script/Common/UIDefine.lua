@@ -208,6 +208,11 @@ NMAINSCENECHILDTAG =
     DestinyFeteUI           = NUITAG_BEGIN + 183,                   --占星祭祀    
  	MountSoul               = NUITAG_BEGIN + 190,                   --兽魂
 	RankListUI              = NUITAG_BEGIN + 189,                   --名人堂
+	
+	SG7x7UI					= NUITAG_BEGIN + 190,					--7x7
+	SG7x7BoardUI			= NUITAG_BEGIN + 191,					--7x7
+	SG7x7RuleUI				= NUITAG_BEGIN + 192,					--7x7
+	
 	SlaveUI					= 2015,                   --斗地主
 
     Buff           = NUITAG_BEGIN + 186,                   --玩家状态

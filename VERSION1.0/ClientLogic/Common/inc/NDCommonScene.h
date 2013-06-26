@@ -3,7 +3,7 @@
  *  DragonDrive
  *
  *  Created by jhzheng on 11-8-11.
- *  Copyright 2011 (ç½‘é¾™)DeNA. All rights reserved.
+ *  Copyright 2011 (ÍøÁú)DeNA. All rights reserved.
  *
  */
 
@@ -20,7 +20,7 @@
 using namespace NDEngine;
 
 //////////////////////////////////////////////////////////////
-#pragma mark tab èŠ‚ç‚¹
+#pragma mark tab ½Úµã
 class TabNode : public NDUINode
 {
 	DECLARE_CLASS(TabNode)
@@ -90,7 +90,7 @@ private:
 };
 
 //////////////////////////////////////////////////////////////
-#pragma mark tabå®¹å™¨ä»£ç†
+#pragma mark tabÈİÆ÷´úÀí
 class TabLayer;
 
 class TabLayerDelegate
@@ -102,7 +102,7 @@ public:
 };
 
 //////////////////////////////////////////////////////////////
-#pragma mark tabå®¹å™¨
+#pragma mark tabÈİÆ÷
 class TabLayer : 
 public NDUILayer
 {
@@ -147,7 +147,7 @@ protected:
 };
 
 //////////////////////////////////////////////////////////////
-#pragma mark æ°´å¹³å‹tabå®¹å™¨
+#pragma mark Ë®Æ½ĞÍtabÈİÆ÷
 class HorizontalTabLayer : public TabLayer
 {
 	DECLARE_CLASS(HorizontalTabLayer)
@@ -175,7 +175,7 @@ private:
 };
 
 //////////////////////////////////////////////////////////////
-#pragma mark å‚ç›´å‹tabå®¹å™¨
+#pragma mark ´¹Ö±ĞÍtabÈİÆ÷
 class VerticalTabLayer : public TabLayer
 {
 	DECLARE_CLASS(VerticalTabLayer)
@@ -186,7 +186,7 @@ public:
 };
 
 //////////////////////////////////////////////////////////////
-#pragma mark å®¢æˆ·å±‚ä»£ç†
+#pragma mark ¿Í»§²ã´úÀí
 class NDUIClientLayer;
 
 class NDUIClientLayerDelegate
@@ -196,7 +196,7 @@ public:
 };
 
 //////////////////////////////////////////////////////////////
-#pragma mark å®¢æˆ·å±‚
+#pragma mark ¿Í»§²ã
 class NDUIClientLayer : 
 public NDUIChildrenEventLayer,
 public TabLayerDelegate
@@ -209,13 +209,13 @@ public TabLayerDelegate
 	
 public:
 	
-	// åˆ›å»ºä¸€ä¸ªåŠŸèƒ½tabæ ‡ç­¾(ä»…æœ‰ä¸€ä¸ª)
-	// ä½¿ç”¨è€…å¯¹è¿”å›çš„tabä½œå®šåˆ¶
+	// ´´½¨Ò»¸ö¹¦ÄÜtab±êÇ©(½öÓĞÒ»¸ö)
+	// Ê¹ÓÃÕß¶Ô·µ»ØµÄtab×÷¶¨ÖÆ
 	VerticalTabLayer* CreateFuncTab(unsigned int interval=0);
 	
-	// è·å–åŠŸèƒ½å±‚(è°ƒç”¨ä¹‹å‰è‹¥å·²åˆ›å»ºäº†tab,åˆ™è¿”å›å¯¹åº”çš„æ ‡ç­¾å±‚)
-	// å¯ä»¥åŠ å…¥æ˜¾ç¤ºèŠ‚ç‚¹
-	// è‡³äºæ ‡ç­¾çš„åˆ‡æ¢å·¥ä½œ(åŠŸèƒ½å±‚åˆ‡æ¢)å†…éƒ¨å®Œæˆ
+	// »ñÈ¡¹¦ÄÜ²ã(µ÷ÓÃÖ®Ç°ÈôÒÑ´´½¨ÁËtab,Ôò·µ»Ø¶ÔÓ¦µÄ±êÇ©²ã)
+	// ¿ÉÒÔ¼ÓÈëÏÔÊ¾½Úµã
+	// ÖÁÓÚ±êÇ©µÄÇĞ»»¹¤×÷(¹¦ÄÜ²ãÇĞ»»)ÄÚ²¿Íê³É
 	NDUILayer* GetFuncLayer(unsigned int index);
 	
 	TabNode* GetFuncTabNode(unsigned int index);
@@ -237,7 +237,7 @@ private:
 };
 
 //////////////////////////////////////////////////////////////
-#pragma mark é€šç”¨ç•Œé¢åœºæ™¯
+#pragma mark Í¨ÓÃ½çÃæ³¡¾°
 class NDCommonScene : 
 public NDScene,
 public TabLayerDelegate,
@@ -252,19 +252,19 @@ public NDUIButtonDelegate
 public:
 	void Initialization(bool showPage=false, unsigned int perPageCount=0); override
 	
-	// å¢åŠ ä¸€ä¸ªtabæ ‡ç­¾
-	// æ ‡ç­¾ç´¢å¼•ä»0å¼€å§‹é€’å¢
-	// åŒæ—¶ä¸ºè¯¥æ ‡ç­¾åˆ›å»ºäº†ä¸€ä¸ªå®¢æˆ·å±‚
+	// Ôö¼ÓÒ»¸ötab±êÇ©
+	// ±êÇ©Ë÷Òı´Ó0¿ªÊ¼µİÔö
+	// Í¬Ê±Îª¸Ã±êÇ©´´½¨ÁËÒ»¸ö¿Í»§²ã
 	TabNode* AddTabNode();
 	
-	// è·å–æ ‡ç­¾çš„å®¢æˆ·å±‚
-	// å¤§å¤šæ•°å·¥ä½œæ˜¯è·å–å®¢æˆ·å±‚åå¾€å±‚é‡ŒåŠ èŠ‚ç‚¹(å…·ä½“å±•ç°),è‡³äºæ ‡ç­¾çš„åˆ‡æ¢å·¥ä½œ(å®¢æˆ·å±‚åˆ‡æ¢)å†…éƒ¨å®Œæˆ
-	// å¦‚æœè¯¥å®¢æˆ·å±‚éœ€è¦æ”¯æŒå¤šä¸ªåŠŸèƒ½,å¯ä»¥æŠŠåŠ å…¥èŠ‚ç‚¹çš„å·¥ä½œé‡å¿ƒè½¬ç§»åˆ°NDUIClientLayer->GetFuncLayer
+	// »ñÈ¡±êÇ©µÄ¿Í»§²ã
+	// ´ó¶àÊı¹¤×÷ÊÇ»ñÈ¡¿Í»§²ãºóÍù²ãÀï¼Ó½Úµã(¾ßÌåÕ¹ÏÖ),ÖÁÓÚ±êÇ©µÄÇĞ»»¹¤×÷(¿Í»§²ãÇĞ»»)ÄÚ²¿Íê³É
+	// Èç¹û¸Ã¿Í»§²ãĞèÒªÖ§³Ö¶à¸ö¹¦ÄÜ,¿ÉÒÔ°Ñ¼ÓÈë½ÚµãµÄ¹¤×÷ÖØĞÄ×ªÒÆµ½NDUIClientLayer->GetFuncLayer
 	NDUIClientLayer* GetClientLayer(unsigned int tabIndex);
 	
-	// è·å–é€šç”¨å±‚
-	// é€šç”¨å±‚ä¸tabæ— å…³ 
-	// é€šç”¨å±‚ä¸€ç›´å¤„äºæ˜¾ç¤ºçŠ¶æ€(ä¸ä¼šå› ä¸ºtabåˆ‡æ¢è€Œéšè—æˆ–æ˜¾ç¤º)
+	// »ñÈ¡Í¨ÓÃ²ã
+	// Í¨ÓÃ²ãÓëtabÎŞ¹Ø 
+	// Í¨ÓÃ²ãÒ»Ö±´¦ÓÚÏÔÊ¾×´Ì¬(²»»áÒòÎªtabÇĞ»»¶øÒş²Ø»òÏÔÊ¾)
 	NDUILayer* CetGernalLayer(bool dealEvent,unsigned int zOrder=0);
 	
 	void SetTabFocusOnIndex(unsigned int index, bool dispatchEvent=false);
@@ -300,7 +300,7 @@ protected:
 	NDUILayer  *m_layerBackground;
 };
 
-#pragma mark åŠŸèƒ½tab
+#pragma mark ¹¦ÄÜtab
 class NDFuncTab :
 public NDUILayer,
 public TabLayerDelegate
@@ -317,9 +317,9 @@ public:
 	
 	TabNode* GetTabNode(unsigned int index);
 	
-	// è·å–æ ‡ç­¾çš„å®¢æˆ·å±‚
-	// å¤§å¤šæ•°å·¥ä½œæ˜¯è·å–å®¢æˆ·å±‚åå¾€å±‚é‡ŒåŠ èŠ‚ç‚¹(å…·ä½“å±•ç°),è‡³äºæ ‡ç­¾çš„åˆ‡æ¢å·¥ä½œ(å®¢æˆ·å±‚åˆ‡æ¢)å†…éƒ¨å®Œæˆ
-	// å¦‚æœè¯¥å®¢æˆ·å±‚éœ€è¦æ”¯æŒå¤šä¸ªåŠŸèƒ½,å¯ä»¥æŠŠåŠ å…¥èŠ‚ç‚¹çš„å·¥ä½œé‡å¿ƒè½¬ç§»åˆ°NDUIClientLayer->GetFuncLayer
+	// »ñÈ¡±êÇ©µÄ¿Í»§²ã
+	// ´ó¶àÊı¹¤×÷ÊÇ»ñÈ¡¿Í»§²ãºóÍù²ãÀï¼Ó½Úµã(¾ßÌåÕ¹ÏÖ),ÖÁÓÚ±êÇ©µÄÇĞ»»¹¤×÷(¿Í»§²ãÇĞ»»)ÄÚ²¿Íê³É
+	// Èç¹û¸Ã¿Í»§²ãĞèÒªÖ§³Ö¶à¸ö¹¦ÄÜ,¿ÉÒÔ°Ñ¼ÓÈë½ÚµãµÄ¹¤×÷ÖØĞÄ×ªÒÆµ½NDUIClientLayer->GetFuncLayer
 	NDUIClientLayer* GetClientLayer(unsigned int tabIndex);
 	
 	void SetVisible(bool visible); override
@@ -337,7 +337,7 @@ private:
 	
 };
 
-#pragma mark ç¤¾äº¤ç±»å‹åœºæ™¯
+#pragma mark Éç½»ÀàĞÍ³¡¾°
 class NDCommonSocialScene :
 public NDScene,
 public TabLayerDelegate,
@@ -375,7 +375,7 @@ protected:
 	std::vector<NDUIImage*>			m_vClientBackground;
 };
 
-#pragma mark æ°´å¹³å‹åŠŸèƒ½tab
+#pragma mark Ë®Æ½ĞÍ¹¦ÄÜtab
 
 class NDHFuncTab;
 
@@ -402,9 +402,9 @@ public:
 	
 	TabNode* GetTabNode(unsigned int index);
 	
-	// è·å–æ ‡ç­¾çš„å®¢æˆ·å±‚
-	// å¤§å¤šæ•°å·¥ä½œæ˜¯è·å–å®¢æˆ·å±‚åå¾€å±‚é‡ŒåŠ èŠ‚ç‚¹(å…·ä½“å±•ç°),è‡³äºæ ‡ç­¾çš„åˆ‡æ¢å·¥ä½œ(å®¢æˆ·å±‚åˆ‡æ¢)å†…éƒ¨å®Œæˆ
-	// å¦‚æœè¯¥å®¢æˆ·å±‚éœ€è¦æ”¯æŒå¤šä¸ªåŠŸèƒ½,å¯ä»¥æŠŠåŠ å…¥èŠ‚ç‚¹çš„å·¥ä½œé‡å¿ƒè½¬ç§»åˆ°NDUIClientLayer->GetFuncLayer
+	// »ñÈ¡±êÇ©µÄ¿Í»§²ã
+	// ´ó¶àÊı¹¤×÷ÊÇ»ñÈ¡¿Í»§²ãºóÍù²ãÀï¼Ó½Úµã(¾ßÌåÕ¹ÏÖ),ÖÁÓÚ±êÇ©µÄÇĞ»»¹¤×÷(¿Í»§²ãÇĞ»»)ÄÚ²¿Íê³É
+	// Èç¹û¸Ã¿Í»§²ãĞèÒªÖ§³Ö¶à¸ö¹¦ÄÜ,¿ÉÒÔ°Ñ¼ÓÈë½ÚµãµÄ¹¤×÷ÖØĞÄ×ªÒÆµ½NDUIClientLayer->GetFuncLayer
 	NDUIClientLayer* GetClientLayer(unsigned int tabIndex);
 	
 	void SetVisible(bool visible); override
@@ -423,7 +423,7 @@ private:
 	
 };
 
-#pragma mark é€šç”¨ç•Œé¢å±‚
+#pragma mark Í¨ÓÃ½çÃæ²ã
 class NDCommonLayer : 
 public NDUILayer,
 public TabLayerDelegate,
@@ -438,28 +438,28 @@ public NDUIButtonDelegate
 public:
 	void Initialization(bool showPage=false, unsigned int perPageCount=0); override
 	
-	// maxTabNodeCharWidth-æœ€å¤§çš„tabèŠ‚ç‚¹å­—ç¬¦çš„å®½åº¦
+	// maxTabNodeCharWidth-×î´óµÄtab½Úµã×Ö·ûµÄ¿í¶È
 	void Initialization(float maxTabNodeCharWidth); override
 	
 	void OnButtonClick(NDUIButton* button); override
 	
 	virtual void SetVisible(bool visible); override
 	
-	// å¢åŠ ä¸€ä¸ªtabæ ‡ç­¾
-	// æ ‡ç­¾ç´¢å¼•ä»0å¼€å§‹é€’å¢
-	// åŒæ—¶ä¸ºè¯¥æ ‡ç­¾åˆ›å»ºäº†ä¸€ä¸ªå®¢æˆ·å±‚
+	// Ôö¼ÓÒ»¸ötab±êÇ©
+	// ±êÇ©Ë÷Òı´Ó0¿ªÊ¼µİÔö
+	// Í¬Ê±Îª¸Ã±êÇ©´´½¨ÁËÒ»¸ö¿Í»§²ã
 	TabNode* AddTabNode();
 	
-	// è·å–æ ‡ç­¾çš„å®¢æˆ·å±‚
-	// å¤§å¤šæ•°å·¥ä½œæ˜¯è·å–å®¢æˆ·å±‚åå¾€å±‚é‡ŒåŠ èŠ‚ç‚¹(å…·ä½“å±•ç°),è‡³äºæ ‡ç­¾çš„åˆ‡æ¢å·¥ä½œ(å®¢æˆ·å±‚åˆ‡æ¢)å†…éƒ¨å®Œæˆ
-	// å¦‚æœè¯¥å®¢æˆ·å±‚éœ€è¦æ”¯æŒå¤šä¸ªåŠŸèƒ½,å¯ä»¥æŠŠåŠ å…¥èŠ‚ç‚¹çš„å·¥ä½œé‡å¿ƒè½¬ç§»åˆ°NDUIClientLayer->GetFuncLayer
+	// »ñÈ¡±êÇ©µÄ¿Í»§²ã
+	// ´ó¶àÊı¹¤×÷ÊÇ»ñÈ¡¿Í»§²ãºóÍù²ãÀï¼Ó½Úµã(¾ßÌåÕ¹ÏÖ),ÖÁÓÚ±êÇ©µÄÇĞ»»¹¤×÷(¿Í»§²ãÇĞ»»)ÄÚ²¿Íê³É
+	// Èç¹û¸Ã¿Í»§²ãĞèÒªÖ§³Ö¶à¸ö¹¦ÄÜ,¿ÉÒÔ°Ñ¼ÓÈë½ÚµãµÄ¹¤×÷ÖØĞÄ×ªÒÆµ½NDUIClientLayer->GetFuncLayer
 	NDUIClientLayer* GetClientLayer(unsigned int tabIndex);
 	
 	CCSize GetClientSize();
 	
-	// è·å–é€šç”¨å±‚
-	// é€šç”¨å±‚ä¸tabæ— å…³ 
-	// é€šç”¨å±‚ä¸€ç›´å¤„äºæ˜¾ç¤ºçŠ¶æ€(ä¸ä¼šå› ä¸ºtabåˆ‡æ¢è€Œéšè—æˆ–æ˜¾ç¤º)
+	// »ñÈ¡Í¨ÓÃ²ã
+	// Í¨ÓÃ²ãÓëtabÎŞ¹Ø 
+	// Í¨ÓÃ²ãÒ»Ö±´¦ÓÚÏÔÊ¾×´Ì¬(²»»áÒòÎªtabÇĞ»»¶øÒş²Ø»òÏÔÊ¾)
 	NDUILayer* CetGernalLayer(bool dealEvent,unsigned int zOrder=0);
 	
 	void SetTabFocusOnIndex(unsigned int index, bool dispatchEvent=false);

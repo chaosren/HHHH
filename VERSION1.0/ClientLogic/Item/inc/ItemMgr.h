@@ -3,7 +3,7 @@
  *  DragonDrive
  *
  *  Created by jhzheng on 11-1-24.
- *  Copyright 2011 (ç½‘é¾™)DeNA. All rights reserved.
+ *  Copyright 2011 (ÍøÁú)DeNA. All rights reserved.
  *
  */
 
@@ -29,10 +29,10 @@ using namespace NDEngine;
 
 struct EquipPropAddtions 
 {
-	int iPowerAdd;			// åŠ›é‡é™„åŠ ç‚¹æ•°
-	int iTiZhiAdd;			// ä½“è´¨é™„åŠ ç‚¹æ•°
-	int iMinJieAdd;			// æ•æ·é™„åŠ ç‚¹æ•°
-	int iZhiLiAdd;			// æ™ºåŠ›é™„åŠ ç‚¹æ•°
+	int iPowerAdd;			// Á¦Á¿¸½¼ÓµãÊı
+	int iTiZhiAdd;			// ÌåÖÊ¸½¼ÓµãÊı
+	int iMinJieAdd;			// Ãô½İ¸½¼ÓµãÊı
+	int iZhiLiAdd;			// ÖÇÁ¦¸½¼ÓµãÊı
 	EquipPropAddtions()
 	{
 		memset(this, 0, sizeof(*this));
@@ -77,14 +77,14 @@ public:
 	ItemMgr();
 	~ItemMgr();
 	void quitGame();
-	/*å¤„ç†æ„Ÿå…´è¶£çš„ç½‘ç»œæ¶ˆæ¯*/
+	/*´¦Àí¸ĞĞËÈ¤µÄÍøÂçÏûÏ¢*/
 	bool process(MSGID msgID, NDTransData* data, int len); override	
 public:
 	EquipPropAddtions GetEquipAddtionProp();
 private:
-	/*ç©å®¶ç‰©å“æ¶ˆæ¯*/
+	/*Íæ¼ÒÎïÆ·ÏûÏ¢*/
 	void processItemInfo(NDTransData* data, int len);
-	/*ç©å®¶è£…å¤‡æ•ˆæœ*/
+	/*Íæ¼Ò×°±¸Ğ§¹û*/
 	void processEquipEffect(NDTransData* data, int len);
 	void processItemAttrib(NDTransData* data, int len);
 	void processItemDel(NDTransData* data, int len);
@@ -105,7 +105,7 @@ public:
 	bool EquipHasNotEffect(Item::eEquip_Pos pos) { if (pos<Item::eEP_Begin || pos>=Item::eEP_End) return true; else return roleEuiptItemsOK[pos]; }
 	Item::eEquip_Pos getEquipListPos(Item* item);
 	
-	// æŸ¥è¯¢ ItemType é…ç½®ï¼Œå¦‚æœä¸åœ¨å†…å­˜ä¸­åˆ™åŠ è½½
+	// ²éÑ¯ ItemType ÅäÖÃ£¬Èç¹û²»ÔÚÄÚ´æÖĞÔò¼ÓÔØ
 	NDItemType* QueryItemType(OBJID idItemType);
 	int QueryPercentByLevel(int level);
 	
@@ -116,7 +116,7 @@ private:
 	void LoadItemTypeIndex();
 	void LoadItemAddtion();
 	
-	// é”»é€ é…ç½®
+	// ¶ÍÔìÅäÖÃ
 	void LoadEnhancedTypeIndex();
 	
 private:
@@ -131,9 +131,9 @@ private:
 	typedef map_item_addtion::iterator map_item_addtion_it;
 	typedef pair<int,int>	map_item_addtion_pair;
 	
-	// ä»æ–‡ä»¶ä¸­è¯»å–itemtypeçš„åç§»é‡
+	// ´ÓÎÄ¼şÖĞ¶ÁÈ¡itemtypeµÄÆ«ÒÆÁ¿
 	MAP_ITEMTYPE_INDEX m_mapItemTypeIndex;
-	// å½“å‰è½½å…¥å†…å­˜çš„ç‰©å“é…ç½®æ•°æ®
+	// µ±Ç°ÔØÈëÄÚ´æµÄÎïÆ·ÅäÖÃÊı¾İ
 	MAP_ITEMTYPE m_mapItemType;
 	
 	MAP_ENHANCEDTYPE m_mapEnhancedType;
@@ -142,7 +142,7 @@ private:
 	
 	map_item_addtion m_mapItemAddtion;
 public:
-	// èƒŒåŒ…ç›¸å…³æ“ä½œ
+	// ±³°üÏà¹Ø²Ù×÷
 	void SetBagLitmit( int iLimit );
 	bool IsBagFull();
 	void GetBattleUsableItem(std::vector<Item*>& itemlist);
@@ -150,9 +150,9 @@ public:
 	void GetEnhanceItem(VEC_ITEM& itemlist);
 	void SortBag();
 	int GetBagItemCount(int iType);
-	// iType = 0-èƒŒåŒ…, 1-ä»“åº“, 2-è£…å¤‡, å¦‚æœå­˜åœ¨å°±è¿”å›è¯¥ç‰©å“æŒ‡é’ˆ
+	// iType = 0-±³°ü, 1-²Ö¿â, 2-×°±¸, Èç¹û´æÔÚ¾Í·µ»Ø¸ÃÎïÆ·Ö¸Õë
 	bool HasItemByType(int iType, int iItemID, Item*& itemRes);
-	// æ ¹æ®ç‰©å“ç±»å‹è·å–èƒŒåŒ…é‡Œçš„ç‰©å“
+	// ¸ù¾İÎïÆ·ÀàĞÍ»ñÈ¡±³°üÀïµÄÎïÆ·
 	Item* GetBagItemByType(int idItemType);
 	
 	bool DelItem(int iType, int iItemID, bool bClear=true);
@@ -167,12 +167,12 @@ public:
 	Item* QueryOtherItem(int idItem);
 	VEC_ITEM& GetOtherItem() { return m_vOtherItems;}
 public:
-	// ä»“åº“ç›¸å…³æ“ä½œ
+	// ²Ö¿âÏà¹Ø²Ù×÷
 	void SetStorageLitmit( int iLimit );
 	VEC_ITEM& GetStorage() { return m_vecStorage; }
 	int GetStorageNum() { return m_iStorages; }
 public:
-	// è£…å¤‡ç›¸å…³æ“ä½œ
+	// ×°±¸Ïà¹Ø²Ù×÷
 	void SetRoleEuiptItemsOK(bool bValue, int iPos) { if(iPos < Item::eEP_Begin || iPos >= Item::eEP_End) return; roleEuiptItemsOK[iPos] = bValue; } 
 	void unpackEquip(int iPos, bool bUpdateGui);
 	void unpackEquipOfRole(int itemType);
@@ -180,10 +180,10 @@ public:
 	void refreshEquipAmount(int itemId, int type);
 	bool HasEquip(int iPos) { if(iPos < Item::eEP_Begin || iPos >= Item::eEP_End) return false; if (m_EquipList[iPos]) return true; return false; }
 	Item* GetEquipItem(int iPos) { if(iPos < Item::eEP_Begin || iPos >= Item::eEP_End) return NULL; return (m_EquipList[iPos]); }
-	Item* GetSuitItem(int idItem); // å¥—è£…æœ‰ä½¿ç”¨åˆ°
+	Item* GetSuitItem(int idItem); // Ì××°ÓĞÊ¹ÓÃµ½
 	void repackEquip();
 public:
-	// å•†åœºç›¸å…³æ“ä½œ
+	// ÉÌ³¡Ïà¹Ø²Ù×÷
 	map_vip_item& GetVipStore() { return m_mapVipItem; }
 	void ClearVipItem();
 	map_vip_desc& GetVipStoreDesc() { return m_mapVipDesc; }
@@ -193,22 +193,22 @@ public:
 	void RemoveSoldItems();
 	void GetSoldItemsId(ID_VEC& vecId);
 	
-	bool ChangeItemPosSold(OBJID idItem, int nPos);	// ç‰©å“å‡ºå”®å’Œå›è´­æ—¶æ”¹ä½ç½®
+	bool ChangeItemPosSold(OBJID idItem, int nPos);	// ÎïÆ·³öÊÛºÍ»Ø¹ºÊ±¸ÄÎ»ÖÃ
 private:
-	//ç©å®¶è£…å¤‡åˆ—è¡¨
+	//Íæ¼Ò×°±¸ÁĞ±í
 	Item *m_EquipList[Item::eEP_End];
 
 	bool roleEuiptItemsOK[Item::eEP_End];
 	
-	//èƒŒåŒ…ç›¸å…³
+	//±³°üÏà¹Ø
 	VEC_ITEM		m_vecBag;
 	int				m_iBags;
 	
-	//ä»“åº“ç›¸å…³
+	//²Ö¿âÏà¹Ø
 	VEC_ITEM		m_vecStorage;
 	int				m_iStorages;
 	
-	// ä¸´æ—¶å­˜æ”¾å…¶ä»–ç©å®¶ç‰©å“
+	// ÁÙÊ±´æ·ÅÆäËûÍæ¼ÒÎïÆ·
 	VEC_ITEM		m_vOtherItems;
 	
 	map_vip_item	m_mapVipItem;

@@ -3,7 +3,7 @@
  *  DragonDrive
  *
  *  Created by wq on 11-1-12.
- *  Copyright 2011 ç½‘é¾™(DeNA). All rights reserved.
+ *  Copyright 2011 ÍøÁú(DeNA). All rights reserved.
  *
  */
 
@@ -23,7 +23,7 @@
 #endif
 
 /*
- ç®€å•çš„åŠ å¯†ç®—æ³• 
+ ¼òµ¥µÄ¼ÓÃÜËã·¨ 
  add by xiezhenghai
  begin.....
  */
@@ -31,8 +31,8 @@
 static const unsigned char codeKey[] = {0x57, 0xf3, 0xa4, 0x38, 0xc0, 0x88, 0x7b, 0xac};
 void charToHex(unsigned char src, unsigned char *dest)
 {
-	int hi = src / 16;      //é«˜ä½
-	int lo = src % 16;      //ä½ä½
+	int hi = src / 16;      //¸ßÎ»
+	int lo = src % 16;      //µÍÎ»
 	
 	if (hi >= 0 && hi <= 9) 
 		*dest++ = '0' + hi;
@@ -75,12 +75,12 @@ void simpleEncode(const unsigned char *src, unsigned char *dest)
 	int index = 0;
 	while (*src) 
 	{
-		*dest = (*src >> 4) + (*src % 16 << 4);        //é«˜ä½ä½å¯¹è°ƒ
-		*dest = *dest ^ codeKey[index++];              //é«˜ä½ä½å¯¹è°ƒåå¾—åˆ°å¾—å€¼ä¸å¯¹åº”ä½å¯†é’¥å–å¼‚æˆ–è¿ç®—
-		charToHex(*dest, dest);                        //å¼‚æˆ–åå¾—å€¼è½¬åŒ–æˆ16è¿›åˆ¶æ ·å¼å­—ç¬¦ä¸²è¾“å‡º
+		*dest = (*src >> 4) + (*src % 16 << 4);        //¸ßµÍÎ»¶Ôµ÷
+		*dest = *dest ^ codeKey[index++];              //¸ßµÍÎ»¶Ôµ÷ºóµÃµ½µÃÖµÓë¶ÔÓ¦Î»ÃÜÔ¿È¡Òì»òÔËËã
+		charToHex(*dest, dest);                        //Òì»òºóµÃÖµ×ª»¯³É16½øÖÆÑùÊ½×Ö·û´®Êä³ö
 		
-		index = index % sizeof(codeKey);               //indexçš„å€¼åœ¨å¯†é’¥èŒƒå›´å†…é‡å¤è½®å·¡		 
-		dest = dest + 2;                               //å› ä¸º16è¿›åˆ¶æ ·å¼å¾—å€¼åŒ…å«ä¸¤ä¸ªå­—ç¬¦
+		index = index % sizeof(codeKey);               //indexµÄÖµÔÚÃÜÔ¿·¶Î§ÄÚÖØ¸´ÂÖÑ²		 
+		dest = dest + 2;                               //ÒòÎª16½øÖÆÑùÊ½µÃÖµ°üº¬Á½¸ö×Ö·û
 		src++;
 	}
 }
@@ -100,14 +100,14 @@ void simpleDecode(const unsigned char *src, unsigned char *dest)
 	}
 }
 /*
- ç®€å•çš„åŠ å¯†ç®—æ³• 
+ ¼òµ¥µÄ¼ÓÃÜËã·¨ 
  add by xiezhenghai
  end......
  */
 
 const size_t MAX_ACCOUNT = 10;
 
-int NDDataPersist::ms_nGameSetting = 0xFFFFFFFF; // é»˜è®¤å…¨å¼€
+int NDDataPersist::ms_nGameSetting = 0xFFFFFFFF; // Ä¬ÈÏÈ«¿ª
 
 void NDDataPersist::LoadGameSetting()
 {
@@ -189,7 +189,7 @@ const char* NDDataPersist::GetData(unsigned int index, CCString* key)
 
 	CCString* str = (CCString*)dic->objectForKey(key->getCString());
 
-	if (str == NULL) // é”®å€¼å¯¹ä¸å­˜åœ¨, åŠ å…¥
+	if (str == NULL) // ¼üÖµ¶Ô²»´æÔÚ, ¼ÓÈë
 	{ 
 		SetData(index, key, "");
 		return decData;
@@ -198,7 +198,7 @@ const char* NDDataPersist::GetData(unsigned int index, CCString* key)
 	if (NeedEncodeForKey(key)) 
 	{
 		simpleDecode(
-			(const unsigned char*) CONVERT_GBK_TO_UTF8(str->getCString()), //@todo:androidè½¬æ¢æœ‰é—®é¢˜.
+			(const unsigned char*) CONVERT_GBK_TO_UTF8(str->getCString()), //@todo:android×ª»»ÓĞÎÊÌâ.
 			(unsigned char*)decData);
 
 		return decData;
@@ -235,7 +235,7 @@ CCDictionary* NDDataPersist::LoadDataDiction(unsigned int index)
 	}
 	
 	if (dic == nil)
-	{ // æ•°æ®ä¸å­˜åœ¨,åˆå§‹åŒ–
+	{ // Êı¾İ²»´æÔÚ,³õÊ¼»¯
 		for (unsigned int i = m_pkDataArray->count(); i <= index; i++) 
 		{
 			//dic = new CCMutableDictionary<const char*>;
@@ -400,8 +400,8 @@ void NDDataPersist::GetAccount(VEC_ACCOUNT& vAccount)
 	}
 
 	/***
-	* objective-cçš„æ—§ä»£ç 
-	* å·²è¢«æ›¿æ¢ éƒ­æµ©
+	* objective-cµÄ¾É´úÂë
+	* ÒÑ±»Ìæ»» ¹ùºÆ
 	*/
 // 	while ((account = accountList->) != nil)
 // 	{
@@ -436,7 +436,7 @@ void NDDataPersist::LoadAccountDeviceList()
 	CCStringRef filePath = GetAccountDeviceListPath();
 
 	/***
-	* ä»¥ä¸‹ä¸ºæ—§ä»£ç  éƒ­æµ©
+	* ÒÔÏÂÎª¾É´úÂë ¹ùºÆ
 	*/
 // 	NSString *filePath = this->GetAccountDeviceListPath();
 // 	if ([[NSFileManager defaultManager] fileExistsAtPath:filePath])
@@ -477,7 +477,7 @@ void NDDataPersist::AddAccountDevice(const char* account)
 bool NDDataPersist::HasAccountDevice(const char* account)
 {
 	/***
-	* æ—§ä»£ç  éƒ­æµ©
+	* ¾É´úÂë ¹ùºÆ
 	*/
 
 	if (!account)
@@ -550,11 +550,11 @@ bool NDDataPersist::IsGameSettingOn(GAME_SETTING type)
 void NDDataPersist::SaveGameSetting()
 {
 	CCString* strGameSetting = CCString::stringWithFormat("%d",ms_nGameSetting);
-	SetData( kGameSettingData, strGameSetting, CONVERT_GBK_TO_UTF8(strGameSetting->getCString()));//@todo:androidè½¬æ¢æœ‰é—®é¢˜.
+	SetData( kGameSettingData, strGameSetting, CONVERT_GBK_TO_UTF8(strGameSetting->getCString()));//@todo:android×ª»»ÓĞÎÊÌâ.
 	SaveData();
 
 	/***
-	* ä»¥ä¸‹ä¸ºæ—§ä»£ç  éƒ­æµ©
+	* ÒÔÏÂÎª¾É´úÂë ¹ùºÆ
 	*/
 // 	NSString strGameSetting = [NSString stringWithFormat:@"%d", s_gameSetting];
 // 	this->SetData(kGameSettingData, kGameSetting, [strGameSetting UTF8String]);
@@ -562,7 +562,7 @@ void NDDataPersist::SaveGameSetting()
 }
 
 ///////////////////////////////////////
-//é‚®ä»¶æ•°æ®plist
+//ÓÊ¼şÊı¾İplist
 
 const NSUInteger max_player_save_count = 5;
 const NSUInteger max_mail_save_count = 20;
@@ -759,7 +759,7 @@ const NSUInteger max_mail_save_count = 20;
 //		dic = (NSMutableDictionary*)[emailArray objectAtIndex:0];
 //	}
 //	
-//	if (dic == nil) { // æ•°æ®ä¸å­˜åœ¨,åˆå§‹åŒ–
+//	if (dic == nil) { // Êı¾İ²»´æÔÚ,³õÊ¼»¯
 //			dic = [[NSMutableDictionary alloc] init];
 //			[emailArray addObject:dic];
 //			[dic release];
@@ -795,7 +795,7 @@ const NSUInteger max_mail_save_count = 20;
 //	NSString *strPlayer= [NSString stringWithFormat:@"%d", idPlayer];
 //	NSMutableArray *arrMsg = [dic objectForKey:strPlayer];
 //	
-//	// æ²¡æœ‰è¯¥ç©å®¶çš„å¿«æ·èŠå¤©è®°å½•ï¼Œæ–°å»º
+//	// Ã»ÓĞ¸ÃÍæ¼ÒµÄ¿ì½İÁÄÌì¼ÇÂ¼£¬ĞÂ½¨
 //	if (arrMsg == nil) {
 //		if ([dic count] >= QT_MAX_PLAYER_SAVE_NUM) {
 //			NSEnumerator *enumerator;
@@ -904,7 +904,7 @@ const NSUInteger max_mail_save_count = 20;
 //		dic = (NSMutableDictionary*)[quickTalkArray objectAtIndex:0];
 //	}
 //	
-//	if (dic == nil) { // æ•°æ®ä¸å­˜åœ¨,åˆå§‹åŒ–
+//	if (dic == nil) { // Êı¾İ²»´æÔÚ,³õÊ¼»¯
 //		dic = [[NSMutableDictionary alloc] init];
 //		[quickTalkArray addObject:dic];
 //		[dic release];
@@ -913,8 +913,8 @@ const NSUInteger max_mail_save_count = 20;
 //	return dic;
 //}
 //
-//// ç‰©å“æ é…ç½®
-//// å¾ªç¯ä½ç§»ï¼Œç”¨äºç‰©å“idåŠ å¯†
+//// ÎïÆ·À¸ÅäÖÃ
+//// Ñ­»·Î»ÒÆ£¬ÓÃÓÚÎïÆ·id¼ÓÃÜ
 //unsigned int _rotl(unsigned int value, int shift) {
 //	if ((shift &= 31) == 0) {
 //		return value;
@@ -954,7 +954,7 @@ const NSUInteger max_mail_save_count = 20;
 //	NSString *strPlayer= [NSString stringWithFormat:@"%d", idPlayer];
 //	NSMutableArray *arr = [dic objectForKey:strPlayer];
 //	
-//	// æ²¡æœ‰è¯¥ç©å®¶çš„ç‰©å“æ è®°å½•ï¼Œæ–°å»º
+//	// Ã»ÓĞ¸ÃÍæ¼ÒµÄÎïÆ·À¸¼ÇÂ¼£¬ĞÂ½¨
 //	if (arr == nil) {
 //		if ([dic count] >= IB_MAX_PLAYER_SAVE_NUM) {
 //			NSEnumerator *enumerator;
@@ -995,7 +995,7 @@ const NSUInteger max_mail_save_count = 20;
 //	NSString *strPlayer= [NSString stringWithFormat:@"%d", idPlayer];
 //	NSMutableArray *arr = [dic objectForKey:strPlayer];
 //	
-//	// æ²¡æœ‰è¯¥ç©å®¶çš„ç‰©å“æ è®°å½•ï¼Œæ–°å»º
+//	// Ã»ÓĞ¸ÃÍæ¼ÒµÄÎïÆ·À¸¼ÇÂ¼£¬ĞÂ½¨
 //	if (arr == nil) {
 //		if ([dic count] >= IB_MAX_PLAYER_SAVE_NUM) {
 //			NSEnumerator *enumerator;
@@ -1115,7 +1115,7 @@ const NSUInteger max_mail_save_count = 20;
 //		dic = (NSMutableDictionary*)[itemBarArray objectAtIndex:0];
 //	}
 //	
-//	if (dic == nil) { // æ•°æ®ä¸å­˜åœ¨,åˆå§‹åŒ–
+//	if (dic == nil) { // Êı¾İ²»´æÔÚ,³õÊ¼»¯
 //		dic = [[NSMutableDictionary alloc] init];
 //		[itemBarArray addObject:dic];
 //		[dic release];
@@ -1134,7 +1134,7 @@ const NSUInteger max_mail_save_count = 20;
 //		dic = (NSMutableDictionary*)[itemBarArray objectAtIndex:1];
 //	}
 //	
-//	if (dic == nil) { // æ•°æ®ä¸å­˜åœ¨,åˆå§‹åŒ–
+//	if (dic == nil) { // Êı¾İ²»´æÔÚ,³õÊ¼»¯
 //		NDAsssert([itemBarArray count] == 1);
 //		dic = [[NSMutableDictionary alloc] init];
 //		[itemBarArray addObject:dic];
@@ -1145,8 +1145,8 @@ const NSUInteger max_mail_save_count = 20;
 //}
 //
 //
-//#pragma mark plist åŸºæœ¬æ“ä½œ
-////é€šè¿‡LoadMailDictionè°ƒç”¨è·å–æ•°æ®å­—å…¸,æ•°æ®å­—å…¸å¯åŠ å…¥object-cæ•°æ®å¯¹è±¡,æ•°æ®ä¿å­˜ä¸åŠ è½½åœ¨æ„é€ ä¸ææ„ä¸­è‡ªåŠ¨å®Œæˆ
+//#pragma mark plist »ù±¾²Ù×÷
+////Í¨¹ıLoadMailDictionµ÷ÓÃ»ñÈ¡Êı¾İ×Öµä,Êı¾İ×Öµä¿É¼ÓÈëobject-cÊı¾İ¶ÔÏó,Êı¾İ±£´æÓë¼ÓÔØÔÚ¹¹ÔìÓëÎö¹¹ÖĞ×Ô¶¯Íê³É
 //
 //NDDataPlistBasic::NDDataPlistBasic(string filename)
 //{
@@ -1219,7 +1219,7 @@ const NSUInteger max_mail_save_count = 20;
 //		dic = (NSMutableDictionary*)[dataArray objectAtIndex:0];
 //	}
 //	
-//	if (dic == nil) { // æ•°æ®ä¸å­˜åœ¨,åˆå§‹åŒ–
+//	if (dic == nil) { // Êı¾İ²»´æÔÚ,³õÊ¼»¯
 //		dic = [[NSMutableDictionary alloc] init];
 //		[dataArray addObject:dic];
 //		[dic release];
@@ -1229,8 +1229,8 @@ const NSUInteger max_mail_save_count = 20;
 //}
 //
 //
-//#pragma mark ç©å®¶æäº¤bug
-//// NDQuestionDataPlistè´Ÿè´£ä¿å­˜ç©å®¶æé—®æ•°æ®(ç©å®¶æ¯å¤©æœ€å¤šæ10ä¸ªé—®é¢˜)
+//#pragma mark Íæ¼ÒÌá½»bug
+//// NDQuestionDataPlist¸ºÔğ±£´æÍæ¼ÒÌáÎÊÊı¾İ(Íæ¼ÒÃ¿Ìì×î¶àÌá10¸öÎÊÌâ)
 //#define MAX_QUEST_BUG_COUNT_PER_DAY (10)
 //#define PER_DAY_SECOND (3600 * 24)
 //
