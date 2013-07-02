@@ -599,7 +599,9 @@ function p.OnUIEvent(uiNode, uiEventType, param)
                     --由服务端控制消除
                     FindPath(LastSelected,idx)
                     table.insert(Path,idx)
+                    ShowLoadBar()
                     Msg7x7.SendMove(Path)
+                    
                     IsInAction = IsInAction+1
                     
                     PanelData[idx] = PanelData[LastSelected]    --切换位置
@@ -661,6 +663,7 @@ function p.OnUIEvent(uiNode, uiEventType, param)
                 --移动
                 --由服务端控制消除
                 table.insert(Path,LastDragSave)
+                ShowLoadBar()
                 Msg7x7.SendMove(Path)
                 IsInAction = IsInAction+1
                 LogInfo("DragComplete,from %d,to %d",LastDragPos,LastDragSave)
@@ -707,7 +710,6 @@ local function ShowLevel(level)
 end
 
 local function UpdateNext(nextdata)
-    ShowCombo(0)
     for i=1,6,1 do
         --LogInfo("Game7x7:btn=%d",p.ImmutableCtr.btn.btn_next1+i-1)
         local btn = GetButton(GetParent(),p.ImmutableCtr.Btn.btn_next1+i-1)
@@ -760,11 +762,17 @@ function p.DoDelete(score,combo,idxs)
         SetBlockType(IdxSerToCli(v),nil)
     end
     ShowScore(score)
-    ShowCombo(combo)
 end
 
 function p.DoActionRet(action,ret)
     IsInAction = IsInAction-1
+    if(action==Msg7x7.ActionType.ActionMove)then
+        CloseLoadBar()
+    end
+end
+
+function p.UpdateCombo(combo)
+    ShowCombo(combo)
 end
 
 LogInfo("$$$$$$$$$$endend$$$$$$$$")

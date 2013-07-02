@@ -281,4 +281,5 @@ NMSG_Type =
     _MSG_7x7_BEGIN              = _MSG_GENERAL + 8166,  --7x7开始
     _MSG_7x7_SCOREBOARD         = _MSG_GENERAL + 8167,  --7x7排行榜
     _MSG_7x7_UPDATELEVEL        = _MSG_GENERAL + 8168,  --更新等级
+    _MSG_7x7_UPDATECOMBO        = _MSG_GENERAL + 8169,  --更新连击
 };

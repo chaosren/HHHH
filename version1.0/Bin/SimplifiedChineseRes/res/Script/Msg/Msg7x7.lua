@@ -8,12 +8,13 @@ Msg7x7 = {}
 
 local p = Msg7x7
 
-local ActionType = {
+p.ActionType = {
 		ActionMove = 0,
         ActionFinish = 1,
         ActionOpen = 2,
         ActionGetScoreBoard = 3,
         }
+local ActionType = p.ActionType
 
 function p.SendGetScoreBoard()
    local netdata = createNDTransData(NMSG_Type._MSG_7x7_ACTION);
@@ -168,6 +169,12 @@ local function Process7x7UpdateLevel(netdata)
     SG7x7.UpdateLevel(level)
 end
 
+local function Process7x7UpdateCombo(netdata)
+    local combo = netdata:ReadByte()
+    LogInfo("Game7x7:Process7x7UpdateCombo,combo=%d",combo)
+    SG7x7.UpdateCombo(combo)
+end
+
 RegisterNetMsgHandler(NMSG_Type._MSG_7x7_ACTION_RET,"Process7x7ActionRet",Process7x7ActionRet)
 RegisterNetMsgHandler(NMSG_Type._MSG_7x7_DELETE,"Process7x7Delete",Process7x7Delete)
 RegisterNetMsgHandler(NMSG_Type._MSG_7x7_ADD,"Process7x7Add",Process7x7Add)
@@ -176,3 +183,4 @@ RegisterNetMsgHandler(NMSG_Type._MSG_7x7_FINISH,"Process7x7Finish",Process7x7Fin
 RegisterNetMsgHandler(NMSG_Type._MSG_7x7_BEGIN,"Process7x7Begin",Process7x7Begin)
 RegisterNetMsgHandler(NMSG_Type._MSG_7x7_SCOREBOARD,"Process7x7ScoreBoard",Process7x7ScoreBoard)
 RegisterNetMsgHandler(NMSG_Type._MSG_7x7_UPDATELEVEL,"Process7x7UpdateLevel",Process7x7UpdateLevel)
+RegisterNetMsgHandler(NMSG_Type._MSG_7x7_UPDATECOMBO,"Process7x7UpdateCombo",Process7x7UpdateCombo)
