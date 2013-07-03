@@ -61,13 +61,13 @@ end
 
 function p.ClearBoard()
     local listContainer = GetScrollViewContainer(GetParent(),ctrl_tag.list_container)
-    listContainer:SetViewSize(CGSizeMake(260*ScaleFactor,25*ScaleFactor))
+    listContainer:SetViewSize(CGSizeMake(260*ScaleFactor,(190/8)*ScaleFactor))
     listContainer:RemoveAllView()
 end
 
 function p.SetBoard(ranks)
     local listContainer = GetScrollViewContainer(GetParent(),ctrl_tag.list_container)
-    listContainer:SetViewSize(CGSizeMake(260*ScaleFactor,25*ScaleFactor))
+    listContainer:SetViewSize(CGSizeMake(260*ScaleFactor,(190/8)*ScaleFactor))
     listContainer:RemoveAllView()
     
     for i,rank in ipairs(ranks) do
@@ -84,5 +84,11 @@ function p.SetBoard(ranks)
         label_name:SetText(rank.name)
         label_score:SetText(tostring(rank.score))
         label_rank:SetText(tostring(i))
+        
+        if(GetPlayerId()==rank.id)then
+            label_name:SetFontColor(ccc4(255,0,0,255))
+            label_rank:SetFontColor(ccc4(255,0,0,255))
+            label_score:SetFontColor(ccc4(255,0,0,255))
+        end
     end
 end
