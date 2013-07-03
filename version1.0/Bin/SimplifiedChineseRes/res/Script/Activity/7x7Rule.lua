@@ -2,7 +2,7 @@ SG7x7Rule = {}
 local p = SG7x7Rule
 
 local ctrl_tag = {btn_close=49,txt_rule=87}
-local info_txt="玩法：在一块 7×7 的方格棋盘上，你要做的就是横向、纵向、斜向连接四个相同颜色的方块，以完成消除。每次移动方块后，都会有新的方块出现；只要一个回合中有方块被消除，这一回合就不会有新方块出现。连续消除会有额外的分数奖励，游戏难度会随着分数慢慢加大，主要是每一回合新增的方块数目会增加。\n\n奖励：玩家获取的最高积分将被记录，每日22:00结算，排名前二十的玩家将会获得奖励。"
+local info_txt="玩法：在一塊 7×7 的方格棋盤上，你要做的就是橫向、縱向、斜向連接四個相同顏色的方塊，以完成消除。每次移動方塊後，都會有新的方塊出現；只要一個回合中有方塊被消除，這一回合就不會有新方塊出現。連續消除會有額外的分數獎勵，遊戲難度會隨著分數慢慢加大，主要是每一回合新增的方塊數目會增加。\n\n獎勵：玩家獲取的最高積分將被記錄，每日22:00結算，排名前二十的玩家將會獲得獎勵。"
 local function GetParent()
     local scene = GetSMGameScene()
     if nil==scene then
@@ -14,9 +14,6 @@ local function GetParent()
         return nil
     end
     
-	local label_txt = GetLabel(layer,ctrl_tag.txt_rule)
-	label_txt:SetText(GetTxtPri("SG7x7Rule"))
-	
     return layer
 end
 
@@ -45,7 +42,7 @@ function p.LoadUI()
 	end
 	uiLoad:Load("7x7_rule.ini", layer, p.OnUIEvent, 0, 0);
     
-	local label_txt = GetLabel(layer,ctrl_tag.txt_rule)
+    local label_txt = GetLabel(layer,ctrl_tag.txt_rule)
     label_txt:SetText(info_txt)
     return true
 end
