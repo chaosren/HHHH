@@ -122,6 +122,18 @@
 			SourceControlFiles="false"
 			>
 			<File
+				RelativePath="..\Bin\SimplifiedChineseRes\res\Script\Activity\7x7.lua"
+				>
+			</File>
+			<File
+				RelativePath="..\Bin\SimplifiedChineseRes\res\Script\Activity\7x7Board.lua"
+				>
+			</File>
+			<File
+				RelativePath="..\Bin\SimplifiedChineseRes\res\Script\Activity\7x7Rule.lua"
+				>
+			</File>
+			<File
 				RelativePath="..\Bin\SimplifiedChineseRes\res\Script\Activity\Activity_MixUI.lua"
 				>
 			</File>
@@ -163,6 +175,10 @@
 			</File>
 			<File
 				RelativePath="..\Bin\SimplifiedChineseRes\res\Script\Activity\RechargeReward.lua"
+				>
+			</File>
+			<File
+				RelativePath="..\Bin\SimplifiedChineseRes\res\Script\Activity\Slave.lua"
 				>
 			</File>
 			<File
