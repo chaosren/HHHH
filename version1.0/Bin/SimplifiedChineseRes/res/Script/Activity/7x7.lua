@@ -281,13 +281,13 @@ local function SetSelected(idx) --设置为选择态
     if LastSelected~=nil then
         --取消选择态
         local btnLast = GetButton(layer,IdxToTag(LastSelected))
-        --btnLast:SetFocus(false)
+        btnLast:SetFocus(false)
     end
     LastSelected = idx
     if(idx~=nil)then
         local layer = GetParent()
         local btn = GetButton(layer,IdxToTag(idx))
-        --btn:SetFocus(true)
+        btn:SetFocus(true)
     end
 end
 
