@@ -2063,6 +2063,9 @@ DB_ENCOURAGE_CONFIG = {
     MODIFY_VALUE3   = 11,
     ARRT4       = 12,
     MODIFY_VALUE4   = 13,
+	ICON 		= 14,
+	NAME		= 15,
+	INFO		= 16,
 }
 
 DB_DAOFA_STATIC_CONFIG = {

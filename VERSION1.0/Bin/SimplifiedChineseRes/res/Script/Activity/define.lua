@@ -28,3 +28,12 @@ DoFile("Activity/Slave.lua")
 DoFile("Activity/7x7.lua")
 DoFile("Activity/7x7Board.lua")
 DoFile("Activity/7x7Rule.lua")
+
+DoFile("Activity/BattleCity.lua")
+DoFile("Activity/BattleCityCityInfo.lua")
+DoFile("Activity/BattleCityGuardInfo.lua")
+DoFile("Activity/BattleCityRecord.lua")
+DoFile("Activity/BattleCityInspire.lua")
+DoFile("Activity/BattleCityGift.lua")
+DoFile("Activity/BattleCityRule.lua")
+DoFile("Msg/MsgBattleCity.lua");
