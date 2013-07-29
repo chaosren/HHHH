@@ -16,6 +16,20 @@ p.playerInfo = {}
 p.cityInfos = {}
 reset_timer_tag = nil
 reset_timer_time = 0
+
+
+--db battlecity_config
+p.DbBattleCityData = {};
+
+--要用的数据对应的id枚举  
+p.DATA_CONFIG_ID =
+{
+    RESET_SPRIER_EMONEY = 15;   --重置鼓舞所需金幣
+    UNLOCK_SPRIER_EMONEY  = 16;   --解鎖鼓舞所需金币
+	RESET_CD_EMONEY = 30; --重置cd时间需要的金币
+};
+
+
 -----------------------------获取父层layer---------------------------------
 local function GetParent()
 
@@ -64,8 +78,35 @@ function p.LoadUI ()
 	
 	local BtnClose = GetButton(layer, ctrl_tag.btn_close);
     BtnClose:SetSoundEffect(Music.SoundEffect.CLOSEBTN);
+    
+    --读取数据库battlecity_config中的数据
+    p.InitDbData();
+    
     return true;
 end
+
+function p.InitDbData()
+    --获取id集合
+    local ids = GetDataBaseIdList("battlecity_config");
+    p.DbBattleCityData = {};
+
+    for i,v in ipairs(ids) do
+		p.DbBattleCityData[v] = GetDataBaseDataN("battlecity_config", v, DB_BATTLECITY_CONFIG.CONFIG_VALUE); 
+    end
+end
+
+
+function p.GetDbConfigValue(nId)
+    --获取id集合
+    local nRet = p.DbBattleCityData[nId];
+	
+	if nRet == nil then
+		nRet = 0;
+	end
+
+    return nRet;
+end
+
 
 local function DoUseResetDebuff(id,param)
     if (CommonDlgNew.BtnOk == id ) then
@@ -83,10 +124,10 @@ function p.OnUIEvent(uiNode, uiEventType, param)
             CloseUI(NMAINSCENECHILDTAG.BattleCityUI);
 		elseif tag>=ctrl_tag.btn_city1 and tag<=ctrl_tag.btn_city4 then
 			--打开城市界面
-			MsgBattleCity.GetCityInfo(tag-ctrl_tag.btn_city1+1)
 			BattleCityCity.LoadUI()
+			MsgBattleCity.GetCityInfo(tag-ctrl_tag.btn_city1+1)
 			ShowLoadBar()
-		elseif tag==ctrl_tag.btn_inspire then
+		elseif tag==ctrl_tag.btn_inspire then   --战斗令
 			MsgBattleCity.GetEncourageInfo()
 			BattleCityInspire.LoadUI()
 			ShowLoadBar()
@@ -94,11 +135,12 @@ function p.OnUIEvent(uiNode, uiEventType, param)
 			MsgBattleCity.GetStorageInfo()
 			BattleCityGift.LoadUI()
 			ShowLoadBar()
-        elseif tag==ctrl_tag.btn_reset_debuff then
-            CommonDlgNew.ShowYesOrNoDlg( string.format(GetTxtPri("ResetDebuff"),10),DoUseResetDebuff, true );
-        elseif tag==ctrl_tag.btn_gzsm then
-            BattleCityRule.LoadUI()
-        end
+		elseif tag==ctrl_tag.btn_reset_debuff then
+			local nNeedEMoney = p.GetDbConfigValue(p.DATA_CONFIG_ID.RESET_CD_EMONEY);
+			CommonDlgNew.ShowYesOrNoDlg( string.format(GetTxtPri("BattleCityResetDebuff"), nNeedEMoney), DoUseResetDebuff, true );
+		elseif tag==ctrl_tag.btn_gzsm then   --规则说明
+			BattleCityRule.LoadUI()
+		end
 	end
     
 	return true;
@@ -144,11 +186,16 @@ local function OnTimer(tag)
 			end
 		end
     elseif(tag==reset_timer_tag)then
-        reset_timer_time = reset_timer_time-1
-        local label_reset_time = GetLabel(GetParent(),ctrl_tag.txt_reset_time)
-        if(label_reset_time~=nil)then
-            label_reset_time:SetText(string.format("%02d:%02d:%02d",math.floor(reset_timer_time/3600),math.floor((reset_timer_time%3600)/60),reset_timer_time%60))
-        end
+		if reset_timer_time > 1 then
+			reset_timer_time = reset_timer_time-1
+		else
+			reset_timer_time = 0;
+		end
+
+		local label_reset_time = GetLabel(GetParent(),ctrl_tag.txt_reset_time)
+		if(label_reset_time~=nil)then
+			label_reset_time:SetText(string.format("%02d:%02d:%02d",math.floor(reset_timer_time/3600),math.floor((reset_timer_time%3600)/60),reset_timer_time%60))
+		end
 	else
 		for k,v in pairs(p.protect_timer_tag) do
 			if(tag==p.protect_timer_tag[k])then
@@ -171,6 +218,8 @@ local function OnTimer(tag)
 	end
 end
 
+
+--参与攻城略地的玩家信息
 function p.HandleBattleCityPlayerInfo(cityID,side,encourageID,encourageLevel,debufferTime,synID,debufferCanReset)
 	p.playerInfo.cityID = cityID
 	p.playerInfo.side = side
@@ -178,16 +227,20 @@ function p.HandleBattleCityPlayerInfo(cityID,side,encourageID,encourageLevel,deb
 	p.playerInfo.debufferTime = debufferTime
 	p.playerInfo.debufferCanReset = debufferCanReset
 	p.playerInfo.synID = synID
-	if(IsUIShow(NMAINSCENECHILDTAG.BattleCityUI)) then --界面是否打开
+	
+	if(IsUIShow(NMAINSCENECHILDTAG.BattleCityUI)) then --攻城掠地界面是否打开
 		LogInfo("BattleCity:HandleBattleCityPlayerInfo,debufferTime=%d",debufferTime)
 	
+		--显示玩家所在城池
 		local label_capture_city = GetLabel(GetParent(),ctrl_tag.txt_capture_city)
-		local label_debuff_time = GetLabel(GetParent(),ctrl_tag.txt_debuff_time)
 		if(cityID==0)then
 			label_capture_city:SetText(GetTxtPri("Common_wu"))
 		else
 			label_capture_city:SetText(p.cityInfos[cityID].cityName)
 		end
+		
+		--再次参战冷却时间与清除冷却时间按钮处理
+		local label_debuff_time = GetLabel(GetParent(),ctrl_tag.txt_debuff_time)
 		local btn_reset = GetButton(GetParent(),ctrl_tag.btn_reset_debuff)
         if(debufferTime==0)then
             if(p.debuff_timer_tag~=nil)then
@@ -208,6 +261,8 @@ function p.HandleBattleCityPlayerInfo(cityID,side,encourageID,encourageLevel,deb
                 btn_reset:EnalbeGray(true)
             end
 		end
+		
+		--您所使用的战斗令 显示处理
 		local label_enc = GetLabel(GetParent(),ctrl_tag.txt_encourage)
 		if(encourageID~=0)then
 			local name = string.format(GetTxtPri("BattleCityCurEN"),encourageLevel,GetDataBaseDataS("encourage_config",encourageID,DB_ENCOURAGE_CONFIG.NAME));
@@ -276,20 +331,30 @@ function p.HandleBattleCityActionRet(action,ret)
 	end
 end
 
+--服务端接收到的攻城略地主城信息
 function p.HandleBattleCityMapInfo(resetLeftTime,citys)
     reset_timer_time = resetLeftTime
+    
+    --显示重置时间信息，以及启动客户端定时器
     local label_reset_time = GetLabel(GetParent(),ctrl_tag.txt_reset_time)
-    label_reset_time:SetText(string.format("%02d:%02d:%02d",math.floor(reset_timer_time/3600),math.floor((reset_timer_time%3600)/60),reset_timer_time%60))
+    label_reset_time:SetText(string.format("%02d:%02d:%02d", math.floor(reset_timer_time/3600), math.floor((reset_timer_time%3600)/60), reset_timer_time%60))
     reset_timer_tag = RegisterTimer(OnTimer,1)
+    
+    
 	p.cityInfos = citys
 	for _,city in pairs(citys) do
 		LogInfo("BattleCity:HandleBattleCityMapInfo cityID=%d,protectTime=%d",city.cityID,city.protectTime)
-		local label_name = GetLabel(GetParent(),ctrl_tag.txt_city1_name+city.cityID-1)
+		
+		--设置城市名称，城市占领军团，城市受保护时间
+		local label_name = GetLabel(GetParent(),ctrl_tag.txt_city1_name+city.cityID-1);
 		local label_synname = GetLabel(GetParent(),ctrl_tag.txt_city1_synname+city.cityID-1)
 		local label_protectTime = GetLabel(GetParent(),ctrl_tag.txt_city1_protect_time+city.cityID-1)
 		label_name:SetText(city.cityName)
 		label_synname:SetText(city.synName)
+		
 		protect_timer_time[city.cityID] = city.protectTime
+		
+		--定时器
 		p.protect_timer_tag[city.cityID] = nil
 		if(protect_timer_time[city.cityID]>0)then
 			label_protectTime:SetText(string.format("%02d:%02d:%02d",math.floor(protect_timer_time[city.cityID]/3600),math.floor((protect_timer_time[city.cityID]%3600)/60),protect_timer_time[city.cityID]%60))
@@ -304,6 +369,8 @@ function p.HandleBattleCityMapInfo(resetLeftTime,citys)
 			label_protectTime:SetText("")
 		end
 	end
+	
+	
 	if(IsUIShow(NMAINSCENECHILDTAG.BattleCityCityUI))then
 		BattleCityCity.CheckEnterState()
 	end

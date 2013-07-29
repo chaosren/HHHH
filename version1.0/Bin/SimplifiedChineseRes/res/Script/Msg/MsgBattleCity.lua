@@ -138,6 +138,7 @@ local function HandleBattleCityHistory(netdata)
 	end
 end
 
+--参与攻城略地的玩家信息
 local function HandleBattleCityPlayerInfo(netdata)
 	local cityID = netdata:ReadByte()
 	local side = netdata:ReadByte()
@@ -228,6 +229,7 @@ local function HandleBattleCityActionRet(netdata)
 	BattleCity.HandleBattleCityActionRet(action,ret)
 end
 
+--接收地图信息
 local function HandleBattleCityMapInfo(netdata)
 	local count = netdata:ReadByte()
     local leftResetTime = netdata:ReadInt()

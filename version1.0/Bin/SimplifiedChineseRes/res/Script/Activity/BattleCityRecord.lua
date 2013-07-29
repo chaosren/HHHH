@@ -57,6 +57,7 @@ function p.LoadUI ()
     end
 
     ListContainer:SetViewSize(ViewSize);
+    ListContainer:EnableScrollBar(true);
     ListContainer:RemoveAllView();
     return true;
 end
@@ -92,6 +93,7 @@ function p.HandleBattleCityHistory(cityId,historys)
 	local ListContainer  = GetScrollViewContainer(GetParent(), ctrl_tag.list_records);
 	ListContainer:RemoveAllView();
 	LogInfo("BattleCity:HandleBattleCityHistory");
+
 	for _,history in pairs(historys) do
 		LogInfo("BattleCity:HandleBattleCityHistory,attId=%d,defid=%d,attname=%s,defname=%s,side=%d,state=%d,synname=%s,rectime",history.attID,history.defID,history.attname,history.defname,history.side,history.state,history.synname,history.rectime)
 		local view = createUIScrollView();

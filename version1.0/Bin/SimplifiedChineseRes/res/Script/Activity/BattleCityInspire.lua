@@ -111,7 +111,9 @@ function p.OnUIEvent(uiNode, uiEventType, param)
 		elseif ctrl_tag.btn_use == tag then
 			if(self_encInfo[self_lastChecked]==nil)then
 				--解锁
-                CommonDlgNew.ShowYesOrNoDlg( string.format(GetTxtPri("BattleCityUnlockEN"),100),DoUseENUnlock, true );
+				  local nNeedEMoney = BattleCity.GetDbConfigValue(BattleCity.DATA_CONFIG_ID.UNLOCK_EMONEY);
+				   --要用的数据对应的id枚举  
+                CommonDlgNew.ShowYesOrNoDlg( string.format(GetTxtPri("BattleCityUnlockEN"), nNeedEMoney),DoUseENUnlock, true );
 				
 			else
                 if(BattleCity.playerInfo.encourageID~=0)then
@@ -131,7 +133,7 @@ function p.OnUIEvent(uiNode, uiEventType, param)
 			local btnLast = GetButton(GetParent(),ctrl_tag.btn_inspire_1+self_lastChecked-1)
 			btnLast:SetChecked(false)
 			local btn = GetButton(GetParent(),tag)
-			--btn:SetChecked(true)
+			btn:SetChecked(true)
 			local idx = tag-ctrl_tag.btn_inspire_1+1
 			self_lastChecked = idx
 			local label_desc = GetLabel(GetParent(),ctrl_tag.txt_describe)
@@ -155,15 +157,20 @@ function p.OnUIEvent(uiNode, uiEventType, param)
 	return true
 end
 
+
+--鼓舞的信息显示等
 function p.HandleEncourageInfo(leftCount,encourages)
     self_leftCount = leftCount
+    
 	for i=1,maxCount,1 do
 		LogInfo("id=%d,level=%d",encourages[i][1],encourages[i][2])
 		local btn = GetButton(GetParent(),ctrl_tag.btn_inspire_1+i-1)
+		 
+		 --默认设置第一项为焦点项
         if(i==1)then
             btn:SetFocus(true)
         end
-        if(encourages[i][1]==65535)then
+        if(encourages[i][1]==65535)then    
 			--btn:SetTitle("LOCK")
             btn:SetImage(GetENLockPic())
 			self_encInfo[i] = nil
@@ -191,12 +198,15 @@ function p.HandleEncourageInfo(leftCount,encourages)
             label_name:SetText(string.format(GetTxtPri("BattleCityCurEN"),self_encInfo[i].level,self_encInfo[i].name))
 		end
 	end
+	
+	--免费重置次数
     local label_free_reset = GetLabel(GetParent(),ctrl_tag.txt_free_rest)
     LogInfo("BattleCity:label free reset=%s",string.format(GetTxtPri("BattleCityResetENCount"),leftCount))
     label_free_reset:SetText(string.format(GetTxtPri("BattleCityResetENCount"),leftCount))
+    
 	--默认选择第一个
 	local btn = GetButton(GetParent(),ctrl_tag.btn_inspire_1)
-	--btn:SetChecked(true)
+	btn:SetChecked(true)
 	self_lastChecked = 1
 	local label_desc = GetLabel(GetParent(),ctrl_tag.txt_describe)
 	local btn_use = GetButton(GetParent(),ctrl_tag.btn_use)

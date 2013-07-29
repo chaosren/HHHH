@@ -142,6 +142,34 @@
 				>
 			</File>
 			<File
+				RelativePath="..\Bin\SimplifiedChineseRes\res\Script\Activity\BattleCity.lua"
+				>
+			</File>
+			<File
+				RelativePath="..\Bin\SimplifiedChineseRes\res\Script\Activity\BattleCityCityInfo.lua"
+				>
+			</File>
+			<File
+				RelativePath="..\Bin\SimplifiedChineseRes\res\Script\Activity\BattleCityGift.lua"
+				>
+			</File>
+			<File
+				RelativePath="..\Bin\SimplifiedChineseRes\res\Script\Activity\BattleCityGuardInfo.lua"
+				>
+			</File>
+			<File
+				RelativePath="..\Bin\SimplifiedChineseRes\res\Script\Activity\BattleCityInspire.lua"
+				>
+			</File>
+			<File
+				RelativePath="..\Bin\SimplifiedChineseRes\res\Script\Activity\BattleCityRecord.lua"
+				>
+			</File>
+			<File
+				RelativePath="..\Bin\SimplifiedChineseRes\res\Script\Activity\BattleCityRule.lua"
+				>
+			</File>
+			<File
 				RelativePath="..\Bin\SimplifiedChineseRes\res\Script\Activity\BattleMapCtrl.lua"
 				>
 			</File>
@@ -730,11 +758,19 @@
 				>
 			</File>
 			<File
+				RelativePath="..\Bin\SimplifiedChineseRes\res\Script\Msg\Msg7x7.lua"
+				>
+			</File>
+			<File
 				RelativePath="..\Bin\SimplifiedChineseRes\res\Script\Msg\MsgActivityMix.lua"
 				>
 			</File>
 			<File
 				RelativePath="..\Bin\SimplifiedChineseRes\res\Script\Msg\MsgArena.lua"
+				>
+			</File>
+			<File
+				RelativePath="..\Bin\SimplifiedChineseRes\res\Script\Msg\MsgBattleCity.lua"
 				>
 			</File>
 			<File

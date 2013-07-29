@@ -10,9 +10,9 @@ local CONTAINTER_Y  = 0;
 
 local ctrl_tag = {btn_close=23,btn_history=21,btn_enter=22,txt_cityname=13,txt_citydesc=14,txt_synname=18,txt_attcount=20,txt_defcount=19}
 
-local city_descs = {"天下之奇峻，地扼蜀陇咽喉；势控攻守要冲，兵家必争之地。","许都之北，从河北进军河南地界的军事要冲之地。","曾是兵家逐鹿的战场。东汉末年东吴水军都督周瑜在此操练水师。","蜀汉国都，商业发达，乃三国时期六大都市之一。"}
-
-local city_gain = {{70000,5,4},{50000,4,3},{40000,3,2},{30000,2,1}}
+BattleCity.GetDbConfigValue(40)
+local city_gain = {};
+                  
 local city_gain_time = {1,3,1}
 
 local self_cityID = 0
@@ -59,6 +59,11 @@ function p.LoadUI (cityID,cityName,synName,attCount,defCount)
 	
 	uiLoad:Load("city_battle/city_battle_info.ini", layer, p.OnUIEvent, CONTAINTER_X, CONTAINTER_Y);
 	
+	city_gain = {{BattleCity.GetDbConfigValue(40), BattleCity.GetDbConfigValue(50), BattleCity.GetDbConfigValue(60)},
+                  {BattleCity.GetDbConfigValue(41), BattleCity.GetDbConfigValue(51), BattleCity.GetDbConfigValue(61)},
+                  {BattleCity.GetDbConfigValue(42), BattleCity.GetDbConfigValue(52), BattleCity.GetDbConfigValue(62)},
+                  {BattleCity.GetDbConfigValue(43), BattleCity.GetDbConfigValue(53), BattleCity.GetDbConfigValue(63)}};
+	
 	return true;
 end
 
@@ -67,14 +72,15 @@ function p.RefreshData(cityID,cityName,synName,attCount,defCount,synID)
 	self_cityID = cityID;
 	self_synID = synID;
 	local layer = GetParent()
-    local label_cityname = GetLabel(layer,ctrl_tag.txt_cityname)
+	local label_cityname = GetLabel(layer,ctrl_tag.txt_cityname)
 	label_cityname:SetText(cityName)
-    local label_citydesc = GetLabel(layer,ctrl_tag.txt_citydesc)
-    local txt1 = string.format(GetTxtPri("BattleCitySilverGain"),city_gain[cityID][1],city_gain_time[1])
-    local txt2 = string.format(GetTxtPri("BattleCityStoneGain"),city_gain[cityID][2],city_gain_time[2])
-    local txt3 = string.format(GetTxtPri("BattleCitySMGain"),city_gain[cityID][3],city_gain_time[3])
-    --label_citydesc:SetText(city_descs[cityID])
-    label_citydesc:SetText(txt1.."\n"..txt2.."\n"..txt3)
+	local label_citydesc = GetLabel(layer,ctrl_tag.txt_citydesc)
+	local txt1 = string.format(GetTxtPri("BattleCitySilverGain"),city_gain[cityID][1],city_gain_time[1])
+	local txt2 = string.format(GetTxtPri("BattleCityStoneGain"),city_gain[cityID][2],city_gain_time[2])
+	local txt3 = string.format(GetTxtPri("BattleCitySMGain"),city_gain[cityID][3],city_gain_time[3])
+	label_citydesc:SetText(txt1.."\n"..txt3.."\n"..txt2)
+	
+	
 	local label_synname = GetLabel(layer,ctrl_tag.txt_synname)
 	label_synname:SetText(synName)
 	local label_attcount = GetLabel(layer,ctrl_tag.txt_attcount)
@@ -82,6 +88,7 @@ function p.RefreshData(cityID,cityName,synName,attCount,defCount,synID)
 	local label_defcount = GetLabel(layer,ctrl_tag.txt_defcount)
 	label_defcount:SetText(tostring(defCount))
 	local btn_attordef = GetButton(layer,ctrl_tag.btn_enter)
+	
 	if(BattleCity.playerInfo.cityID==cityID)then	--所在的城池
 		btn_attordef:SetTitle(GetTxtPri("ENTER_BTN_TEXT_ENTER"));
 		self_enterType = "enter"
