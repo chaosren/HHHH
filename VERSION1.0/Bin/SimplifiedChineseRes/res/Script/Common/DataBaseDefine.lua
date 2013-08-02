@@ -1835,9 +1835,12 @@ DB_ACHIEVEMENT_CONFIG=
     AWARD_MONEY      =2,
     AWARD_ITEM          =3,
     ITEM_COUNT           =4,
-    TITLE                        =5,
-    DESCRIBE               =6,
+    AWARD_ITEM2         = 5,
+    ITEM_COUNT2         = 6,
+    TITLE                        =7,
+    DESCRIBE               =8,
 };
+
 
 
 DB_VIP_CONFIG= 
