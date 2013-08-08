@@ -10,10 +10,9 @@ local CONTAINTER_Y  = 0;
 
 local ctrl_tag = {btn_close=23,btn_history=21,btn_enter=22,txt_cityname=13,txt_citydesc=14,txt_synname=18,txt_attcount=20,txt_defcount=19}
 
-BattleCity.GetDbConfigValue(40)
 local city_gain = {};
                   
-local city_gain_time = {1,3,1}
+local city_gain_time = {1,3,1};
 
 local self_cityID = 0
 local self_synID = 0
@@ -64,6 +63,8 @@ function p.LoadUI (cityID,cityName,synName,attCount,defCount)
                   {BattleCity.GetDbConfigValue(42), BattleCity.GetDbConfigValue(52), BattleCity.GetDbConfigValue(62)},
                   {BattleCity.GetDbConfigValue(43), BattleCity.GetDbConfigValue(53), BattleCity.GetDbConfigValue(63)}};
 	
+	
+	city_gain_time = {BattleCity.GetDbConfigValue(18), BattleCity.GetDbConfigValue(19), BattleCity.GetDbConfigValue(20),};
 	return true;
 end
 
