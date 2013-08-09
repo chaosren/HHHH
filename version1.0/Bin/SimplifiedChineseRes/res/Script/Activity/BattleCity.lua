@@ -121,7 +121,8 @@ function p.OnUIEvent(uiNode, uiEventType, param)
     if uiEventType == NUIEventType.TE_TOUCH_BTN_CLICK then
 		if ctrl_tag.btn_close == tag then                   --关闭    
 			MsgBattleCity.Leave()
-            CloseUI(NMAINSCENECHILDTAG.BattleCityUI);
+			p.LeaveBattleCity();
+           CloseUI(NMAINSCENECHILDTAG.BattleCityUI);
 		elseif tag>=ctrl_tag.btn_city1 and tag<=ctrl_tag.btn_city4 then
 			--打开城市界面
 			BattleCityCity.LoadUI()
@@ -145,6 +146,24 @@ function p.OnUIEvent(uiNode, uiEventType, param)
     
 	return true;
 end
+
+function p.LeaveBattleCity()
+
+	if p.debuff_timer_tag ~= nil then
+		UnRegisterTimer(p.debuff_timer_tag);
+	end
+	
+	if reset_timer_tag ~= nil then
+		UnRegisterTimer(reset_timer_tag);
+	end
+	
+	for i,v in pairs(p.protect_timer_tag) do
+		if v ~= nil then
+			UnRegisterTimer(v);
+		end
+	end	
+end
+
 
 function p.HandleBattleCityInfo(cityID,synID,attCount,defCount,synname)
 	if(IsUIShow(NMAINSCENECHILDTAG.BattleCityCityUI))then
