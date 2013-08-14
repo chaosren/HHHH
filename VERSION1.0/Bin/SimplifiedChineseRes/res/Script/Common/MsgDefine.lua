@@ -270,4 +270,19 @@ NMSG_Type =
     _MSG_MOUNTSOUL            =   _MSG_GENERAL + 6060,	-- 兽魂
     
     _MSG_GMCOMMAND              = 139,      --gm com
+    
+    
+     _MSG_ELITE_PRIVILEGE_INFO     = _MSG_GENERAL + 7009,  --精英特权消息
+	
+	    -----------------7x7小游戏-------------------
+    _MSG_7x7_ACTION             = _MSG_GENERAL + 8160,  --7x7动作
+    _MSG_7x7_ACTION_RET         = _MSG_GENERAL + 8161,  --7x7动作返回
+    _MSG_7x7_DELETE             = _MSG_GENERAL + 8162,  --7x7删除
+    _MSG_7x7_ADD                = _MSG_GENERAL + 8163,  --7x7添加
+    _MSG_7x7_NEXT               = _MSG_GENERAL + 8164,  --7x7下一步
+    _MSG_7x7_FINISH             = _MSG_GENERAL + 8165,  --7x7结束
+    _MSG_7x7_BEGIN              = _MSG_GENERAL + 8166,  --7x7开始
+    _MSG_7x7_SCOREBOARD         = _MSG_GENERAL + 8167,  --7x7排行榜
+    _MSG_7x7_UPDATELEVEL        = _MSG_GENERAL + 8168,  --更新等级
+    _MSG_7x7_UPDATECOMBO        = _MSG_GENERAL + 8169,  --更新连击
 };

@@ -491,7 +491,7 @@ p.nLevtRightOffset  = 2*ScaleFactor;                  --左右便宜位置
 
 -- tTips格式{{nTip1,sColor1},{nTip2,sColor2},{nTip3,sColor3}}
 function p.ShowTipsDlg(tTips)
-    LogInfo("p.ShowTipsDlg:[%s]",tTips[1][1]);
+    --LogInfo("p.ShowTipsDlg:[%s]",tTips[1][1]);
     local scene = GetRunningScene();
 	if not CheckP(scene) then
 		LogInfo("not CheckP(scene),load CommonDlgNew.ShowTipsDlg failed!");

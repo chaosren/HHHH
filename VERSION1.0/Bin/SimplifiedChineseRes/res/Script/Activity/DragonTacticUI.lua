@@ -8,25 +8,30 @@ local p = DragonTacticUI;
 
 
 p.CurFocusBtnId   = 0;    --当前的焦点按钮
-p.TabInfo = { TacticTabInfo      =     {LayerTag = 1001, tabBtnId = 24,  focusIndex = 1, FucInit = nil, 
-                                                            FucRefresh = nil, FucOnEvent = nil, viewId = 7,},
+
+             --大話龍將
+p.TabInfo = { TacticTabInfo = {LayerTag = 1001, tabBtnId = 24,  focusIndex = 1, FucInit = nil, 
+                             FucRefresh = nil, FucOnEvent = nil, viewId = 7,},
+              
+             --遊戲助手         
+             GameAssisInfo = {LayerTag = 1002,  tabBtnId = 25,  focusIndex = 2, FucInit = nil, 
+                            FucRefresh = nil, FucOnEvent = nil, viewId = 7,},
                        
-                       GameAssisInfo  =    {LayerTag = 1002,  tabBtnId = 25,  focusIndex = 2, FucInit = nil, 
-                                                           FucRefresh = nil, FucOnEvent = nil, viewId = 7,},
-                       
-                       --[[
-                       EveryDayActInfo  =  {LayerTag = 1003,  tabBtnId = 26,  focusIndex = 1, FucInit = nil, 
-                                                            FucRefresh = nil, FucOnEvent = nil, },]]
+			  --現在為精英特權	
+             EveryDayActInfo  =  {LayerTag = 1003,  tabBtnId = 26,  focusIndex = 1, FucInit = nil, 
+                                FucRefresh = nil, FucOnEvent = nil, viewId = 7,},
 }
+
 
 --获取记录类型   1为大话兵法  2为没钱了怎么办  3为我要升级   4打不过敌军怎么办 5 如何获得装备  6其他功能说明
 p.TypeTitleDes = {GetTxtPri("DT_T1"),GetTxtPri("DT_T2"), GetTxtPri("DT_T3"), GetTxtPri("DT_T4"), GetTxtPri("DT_T5"),};
 
 p.TacticInfoList = {};                 --大话兵法要显示的信息列表
 p.GameAssisInfoList = {};       --游戏助手要显示的信息列表
---p.EveryDayActList = {};           --日常活动要显示的信息列表
+p.EveryDayActList = {};           --精英特權要显示的信息列表
 
 p.TacticStatusList = {};                 --大话兵法列表项更新状态表
+p.EveryDayActStatusList = {};           --日常活动列表项更新状态表
 local RectSubUILayer = CGRectMake(0, 39*CoordScaleY, 480*CoordScaleX, 275.0*CoordScaleY);
 local TacticListSize = CGSizeMake(230*CoordScaleX, 36*CoordScaleY);
 
@@ -72,8 +77,8 @@ function p.LoadUI()
 	end
 	uiLoad:Load("achieve_BG.ini", layer, p.OnUIEvent, CONTAINTER_X, CONTAINTER_Y);
 
-    local BtnEveryDay = GetButton(layer, CTR_BTN_26);
-    BtnEveryDay:SetVisible(false);
+    --local BtnEveryDay = GetButton(layer, CTR_BTN_26);
+    --BtnEveryDay:SetVisible(false);
     --初始化标签页面的基本信息
     p.InitTabInfo();
     
@@ -102,7 +107,9 @@ function p.LoadUI()
     local BtnClose = GetButton(layerTactic, CTR_BTN_22);
     BtnClose:EnalbeGray(true);
     
-    p.GetTutorial(false);
+    --p.GetTutorial(false);
+    local animate = RecursivUISprite(layerTactic,{CTRL_SPRITE_87});
+    animate:SetVisible(false);
     
     ------------------------------------------------------------------添加游戏助手层-----------------------------------------------------------------------
     local layerGameAssis = createNDUILayer();
@@ -125,14 +132,13 @@ function p.LoadUI()
 	uiLoad:Load("achieve_2.ini", layerGameAssis,  p.TabInfo.GameAssisInfo.FucOnEvent, CONTAINTER_X, CONTAINTER_Y);
     uiLoad:Free();
 
-    ------------------------------------------------------------------添加日常活动层-----------------------------------------------------------------------
-    --[[
+    ------------------------------------------------------------------添加精英特權层-----------------------------------------------------------------------
     local layerEveryDayAct = createNDUILayer();
 	if layerEveryDayAct == nil then
 		return false;
 	end
 	layerEveryDayAct:Init();
-	layerEveryDayAct:SetTag(p.TabInfo.EveryDayActInfo.LayerTag );
+	layerEveryDayAct:SetTag(p.TabInfo.EveryDayActInfo.LayerTag);
 	layerEveryDayAct:SetFrameRect(RectSubUILayer);
     layerEveryDayAct:SetVisible(false);
 	layer:AddChild(layerEveryDayAct);
@@ -145,22 +151,22 @@ function p.LoadUI()
 		return false;
 	end
 
-	uiLoad:Load("achieve_3.ini", layerEveryDayAct,  p.TabInfo.EveryDayActInfo.FucOnEvent, CONTAINTER_X, CONTAINTER_Y);
+	uiLoad:Load("achieve_4.ini", layerEveryDayAct,  p.TabInfo.EveryDayActInfo.FucOnEvent, CONTAINTER_X, CONTAINTER_Y);
     uiLoad:Free(); 
-    ]]
+    
      -------------------------------初始化数据------------------------------------     
     p.initData();
     p.ChangeTab(p.TabInfo.TacticTabInfo.tabBtnId);
-    
-    --关闭音效
-    --local closeBtn=GetButton(layer, CTR_BTN_CLOSE);
-    --closeBtn:SetSoundEffect(Music.SoundEffect.CLOSEBTN);
-    
+
     return true;
 end
 
+--新手指引提示
 function p.GetTutorial(nFlag)
-    local layer = p.GetLayerByTag(p.TabInfo.TacticTabInfo.LayerTag);   
+    local layer = p.GetLayerByTag(p.TabInfo.TacticTabInfo.LayerTag); 
+	if ( p.CurFocusBtnId == p.TabInfo.EveryDayActInfo.tabBtnId ) then -- 副本成就里的提示
+		layer = p.GetLayerByTag(p.TabInfo.EveryDayActInfo.LayerTag);
+	end   
     local animate = RecursivUISprite(layer,{CTRL_SPRITE_87});
     local szAniPath = NDPath_GetAnimationPath();
     animate:ChangeSprite(szAniPath.."jiantx03.spr");
@@ -170,27 +176,21 @@ end
 
 -----------------------------初始化标签页面的基本信息---------------------------------
 function p.InitTabInfo()
---[[
-p.TabInfo = { TacticTabInfo      =     {LayerTag = 1001, tabBtnId = 24,  focusIndex = 1, FucInit = nil, FucRefresh = nil, FucOnEvent = nil, viewId = 7, },
-                       GameAssisInfo  =    {LayerTag = 1002,  tabBtnId = 25,  focusIndex = 1, FucInit = nil, FucRefresh = nil, FucOnEvent = nil,},
-                       EveryDayActInfo  =  {LayerTag = 1003,  tabBtnId = 26,  focusIndex = 1, FucInit = nil, FucRefresh = nil, FucOnEvent = nil, },
-}]]
-    p.TabInfo.TacticTabInfo.focusIndex = 1;
-    p.TabInfo.GameAssisInfo.focusIndex = 2;
-    --p.TabInfo.EveryDayActInfo.focusIndex = 1;
+	p.TabInfo.TacticTabInfo.focusIndex = 1;
+	p.TabInfo.GameAssisInfo.focusIndex = 2;
+	p.TabInfo.EveryDayActInfo.focusIndex = 1;
         
-   p.TabInfo.TacticTabInfo.FucInit = p.TacticInit;
-   p.TabInfo.TacticTabInfo.FucRefresh = p.TacticRefresh;
-   p.TabInfo.TacticTabInfo.FucOnEvent = p.TacticOnEvent;
+	p.TabInfo.TacticTabInfo.FucInit = p.TacticInit;
+	p.TabInfo.TacticTabInfo.FucRefresh = p.TacticRefresh;
+	p.TabInfo.TacticTabInfo.FucOnEvent = p.TacticOnEvent;
+
+	p.TabInfo.GameAssisInfo.FucInit = p.GameAssisInit;
+	p.TabInfo.GameAssisInfo.FucRefresh = p.GameAssisRefresh;
+	p.TabInfo.GameAssisInfo.FucOnEvent = p.GameAssisOnEvent;
    
-   p.TabInfo.GameAssisInfo.FucInit = p.GameAssisInit;
-   p.TabInfo.GameAssisInfo.FucRefresh = p.GameAssisRefresh;
-   p.TabInfo.GameAssisInfo.FucOnEvent = p.GameAssisOnEvent;
-   
-   --[[
-   p.TabInfo.EveryDayActInfo.FucInit = p.EveryDayActicInit;
-   p.TabInfo.EveryDayActInfo.FucRefresh = p.EveryDayActRefresh;
-   p.TabInfo.EveryDayActInfo.FucOnEvent = p.EveryDayActOnEvent;]]
+	p.TabInfo.EveryDayActInfo.FucInit = p.EveryDayActicInit;
+	p.TabInfo.EveryDayActInfo.FucRefresh = p.EveryDayActRefresh;
+	p.TabInfo.EveryDayActInfo.FucOnEvent = p.EveryDayActOnEvent;
 end
 
 -----------------------------背景层事件处理---------------------------------
@@ -205,14 +205,14 @@ function p.OnUIEvent(uiNode, uiEventType, param)
         if CTR_BTN_CLOSE == tag then              
             p.FreeDate();        
 			CloseUI(NMAINSCENECHILDTAG.DragonTactic);
-        end
-        
-        --处理几个标签页的按钮
-        for i, v in pairs(p.TabInfo) do
-            if v.tabBtnId == tag then
-                p.ChangeTab(tag);
-                break;
-            end
+        else
+        	--处理几个标签页的按钮
+        	for i, v in pairs(p.TabInfo) do
+        	    if v.tabBtnId == tag then
+        	        p.ChangeTab(tag);
+        	        break;
+        	    end
+        	end
         end
     end
     
@@ -237,14 +237,15 @@ function p.ChangeTab(nBtnId)
     for i,v in pairs(p.TabInfo) do
         local btn = GetButton(layerMain, v.tabBtnId);
         local layer = p.GetLayerByTag(v.LayerTag);    
-        
-        if v.tabBtnId == nBtnId then
-            btn:TabSel(true);            --当前按钮设置为常亮
-            layer:SetVisible(true);   --设置当前层为活动层
-        else
-            btn:TabSel(false);           --其他按钮去掉常亮标志
-            layer:SetVisible(false);   --设置当前层为非活动层
-        end
+        if ( layer ~=nil ) then
+        	if v.tabBtnId == nBtnId then
+            	btn:TabSel(true);            --当前按钮设置为常亮
+    	        layer:SetVisible(true);   --设置当前层为活动层
+    	    else
+    	        btn:TabSel(false);           --其他按钮去掉常亮标志
+    	        layer:SetVisible(false);   --设置当前层为非活动层
+    	    end
+    	end
     end
 
     p.RefreshUI(nBtnId);    
@@ -264,7 +265,7 @@ end
 function p.initData()
     p.TacticInfoList = {};                 --大话兵法要显示的信息列表
     p.GameAssisInfoList = {};       --游戏助手要显示的信息列表
-    --p.EveryDayActList = {};           --日常活动要显示的信息列表
+    p.EveryDayActList = {};           --日常活动要显示的信息列表
     p.CurFocusBtnId   = 0;             --默认的当前page页面
    
     for i, v in pairs(p.TabInfo) do 
@@ -339,9 +340,8 @@ function p.GetCurDataInfoList()
         List = p.TacticInfoList;
     elseif p.CurFocusBtnId == p.TabInfo.GameAssisInfo.tabBtnId then
         List = p.GameAssisInfoList;
-        --[[
     elseif p.CurFocusBtnId == p.TabInfo.EveryDayActInfo.tabBtnId then    
-        List = p.EveryDayActList;]]
+        List = p.EveryDayActList;
     end
     
     return List;
@@ -362,9 +362,15 @@ function p.refreshViewItem(view, iNum)
     
     if  DataList ~= nil then
         local info = DataList[iNum]; 
+        local TextLable = GetLabel(view, CTR_TEXT_3); 
+        
+        if string.find(info.Title, "(特權)") ~= nil then
+           TextLable:SetFontColor(ccc4(240, 255, 0, 255));
+        end
+        
         SetLabel(view, CTR_TEXT_3, info.Title); 
         
-        if p.CurFocusBtnId == p.TabInfo.TacticTabInfo.tabBtnId then
+        if ( p.CurFocusBtnId == p.TabInfo.TacticTabInfo.tabBtnId ) or ( p.CurFocusBtnId == p.TabInfo.EveryDayActInfo.tabBtnId ) then
             LogInfo("info.Status = %d", info.Status);  
             local PicFinish = GetImage(view, CTR_PIC_FINISH);    
             if info.Status ~= 2 then
@@ -411,11 +417,15 @@ function p.OnViewUIEvent(uiNode, uiEventType, param)
         SetLabel(layer, CTR_TEXT_23, Info.Describe);  
         
         --大话兵法页面的特殊处理
-        if p.CurFocusBtnId == p.TabInfo.TacticTabInfo.tabBtnId then
+        if ( p.CurFocusBtnId == p.TabInfo.TacticTabInfo.tabBtnId ) or (  p.CurFocusBtnId == p.TabInfo.EveryDayActInfo.tabBtnId ) then
             local strShowText = string.format(GetTxtPri("AwardMoneyStr"), Info.AwardMoney);
             if Info.AwardItem ~= 0 then
                 local ItemName = ItemFunc.GetName(Info.AwardItem);
                 strShowText = strShowText .. string.format(GetTxtPri("AwardItemStr"), ItemName, Info.AwardItemCount);
+				if ( Info.AwardItem2 ~= nil and Info.AwardItemCount2 ~= 0 ) then
+					local ItemName2 = ItemFunc.GetName(Info.AwardItem2);
+					strShowText = strShowText .. string.format(GetTxtPri("AwardItemStr"), ItemName2, Info.AwardItemCount2);
+				end 
             end
             SetLabel(layer, CTR_TEXT_21, strShowText); 
             
@@ -446,6 +456,9 @@ function p.GetViewContainer(nBtnId)
     elseif nBtnId == p.TabInfo.GameAssisInfo.tabBtnId then
         local Sublayer = p.GetLayerByTag(p.TabInfo.GameAssisInfo.LayerTag);    
         svc	= GetScrollViewContainer(Sublayer, p.TabInfo.GameAssisInfo.viewId);
+    elseif nBtnId == p.TabInfo.EveryDayActInfo.tabBtnId then
+        local Sublayer = p.GetLayerByTag(p.TabInfo.EveryDayActInfo.LayerTag);    
+        svc	= GetScrollViewContainer(Sublayer, p.TabInfo.EveryDayActInfo.viewId);
     end
     
 	return svc;
@@ -470,7 +483,9 @@ function p.TacticInit()
             Record.Status = 0;
             Record.AwardMoney = GetDataBaseDataN("achievement_config", v, DB_ACHIEVEMENT_CONFIG.AWARD_MONEY);
             Record.AwardItem = GetDataBaseDataN("achievement_config", v, DB_ACHIEVEMENT_CONFIG.AWARD_ITEM);   
-            Record.AwardItemCount = GetDataBaseDataN("achievement_config", v, DB_ACHIEVEMENT_CONFIG.ITEM_COUNT);      
+            Record.AwardItemCount = GetDataBaseDataN("achievement_config", v, DB_ACHIEVEMENT_CONFIG.ITEM_COUNT); 
+            Record.AwardItem2 = GetDataBaseDataN("achievement_config", v, DB_ACHIEVEMENT_CONFIG.AWARD_ITEM2);   
+            Record.AwardItemCount2 = GetDataBaseDataN("achievement_config", v, DB_ACHIEVEMENT_CONFIG.ITEM_COUNT2);      
             Record.Title = GetDataBaseDataS("achievement_config", v, DB_ACHIEVEMENT_CONFIG.TITLE);   
             Record.Describe = GetDataBaseDataS("achievement_config", v, DB_ACHIEVEMENT_CONFIG.DESCRIBE);    
             LogInfo("p.TacticInit() id  = %d, Status = %d, nType = %d, Money = %d, Item = %d, Count = %d, Title = %s, Describe = %s", Record.id, Record.Status, nType, Record.AwardMoney, Record.AwardItem, Record.AwardItemCount, Record.Title, Record.Describe);          
@@ -559,6 +574,10 @@ function p.TacticRefresh()
     if Info.AwardItem ~= 0 then
        local ItemName = ItemFunc.GetName(Info.AwardItem);
        strShowText = strShowText .. string.format(GetTxtPri("AwardItemStr"), ItemName, Info.AwardItemCount);
+		if ( Info.AwardItem2 ~= nil and Info.AwardItem2 ~= 0 ) then
+			local ItemName2 = ItemFunc.GetName(Info.AwardItem2);
+			strShowText = strShowText .. string.format(GetTxtPri("AwardItemStr"), ItemName2, Info.AwardItemCount2);
+		end
     end
     SetLabel(layer, CTR_TEXT_21, strShowText); 
     
@@ -614,6 +633,21 @@ function p.SetListFocus(nIndex)
         BtnFocus: TabSel(true);  
         BtnFocus: SetFocus(true);  
         
+    elseif p.CurFocusBtnId == p.TabInfo.EveryDayActInfo.tabBtnId then
+
+        if p.TabInfo.EveryDayActInfo.focusIndex ~= nIndex then
+            ScrollView = ListContainer:GetViewById(p.TabInfo.EveryDayActInfo.focusIndex);
+            BtnFocus = GetButton(ScrollView, CTR_BTN_2);
+            BtnFocus: TabSel(false);
+            BtnFocus: SetFocus(false);
+            LogInfo("p.SetListFocus  oldIndex = %d set false", p.TabInfo.EveryDayActInfo.focusIndex); 
+        end
+        
+         LogInfo("p.SetListFocus  newindex = %d set true", nIndex); 
+        ScrollView = ListContainer:GetViewById(nIndex);
+        BtnFocus = GetButton(ScrollView, CTR_BTN_2);
+        BtnFocus: TabSel(true);
+        BtnFocus: SetFocus(true);  
     end    
 end
 
@@ -638,9 +672,15 @@ function p.TacticOnEvent(uiNode, uiEventType, param)
                 if Info.AwardItem ~= 0 then
                      local nAmountLimit = GetDataBaseDataN("itemtype", Info.AwardItem, DB_ITEMTYPE.AMOUNT_LIMIT);
                      if (ItemFunc.IsBagFull(math.ceil(Info.AwardItemCount/nAmountLimit)-1)) then
-                        return;
+                        return true;
                      end
                 end
+				if ( Info.AwardItem2 ~= nil and Info.AwardItem2 ~= 0 ) then
+                     local nAmountLimit = GetDataBaseDataN("itemtype", Info.AwardItem2, DB_ITEMTYPE.AMOUNT_LIMIT);
+                     if (ItemFunc.IsBagFull(math.ceil(Info.AwardItemCount2/nAmountLimit)-1)) then
+                        return true;
+                     end
+				end
             
                 p.SendTacticListViewStatus(Info.id);
                 Info.Status = 2;
@@ -778,56 +818,222 @@ end
 
 
 --------------------------------------日常活动基本函数定义--------------------------------
---[[
+
 function p.EveryDayActicInit()
-    AssistantUI.initData();
     
-    --注册军令更新事件
-    AssistantUI.RegisterGameDataEvent();
+    p.EveryDayActList = {};
+    
+    --获取id集合
+    local ids = GetDataBaseIdList("achievement_config");
+    
+    for i,v in pairs(ids) do
+        --获取记录类型   1为大话兵法  2为没钱了怎么办  3为我要升级   4打不过敌军怎么办 5 如何获得装备  6其他功能说明 7
+        local nType = GetDataBaseDataN("achievement_config", v, DB_ACHIEVEMENT_CONFIG.TYPE);
+
+        if (nType == 7) then
+            local Record = {};
+            Record.id = v;
+            Record.Status = 0;
+            Record.AwardMoney = GetDataBaseDataN("achievement_config", v, DB_ACHIEVEMENT_CONFIG.AWARD_MONEY);
+            Record.AwardItem = GetDataBaseDataN("achievement_config", v, DB_ACHIEVEMENT_CONFIG.AWARD_ITEM);   
+            Record.AwardItemCount = GetDataBaseDataN("achievement_config", v, DB_ACHIEVEMENT_CONFIG.ITEM_COUNT);  
+            Record.AwardItem2 = GetDataBaseDataN("achievement_config", v, DB_ACHIEVEMENT_CONFIG.AWARD_ITEM2);   
+            Record.AwardItemCount2 = GetDataBaseDataN("achievement_config", v, DB_ACHIEVEMENT_CONFIG.ITEM_COUNT2);      
+            Record.Title = GetDataBaseDataS("achievement_config", v, DB_ACHIEVEMENT_CONFIG.TITLE);   
+            Record.Describe = GetDataBaseDataS("achievement_config", v, DB_ACHIEVEMENT_CONFIG.DESCRIBE);    
+            LogInfo("p.EveryDayActicInit() id  = %d, Status = %d, nType = %d, Money = %d, Item = %d, Count = %d, Title = %s, Describe = %s", Record.id, Record.Status, nType, Record.AwardMoney, Record.AwardItem, Record.AwardItemCount, Record.Title, Record.Describe);          
+            
+            table.insert(p.EveryDayActList, Record);
+        end
+    end
+    
+    for i, v in pairs(p.TacticStatusList) do
+        for j, k in pairs(p.EveryDayActList) do
+            LogInfo("function p.RefreshTacticListInfo id = %d, Type = %d, Status = %d", k.id,  v.Type, v.Status); 
+            if (k.id == v.Type) then
+                --改变兵法状态
+                k.Status = v.Status;
+                break;
+            end
+        end
+    end
 end
+
 
 function p.EveryDayActRefresh()
-    AssistantUI.RefreshUI();
+
+    local layer = p.GetLayerByTag(p.TabInfo.EveryDayActInfo.LayerTag);    
+    
+    local ListContainer  = p.GetViewContainer(p.TabInfo.EveryDayActInfo.tabBtnId);
+    if (ListContainer == nil) then 
+        return;
+    end
+
+    ListContainer:SetViewSize(TacticListSize);
+    ListContainer:EnableScrollBar(true);
+    ListContainer:RemoveAllView();
+    --设置当前要显示的说明信息
+    local ToltalNum = table.getn(p.EveryDayActList);
+    
+    --添加list列表元素
+    for i = 1, ToltalNum do
+      p.AddViewItem(ListContainer, i, "achieve_1_L.ini");
+    end
+
+    LogInfo("begin focusindex = %d", p.TabInfo.EveryDayActInfo.focusIndex); 
+    local CurFocus  = p.TacticSetCurFocus();
+    LogInfo("sec CurFocus = %d", CurFocus); 
+        
+    p.SetListFocus(CurFocus); 
+    
+    p.TabInfo.EveryDayActInfo.focusIndex = CurFocus;
+    --显示当前的提示信息
+    local Info = p.EveryDayActList[p.TabInfo.EveryDayActInfo.focusIndex];
+    SetLabel(layer, CTR_TEXT_23, Info.Describe);
+    
+    local strShowText = string.format(GetTxtPri("AwardMoneyStr"), Info.AwardMoney);
+    if Info.AwardItem ~= 0 then
+       local ItemName = ItemFunc.GetName(Info.AwardItem);
+       strShowText = strShowText .. string.format(GetTxtPri("AwardItemStr"), ItemName, Info.AwardItemCount);
+		if ( Info.AwardItem2 ~= nil and Info.AwardItemCount2 ~= 0 ) then
+			local ItemName2 = ItemFunc.GetName(Info.AwardItem2);
+			strShowText = strShowText .. string.format(GetTxtPri("AwardItemStr"), ItemName2, Info.AwardItemCount2);
+		end
+    end
+    SetLabel(layer, CTR_TEXT_21, strShowText); 
+    
+    --设置领取奖励按钮是否可用
+    local BtnClose = GetButton(layer, CTR_BTN_22);
+    if Info.Status == 1 then
+        BtnClose:EnalbeGray(false);
+        p.GetTutorial(true);
+    else 
+        BtnClose:EnalbeGray(true);
+        p.GetTutorial(false);
+    end
+
+    if p.TabInfo.EveryDayActInfo.focusIndex > 7 then
+        ListContainer:ShowViewByIndex(6); 
+    else
+        ListContainer:ShowViewByIndex(p.TabInfo.EveryDayActInfo.focusIndex - 1); 
+    end
 end
-]]
+
 
 function p.EveryDayActOnEvent(uiNode, uiEventType, param)
+
+    local tag = uiNode:GetTag();
+    LogInfo("p.OnViewUIEvent, tag = %d, p.CurFocusBtnId = %d, CTR_BTN_22 = %d", tag, p.CurFocusBtnId, CTR_BTN_22); 
+    
+	if uiEventType == NUIEventType.TE_TOUCH_BTN_CLICK then
+        if tag == CTR_BTN_22 then
+            --获取按键是否可以响应
+            local DataList = p.GetCurDataInfoList();
+            local Info = DataList[p.TabInfo.EveryDayActInfo.focusIndex];
+            
+            LogInfo("focusIndex = %d, Status = %d, Type = %d, count = %d", 
+                            p.TabInfo.EveryDayActInfo.focusIndex, Info.Status, Info.AwardItem, Info.AwardItemCount); 
+                            
+              --判断当前按钮是否可响应
+            if Info.Status == 1 then
+				  local nAddNum = 0;
+               --判断背包是否已经满
+                if Info.AwardItem ~= 0 then
+                     local nAmountLimit = GetDataBaseDataN("itemtype", Info.AwardItem, DB_ITEMTYPE.AMOUNT_LIMIT);
+                     nAddNum = math.ceil(Info.AwardItemCount/nAmountLimit);
+                     if (ItemFunc.IsBagFull(math.ceil(Info.AwardItemCount/nAmountLimit)-1)) then
+                        return true;
+                     end
+                end
+				if ( Info.AwardItem2 ~= nil and Info.AwardItem2 ~= 0 ) then
+                     local nAmountLimit = GetDataBaseDataN("itemtype", Info.AwardItem2, DB_ITEMTYPE.AMOUNT_LIMIT);
+                     if (ItemFunc.IsBagFull(math.ceil(Info.AwardItemCount2/nAmountLimit)-1 + nAddNum)) then
+                        return true;
+                     end
+				end
+            
+                p.SendTacticListViewStatus(Info.id);
+                Info.Status = 2;
+                return true;
+            end
+        end
+    end
 end
 
 
+-- 数据包标志
+local PacketFlag = {
+	PF_BEGIN	= 1,	-- 首包(多个包情况下)
+	PF_CONTINUE	= 0,	-- 中包(多个包情况下)
+	PF_END		= 2,	-- 尾包(多个包情况下)
+	PF_SINGLE	= 3,	-- 单包
+};
 --------------------------------------当大话兵法中具体兵法项状态改变的时候信息刷新 --------------------------------
 function p.RefreshTacticListInfo(netdata)  
     LogInfo("function p.RefreshTacticListInfo begin"); 
     
+	local nPacketFlag = netdata:ReadByte();
+	if ( nPacketFlag == PacketFlag.PF_BEGIN ) then
+		p.TacticStatusList = {};
+	elseif ( nPacketFlag == PacketFlag.PF_CONTINUE ) then
+	elseif ( nPacketFlag == PacketFlag.PF_END ) then
+	elseif ( nPacketFlag == PacketFlag.PF_SINGLE ) then
+		p.TacticStatusList = {};
+	end
     local count		= netdata:ReadByte();
-    p.TacticStatusList = {};
     for i = 1, count do
         local record = {};
         record.Type = netdata:ReadInt();
-        record.Status = netdata:ReadInt();   
+        record.Status = netdata:ReadInt();
         table.insert(p.TacticStatusList, record);
         LogInfo("msg  count = %d, Type = %d, Status = %d", count, record.Type,  record.Status); 
     end
     
-    --更新大话兵法界面,前提是已经进入大话兵法界面
-    if IsUIShow(NMAINSCENECHILDTAG.DragonTactic) then
-        for i, v in pairs(p.TacticStatusList) do
-            for j, k in pairs(p.TacticInfoList) do
-                LogInfo("function p.RefreshTacticListInfo id = %d, Type = %d, Status = %d", k.id,  v.Type, v.Status); 
-                if (k.id == v.Type) then
-                    --改变兵法状态
-                    k.Status = v.Status;
-                    break;
-                end
-            end
-        end
-        
-        if p.CurFocusBtnId == p.TabInfo.TacticTabInfo.tabBtnId then    --是在大话兵法页面
-            p.TabInfo.TacticTabInfo.FucRefresh(); --刷新大话兵法标签页面
-        end
-    end
-
-    p.DTStarTip();
+	if ( nPacketFlag == PacketFlag.PF_BEGIN ) then
+	elseif ( nPacketFlag == PacketFlag.PF_CONTINUE ) then
+	elseif ( nPacketFlag == PacketFlag.PF_END ) then
+    	--更新大话兵法界面,前提是已经进入大话兵法界面
+    	if IsUIShow(NMAINSCENECHILDTAG.DragonTactic) then
+    	    for i, v in pairs(p.TacticStatusList) do
+    	        for j, k in pairs(p.TacticInfoList) do
+    	            LogInfo("function p.RefreshTacticListInfo id = %d, Type = %d, Status = %d", k.id,  v.Type, v.Status); 
+    	            if (k.id == v.Type) then
+    	                --改变兵法状态
+    	                k.Status = v.Status;
+    	                break;
+    	            end
+    	        end
+    	    end
+    	    
+    	    if p.CurFocusBtnId == p.TabInfo.TacticTabInfo.tabBtnId then    --是在大话兵法页面
+    	        p.TabInfo.TacticTabInfo.FucRefresh(); --刷新大话兵法标签页面
+    	    elseif p.CurFocusBtnId == p.TabInfo.EveryDayActInfo.tabBtnId then    --
+    	        p.TabInfo.EveryDayActInfo.FucRefresh(); --刷新每日活动标签页面
+    	    end
+    	end
+    	p.DTStarTip();
+	elseif ( nPacketFlag == PacketFlag.PF_SINGLE ) then
+    	--更新大话兵法界面,前提是已经进入大话兵法界面
+    	if IsUIShow(NMAINSCENECHILDTAG.DragonTactic) then
+    	    for i, v in pairs(p.TacticStatusList) do
+    	        for j, k in pairs(p.TacticInfoList) do
+    	            LogInfo("function p.RefreshTacticListInfo id = %d, Type = %d, Status = %d", k.id,  v.Type, v.Status); 
+    	            if (k.id == v.Type) then
+    	                --改变兵法状态
+    	                k.Status = v.Status;
+    	                break;
+    	            end
+    	        end
+    	    end
+    	    
+    	    if p.CurFocusBtnId == p.TabInfo.TacticTabInfo.tabBtnId then    --是在大话兵法页面
+    	        p.TabInfo.TacticTabInfo.FucRefresh(); --刷新大话兵法标签页面
+    	    elseif p.CurFocusBtnId == p.TabInfo.EveryDayActInfo.tabBtnId then    --
+    	        p.TabInfo.EveryDayActInfo.FucRefresh(); --刷新每日活动标签页面
+    	    end
+    	end
+    	p.DTStarTip();
+	end
 
 end
 

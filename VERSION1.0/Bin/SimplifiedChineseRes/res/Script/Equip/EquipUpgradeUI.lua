@@ -190,17 +190,21 @@ p.nItemIdTemp   = 0;        --选中的装备ID
 
 p.nCurrPage = 0;            --当前界面 值（p.TAG）
 
+
+
+--精英特权数据
+p.EpBtnInfo = {};
+
+
 function p.LoadUI(page)
---------------------获得游戏主场景------------------------------------------
-    local scene = GetSMGameScene();	
+	--------------------获得游戏主场景------------------------------------------
+	local scene = GetSMGameScene();	
 	if scene == nil then
 		return;
 	end
     
-    
-    
---------------------添加层（窗口）---------------------------------------
-    local layer = createNDUILayer();
+	--------------------添加层（窗口）---------------------------------------
+	local layer = createNDUILayer();
 	if layer == nil then
 		return false;
 	end
@@ -208,102 +212,91 @@ function p.LoadUI(page)
 	layer:SetTag(NMAINSCENECHILDTAG.EquipUI);
 	layer:SetFrameRect(RectFullScreenUILayer);
 	scene:AddChildZ(layer,UILayerZOrder.NormalLayer);
------------------初始化ui添加到 layer 层上----------------------------------
-    local uiLoad = createNDUILoad();
+	
+	-----------------初始化ui添加到 layer 层上----------------------------------
+	local uiLoad = createNDUILoad();
 	if nil == uiLoad then
 		layer:Free();
 		return false;
 	end
 
 	uiLoad:Load("foster_A.ini", layer, p.OnUIEvent, CONTAINTER_X, CONTAINTER_Y);
-    uiLoad:Free();
+	uiLoad:Free();
     
-    
-    SetArrow(p.GetLayer(),p.GetPetNameContainer(),1,TAG_BEGIN_ARROW,TAG_END_ARROW);
+    --设置任务名字边上的箭头显示(主要设置高亮与灰色)
+    SetArrow(p.GetLayer(), p.GetPetNameContainer(), 1, TAG_BEGIN_ARROW, TAG_END_ARROW);
 
 
-
---------------------初始化强化UI---------------------------------------
-    local layerStreng = createNDUILayer();
+	--------------------初始化强化UI---------------------------------------
+	local layerStreng = createNDUILayer();
 	if layerStreng == nil then
 		return false;
 	end
 	layerStreng:Init();
 	layerStreng:SetTag(p.TAG.STRENGTHEN);
 	layerStreng:SetFrameRect(RectRightUILayer);
-    layerStreng:SetVisible(false);
+	layerStreng:SetVisible(false);
 	layer:AddChild(layerStreng);
------------------初始化ui添加到 layer 层上----------------------------------
-    local uiLoad = createNDUILoad();
+	
+	-----------------初始化ui添加到 layer 层上----------------------------------
+	local uiLoad = createNDUILoad();
 	if nil == uiLoad then
 		layer:Free();
 		return false;
 	end
 
 	uiLoad:Load("foster_A_R1.ini", layerStreng, p.OnUIEventStreng, CONTAINTER_X, CONTAINTER_Y);
-    uiLoad:Free();
-    local btn = GetButton(layerStreng, TAG_E_QUICK);
-    btn:SetVisible(false);
+	uiLoad:Free();
+	
+	--屏蔽加速按钮
+	local btn = GetButton(layerStreng, TAG_E_QUICK);
+	btn:SetVisible(false);
 
-
-
-
-    
-
-
-
-
-
-
---------------------初始化洗炼UI---------------------------------------
-    local layerBaptize = createNDUILayer();
+	--------------------初始化洗炼UI---------------------------------------
+	local layerBaptize = createNDUILayer();
 	if layerBaptize == nil then
 		return false;
 	end
 	layerBaptize:Init();
 	layerBaptize:SetTag(p.TAG.BAPTIZE);
 	layerBaptize:SetFrameRect(RectRightUILayer);
-    layerBaptize:SetVisible(false);
+	layerBaptize:SetVisible(false);
 	layer:AddChild(layerBaptize);
------------------初始化ui添加到 layer 层上----------------------------------
-    local uiLoad = createNDUILoad();
+	
+	-----------------初始化ui添加到 layer 层上----------------------------------
+	local uiLoad = createNDUILoad();
 	if nil == uiLoad then
 		layer:Free();
 		return false;
 	end
 
 	uiLoad:Load("foster_A_R2.ini", layerBaptize, p.OnUIEventBaptize, CONTAINTER_X, CONTAINTER_Y);
-    uiLoad:Free();
+	uiLoad:Free();
+
+	local btn = GetButton(layerBaptize, TAG_B_BTN_KEEP);
+	btn:SetVisible(false);
+	local btn = GetButton(layerBaptize, TAG_B_BTN_RRPLACE);
+	btn:SetVisible(false);
     
-    local btn = GetButton(layerBaptize, TAG_B_BTN_KEEP);
-    btn:SetVisible(false);
-    local btn = GetButton(layerBaptize, TAG_B_BTN_RRPLACE);
-    btn:SetVisible(false);
-    
-    
-    
-    
-    
-    
---------------------初始化镶嵌UI---------------------------------------
-    local layerMosaic = createNDUILayer();
+ 
+	--------------------初始化镶嵌UI---------------------------------------
+	local layerMosaic = createNDUILayer();
 	if layerMosaic == nil then
 		return false;
 	end
 	layerMosaic:Init();
 	layerMosaic:SetTag(p.TAG.MOSAIC);
 	layerMosaic:SetFrameRect(RectRightUILayer);
-    --layerMosaic:SetVisible(false);
 	layer:AddChild(layerMosaic);
------------------初始化ui添加到 layer 层上----------------------------------
-    local uiLoad = createNDUILoad();
+	
+	-----------------初始化ui添加到 layer 层上----------------------------------
+	local uiLoad = createNDUILoad();
 	if nil == uiLoad then
 		layer:Free();
 		return false;
 	end
-
 	uiLoad:Load("foster_A_R3.ini", layerMosaic, p.OnUIEventUnMosaic, CONTAINTER_X, CONTAINTER_Y);
-    uiLoad:Free();
+	uiLoad:Free();
     
     
     --查看宝石layer
@@ -327,8 +320,7 @@ function p.LoadUI(page)
     uiLoad:Free();
     
     
-    
--------------------------------初始化数据------------------------------------    
+	-------------------------------初始化数据------------------------------------    
     p.initData();
     if(CheckN(page)) then
         p.ChangeTab(page);
@@ -336,9 +328,10 @@ function p.LoadUI(page)
         p.ChangeTab(p.TAG.STRENGTHEN);
     end
     
+    --设置默认为铜币洗练
     p.setTrainRadio(p.TagRadioGroud.TONG);
     
-    --设置箭头
+    --设置宝石镶嵌层箭头显示
     SetArrow(p.GetLayerByTag(p.TAG.MOSAIC),p.GetGemViewContainer(),1,TAG_BEGIN_ARROW,TAG_END_ARROW);
     
     p.SetFocusOnPage(0);
@@ -457,6 +450,67 @@ function p.initData()
     if(MAX_GEM_NUM == 0) then
         MAX_GEM_NUM = 1;
     end
+    
+    --精英特权一些数据初始化
+    p.EpinitData();
+end
+
+--精英特权一些数据初始化
+function p.EpinitData()
+	p.EpBtnInfo = {};
+	
+	--静态数据
+	p.EpBtnInfo.FstEqIntenNeedLev = 100;   --记录可开第一个洞武器所需强化等级
+	p.EpBtnInfo.SndEqIntenNeedLev = 110;   --记录可开第二个洞武器所需强化等级
+	p.EpBtnInfo.FstEqReqLev = 100;   --记录可开第一个洞武器品质等级
+	p.EpBtnInfo.SndEqReqLev = 100;   --记录可开第二个洞武器品质等级
+	p.EpBtnInfo.FstNeedMoney = 1200;   --记录可开第一个洞所需银币单位万
+	p.EpBtnInfo.SndNeedMoney = 2800;   --记录可开第二个洞所需银币单位万
+	p.EpBtnInfo.FstNeedQuality = 3;   --记录可开第一个洞所要求裝備品質
+	p.EpBtnInfo.SndNeedQuality = 3;   --记录可开第二个洞所要求裝備品質
+	p.EpBtnInfo.btnTipId1 = 51;     --第一个洞未开时点击响应的按钮
+	p.EpBtnInfo.btnTipId2 = 52;     --第二个洞未开时点击响应的按钮
+	p.EpBtnInfo.btnShowId1 = 27;     --第一个洞已开时放宝石的按钮
+	p.EpBtnInfo.btnShowId2 = 28;     --第二个洞已开时放宝石的按钮
+	p.EpBtnInfo.btnShow1CanUse = 0;     --點擊27按鈕是否可以響應
+	p.EpBtnInfo.btnShow2CanUse = 0;     --點擊28按鈕是否可以響應
+	
+	p.EpBtnInfo.pfOpenHoleFstCallBack = p.OpenHoleFstCallBack;     --第二个洞已开时放宝石的按钮
+	p.EpBtnInfo.pfOpenHoleSndCallBack = p.OpenHoleSndCallBack;     --第二个洞已开时放宝石的按钮
+	
+	--动态数据
+	p.EpBtnInfo.CurEqIntenLev = 0;   --记录当前武器强化等级
+	p.EpBtnInfo.CurEqReqLev = 0;     --记录当前武器需求等级	
+	p.EpBtnInfo.CurEqQuality = 0;    --記錄當前裝備品質
+	p.EpBtnInfo.CurEqHoleOpen = 0;     --当前开洞情况	
+	p.EpBtnInfo.CurEqID = 0;     --當前的武器id		
+	p.EpBtnInfo.FstHoleCanOpen = EPDataConfig.GetEPValue(EPDataConfig.E_EP_TYPE.EP_TYPE_MAKE_FIRST_HOLE);   --记录是否满足开第一洞前提条件
+	p.EpBtnInfo.SndHoleCanOpen = EPDataConfig.GetEPValue(EPDataConfig.E_EP_TYPE.EP_TYPE_MAKE_HOLE_SECOND);   --记录是否满足开第二洞前提条件
+end
+
+function p.OpenHoleFstCallBack(nId, param)
+   if ( CommonDlgNew.BtnOk == nId ) then
+		--銀幣判斷
+		local money = GetRoleBasicDataN(GetPlayerId(),USER_ATTR.USER_ATTR_MONEY);
+		if money/10000 < p.EpBtnInfo.FstNeedMoney then
+			CommonDlgNew.ShowYesDlg(GetTxtPri("EP_TXT_012"), nil, nil, 3);
+		else
+			--開第一洞請求
+			MsgCompose.OpenHole(p.EpBtnInfo.CurEqID, 1)
+		end 
+	end
+end
+function p.OpenHoleSndCallBack(nId, param)
+   if ( CommonDlgNew.BtnOk == nId ) then
+  		--銀幣判斷
+		local money = GetRoleBasicDataN(GetPlayerId(),USER_ATTR.USER_ATTR_MONEY);
+		if money/10000 < p.EpBtnInfo.SndNeedMoney then
+			CommonDlgNew.ShowYesDlg(GetTxtPri("EP_TXT_013"), nil, nil, 3);
+		else
+			--開第二洞請求
+			MsgCompose.OpenHole(p.EpBtnInfo.CurEqID, 2)
+		end
+	end
 end
 
 ---------------------------关闭窗口--------------------------------------
@@ -718,9 +772,57 @@ function p.RefreshEachView()
     
     local nVip,nLevel,bVip,bLevel = GetVipLevel2(DB_VIP_STATUC_VALUE.EQUIP_EDU_3);
     if(bVip or bLevel) then
-        r_Extreme:SetVisible(true);
-        l_Extreme:SetVisible(true);
-        l_VipExtreme:SetVisible(false);
+
+		--精英特權,免費至尊洗練一次
+		local nFreeTime = EPDataConfig.GetEPValue(EPDataConfig.E_EP_TYPE.EP_TYPE_SUCCINCT);
+		if nFreeTime > 0 then
+			 r_Extreme:SetVisible(true);
+			l_Extreme:SetVisible(true);
+			l_VipExtreme:SetVisible(false);
+			l_Extreme:SetText(string.format(GetTxtPri("EP_TXT_014"), nFreeTime));
+		else
+			r_Extreme:SetVisible(true);
+			l_Extreme:SetVisible(true);
+			l_VipExtreme:SetVisible(false);
+		end
+    else
+        r_Extreme:SetVisible(false);
+        l_Extreme:SetVisible(false);
+        l_VipExtreme:SetVisible(true);
+    end
+    
+
+end
+
+--免費至尊洗練后囘調
+function p.EpXiLianRefresh()
+	local baptizeLayer = p.GetLayerByTag(p.TAG.BAPTIZE);
+	if baptizeLayer == nil then
+		return;
+	end
+	
+    local r_Extreme = p.getRadioByTag(p.TagRadioGroud.JIN10);
+    local l_Extreme = GetLabel(baptizeLayer,TAG_RadioJin10);
+    local l_VipExtreme = GetLabel(baptizeLayer,TAG_VIP_EXTREME);
+    
+ 
+    local nVip,nLevel,bVip,bLevel = GetVipLevel2(DB_VIP_STATUC_VALUE.EQUIP_EDU_3);
+    if(bVip or bLevel) then
+		--精英特權判斷免費次數
+		local nFreeTime = EPDataConfig.GetEPValue(EPDataConfig.E_EP_TYPE.EP_TYPE_SUCCINCT);
+		if nFreeTime > 0 then
+			r_Extreme:SetVisible(true);
+			l_Extreme:SetVisible(true);
+			l_VipExtreme:SetVisible(false);
+			l_Extreme:SetText(string.format(GetTxtPri("EP_TXT_014"), nFreeTime));
+			 return;
+		else
+		    r_Extreme:SetVisible(true);
+			l_Extreme:SetVisible(true);
+			l_VipExtreme:SetVisible(false);
+			local sDesc = GetDataBaseDataS("equip_edu_config", 3, DB_EQUIP_EDU_CONFIG.DESCRIPT);
+			l_Extreme:SetText(sDesc);	
+		end
     else
         r_Extreme:SetVisible(false);
         l_Extreme:SetVisible(false);
@@ -1108,7 +1210,14 @@ function p.GemMosaic(nGemItemId)
     local socketLimit = GetDataBaseDataN("itemtype", nItemType, DB_ITEMTYPE.SOCKET_LIMIT);
     local gemCount = Item.GetItemInfoN(p.nItemIdTemp, Item.ITEM_GEN_NUM);
     LogInfo("gemCount:[%d],socketLimit:[%d]",gemCount,socketLimit);
-    if(gemCount>=socketLimit) then
+    
+    --鑲嵌寶石個數限制時考慮精英特權開洞情況
+    local EpAddNum = p.EpBtnInfo.CurEqHoleOpen;
+    if EpAddNum > 1 then
+		EpAddNum = 2;
+	end
+    
+    if(gemCount >= socketLimit + EpAddNum) then
         p.tipMaxGemEquip()
         return;
     end
@@ -1350,18 +1459,90 @@ function p.refreshMosaicView(equipId)
     local mosaicLayer = p.GetLayerByTag(p.TAG.MOSAIC);
     
     local bAttrCount = Item.GetItemInfoN(equipId, Item.ITEM_ATTR_NUM);
+    
+    --所拥有的宝石数量
     local bGenCount = Item.GetItemInfoN(equipId, Item.ITEM_GEN_NUM);
     
     local gem_beg = Item.ITEM_ATTR_BEGIN + bAttrCount*2;
     
+    
+    --精英特权修改(需要获取当前武器已近开洞情况)决定是否隐藏一些按钮,以及显示装备情况
+    p.EpBtnInfo.CurEqHoleOpen = Item.GetItemInfoN(equipId, Item.ITEM_HOLE_OPEN_FLAG);     --获取当前开洞情况
+    p.EpBtnInfo.CurEqID = equipId;
+    
+    local nGemGridNum = #TAG_M_GEM_GRID;
+    local nAddNum = 0;
+	if p.EpBtnInfo.CurEqHoleOpen == 3 then
+		local btnTip1 = GetButton(mosaicLayer, p.EpBtnInfo.btnTipId1);
+		if btnTip1 ~= nil then
+			btnTip1:SetVisible(false);   --屏蔽提示按钮
+			p.EpBtnInfo.btnShow1CanUse = 1;
+		end
+		local btnTip2 = GetButton(mosaicLayer, p.EpBtnInfo.btnTipId2);
+		if btnTip2 ~= nil then
+			btnTip2:SetVisible(false);   --屏蔽提示按钮
+			p.EpBtnInfo.btnShow2CanUse = 1;
+		end
+
+		nAddNum = 2;  --开两个洞
+	elseif p.EpBtnInfo.CurEqHoleOpen == 1 then
+		local btnTip1 = GetButton(mosaicLayer, p.EpBtnInfo.btnTipId1);
+		if btnTip1 ~= nil then
+			btnTip1:SetVisible(false);   --屏蔽提示按钮
+			p.EpBtnInfo.btnShow1CanUse = 1;
+		end
+		
+		local btnTip2 = GetButton(mosaicLayer, p.EpBtnInfo.btnTipId2);
+		if btnTip2 ~= nil then
+			btnTip2:SetVisible(true);  
+			p.EpBtnInfo.btnShow2CanUse = 0;
+		end
+		nAddNum = 1;  --开一个洞
+	else
+		local btnTip1 = GetButton(mosaicLayer, p.EpBtnInfo.btnTipId1);
+		if btnTip1 ~= nil then
+			btnTip1:SetVisible(true); 
+		end
+		
+		local btnTip2 = GetButton(mosaicLayer, p.EpBtnInfo.btnTipId2);
+		if btnTip2 ~= nil then
+			btnTip2:SetVisible(true);  
+		end
+		p.EpBtnInfo.btnShow1CanUse = 0;
+		p.EpBtnInfo.btnShow2CanUse = 0;
+	end
+	
+	nGemGridNum = nGemGridNum + nAddNum;
+	
+    
+    
+    --比较宝石数量跟放置宝石的格子数
+    --[[
     if(bGenCount>#TAG_M_GEM_GRID) then 
         bGenCount = #TAG_M_GEM_GRID; 
     end
+    ]]
+	if(bGenCount > nGemGridNum) then 
+		bGenCount = nGemGridNum; 
+	end
+    
     LogInfo("equipId:[%d], bGenCount:[%d]",equipId, bGenCount);
-    for i=1,#TAG_M_GEM_GRID do
-        local btnItem = GetItemButton(mosaicLayer, TAG_M_GEM_GRID[i]);
+    
+    
+    for i=1, nGemGridNum do
+		 local btnItem = nil;
+		 
+		 --增加精英特权开洞处理
+		 if i <= #TAG_M_GEM_GRID then
+			btnItem = GetItemButton(mosaicLayer, TAG_M_GEM_GRID[i]);
+		 elseif i == #TAG_M_GEM_GRID + 1 then
+			btnItem = GetItemButton(mosaicLayer, p.EpBtnInfo.btnShowId1);
+		 elseif i == #TAG_M_GEM_GRID + 2 then 
+			btnItem = GetItemButton(mosaicLayer, p.EpBtnInfo.btnShowId2);
+		 end
+
         btnItem:SetParam1(equipId);
-        if(i<=bGenCount) then
+        if(i <= bGenCount) then
             local gemTypeId = Item.GetItemInfoN(equipId, gem_beg);
             LogInfo("gemTypeId:[%d]",gemTypeId);
             btnItem:ChangeItemType(gemTypeId);
@@ -1382,6 +1563,14 @@ function p.refreshMosaicView(equipId)
     ItemFunc.SetLabelColor(btnName,nItemTypeId);
     
     local sEquipName = ItemFunc.GetName(nItemTypeId);
+    
+	--获取装备要求的等级
+	p.EpBtnInfo.CurEqIntenLev = Item.GetItemInfoN(equipId, Item.ITEM_ADDITION);   --记录当前武器强化等级
+	p.EpBtnInfo.CurEqReqLev =   ConvertN(ItemFunc.GetLvlReq(nItemTypeId));   --记录当前武器品質等级
+	p.EpBtnInfo.CurEqQuality = GetDataBaseDataN("itemtype", nItemTypeId, DB_ITEMTYPE.QUALITY);
+
+
+
     btnName:SetText(sEquipName);
     
     
@@ -1913,6 +2102,14 @@ function p.OnEventEdu()
         elseif(selectRadio == BaptizeType.Extreme) then
             local nVip,nLevel,bVip,bLevel = GetVipLevel2(DB_VIP_STATUC_VALUE.EQUIP_EDU_3);
             bIsEdu = bVip or bLevel;
+            
+            --判斷是否為免費洗練
+            local nFreeTime = EPDataConfig.GetEPValue(EPDataConfig.E_EP_TYPE.EP_TYPE_SUCCINCT);
+            if nFreeTime > 0 then
+				nPrice = 0;
+				--註冊洗練結束后至尊洗練提示
+				MsgElitePrivilege.EPListener = p.EpXiLianRefresh;
+            end
         end
         
         if(not bIsEdu) then
@@ -2110,9 +2307,9 @@ function p.OnUIEventUnMosaic(uiNode, uiEventType, param)
     
     if uiEventType == NUIEventType.TE_TOUCH_BTN_CLICK then
     
-        if tag == TAG_M_GEM_EQUIP then
+        if tag == TAG_M_GEM_EQUIP then        --点击武器图标
             return true;
-        elseif( tag == TAG_GEM_UNALLGEM ) then
+        elseif( tag == TAG_GEM_UNALLGEM ) then     --点击全部卸下按钮
             local btAttrAmount = Item.GetItemInfoN(p.nItemIdTemp, Item.ITEM_GEN_NUM);
             LogInfo("ch btAttrAmount:[%d]",btAttrAmount);
             --判断背包是否已满
@@ -2122,12 +2319,71 @@ function p.OnUIEventUnMosaic(uiNode, uiEventType, param)
         
             --卸下全部的宝石
             MsgCompose.unAllEmbedGem(p.nItemIdTemp);
+        elseif  tag == p.EpBtnInfo.btnTipId1 then    --点击第一个可开洞的按钮
+			local bCanOpen = p.EpBtnInfo.FstHoleCanOpen;   --服务端下发是否可开洞的前提(完成某个精英副本)
+			local nCurLev = p.EpBtnInfo.CurEqIntenLev;	 --记录当前武器强化等级
+			local nReqLev = p.EpBtnInfo.CurEqReqLev; --记录当前武器需求等级
+			local nReqQuality = p.EpBtnInfo.CurEqQuality;
+				
+			if bCanOpen > 0  
+				and nReqLev >= p.EpBtnInfo.FstEqReqLev
+				and nCurLev >= p.EpBtnInfo.FstEqIntenNeedLev 
+				and nReqQuality >= p.EpBtnInfo.FstNeedQuality then
+				--满足以上三个条件提示花钱开洞
+				CommonDlgNew.ShowYesOrNoDlg(string.format(GetTxtPri("EP_TXT_006"), p.EpBtnInfo.FstNeedMoney), p.EpBtnInfo.pfOpenHoleFstCallBack, true );
+			else
+				local str = GetTxtPri("EP_TXT_007");
+				str = str.."\r\n".."1."..GetTxtPri("EP_TXT_0111");
+				str = str..";  ".."2."..string.format(GetTxtPri("EP_TXT_009"), p.EpBtnInfo.FstEqReqLev);
+				str = str..";  ".."3."..string.format(GetTxtPri("EP_TXT_010"), p.EpBtnInfo.FstEqIntenNeedLev);	
+				str = str..";  ".."4."..string.format(GetTxtPri("EP_TXT_011"), p.EpBtnInfo.FstNeedMoney);	
+				str = str.."\r\n"..GetTxtPri("EP_TXT_0113");		
+				CommonDlgNew.ShowYesDlg(str);
+			end
+			
+        elseif  tag == p.EpBtnInfo.btnTipId2 then    --点击第二个可开洞的按钮   
+        	local bCanOpen = p.EpBtnInfo.SndHoleCanOpen;   --服务端下发是否可开洞的前提(完成某个精英副本)
+			local nCurLev = p.EpBtnInfo.CurEqIntenLev;	 --记录当前武器强化等级
+			local nReqLev = p.EpBtnInfo.CurEqReqLev; --记录当前武器需求等级
+			local nReqQuality = p.EpBtnInfo.CurEqQuality;
+			local nCurHoleOpen = p.EpBtnInfo.CurEqHoleOpen;
+					
+					
+			if bCanOpen > 0
+			   and nCurHoleOpen == 1 
+			   and nReqLev >= p.EpBtnInfo.SndEqReqLev
+			   and nCurLev >= p.EpBtnInfo.SndEqIntenNeedLev 
+			   and nReqQuality >= p.EpBtnInfo.SndNeedQuality then
+			   --满足以上三个条件提示花钱开洞
+			   CommonDlgNew.ShowYesOrNoDlg(string.format(GetTxtPri("EP_TXT_0066"), p.EpBtnInfo.SndNeedMoney), p.EpBtnInfo.pfOpenHoleSndCallBack, true );
+			else
+				local str = GetTxtPri("EP_TXT_008");
+				str = str.."\r\n".."1."..GetTxtPri("EP_TXT_0110");
+				str = str..";  ".."2."..GetTxtPri("EP_TXT_0112");
+				str = str..";  ".."3."..string.format(GetTxtPri("EP_TXT_009"), p.EpBtnInfo.SndEqReqLev);
+				str = str..";  ".."4."..string.format(GetTxtPri("EP_TXT_010"), p.EpBtnInfo.SndEqIntenNeedLev);	
+				str = str..";  ".."5."..string.format(GetTxtPri("EP_TXT_011"), p.EpBtnInfo.SndNeedMoney);	
+				str = str.."\r\n"..GetTxtPri("EP_TXT_0113");		
+				CommonDlgNew.ShowYesDlg(str);
+			end  
         else
-            local btn = ConverToItemButton(uiNode);
-            local nGemTypeId = btn:GetItemType();
-            
-            --查看宝石信息
-            p.LoadGemInfo(nGemTypeId, GEM_OPER_TYPE.UNSNATCH);
+			
+			if tag == p.EpBtnInfo.btnShowId1
+				and p.EpBtnInfo.btnShow1CanUse == 0 then
+				return;	
+			end
+			
+			if tag == p.EpBtnInfo.btnShowId2 
+				and p.EpBtnInfo.btnShow2CanUse == 0 then
+				return;	
+			end
+	
+			local btn = ConverToItemButton(uiNode);
+			local nGemTypeId = btn:GetItemType();
+			if nGemTypeId ~= 0 then
+				--查看宝石信息
+				p.LoadGemInfo(nGemTypeId, GEM_OPER_TYPE.UNSNATCH);
+			end
         end
     elseif(uiEventType == NUIEventType.TE_TOUCH_SC_VIEW_IN_BEGIN) then
         

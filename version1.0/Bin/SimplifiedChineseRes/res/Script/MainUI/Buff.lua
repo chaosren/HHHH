@@ -77,13 +77,14 @@ function p.RefreshList()
 		local nWidthLimit = rectview.size.w;
 		
 		buffcontainer:RemoveAllView();
+		local nViewId = 1;
 		
 		for i,v in pairs(g_tBuffList) do
 			local view = createUIScrollView();		
 		 	if view ~= nil then
 		 		view:Init(false);
 		 		view:SetViewId(i*2);
-	 		
+	 			nViewId = i*2;
 		 		--初始化ui
         		local uiLoad = createNDUILoad();
         		if nil == uiLoad then
@@ -97,13 +98,40 @@ function p.RefreshList()
 		 		pLabelTitle:SetText(v[1]);
 		 		
 		 		local pLabelDesc = RecursiveLabel(view, {15});
-		 		pLabelDesc:SetText(v[2]);
-		 				
+		 		pLabelDesc:SetText(v[2]);	
 	 		end	
-	 				 		
-	 		
 		end
 		
+
+		--銀幣掉落翻倍
+		local nEpAddTimes1 = EPDataConfig.GetEPValue(EPDataConfig.E_EP_TYPE.EP_TYPE_INSTANCE_MONEY_FIRST);
+		local nEpAddTimes2 = EPDataConfig.GetEPValue(EPDataConfig.E_EP_TYPE.EP_TYPE_INSTANCE_MONEY_SECOND);
+		local nEpAddTimes = nEpAddTimes1 + nEpAddTimes2;
+		
+		if nEpAddTimes > 0 then
+			local view = createUIScrollView();		
+		 	if view ~= nil then
+		 		view:Init(false);
+		 		view:SetViewId(nViewId + 2);
+		 		--初始化ui
+        		local uiLoad = createNDUILoad();
+        		if nil == uiLoad then
+        		   return false;
+        		end		 		 
+		 		uiLoad:Load("MainUI_buff_L.ini", view, nil, 0, 0);
+        		uiLoad:Free();     		 
+		 		buffcontainer:AddView(view);
+		 				
+		 		local pLabelTitle = RecursiveLabel(view, {2});
+		 		pLabelTitle:SetText(GetTxtPri("EP_TXT_018"));
+		 		
+		 		local pLabelDesc = RecursiveLabel(view, {15});
+		 		nEpAddTimes = nEpAddTimes/10;
+				
+		 		pLabelDesc:SetText(string.format(GetTxtPri("EP_TXT_019"), nEpAddTimes));
+	 		end	
+		end
+
 	end
 end
   
@@ -131,6 +159,7 @@ function p.ProcessList(netdata)
 	--p.ClearBuffList()
 	local nCount = netdata:ReadByte();
 	LogInfo("buff ProcessList nCount:"..nCount);
+	g_tBuffList = {};
 	
     for i=1,nCount do
     	local stitle = netdata:ReadUnicodeString();
@@ -144,8 +173,11 @@ function p.ProcessList(netdata)
 		p.RefreshList();
 	else
 		--
+		local nEpAddTimes1 = EPDataConfig.GetEPValue(EPDataConfig.E_EP_TYPE.EP_TYPE_INSTANCE_MONEY_FIRST);
+		local nEpAddTimes2 = EPDataConfig.GetEPValue(EPDataConfig.E_EP_TYPE.EP_TYPE_INSTANCE_MONEY_SECOND);
+		local nEpAddTimes = nEpAddTimes1 + nEpAddTimes2;
 		local btn =  MainUI.GetBuffButton();
-		if nCount > 0 then
+		if nCount > 0 or nEpAddTimes > 0 then
 			btn:SetVisible(true);	
 		else
 			btn:SetVisible(false);	

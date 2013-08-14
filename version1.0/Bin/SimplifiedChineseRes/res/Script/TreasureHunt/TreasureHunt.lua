@@ -125,6 +125,9 @@ function p.ShowTreasureHuntMainUI()
 	uiLoad:Free();
 	ArenaUI.isInChallenge = 8;-- 古迹寻宝结算
 	p.RefreshMoney();
+	
+	--
+	MsgElitePrivilege.EPListener = p.RefreshEpTime;
 end
 
 -- 关闭古迹寻宝界面
@@ -232,12 +235,35 @@ function p.RefreshTreasureHuntAmount( nAmount )
 	if ( nSurplus < 0 ) then
 		nSurplus = 0;
 	end
-	pLabelF:SetText( SafeN2S(nFree) );
-	pLabelS:SetText( SafeN2S(nSurplus) );
-    p.nFreeTreasureHuntAmount	= nFree;
-    p.nSurplusTreasureHunt		= nSurplus;
+	
+	local nEpFreeTime = EPDataConfig.GetEPValue(EPDataConfig.E_EP_TYPE.EP_TYPE_HISTORIC_TIME);
+	pLabelF:SetText( SafeN2S(nFree + nEpFreeTime) );
+	pLabelS:SetText( SafeN2S(nSurplus + nEpFreeTime) );
+    p.nFreeTreasureHuntAmount	= nFree + nEpFreeTime;
+    p.nSurplusTreasureHunt		= nSurplus  + nEpFreeTime;
 end
 
+function p.RefreshEpTime()
+	local pScene	= GetSMGameScene();
+	if ( pScene == nil ) then
+		return;
+	end
+	local pLayer	= GetUiLayer( pScene, NMAINSCENECHILDTAG.TreasureHunt );
+	if ( pLayer == nil ) then
+		return;
+	end
+	
+	local pLabelF	= GetLabel( pLayer, ID_LABEL_FREE );
+	local pLabelS	= GetLabel( pLayer, ID_LABEL_SURPLUS );
+		
+	local nEpFreeTime = EPDataConfig.GetEPValue(EPDataConfig.E_EP_TYPE.EP_TYPE_HISTORIC_TIME);
+	pLabelF:SetText( SafeN2S(nEpFreeTime) );
+	pLabelS:SetText( SafeN2S(GoldTreasureHuntLimit + nEpFreeTime) );
+		
+	p.nFreeTreasureHuntAmount	= nEpFreeTime;
+    p.nSurplusTreasureHunt		= GoldTreasureHuntLimit  + nEpFreeTime;
+	CloseLoadBar();
+end
 ---------------------------------------------------
 -- 进入时，获取已寻宝次数回调（参数：已寻过的次数，包含免费）
 function p.CallBack_GetHuntedAmount( nAmount )

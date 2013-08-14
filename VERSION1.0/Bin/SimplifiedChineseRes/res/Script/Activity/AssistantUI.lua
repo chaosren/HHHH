@@ -150,7 +150,8 @@ function p.initData()
     local tInfo = MsgTransport.GetTransportCount();
     if(tInfo.YLCount >0 or tInfo.RJCount >0) then
         table.insert(p.AssistantList,5);
-        p.Infos[5][1] = string.format(p.Infos[5][1],tInfo.YLCount,tInfo.RJCount);
+        local nEpAddTimes = EPDataConfig.GetEPValue(EPDataConfig.E_EP_TYPE.EP_TYPE_GRAIN_TIME);
+        p.Infos[5][1] = string.format(p.Infos[5][1],tInfo.YLCount + nEpAddTimes,tInfo.RJCount);
     end
     
     --签到

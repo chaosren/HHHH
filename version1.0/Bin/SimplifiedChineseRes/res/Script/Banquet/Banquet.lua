@@ -97,6 +97,10 @@ p.tBanquetInfor				= nil;	-- 宴会信息(包含出席者列表 tAttendeeList)
 p.nTimerID					= nil;	-- 定时器
 p.nFreeBanquetAmount		= nil;	-- 免费宴会次数
 
+
+--精英特權數據
+p.EpBtnInfo = {};
+
 ---------------------------------------------------
 -- 进入--时间点到才可以
 function p.Entry()
@@ -196,7 +200,43 @@ function p.ShowBanquetMainUI()
 	p.pLayerNotice:SetVisible( false );
 	p.pLayerBanquetInfor_Host:SetVisible( false );
 	p.pLayerBanquetInfor_Guest:SetVisible( false );
+	
+	p.EpinitData();
 end
+
+
+--精英特權增加功能
+function p.EpinitData()
+	p.EpBtnInfo = {};
+	
+	--特權按鈕
+	p.EpBtnInfo.CtrId = 38;
+	p.EpBtnInfo.tbInfo = {{ txt = GetTxtPri("EP_TXT_015"), epnum = EPDataConfig.E_EP_TYPE.EP_TYPE_DINNER_STAMINA, },
+							{ txt = GetTxtPri("EP_TXT_016"), epnum = EPDataConfig.E_EP_TYPE.EP_TYPE_DINNER_MONEY, },
+							{ txt = GetTxtPri("EP_TXT_017"), epnum = EPDataConfig.E_EP_TYPE.EP_TYPE_DINNER_STAMINA_FIRST, },
+							{ txt = GetTxtPri("EP_TXT_017"), epnum = EPDataConfig.E_EP_TYPE.EP_TYPE_DINNER_STAMINA_SECOND, },};
+                  
+	--顯示特權按鈕的判斷
+	local btnExitFlag = false;		
+	for i, v in pairs(p.EpBtnInfo.tbInfo) do
+		local nValue = EPDataConfig.GetEPValue(v.epnum);
+		if nValue ~= 0 then
+			btnExitFlag = true;
+			break;
+		end
+	end
+	
+	local pScene = GetSMGameScene();
+	if( pScene == nil ) then
+		return;
+	end
+	local pLayer = GetUiLayer( pScene, NMAINSCENECHILDTAG.Banquet );
+	local btnEP = GetButton(pLayer, p.EpBtnInfo.CtrId);
+	if btnEP ~= nil then
+		btnEP:SetVisible(btnExitFlag);
+	end
+end
+
 
 -- 关闭宴会界面
 function p.CloseUI()
@@ -229,7 +269,50 @@ function p.OnUIEventMain( uiNode, uiEventType, param )
 				MsgBanquet.SendMsgLeaveBanquet();
 			end
 			p.CloseUI();
+			
+		elseif p.EpBtnInfo.CtrId == tag then
+			local str = "";
+			
+			local nValue1 = EPDataConfig.GetEPValue(p.EpBtnInfo.tbInfo[1].epnum)/10;
+			local nValue2 = EPDataConfig.GetEPValue(p.EpBtnInfo.tbInfo[2].epnum)/10;	
+			local nValue3 = EPDataConfig.GetEPValue(p.EpBtnInfo.tbInfo[3].epnum)/10;
+			local nValue4 = EPDataConfig.GetEPValue(p.EpBtnInfo.tbInfo[4].epnum)/10;		
+			
+			if nValue1 > 0 then
+				str = str .. string.format(p.EpBtnInfo.tbInfo[1].txt, nValue1);
+			end
+			
+			if nValue2 > 0 then
+				if str ~= nil then
+					str = str .. "\r\n";
+				end
+				str = str .. string.format(p.EpBtnInfo.tbInfo[2].txt, nValue2);
+			end
+			
+			if nValue3 > 0 then
+				if str ~= nil then
+					str = str .. "\r\n";
+				end
+				
+				if nValue4 > 0 then
+					str = str .. string.format(p.EpBtnInfo.tbInfo[4].txt, nValue4 + nValue3);
+				else
+					str = str .. string.format(p.EpBtnInfo.tbInfo[3].txt, nValue3);
+				end
+			elseif nValue4 > 0 then
+				if str ~= nil then
+					str = str .. "\r\n";
+				end
+				str = str .. string.format(p.EpBtnInfo.tbInfo[4].txt, nValue4);
+			end
+
+						
+			if str ~= nil then
+				CommonDlgNew.ShowYesDlg(str, nil, nil, 10);
+			end
+
 		end
+		
 	end
 	return true;
 end

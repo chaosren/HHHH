@@ -14,9 +14,6 @@ local PACKAGE_SINGLE    = 3;
 
 p.mUIListener = nil;
 
-p.RankLists = {};
-
-
 p.RANKING_ACT = {
     ACT_NONE        = 0,
     ACT_PET_LEVEL   = 1,    --等级排名
@@ -29,8 +26,15 @@ p.RANKING_ACT = {
     ACT_ELITE_STAGE = 8,    --精英副本
     ACT_REFRESHTIME = 9,    --剩余刷新时间
     ATC_ACTIVITY_CODE = 10, --激活码获取礼包接口
+    
+    RANKING_ACT_CURRENT_EVENT = 11,  --当前活动查询
+    ATC_RANK_COMMON_INFO = 12, --公共数据接收
 }
 p.Action = p.RANKING_ACT.ACT_NONE;
+p.btActionType = p.RANKING_ACT.ACT_NONE;
+
+--名人堂的图标
+p.nRankIcon = 0;
 
 function p.SendGetListInfoMsg( nRankingAct, val )
     LogInfo("p.SendGetListInfoMsg nRankingAct:[%d]",nRankingAct);
@@ -48,6 +52,98 @@ function p.SendGetListInfoMsg( nRankingAct, val )
     return true;
 end
 
+function p.GetRankIcon()
+	return p.nRankIcon;
+end
+function p.GetRankType()
+	return p.btActionType;
+end
+
+
+function p.ProcessGetListInfo(netdata) 
+    CloseLoadBar();
+    --获取活动类型
+    local btAction = netdata:ReadByte();
+    
+    if(btAction == p.RANKING_ACT.ACT_REFRESHTIME) then
+        local nTime = netdata:ReadInt();
+        RankListUI.RefreshTime(nTime);
+        return;
+    --激活码礼包使用接口
+    elseif(btAction == p.RANKING_ACT.ATC_ACTIVITY_CODE) then
+        local nStatus = netdata:ReadInt();
+        if(nStatus == 0) then
+            CommonDlgNew.ShowYesDlg(GetTxtPri("RLUI_T8"));
+        elseif(nStatus == 1) then
+            CommonDlgNew.ShowYesDlg(GetTxtPri("RLUI_T9"));
+        elseif(nStatus == 2) then
+            CommonDlgNew.ShowYesDlg(GetTxtPri("RLUI_T10"));
+        elseif(nStatus == 3) then
+            CommonDlgNew.ShowYesDlg(GetTxtPri("RLUI_T11"));
+        elseif(nStatus == 4) then
+            CommonDlgNew.ShowYesDlg(GetTxtPri("RLUI_T12"));
+        end
+        CloseLoadBar();
+        return;
+    end
+    
+    --当前名人堂活动   只是爲了區別顯示主界面中名人堂的按鈕
+    if btAction == p.RANKING_ACT.RANKING_ACT_CURRENT_EVENT then
+		p.btActionType = netdata:ReadByte();
+		p.nRankIcon = netdata:ReadInt();     --主界面显示的icon
+		
+		--获取名人堂公共的数据
+		RankListUI.tbRankInfo = {};
+		RankListUI.tbRankInfo.nBgIcon = netdata:ReadInt();		 --名人堂背景图片
+		RankListUI.tbRankInfo.nBeginTime = netdata:ReadInt();	 --活动开始时间
+		RankListUI.tbRankInfo.nEndTime = netdata:ReadInt();	     --活动结束时间
+		RankListUI.tbRankInfo.strDec = netdata:ReadUnicodeString(); --活动描述
+		RankListUI.tbRankInfo.tbRankList = {};	--保存记录数据
+        
+        MainUI.RefreshFuncIsOpen();
+       return;
+    end
+    
+    --包类型
+    local btPackageType = netdata:ReadByte();   
+    --初始包数据清空
+    if btPackageType == PACKAGE_BEGIN or btPackageType == PACKAGE_SINGLE then
+		RankListUI.tbRankInfo.tbRankList = {};
+    end
+    
+	--记录条数
+    local nRecordCount = netdata:ReadShort();
+    
+    local nt = #RankListUI.tbRankInfo.tbRankList;
+    for i=1,nRecordCount do
+        local tbRank = {};
+        tbRank.nRank = nt + i;    --获取排名
+        tbRank.nNum = netdata:ReadInt();
+               
+        if (p.btActionType == p.RANKING_ACT.ACT_SOPH) then
+            if(tbRank.nNum == 0) then
+                tbRank.nNum = 1;
+            end
+            tbRank.nStar = netdata:ReadInt();  --点亮的个数
+            tbRank.nSoph = netdata:ReadInt();  --
+            tbRank.nAddSoph = netdata:ReadInt(); 
+        elseif  (p.btActionType == p.RANKING_ACT.ACT_REPUTE) then
+            tbRank.nAddRepute = netdata:ReadInt(); 
+        end
+        
+        tbRank.sName = netdata:ReadUnicodeString();  --获取玩家名字
+        
+        table.insert(RankListUI.tbRankInfo.tbRankList, tbRank);
+    end
+    
+    --收包结束显示数据
+    if btPackageType == PACKAGE_END or btPackageType == PACKAGE_SINGLE then
+        RankListUI.LoadUI(); 
+    end
+
+end
+
+--[[
 function p.ProcessGetListInfo(netdata) 
     LogInfo("p.ProcessGetListInfo");
     local nAction = netdata:ReadByte();
@@ -67,6 +163,8 @@ function p.ProcessGetListInfo(netdata)
             CommonDlgNew.ShowYesDlg(GetTxtPri("RLUI_T10"));
         elseif(nStatus == 3) then
             CommonDlgNew.ShowYesDlg(GetTxtPri("RLUI_T11"));
+        elseif(nStatus == 4) then
+            CommonDlgNew.ShowYesDlg(GetTxtPri("RLUI_T12"));
         end
         CloseLoadBar();
         return;
@@ -115,7 +213,7 @@ function p.ProcessGetListInfo(netdata)
     
     CloseLoadBar();
 end
-
+]]
 
 
 

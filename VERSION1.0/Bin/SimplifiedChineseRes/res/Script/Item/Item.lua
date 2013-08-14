@@ -18,7 +18,8 @@ p.ITEM_ADDITION						= 7;	-- 强化等级
 p.ITEM_EXP							= 8;	-- 道法经验
 p.ITEM_ATTR_NUM						= 9;	-- 属性数量
 p.ITEM_GEN_NUM                      = 10;   -- 宝石数量
-p.ITEM_ATTR_BEGIN					= 11;	-- 属性定义开始()
+p.ITEM_HOLE_OPEN_FLAG					= 11;	--开洞属性标志
+p.ITEM_ATTR_BEGIN					= 12;	-- 属性定义开始()
 -- type
 -- val
 -- ...
@@ -38,6 +39,7 @@ function p.SetItemInfoN(nItemId, nIndex, val)
 		not CheckN(val) then
 		return;
 	end
+	
 	_G.SetGameDataN(NScriptData.eItemInfo, nItemId, NRoleData.eBasic, 0, nIndex, val);
 end
 
@@ -47,6 +49,7 @@ function p.SetItemInfoS(nItemId, nIndex, val)
 		not CheckS(val) then
 		return;
 	end
+
 	_G.SetGameDataS(NScriptData.eItemInfo, nItemId, NRoleData.eBasic, 0, nIndex, val);
 end
 

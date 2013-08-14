@@ -38,6 +38,7 @@ ACTIVITY_TYPE = {
     GRAIN   = 2,    --运粮
     CHAOS   = 3,    --大乱斗
     SYNDICATE_BATTLE = 4,  --军团战
+	GAME7X7 = 12, --7x7
 };
 
 local BOSS_BATTLE_ACT = {
@@ -116,6 +117,8 @@ function p.ProcessActivity( netdata )
                 Battle_Boss.LoadUI( nActivityId );
             elseif ACTIVITY_TYPE.CHAOS == nType then    --大乱斗
             	CampBattle.LoadUI(nActivityId);
+			elseif ACTIVITY_TYPE.GAME7X7 == nType then
+				SG7x7.LoadUI()
             end
             
         elseif nActivityStatus == ACTIVITY_STATUS.END then

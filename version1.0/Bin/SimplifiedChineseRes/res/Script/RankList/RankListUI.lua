@@ -6,223 +6,14 @@
 RankListUI = {}
 local p = RankListUI;
 
-local TAG_CLOSE         = 3;
-local TAG_RANK_LIST     = 19;
+--名人堂数据记录表
+p.tbRankInfo = {};
+p.tbCtrlId = {bgPicId = 1, desTextId = 7, rankListContainerId = 19, timeTextId = 20,};
+p.tbCtrlView = {viewPic = 1, rankText = 2, nameText = 3, desText = 4,};
 
-local TAG_LEVEL     = 13;
-local TAG_REPUTE    = 14;
-local TAG_STAR      = 15;
-local TAG_STAGE     = 16;
-local TAG_MONEY     = 17;
-local TAG_MOUNT     = 18;
-
-local TAG_LISTS = {
-    TAG_LEVEL,TAG_REPUTE,TAG_STAR,TAG_STAGE,TAG_MONEY,TAG_MOUNT
-}
-
-local PLAYER_COLOR = {
-    ccc4(251,165,46,255),
-    ccc4(255,0,0,255),
-}
-
-local TAG_LIST_ITEMSIZE = 1;
-local TAG_LIST_RANK     = 2;
-local TAG_LIST_NAME     = 3;
-local TAG_LIST_DESC     = 4;
-
-local TAG_TIME  = 20;
-local TIMETIMER = nil;
-
-local nTimeSeconds = 0;
-function p.RefreshTime(nTime)
-    nTimeSeconds = nTime;
-    if(TIMETIMER == nil) then
-        TIMETIMER = RegisterTimer(p.TimeTimer,1, "RankListUI.TimeTimer");
-    end
-end
-
-function p.TimeTimer()
-    nTimeSeconds = nTimeSeconds - 1;
-    
-    local layer = p.GetLayer();
-    if(layer == nil or nTimeSeconds<0) then
-        UnRegisterTimer(TIMETIMER);
-        TIMETIMER = nil;
-    end
-    
-    if(layer) then
-        local label = GetLabel(layer, TAG_TIME);
-        if(label) then
-            local h = nTimeSeconds / 3600;
-            local m = nTimeSeconds % 3600 / 60;
-            local s = nTimeSeconds % 60;
-            if(nTimeSeconds <= 0) then
-                m = 0;
-                s = 0;
-                MsgRankList.SendGetListInfoMsg(MsgRankList.RANKING_ACT.ACT_REFRESHTIME);
-                MsgRankList.SendGetListInfoMsg(p.RankType);
-            end
-            label:SetText(string.format("%02d:%02d:%02d",h,m,s));
-        end
-    end
-end
-
-
-
-function p.LoadUI()
---------------------获得游戏主场景------------------------------------------
-    local scene = GetSMGameScene();	
-	if scene == nil then
-		return;
-	end
-    
-
---------------------添加礼包层（窗口）---------------------------------------
-    local layer = createNDUILayer();
-	if layer == nil then
-		return false;
-	end
-	layer:Init();
-	layer:SetTag(NMAINSCENECHILDTAG.RankListUI );
-	layer:SetFrameRect(RectFullScreenUILayer);
-	scene:AddChildZ(layer,UILayerZOrder.NormalLayer);
-    
-
------------------初始化ui添加到 layer 层上----------------------------------
-
-    local uiLoad = createNDUILoad();
-	if nil == uiLoad then
-		layer:Free();
-		return false;
-	end
-
-	uiLoad:Load("Ranklist/Ranklist_Main.ini", layer, p.OnUIEvent, 0, 0);
-    
-    MsgRankList.mUIListener = p.processNet;
-    
-    
-    --发送获得等级排行消息
-    MsgRankList.SendGetListInfoMsg(MsgRankList.RANKING_ACT.ACT_PET_LEVEL);
-    MsgRankList.SendGetListInfoMsg(MsgRankList.RANKING_ACT.ACT_REFRESHTIME);
-    p.RankType = MsgRankList.RANKING_ACT.ACT_PET_LEVEL;
-    
-    local btn = GetButton(layer,TAG_LISTS[1]);
-    if(btn) then
-        btn:TabSel(true);
-        btn:SetFocus(true);
-    end
-    
-    
--------------------------------初始化数据------------------------------------    
-
-    local closeBtn=GetButton(layer,TAG_CLOSE);
-    closeBtn:SetSoundEffect(Music.SoundEffect.CLOSEBTN);
-
-    return true;
-end
-
-p.RankType = 0;
-
------------------------------UI层的事件处理---------------------------------
-function p.OnUIEvent(uiNode, uiEventType, param)
-	local tag = uiNode:GetTag();
-	LogInfo("p.OnUIEven1t[%d], event:%d", tag, uiEventType);
-	if uiEventType == NUIEventType.TE_TOUCH_BTN_CLICK then
-    
-        for i,v in ipairs(TAG_LISTS) do
-            local btn = GetButton(p.GetLayer(),v);
-            if(btn) then
-                LogInfo("btn:[%d],v:[%d]",tag,v);
-                if(tag == v) then
-                    btn:TabSel(true);
-                    btn:SetFocus(true);
-                else
-                    btn:TabSel(false);
-                    btn:SetFocus(false);
-                end
-                
-            end
-        end
-    
-    
-		if TAG_CLOSE == tag then                           
-			p.freeData();
-			CloseUI(NMAINSCENECHILDTAG.RankListUI);
-        elseif (TAG_LEVEL == tag) then
-            MsgRankList.SendGetListInfoMsg(MsgRankList.RANKING_ACT.ACT_PET_LEVEL);
-            p.RankType = MsgRankList.RANKING_ACT.ACT_PET_LEVEL;
-        elseif (TAG_REPUTE == tag) then
-            MsgRankList.SendGetListInfoMsg(MsgRankList.RANKING_ACT.ACT_REPUTE);
-            p.RankType = MsgRankList.RANKING_ACT.ACT_REPUTE;
-        elseif (TAG_STAR == tag) then
-            MsgRankList.SendGetListInfoMsg(MsgRankList.RANKING_ACT.ACT_SOPH);
-            p.RankType = MsgRankList.RANKING_ACT.ACT_SOPH;
-        elseif (TAG_STAGE == tag) then
-            MsgRankList.SendGetListInfoMsg(MsgRankList.RANKING_ACT.ACT_STAGE);
-            p.RankType = MsgRankList.RANKING_ACT.ACT_STAGE;
-        elseif (TAG_MONEY == tag) then
-            MsgRankList.SendGetListInfoMsg(MsgRankList.RANKING_ACT.ACT_MONEY);
-            p.RankType = MsgRankList.RANKING_ACT.ACT_MONEY;
-        elseif (TAG_MOUNT == tag) then
-            MsgRankList.SendGetListInfoMsg(MsgRankList.RANKING_ACT.ACT_MOUNT_LEVEL);
-            p.RankType = MsgRankList.RANKING_ACT.ACT_MOUNT_LEVEL;
-        end
-        
-	end
-	return true;
-end
-
-function p.freeData()
-    MsgRankList.mUIListener = nil;
-end
-
-
-function p.processNet(msgId, data)
-	if (msgId == nil ) then
-		LogInfo("RankListUI processNet msgId == nil" );
-	end
-	if msgId == NMSG_Type._MSG_RANKING then
-        p.RefreshUI(data);
-	end
-end
-
-
---刷新礼包
-function p.RefreshUI( pRankList )
-    local container = p.GetRankListContainer();
-    container:RemoveAllView();
-    container:EnableScrollBar(true);
-    
-    for i,v in ipairs(pRankList) do
-        p.CreateRankItem(v);
-	end
-end
-
-function p.CreateRankItem(v)
-    local container = p.GetRankListContainer();
-    local view = createUIScrollView();
-    
-    view:Init(false);
-    view:SetViewId(v.nRank);
-    view:SetTag(v.nRank);
-    view:SetMovableViewer(container);
-    view:SetScrollViewer(container);
-    view:SetContainer(container);
-    
-
-    --初始化ui
-    local uiLoad = createNDUILoad();
-    if nil == uiLoad then
-        return false;
-    end
-
-    uiLoad:Load("Ranklist/Ranklist_L.ini", view, nil, 0, 0);
-       
-    --实例化每一项
-    p.RefreshRankItem(view,v);
-    container:AddView(view);
-    uiLoad:Free();
-end
+local RANK_BG_ICON_FILE = "/Ranklist/Ranklist";
+local PLAYER_COLOR = { ccc4(251,165,46,255), ccc4(255,0,0,255), };
+local TAG_CLOSE = 3;
 
 local STAR_DES = {
     GetTxtPri("RLUI_T1"),
@@ -232,31 +23,215 @@ local STAR_DES = {
     GetTxtPri("RLUI_T5"),
 }
 
-function p.RefreshRankItem(view,v)
+--for test  begin
+--[[
+RankListUI.tbRankInfo.nBgIcon = 1;
+RankListUI.tbRankInfo.nBeginTime = 20130528;	 --活动开始时间
+RankListUI.tbRankInfo.nEndTime = 20130605;	     --活动结束时间
+RankListUI.tbRankInfo.strDec = "这是个非常非常非常非常非常非常非常非常非常非常非常非常非常非常非常非常非常非常非常非常非常非常长文字的测试";        --活动描述
+MsgRankList.btActionType = 1;
+RankListUI.tbRankInfo.tbRankList = {{nRank = 1, nNum = 20, sName = "路人甲"}, 
+                                 {nRank = 2, nNum = 19, sName = "路人乙"}, 
+                                 {nRank = 3, nNum = 18, sName = "路人丙"},
+                                 {nRank = 4, nNum = 17, sName = "路人丁"}, 
+                                 {nRank = 5, nNum = 16, sName = "路人戊"}, 
+                                 {nRank = 6, nNum = 15, sName = "路人庚"},};
+                                 ]]
+                                 
+--for test end
+
+function p.LoadUI()
+
+	if IsUIShow(NMAINSCENECHILDTAG.RankListUI) then
+		--p.RefreshUI();
+		return;
+	end
+	
+	-----------------获得游戏主场景------------------------------------------
+    local scene = GetSMGameScene();	
+	if scene == nil then
+		return;
+	end
+    
+	--------------------添加礼包层（窗口）---------------------------------------
+    local layer = createNDUILayer();
+	if layer == nil then
+		return false;
+	end
+	layer:Init();
+	layer:SetTag(NMAINSCENECHILDTAG.RankListUI);
+	layer:SetFrameRect(RectFullScreenUILayer);
+	scene:AddChildZ(layer, UILayerZOrder.NormalLayer);
+    
+	-----------------初始化ui添加到 layer 层上----------------------------------
+	local uiLoad = createNDUILoad();
+	if nil == uiLoad then
+		layer:Free();
+		return false;
+	end
+
+	uiLoad:Load("Ranklist/Ranklist_Main.ini", layer, p.OnUIEvent, 0, 0);
+	
+	--刷新时间
+    MsgRankList.SendGetListInfoMsg(MsgRankList.RANKING_ACT.ACT_REFRESHTIME);
+	--刷新数据
+	p.RefreshUI()
+
+	local closeBtn=GetButton(layer,TAG_CLOSE);
+	closeBtn:SetSoundEffect(Music.SoundEffect.CLOSEBTN);
+    CloseLoadBar();
+	return true;
+end
+
+
+function p.RefreshUI()
+	local layer = p.GetLayer();
+	if layer == nil then
+		return;
+	end
+	local nBgIcon = RankListUI.tbRankInfo.nBgIcon;
+	if nBgIcon <= 0 then
+		return;
+	end
+	
+	--显示背景图片
+	local ctrBgImg = GetImage(layer, p.tbCtrlId.bgPicId);  
+	if  ctrBgImg ~= nil then
+		local nBgIcon = RankListUI.tbRankInfo.nBgIcon;
+		local pool = DefaultPicPool();
+		local bgPic = nil;
+		if nBgIcon ~= nil then
+			if nBgIcon < 10 then
+				bgPic = pool:AddPicture(GetSMImg00Path(RANK_BG_ICON_FILE.."0"..nBgIcon..".png"), false);
+			else
+				bgPic = pool:AddPicture(GetSMImg00Path(RANK_BG_ICON_FILE..nBgIcon..".png"), false);
+			end
+			
+			if bgPic ~= nil then
+				ctrBgImg:SetPicture(bgPic, true);
+			end
+		end
+	end 
+	
+	--显示描述文字
+	local ctrDesText = GetLabel(layer, p.tbCtrlId.desTextId); 
+	if ctrDesText ~= nil then
+		local strDes = ""; 
+		if RankListUI.tbRankInfo.nBeginTime ~= nil and
+			RankListUI.tbRankInfo.nEndTime ~= nil then
+			strDes = strDes..GetTxtPri("RANK_01");
+			strDes = strDes..ConvertIntTimeToString(RankListUI.tbRankInfo.nBeginTime, RankListUI.tbRankInfo.nEndTime);
+
+			if RankListUI.tbRankInfo.strDec ~= nil then
+				strDes = strDes.."\r\n";
+				strDes = strDes..GetTxtPri("RANK_02");
+				strDes = strDes..RankListUI.tbRankInfo.strDec;
+			end
+			ctrDesText:SetText(strDes);
+		end
+	end
+	
+	--显示排行的数据
+	p.ShowRankData();
+end
+
+
+
+
+
+
+--获得当前窗口层
+function p.GetLayer()
+	local scene = GetSMGameScene();
+	local layer = GetUiLayer(scene, NMAINSCENECHILDTAG.RankListUI);
+	return layer;
+end
+
+--显示排行的数据
+function p.ShowRankData()
+	local layer = p.GetLayer();
+	local container = GetScrollViewContainer(layer, p.tbCtrlId.rankListContainerId);
+	if container == nil then
+		return;
+	end
+	
+	container:RemoveAllView();
+	container:EnableScrollBar(true);
+    
+    for i, v in ipairs(RankListUI.tbRankInfo.tbRankList) do
+        p.CreateRankItem(container, v);
+	end
+end
+
+function p.CreateRankItem(ctrContainer, info)
+
+    local view = createUIScrollView();
+  
+    view:Init(false);
+    view:SetViewId(info.nRank);
+    view:SetTag(info.nRank);
+    view:SetMovableViewer(ctrContainer);
+    view:SetScrollViewer(ctrContainer);
+    view:SetContainer(ctrContainer);
+    
+    --初始化ui
+    local uiLoad = createNDUILoad();
+    if nil == uiLoad then
+        return false;
+    end
+
+    uiLoad:Load("Ranklist/Ranklist_L.ini", view, nil, 0, 0);
+    
+    --设置大小
+    local pic = GetImage(view, p.tbCtrlView.viewPic);
+    ctrContainer:SetViewSize(pic:GetFrameRect().size);
+       
+    --实例化每一项
+    p.RefreshRankItem(view, info);
+    ctrContainer:AddView(view);
+    uiLoad:Free();
+end
+
+function p.RefreshRankItem(view, v)
     local desc = "";
-    if(MsgRankList.Action == MsgRankList.RANKING_ACT.ACT_PET_LEVEL) then
-        desc = string.format("%d%s",v.nNum,GetTxtPub("Level"));
-    elseif(MsgRankList.Action == MsgRankList.RANKING_ACT.ACT_REPUTE) then
-        desc = string.format("%s:%d",GetTxtPub("ShenWan"),v.nNum);
-    elseif(MsgRankList.Action == MsgRankList.RANKING_ACT.ACT_SOPH) then
-        --desc = string.format("%s%d%s %s:%d",STAR_DES[v.nNum],v.nStar,GetTxtPri("BB2_T5"),GetTxtPub("JianHun"),v.nSoph);
-        desc = string.format("%s%d%s",STAR_DES[v.nNum],v.nStar,GetTxtPri("BB2_T5"),GetTxtPub("JianHun"));
-    elseif(MsgRankList.Action == MsgRankList.RANKING_ACT.ACT_STAGE) then
+    local rankType = MsgRankList.GetRankType();
+    
+    --p.tbCtrlView = {viewPic = 1, rankText = 2, nameText = 3, desText = 4,};
+    
+	if(rankType == MsgRankList.RANKING_ACT.ACT_PET_LEVEL) then    --等级排行
+		desc = string.format("%d%s", v.nNum, GetTxtPub("Level"));
+    elseif(rankType == MsgRankList.RANKING_ACT.ACT_REPUTE) then
+        if v.nAddRepute > 0 then
+                desc = string.format("%s:%d",GetTxtPub("ShenWan"), v.nAddRepute);
+        else
+                desc = string.format("%s:%d",GetTxtPub("ShenWan"),v.nNum);
+        end
+    elseif(rankType == MsgRankList.RANKING_ACT.ACT_SOPH) then
+        if v.nAddSoph > 0 then
+                desc = string.format("%d", v.nAddSoph);
+        else
+                desc = string.format("%s%d%s",STAR_DES[v.nNum], v.nStar, GetTxtPri("BB2_T5"),GetTxtPub("JianHun"));
+        end
+    elseif(rankType == MsgRankList.RANKING_ACT.ACT_STAGE) then
         local nTaskId = 50000+math.floor(v.nNum/10);
         local nTitle = GetDataBaseDataS("task_type", nTaskId, DB_TASK_TYPE.NAME);
         desc = string.format("%s",nTitle);
-        
-    elseif(MsgRankList.Action == MsgRankList.RANKING_ACT.ACT_MONEY) then
+    elseif(rankType == MsgRankList.RANKING_ACT.ACT_MONEY) then
         desc = string.format("%s:%d",GetTxtPub("coin"),v.nNum);
-    elseif(MsgRankList.Action == MsgRankList.RANKING_ACT.ACT_MOUNT_LEVEL) then
+    elseif(rankType == MsgRankList.RANKING_ACT.ACT_MOUNT_LEVEL) then
         desc = string.format(GetTxtPri("RLUI_TURN"),p.GetTurn(v.nNum),p.GetStar(v.nNum));
+    elseif(rankType == MsgRankList.RANKING_ACT.ACT_ELITE_STAGE) then
+		local nTitle	= AffixBossFunc.findName(v.nNum);
+		desc = string.format("%s",nTitle);
     end
     
-    local l_rank = SetLabel(view, TAG_LIST_RANK, string.format("%d",v.nRank));
+    --排名
+    local l_rank = SetLabel(view, p.tbCtrlView.rankText, string.format("%d",v.nRank));
+   
     
-    local sName 		= GetRoleBasicDataS(GetPlayerId(),USER_ATTR.USER_ATTR_NAME);
-    local l_name = SetLabel(view, TAG_LIST_NAME, v.sName);
-    local l_desc = SetLabel(view, TAG_LIST_DESC, desc);
+    local sName 		= GetRoleBasicDataS(GetPlayerId(), USER_ATTR.USER_ATTR_NAME);
+    local l_name = SetLabel(view, p.tbCtrlView.nameText, v.sName);
+    local l_desc = SetLabel(view, p.tbCtrlView.desText, desc);
     if(v.sName == sName) then
         l_rank:SetFontColor(PLAYER_COLOR[2]);
         l_name:SetFontColor(PLAYER_COLOR[2]);
@@ -266,13 +241,45 @@ function p.RefreshRankItem(view,v)
         l_name:SetFontColor(PLAYER_COLOR[1]);
         l_desc:SetFontColor(PLAYER_COLOR[1]);
     end
+end
+
+local nTimeSeconds = 0;
+local TIMETIMER = nil;
+function p.RefreshTime(nTime)
+    nTimeSeconds = nTime;
+    if(TIMETIMER == nil) then
+        TIMETIMER = RegisterTimer(p.TimeTimer, 1, "RankListUI.TimeTimer");
+    end
+end
+
+
+function p.TimeTimer()
+
+    nTimeSeconds = nTimeSeconds - 1;
     
+    local layer = p.GetLayer();
+    if(layer == nil or nTimeSeconds<0) then
+        UnRegisterTimer(TIMETIMER);
+        TIMETIMER = nil;
+    end
     
-    
-    --设置大小
-    local pic = GetImage(view, TAG_LIST_ITEMSIZE);
-    local container = p.GetRankListContainer();
-    container:SetViewSize(pic:GetFrameRect().size);
+    if(layer) then
+        local label = GetLabel(layer, p.tbCtrlId.timeTextId);
+        
+        if(label) then
+            local h = nTimeSeconds / 3600;
+            local m = nTimeSeconds % 3600 / 60;
+            local s = nTimeSeconds % 60;
+            if(nTimeSeconds <= 0) then
+                m = 0;
+                s = 0;
+                local rankType = MsgRankList.GetRankType();
+                MsgRankList.SendGetListInfoMsg(MsgRankList.RANKING_ACT.ACT_REFRESHTIME);
+                MsgRankList.SendGetListInfoMsg(rankType);
+            end
+            label:SetText(string.format("%02d:%02d:%02d",h,m,s));
+        end
+    end
 end
 
 --获得转数
@@ -297,16 +304,17 @@ function p.GetStar(star)
     return starG;
 end
 
---获得礼包列表
-function p.GetRankListContainer()
-	local layer = p.GetLayer()
-	local container = GetScrollViewContainer(layer, TAG_RANK_LIST);
-	return container;
+-----------------------------UI层的事件处理---------------------------------
+function p.OnUIEvent(uiNode, uiEventType, param)
+
+	local tag = uiNode:GetTag();
+	if uiEventType == NUIEventType.TE_TOUCH_BTN_CLICK then
+    
+		if TAG_CLOSE == tag then                           
+			CloseUI(NMAINSCENECHILDTAG.RankListUI);
+		end
+        
+	end
+	return true;
 end
 
---获得当前窗口层
-function p.GetLayer()
-    local scene = GetSMGameScene();
-	local layer = GetUiLayer(scene, NMAINSCENECHILDTAG.RankListUI);
-    return layer;
-end

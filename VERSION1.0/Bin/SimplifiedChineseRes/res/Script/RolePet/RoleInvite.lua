@@ -780,7 +780,7 @@ function p.InitPetInfoUIWithPetID( pLayerTips, nPetID )
 	
 	-- 生命
 	value = RolePet.GetPetInfoN( nPetID, PET_ATTR.PET_ATTR_LIFE_LIMIT );
-	SetLabel( pLayerTips, ID_TIPS_LABEL_PET_HP, value );
+	SetLabel( pLayerTips, ID_TIPS_LABEL_PET_HP, SafeN2S(value) );
 
 	-- 力量加成
 	value = GetDataBaseDataN( "pet_config", nPetType, DB_PET_CONFIG.ADD_PHYSICAL );

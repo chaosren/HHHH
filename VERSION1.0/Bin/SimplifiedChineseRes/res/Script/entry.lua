@@ -180,3 +180,7 @@ DoFile("MountSoul/define.lua");
 --战神像
 DoFile("Warlord/define.lua");
 
+--精英特权
+DoFile("ElitePrivilege/define.lua");
+
+

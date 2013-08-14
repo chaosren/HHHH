@@ -105,5 +105,4 @@ DoFile("Msg/MsgRankList.lua");
 
 DoFile("Msg/MsgSlave.lua");
 
-
-
+DoFile("Msg/Msg7x7.lua");

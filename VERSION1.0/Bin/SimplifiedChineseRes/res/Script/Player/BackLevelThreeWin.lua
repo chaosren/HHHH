@@ -27,7 +27,7 @@ local TAG_EQUIP_PIC         = 48;                --装备图片
 local TAG_EQUIP_ATTACK_TXT  = 418;               --文本
 local TAG_EQUIP_ATTACK_VAL  = 214;               --数值
 local TAG_EQUIP_ATTR        = {409,410,411,};
-local TAG_EQUIP_GEN         = {203,204,419,420,215,216,};
+local TAG_EQUIP_GEN         = {203,204,419,420,215,216,217,218};
 local TAG_EQUIP_ATTR_TXT    = 415;              --提示附加属性文本
 
 

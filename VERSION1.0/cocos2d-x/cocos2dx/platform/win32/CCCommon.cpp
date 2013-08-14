@@ -44,7 +44,8 @@ NS_CC_BEGIN
 
 void CCLog(const char * pszFormat, ...)
 {
-	//return;
+	return;
+
 #if ND_MOD 
 	static char szBuf[MAX_LEN] = {0};
 

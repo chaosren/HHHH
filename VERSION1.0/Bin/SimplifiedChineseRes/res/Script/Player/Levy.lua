@@ -41,6 +41,8 @@ p.TagGmoney =24;
 p.TagSmoney =27;
 ]]
 
+--精英特權相關信息
+p.EpBtnInfo = {};
 
 
 function p.LoadUI()
@@ -77,6 +79,7 @@ function p.LoadUI()
     local moneyText= GetLabel(p.getUiLayer(), p.TagMoneyText); 
     
     
+    p.EpinitData();
     p.refresh(0);
     
     p.SetVipFunc();
@@ -86,6 +89,37 @@ function p.LoadUI()
    	closeBtn:SetSoundEffect(Music.SoundEffect.CLOSEBTN);
    	
 end
+
+--精英特權增加功能
+function p.EpinitData()
+	p.EpBtnInfo = {};
+	
+	--特權按鈕
+	p.EpBtnInfo.CtrId = 33;
+	p.EpBtnInfo.tbInfo = {EPDataConfig.E_EP_TYPE.EP_TYPE_LEVY_MONEY_FIRST, 
+						   EPDataConfig.E_EP_TYPE.EP_TYPE_LEVY_MONEY_SECOND,
+						   EPDataConfig.E_EP_TYPE.EP_TYPE_LEVY_DOUBLE,};
+	
+	
+	
+	--顯示特權按鈕的判斷
+	local btnExitFlag = false;		
+	for i, v in pairs(p.EpBtnInfo.tbInfo) do
+		local nValue = EPDataConfig.GetEPValue(v);
+		if nValue ~= 0 then
+			btnExitFlag = true;
+			break;
+		end
+	end
+	
+	local layer = p.getUiLayer();
+	local btnEP = GetButton(layer, p.EpBtnInfo.CtrId);
+	if btnEP ~= nil then
+		btnEP:SetVisible(btnExitFlag);
+	end
+end
+
+
 
 function p.refresh(nId)
     local nPlayerId = GetPlayerId();
@@ -153,6 +187,33 @@ function p.OnUIEvent(uiNode,uiEventType,param)
             else
                 p.OnLevyEvent(count);
             end
+            
+        --點擊特權按鈕
+        elseif tag == p.EpBtnInfo.CtrId then  
+        	local nTotal = 0;
+			--for i, v in pairs(p.EpBtnInfo.tbInfo) do
+
+			for i = 1, 2 do
+				local nValue = EPDataConfig.GetEPValue(p.EpBtnInfo.tbInfo[i]);
+				nTotal = nTotal + nValue;
+			end 
+			
+			nTotal = nTotal/10;
+			local str = "";
+			if nTotal ~= 0 then
+				str = str..string.format(GetTxtPri("EP_TXT_005"), nTotal);
+			end 
+			
+			local nValue3 = EPDataConfig.GetEPValue(p.EpBtnInfo.tbInfo[3]);
+			nValue3 = nValue3/10;
+			if nValue3 > 0 then
+				str = str.."\r\n"..string.format(GetTxtPri("EP_TXT_0055"), nValue3);
+			end
+			
+			if nTotal ~= 0 or nValue3 ~= 0 then
+				CommonDlgNew.ShowYesDlg(str, nil, nil, 10);
+			end
+			
         end
     end
     

@@ -12,21 +12,25 @@ local p = Warlord;
 
 ---------------------------------------------------
 -- 主界面控件
-local ID_BTN_CLOSE					= 25;	-- X
+local ID_BTN_CLOSE					= 60;	-- X
 
-local ID_LABEL_SPIRIT				= 24;	-- 武魂值
-local ID_LABEL_GOLD					= 20;	-- 金币值
+local ID_LABEL_SPIRIT				= 54;	-- 武魂值
+local ID_LABEL_GOLD					= 55;	-- 金币值
 
 local ID_PIC_WARLORD1				= 101;	-- 武神像1
 local ID_PIC_WARLORD2				= 102;	-- 武神像2
 local ID_PIC_WARLORD3				= 103;	-- 武神像3
+local ID_PIC_WARLORD4				= 104;	-- 武神像4
+local ID_PIC_WARLORD5				= 105;	-- 武神像5
 
 local ID_BTN_WARLORD1				= 31;	-- 武神像按钮1
 local ID_BTN_WARLORD2				= 32;	-- 武神像按钮2 
 local ID_BTN_WARLORD3				= 33;	-- 武神像按钮3
+local ID_BTN_WARLORD4				= 34;	-- 武神像按钮4
+local ID_BTN_WARLORD5				= 35;	-- 武神像按钮5
 
-local ID_BTN_LEFT_ARROW				= 1;
-local ID_BTN_RIGHT_ARROW			= 242;
+local ID_BTN_LEFT_ARROW				= 80;
+local ID_BTN_RIGHT_ARROW			= 81;
 
 local ID_BTN_WORSHIP1				= 42;	-- 普通参拜按钮
 local ID_BTN_WORSHIP2				= 43;	-- 虔诚参拜按钮
@@ -37,6 +41,30 @@ local ID_LABEL_WORSHIP1				= 11;	-- 普通参拜文本
 local ID_LABEL_WORSHIP2				= 12;	-- 虔诚参拜文本
 local ID_LABEL_WORSHIP3				= 13;	-- 狂热参拜文本
 
+---------------------------------------------------
+-- 战神像图控件表
+local tPicCtrl = {
+	ID_PIC_WARLORD1,
+	ID_PIC_WARLORD2,
+	ID_PIC_WARLORD3,
+	ID_PIC_WARLORD4,
+	ID_PIC_WARLORD5,
+};
+
+local tBtnCtrl = {
+	ID_BTN_WARLORD1,
+	ID_BTN_WARLORD2,
+	ID_BTN_WARLORD3,
+	ID_BTN_WARLORD4,
+	ID_BTN_WARLORD5,
+};
+--各不同组合下，显示的布局
+local tPicCtrlSet1 = {ID_PIC_WARLORD1,ID_PIC_WARLORD2,ID_PIC_WARLORD3};
+local tBtnCtrlSet1 = {ID_BTN_WARLORD1,ID_BTN_WARLORD2,ID_BTN_WARLORD3};
+local tPicCtrlSet2 = {ID_PIC_WARLORD4,ID_PIC_WARLORD5};
+local tBtnCtrlSet2 = {ID_BTN_WARLORD4,ID_BTN_WARLORD5};
+local tPicCtrlSet3 = {ID_PIC_WARLORD2};
+local tBtnCtrlSet3 = {ID_BTN_WARLORD2};
 
 ---------------------------------------------------
 -- 选中武将的信息窗口
@@ -75,18 +103,28 @@ local SZ_INFOR				= GetTxtPri("WL_T1");	-- 消耗XX金币，获得X武魂+XX银�
 local CAMP_WARLORD			= 80;	-- 战神级武将的阵营
 
 local tPetIDListWarlord		= RoleInvite.GetPetIDListByCamp(CAMP_WARLORD);
+function p.TakeInPage( tPetIDListWarlord )
+	if ( tPetIDListWarlord == nil ) then
+		return nil;
+	end
+	local tPageSet = {};
+	for i, v in ipairs(tPetIDListWarlord) do
+		local nPetTypeID		= v;--
+		local nOra_Pet_Pos = GetDataBaseDataN( "pet_config", nPetTypeID, DB_PET_CONFIG.ORA_PET_POS );
+		local nPageOrdinal = math.floor(nOra_Pet_Pos/100);--
+		if ( tPageSet[nPageOrdinal] == nil ) then
+			tPageSet[nPageOrdinal] = {};
+		end
+		table.insert( tPageSet[nPageOrdinal], nPetTypeID );
+	end
+	return tPageSet;
+end
+local tIDListPageTable		= p.TakeInPage(tPetIDListWarlord);-- 分页显示下已归类到每个页的ID表 { {11,12,13}, {21,22}, {31} }
+local nDispPageMaxNum		= table.getn(tIDListPageTable);-- 多少个页
 
-local PRESNT_NUM_PER_PAGE	= 3;	-- 一页显示的数量
-
-local DISP_PAGE_NUM			= math.floor( (table.getn(tPetIDListWarlord)+PRESNT_NUM_PER_PAGE-1) / PRESNT_NUM_PER_PAGE );--总可以显示的页数
 
 ---------------------------------------------------
--- 战神像图控件表
-local tPicCtrl = {
-	ID_PIC_WARLORD1,
-	ID_PIC_WARLORD2,
-	ID_PIC_WARLORD3,
-};
+
 
 
 --local tPetListPerPage {-- 每页武将列表,
@@ -102,7 +140,7 @@ p.nUserVisitNum			= nil;	-- 已参拜次数
 p.nChoosenWarlord		= nil;	-- 选中的战神像
 p.nCurPage				= nil;	-- 当前页-当前显示页数
 p.tPetInforList			= nil;	-- 武将信息,{nPetID,nPetTypeID,nPos,bIsGray}
-p.nChoosenPetIndex		= nil;	-- 选中的武将索引
+p.nChoosenPetTypeID		= nil;	-- 选中的武将 PetTypeID
 p.pLayerPetInfor		= nil;	-- 武将信息窗口
 
 ---------------------------------------------------
@@ -141,13 +179,13 @@ end
 ---------------------------------------------------
 -- 显示战神像主界面
 function p.ShowWarlordMainUI()
-	--LogInfo( "Warlord: ShowWarlordMainUI()" );
+	LogInfo( "Warlord: ShowWarlordMainUI() PagAmount:"..nDispPageMaxNum );
 	p.pLayerWarlordUI		= nil;	-- 
 	p.nUserVisitNum			= nil;	-- 已参拜次数
 	p.nChoosenWarlord		= nil;	-- 选中的战神像
 	p.nCurPage				= nil;	-- 当前页-当前显示页数
 	p.tPetInforList			= nil;	-- 武将信息,{nPetID,nPetTypeID,nPos,bIsGray}
-	p.nChoosenPetIndex		= nil;	-- 选中的武将索引
+	p.nChoosenPetTypeID		= nil;	-- 选中的武将索引
 	p.pLayerPetInfor		= nil;	-- 武将信息窗口
 	local scene = GetSMGameScene();
 	if not CheckP(scene) then
@@ -178,6 +216,7 @@ function p.ShowWarlordMainUI()
 	p.SetWorshipInfor();
 	p.GetPetInforList();--
 	p.nCurPage	= 1;
+	p.ShowArrow();
 	p.DisplayWarlordPic( p.nCurPage );
 --	
 	--local pPic1				= p.GetWarlordStatue( tPetIDListWarlord[2] );
@@ -207,22 +246,43 @@ function p.DisplayWarlordPic( nPageNum )
 	if ( p.tPetInforList == nil ) then
 		return;
 	end
-	for i=1, PRESNT_NUM_PER_PAGE do
-		local nOrdinal	= (nPageNum-1)*PRESNT_NUM_PER_PAGE+i;
-		if ( nOrdinal > table.getn( p.tPetInforList ) ) then
-			local pImageWarlord	= GetImage( p.pLayerWarlordUI, tPicCtrl[i] );
-			pImageWarlord:SetPicture(nil);--
+
+	for i, v in ipairs( tPicCtrl ) do
+		local pImageWarlord	= GetImage( p.pLayerWarlordUI, v );
+		pImageWarlord:SetVisible(false);
+	end
+	for i, v in ipairs( tBtnCtrl ) do
+		local pBtnWarlord	= GetButton( p.pLayerWarlordUI, v );
+		pBtnWarlord:SetVisible(false);
+	end
+	local tPageID	= tIDListPageTable[nPageNum];
+	local nIDAmount	= table.getn(tPageID);
+	local tPicCtrlSet	= {};
+	local tBtnCtrlSet	= {};
+	if ( nIDAmount == 3 ) then
+		tPicCtrlSet = tPicCtrlSet1;
+		tBtnCtrlSet = tBtnCtrlSet1;
+	elseif ( nIDAmount == 2 ) then
+		tPicCtrlSet = tPicCtrlSet2;
+		tBtnCtrlSet = tBtnCtrlSet2;
+	elseif ( nIDAmount == 1 ) then
+		tPicCtrlSet = tPicCtrlSet3;
+		tBtnCtrlSet = tBtnCtrlSet3;
+	end
+	for i=1, nIDAmount do
+		local nPetTypeID	= tPageID[i];
+		local tPetInfor		= p.GetPetInfor(nPetTypeID);
+		local pPic			= nil;
+		local pImageWarlord	= GetImage( p.pLayerWarlordUI, tPicCtrlSet[i] );
+		if ( tPetInfor.bIsGray == true ) then
+			pPic			= p.GetGrayWarlordStatue( tPetInfor.nPetTypeID );
 		else
-			local tPetInfor		= p.tPetInforList[nOrdinal];
-			local pPic			= nil;
-			local pImageWarlord	= GetImage( p.pLayerWarlordUI, tPicCtrl[i] );
-			if ( tPetInfor.bIsGray == true ) then
-				pPic			= p.GetGrayWarlordStatue( tPetInfor.nPetTypeID );
-			else
-				pPic			= p.GetWarlordStatue( tPetInfor.nPetTypeID );
-			end
-			pImageWarlord:SetPicture(pPic);
+			pPic			= p.GetWarlordStatue( tPetInfor.nPetTypeID );
 		end
+		pImageWarlord:SetPicture(pPic);
+		pImageWarlord:SetVisible(true);
+		local pBtnWarlord	= GetButton( p.pLayerWarlordUI, tBtnCtrlSet[i] );
+		pBtnWarlord:SetVisible(true);
 	end
 end
 
@@ -238,7 +298,7 @@ function p.CloseUI()
 	p.nChoosenWarlord		= nil;
 	p.nCurPage				= nil;
 	p.tPetInforList			= nil;
-	p.nChoosenPetIndex		= nil;
+	p.nChoosenPetTypeID		= nil;
 	p.pLayerPetInfor		= nil;
 end
 
@@ -256,23 +316,50 @@ function p.OnUIEventMain( uiNode, uiEventType, param )
 		elseif ( ID_BTN_WORSHIP3 == tag ) then
 			p.Worship( WWM.Wild );
 		elseif ( ID_BTN_WARLORD1 == tag ) then
-			local nOrdinal	= (p.nCurPage-1)*PRESNT_NUM_PER_PAGE+1;
-			if ( ( p.tPetInforList ~= nil ) and ( nOrdinal <= table.getn( p.tPetInforList ) ) ) then
-				p.CreatePetInforLayer(nOrdinal);
-			end
+			p.ShowPetInforLayer(1);
 		elseif ( ID_BTN_WARLORD2 == tag ) then
-			local nOrdinal	= (p.nCurPage-1)*PRESNT_NUM_PER_PAGE+2;
-			if ( ( p.tPetInforList ~= nil ) and ( nOrdinal <= table.getn( p.tPetInforList ) ) ) then
-				p.CreatePetInforLayer(nOrdinal);
-			end
+			p.ShowPetInforLayer(2);
 		elseif ( ID_BTN_WARLORD3 == tag ) then
-			local nOrdinal	= (p.nCurPage-1)*PRESNT_NUM_PER_PAGE+3;
-			if ( ( p.tPetInforList ~= nil ) and ( nOrdinal <= table.getn( p.tPetInforList ) ) ) then
-				p.CreatePetInforLayer(nOrdinal);
+			p.ShowPetInforLayer(3);
+		elseif ( ID_BTN_WARLORD4 == tag ) then
+			p.ShowPetInforLayer(1);--4
+		elseif ( ID_BTN_WARLORD5 == tag ) then
+			p.ShowPetInforLayer(2);--5
+		elseif ( tag == ID_BTN_LEFT_ARROW ) then
+			if ( p.nCurPage > 1 ) then
+				p.nCurPage = p.nCurPage - 1;
+				p.ShowArrow();
+				p.DisplayWarlordPic( p.nCurPage );
+			end
+		elseif ( tag == ID_BTN_RIGHT_ARROW ) then
+			if ( p.nCurPage < nDispPageMaxNum ) then
+				p.nCurPage = p.nCurPage + 1;
+				p.ShowArrow();
+				p.DisplayWarlordPic( p.nCurPage );
 			end
 		end
 	end
 	return true;
+end
+
+
+---------------------------------------------------
+function p.ShowArrow()
+	if ( p.pLayerWarlordUI == nil ) then
+		return;
+	end
+	local pBtnLeftArrow		= GetButton( p.pLayerWarlordUI, ID_BTN_LEFT_ARROW );
+	local pBtnRightArrow	= GetButton( p.pLayerWarlordUI, ID_BTN_RIGHT_ARROW );
+	if ( p.nCurPage > 1 ) then
+		pBtnLeftArrow:SetVisible( true );
+	else
+		pBtnLeftArrow:SetVisible( false );
+	end
+	if ( p.nCurPage < nDispPageMaxNum ) then
+		pBtnRightArrow:SetVisible( true );
+	else
+		pBtnRightArrow:SetVisible( false );
+	end
 end
 
 
@@ -461,10 +548,43 @@ function p.GetPetInforList()
 end
 
 ---------------------------------------------------
+-- 获得武将信息
+function p.GetPetInfor( nPetTypeID )
+	for i, v in pairs(p.tPetInforList) do
+		if ( v.nPetTypeID == nPetTypeID ) then
+			return v;
+		end
+	end
+	return nil;
+end
 
 ---------------------------------------------------
--- 创建“武将信息及招募/归队”窗口（"p.tPetInforList"表的索引）
-function p.CreatePetInforLayer( nChoosenPetIndex )
+-- 显示“武将信息及招募/归队”窗口（按钮序号）
+function p.ShowPetInforLayer( nOrdinal )
+	if ( p.nCurPage > nDispPageMaxNum ) then
+		return;
+	end
+	
+	local tPageID		= tIDListPageTable[p.nCurPage];
+	local nIDAmount		= table.getn(tPageID);
+	local nPetTypeID	= 0;
+	if ( nIDAmount == 3 ) then
+		nPetTypeID	= tPageID[nOrdinal];
+	elseif ( nIDAmount == 2 ) then
+		nPetTypeID	= tPageID[nOrdinal];
+	elseif ( nIDAmount == 1 ) then
+		if ( nOrdinal == 2 ) then
+			nPetTypeID	= tPageID[1];
+		end
+	end
+	p.nChoosenPetTypeID	= nPetTypeID;
+	local tPetInfor		= p.GetPetInfor(nPetTypeID);
+	p.CreatePetInforLayer( tPetInfor );
+end
+
+---------------------------------------------------
+-- 创建“武将信息及招募/归队”窗口（武将信息）
+function p.CreatePetInforLayer( tPetInfor )
 	if ( p.pLayerWarlordUI == nil ) then
 		return;
 	end
@@ -491,8 +611,6 @@ function p.CreatePetInforLayer( nChoosenPetIndex )
 
 	p.pLayerWarlordUI:AddChildZ( layer, 2 );--触摸消息不穿透
 	
-	p.nChoosenPetIndex = nChoosenPetIndex;
-	local tPetInfor = p.tPetInforList[p.nChoosenPetIndex];
 	p.InitPetInfoUI( layer, tPetInfor )
 	
 	p.pLayerPetInfor	= layer;
@@ -524,7 +642,8 @@ function p.OnPetInfoUIEvent( uiNode, uiEventType, param )
 			return true;
 		elseif ID_TIPS_BTN_INVITE == tag then
 			-- 招募
-			local nPetType	= p.tPetInforList[p.nChoosenPetIndex].nPetTypeID;
+			local tPetInfor		= p.GetPetInfor(p.nChoosenPetTypeID);
+			local nPetType	= tPetInfor.nPetTypeID;
 			if ( inTeam_petNum >= petNum_limit ) then
 				-- 队伍满员
 				CommonDlgNew.ShowYesDlg( GetTxtPri("RI_T10"), nil, nil, nil );
@@ -553,7 +672,8 @@ function p.OnPetInfoUIEvent( uiNode, uiEventType, param )
 			end
 		elseif ID_TIPS_BTN_REJOIN == tag then
 			-- 归队
-			local nPetID	= p.tPetInforList[p.nChoosenPetIndex].nPetID;
+			local tPetInfor		= p.GetPetInfor(p.nChoosenPetTypeID);
+			local nPetID		= tPetInfor.nPetID;
 			if ( inTeam_petNum < petNum_limit ) then
 				-- 发送归队消息给服务端
 				_G.MsgRolePet.SendBuyBackPet( nPetID );
@@ -591,7 +711,7 @@ function p.InitPetInfoUI( pLayerInfor, tPetInfor )
 
 	-- 等级
 	value = 1;
-	if ( nPos == 1 ) then
+	if ( nPos == 1 or nPos == 0 ) then
 		--在队或离队的等级
 		value = RolePet.GetPetInfoN( nPetID, PET_ATTR.PET_ATTR_LEVEL );
 	end
@@ -741,7 +861,7 @@ function p.RefreshContainer( btAction, nPetID )
 		-- 播放招募成功光效
 		PlayEffectAnimation.ShowAnimation(6);
 	end
-	--p.nChoosenPetIndex	= 0;
+	--p.nChoosenPetTypeID	= 0;
 	p.GetPetInforList();--
 	p.DisplayWarlordPic( p.nCurPage );
 

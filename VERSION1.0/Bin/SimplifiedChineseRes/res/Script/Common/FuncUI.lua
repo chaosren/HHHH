@@ -661,3 +661,42 @@ end
 
 
 
+
+---------------------------将int型时间转换成string类型-----nFlag是否需要时分等--------------------------------
+function ConvertIntTimeToString(nBegin, nEnd, nFlag)  
+    --例如 nBegin = 20120809  nEnd = 20120810
+    --nFlag ~= nil
+    --转化成 2012年08月09日00:00:00---2012年08月10日23:59:59
+    --nFlag = nil
+    --转化成 2012年08月09日---2012年08月10日
+    local year = math.floor(nBegin/10000);
+    local month = math.floor(nBegin%10000/100);
+    if month < 10 then
+        month = "0"..month;
+    end
+    local day = math.floor(nBegin%100);
+    if day < 10 then
+        day = "0"..day;
+    end
+    
+    local yearEnd = math.floor(nEnd/10000);
+    local monthEnd = math.floor(nEnd%10000/100);
+    if monthEnd < 10 then
+        monthEnd = "0"..monthEnd;
+    end
+    local dayEnd = math.floor(nEnd%100);
+    if dayEnd < 10 then
+        dayEnd = "0"..dayEnd;
+    end
+    
+    local time = "";
+    
+	if nFlag ~= nil then
+		time = year..GetTxtPub("year")..month..GetTxtPub("month")..day..GetTxtPub("day").."00:00:00".."--"..yearEnd..GetTxtPub("year")..monthEnd..GetTxtPub("month")..dayEnd..GetTxtPub("day").."23:59:59";
+	else
+		time = year..GetTxtPub("year")..month..GetTxtPub("month")..day..GetTxtPub("day").."--"..yearEnd..GetTxtPub("year")..monthEnd..GetTxtPub("month")..dayEnd..GetTxtPub("day");
+	end
+	return time;
+end
+
+

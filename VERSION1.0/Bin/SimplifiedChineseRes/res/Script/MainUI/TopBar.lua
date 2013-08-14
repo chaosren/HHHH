@@ -56,6 +56,7 @@ local ID_MAINUI_BTN_ACTIVITY						= 43;	--活动按钮ID
 
 --图片裁剪不要用缩放比例!
 local NUMBER_FILE = "/number/num_2.png";
+local RANK_ICON_FILE = "/action/Ranklist_button";
 local N_W = 42*2;
 local N_H = 32*2;
 local Numbers_Rect = {
@@ -224,7 +225,17 @@ function p.OnUIEvent(uiNode, uiEventType, param)
             return ture;        
         elseif TOOL_BTN[9].Tag == tag then          --名人堂
             _G.CloseMainUI();
-            RankListUI.LoadUI();
+            local btRankType = MsgRankList.GetRankType();
+            LogInfo("tzqtzqtzq btRankType = %d", btRankType);
+            
+            if btRankType >= MsgRankList.RANKING_ACT.ACT_PET_LEVEL and
+               btRankType <= MsgRankList.RANKING_ACT.ACT_ELITE_STAGE  then
+                ShowLoadBar();  
+                LogInfo("tzqtzqtzq MsgRankList.SendGetListInfoMsg");
+                MsgRankList.SendGetListInfoMsg(btRankType);       
+            end
+            
+            --RankListUI.LoadUI();
             return ture;  
         elseif TOOL_BTN[10].Tag == tag then          --内政
             _G.CloseMainUI();
@@ -413,6 +424,30 @@ function p.RefreshFuncIsOpen()
     local btnOL = 	GetButton(topBarLayer,TOOL_BTN[7].Tag);
     local btnDailyAct = 	GetButton(topBarLayer,TOOL_BTN[8].Tag); 
     local btnMission = 	GetButton(topBarLayer,TOOL_BTN[10].Tag);         
+	
+	--名人堂图标显示
+	local btnFamous = 	GetButton(topBarLayer,TOOL_BTN[9].Tag); 
+    local bIcon = MsgRankList.GetRankIcon();
+    
+    if bIcon == 0 then
+        btnFamous:SetVisible(false);
+    else    
+        --名人堂功能暂时屏蔽暂时屏蔽
+        local pool = DefaultPicPool();
+        local rankPic = nil;
+        if bIcon < 10 then
+            rankPic = pool:AddPicture(GetSMImg00Path(RANK_ICON_FILE.."0"..bIcon..".png"), false);
+        else
+            rankPic = pool:AddPicture(GetSMImg00Path(RANK_ICON_FILE..bIcon..".png"), false);
+        end
+
+        if rankPic ~= nil and btnFamous ~= nil then
+            btnFamous:SetImage(rankPic);
+        end
+    end
+
+	
+
     
     btnLevy:SetVisible(IsFunctionOpen(StageFunc.Levy));
     

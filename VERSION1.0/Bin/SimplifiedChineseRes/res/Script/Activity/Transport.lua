@@ -536,6 +536,9 @@ function p.SetMutableCtrStatus(bFlag)
     local str = "";
     local TransTime = p.tbGrainStatic.EscortMax - p.tbPlayerInfo.nHasTransNum;
     LogInfo("TransTime = %d,  EscortMax = %d, HasTransNum = %d", TransTime, p.tbGrainStatic.EscortMax, p.tbPlayerInfo.nHasTransNum);
+   
+   	local nEpAddTimes = EPDataConfig.GetEPValue(EPDataConfig.E_EP_TYPE.EP_TYPE_GRAIN_TIME);
+   	TransTime = TransTime + nEpAddTimes;
     str = string.format(GetTxtPri("TRSP_T6"),str,TransTime);
     SetLabel(layer, p.ImmutableCtr.Lable.txtTransTime, str);
     
@@ -735,6 +738,8 @@ function p.OnUIEvent(uiNode, uiEventType, param)
         elseif p.MutableCtr.Btn.btnTransport == tag then          --运送粮草  
             --获得今天还可以运送的次数
             local TransTime = p.tbGrainStatic.EscortMax - p.tbPlayerInfo.nHasTransNum;
+            local nEpAddTimes = EPDataConfig.GetEPValue(EPDataConfig.E_EP_TYPE.EP_TYPE_GRAIN_TIME);
+            TransTime = TransTime + nEpAddTimes;
             if TransTime <= 0 then
                 CommonDlgNew.ShowYesDlg(GetTxtPri("TRSP_T8"),nil,nil,3);
             else

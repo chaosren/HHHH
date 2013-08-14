@@ -1793,6 +1793,7 @@ DB_PET_CONFIG=
 	BODY_PIC			=38,	--半身像
     QUALITY           =39,    --武将品质
     SPIRIT            = 40,   --武魂
+    ORA_PET_POS = 41,
 };
 --++ Guosen ++-- 2012.6.2
 DB_RANK_CONFIG=
@@ -1834,8 +1835,10 @@ DB_ACHIEVEMENT_CONFIG=
     AWARD_MONEY      =2,
     AWARD_ITEM          =3,
     ITEM_COUNT           =4,
-    TITLE                        =5,
-    DESCRIBE               =6,
+    AWARD_ITEM2         = 5,
+    ITEM_COUNT2         = 6,
+    TITLE                        =7,
+    DESCRIBE               =8,
 };
 
 

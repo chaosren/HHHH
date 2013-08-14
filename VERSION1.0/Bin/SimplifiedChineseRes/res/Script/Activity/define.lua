@@ -24,3 +24,7 @@ DoFile("Activity/TransportLoot.lua")
 DoFile("Activity/SyndicateBattle.lua")
 
 DoFile("Activity/Slave.lua")
+
+DoFile("Activity/7x7.lua")
+DoFile("Activity/7x7Board.lua")
+DoFile("Activity/7x7Rule.lua")
