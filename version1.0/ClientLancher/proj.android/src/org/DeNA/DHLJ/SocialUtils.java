@@ -190,6 +190,12 @@ public class SocialUtils {
 				// TODO Auto-generated method stub
 //				Toast.makeText(mActivity, "宸诧拷1锟������界ぞ鍖���� Toast.LENGTH_LONG).show();
 			}
+
+			@Override
+			public void onUserFreeze() {
+				// TODO Auto-generated method stub
+				mActivity.finish();
+			}
 		};
 
 		return (mPlatformListener);

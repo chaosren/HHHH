@@ -11,4 +11,11 @@
   <color name="gohelp_button_color">#33658d</color>
   <color name="transparent">#00000000</color>
   
+  <color name="mbga_transparent">#00000000</color>
+  <color name="mbga_white">#fff</color>
+  <color name="mbga_title_bg_gray">#e4e4e4</color>
+  <color name="mbga_title_bg_green">#8bb52b</color>
+  <color name="mbga_text_black">#4D4D4D</color>
+  <color name="mbga_text_gray_title">#A8A8A8</color>
+  <color name="mbga_text_gray_list">#888888</color>
 </resources>
