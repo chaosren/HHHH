@@ -507,14 +507,6 @@
 			Name="network"
 			>
 			<File
-				RelativePath="..\network\HttpClient.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\network\HttpClient.h"
-				>
-			</File>
-			<File
 				RelativePath="..\network\HttpRequest.h"
 				>
 			</File>

@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest package="tw.mobage.g23000092"
       android:installLocation="auto"
-      android:versionCode="1002"
-      android:versionName="1.0.0.2" xmlns:android="http://schemas.android.com/apk/res/android">
+      android:versionCode="1003"
+      android:versionName="1.0.0.3" xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-sdk android:minSdkVersion="7" android:targetSdkVersion="8"/>
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
@@ -17,7 +18,10 @@
     <uses-permission android:name="android.permission.RECEIVE_SMS"></uses-permission>
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 	<uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    
+    <uses-permission android:name="android.permission.GET_TASKS"/>
 	<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="com.android.vending.BILLING" />
@@ -98,10 +102,17 @@
          
         <activity android:name="com.denachina.account.weakaccount.WeakAccountActivity"
                   android:screenOrientation="landscape"
-                  android:configChanges="keyboardHidden|orientation"
-            	  android:windowSoftInputMode="adjustPan"
-                android:label="WeakAccountLogin" 
-               >
+            android:theme="@android:style/Theme.Black.NoTitleBar"
+            android:configChanges="orientation|keyboardHidden"
+            android:windowSoftInputMode="adjustPan" >
+        </activity>
+        <activity
+            android:name="com.mobage.android.cn.userfreeze.UserFreezeActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Black.NoTitleBar"
+            android:windowSoftInputMode="adjustPan">
         </activity>
         <service android:name="com.mobage.android.cn.autoupdate.DownloadService" />
         
@@ -111,7 +122,31 @@
                 <action android:name="com.denachina.nativesdk.install.sdk" />
             </intent-filter>
         </receiver>
-            
+        
+        <receiver android:name="com.mobage.android.cn.autoupdate.OnlineChangeReceiver" >
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+        </receiver>
+		
+		<activity android:name="com.mobage.android.cn.downloadmanager.DmActivity"
+		    android:launchMode="singleTop"
+		    android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="com.mobage.android.cn.downloadmanager.DmActivity" />
+            </intent-filter>
+        </activity>
+        
+        <activity android:name="com.mobage.android.cn.downloadmanager.DmSettingActivity"></activity>
+        
+        <service android:name="com.mobage.android.cn.downloadmanager.DmService" >
+            <intent-filter>
+                <action android:name="com.mobage.android.cn.downloadmanager.DmService" />
+            </intent-filter>
+        </service>
+        
+        <receiver android:name="com.mobage.android.cn.downloadmanager.ConnectionChangeReceiver"></receiver>
+        
         <receiver android:name="com.mobage.android.iab.BillingReceiver">
         <intent-filter>
                 <action android:name="com.android.vending.billing.IN_APP_NOTIFY"/>
@@ -119,6 +154,16 @@
         	 <action android:name="com.android.vending.billing.PURCHASE_STATE_CHANGED"/>
         </intent-filter>
 		</receiver>
+		<receiver android:name="com.mobage.android.C2DMBaseReceiver" android:permission="com.google.android.c2dm.permission.SEND" >
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+                <category android:name="tw.mobage.g23000013" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
+                <category android:name="tw.mobage.g23000013" />
+            </intent-filter>
+        </receiver>
         
         <receiver android:name="com.mobage.android.cn.autoupdate.OnlineChangeReceiver" >
         <intent-filter>

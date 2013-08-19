@@ -76,7 +76,7 @@ public class SocialUtils {
 			} else if (serverMode == ServerMode.PRODUCTION) {
 				Mobage.initialize(Mobage.Region.TW,
 						Mobage.ServerMode.PRODUCTION, "sdk_app_id:23000092",
-						"	 44be4433058d321a860dd38efd992bb9", "23000092",
+						"44be4433058d321a860dd38efd992bb9", "23000092",
 						activity);
 			}
 		} catch (NameNotFoundException e) {
