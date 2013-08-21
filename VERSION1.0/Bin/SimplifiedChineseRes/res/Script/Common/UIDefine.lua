@@ -208,10 +208,12 @@ NMAINSCENECHILDTAG =
     DestinyFeteUI           = NUITAG_BEGIN + 183,                   --占星祭祀    
  	MountSoul               = NUITAG_BEGIN + 190,                   --兽魂
 	RankListUI              = NUITAG_BEGIN + 189,                   --名人堂
+ 	DailyLottery            = NUITAG_BEGIN + 193,                   --每日抽奖
 	
 	SG7x7UI					= NUITAG_BEGIN + 190,					--7x7
 	SG7x7BoardUI			= NUITAG_BEGIN + 191,					--7x7
 	SG7x7RuleUI				= NUITAG_BEGIN + 192,					--7x7
+	CheckInReward			= NUITAG_BEGIN + 194,					--新版每日签到功能	
 	
 	BattleCityCityUI = NUITAG_BEGIN + 195,					--资源争夺战，城市信息ui
 	BattleCityGuardInfoUI = NUITAG_BEGIN + 196,				--资源争夺战,队列信息
@@ -225,6 +227,9 @@ NMAINSCENECHILDTAG =
     Buff           = NUITAG_BEGIN + 186,                   --玩家状态
     MissionUI       = NUITAG_BEGIN + 200,                   --日常任务
     Warlord			= NUITAG_BEGIN + 201,                   --战神像
+    
+    ExploitShop			= NUITAG_BEGIN + 202,                   --军功商城
+
     CommonDlg				= NDLGTAG_BEGIN,						--通用对话框
 	CommonDlgNew              = NDLGTAGNEW_BEGIN,                     --新通用对话框
 	--后面都被对话框占用了,请不要使用

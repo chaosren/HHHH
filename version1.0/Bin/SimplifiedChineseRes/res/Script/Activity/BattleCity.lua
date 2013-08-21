@@ -26,9 +26,10 @@ p.DATA_CONFIG_ID =
 {
     RESET_SPRIER_EMONEY = 15;   --重置鼓舞所需金幣
     UNLOCK_SPRIER_EMONEY  = 16;   --解鎖鼓舞所需金币
-	RESET_CD_EMONEY = 30; --重置cd时间需要的金币
+	--RESET_CD_EMONEY = 30; --重置cd时间需要的金币
+	RESET_CD_EMONEY_FIRST = 32; --第一次重置CD每分钟需要的金币
+	RESET_CD_EMONEY_GROW = 33; --重置CD每次累加的金币
 };
-
 
 -----------------------------获取父层layer---------------------------------
 local function GetParent()
@@ -137,7 +138,14 @@ function p.OnUIEvent(uiNode, uiEventType, param)
 			BattleCityGift.LoadUI()
 			ShowLoadBar()
 		elseif tag==ctrl_tag.btn_reset_debuff then
-			local nNeedEMoney = p.GetDbConfigValue(p.DATA_CONFIG_ID.RESET_CD_EMONEY);
+			local nFirstNeed = p.GetDbConfigValue(p.DATA_CONFIG_ID.RESET_CD_EMONEY_FIRST);
+			local nGrowNeed = p.GetDbConfigValue(p.DATA_CONFIG_ID.RESET_CD_EMONEY_GROW);
+			local nTimeMinute = 0;
+			if p.debuff_timer_time > 0 then
+				nTimeMinute = math.floor((p.debuff_timer_time - 1)/60 + 1);
+			end
+			local nNeedEMoney = (nFirstNeed + nGrowNeed * p.playerInfo.HasCdTimes)/10 * nTimeMinute;
+			
 			CommonDlgNew.ShowYesOrNoDlg( string.format(GetTxtPri("BattleCityResetDebuff"), nNeedEMoney), DoUseResetDebuff, true );
 		elseif tag==ctrl_tag.btn_gzsm then   --规则说明
 			BattleCityRule.LoadUI()
@@ -151,10 +159,12 @@ function p.LeaveBattleCity()
 
 	if p.debuff_timer_tag ~= nil then
 		UnRegisterTimer(p.debuff_timer_tag);
+		p.debuff_timer_tag = nil;
 	end
 	
 	if reset_timer_tag ~= nil then
 		UnRegisterTimer(reset_timer_tag);
+		reset_timer_tag = nil
 	end
 	
 	for i,v in pairs(p.protect_timer_tag) do
@@ -184,15 +194,15 @@ function p.HandleBattleCityHistory(cityID,historys)
 end
 
 p.debuff_timer_tag = nil
-local debuff_timer_time = 0
+p.debuff_timer_time = 0
 p.protect_timer_tag = {}
 local protect_timer_time  = {}
 local function OnTimer(tag)
 	if(tag==p.debuff_timer_tag)then
-		debuff_timer_time = debuff_timer_time-1
-		if(debuff_timer_time>0)then
+		p.debuff_timer_time = p.debuff_timer_time-1
+		if(p.debuff_timer_time>0)then
 			local label_debuff_time = GetLabel(GetParent(),ctrl_tag.txt_debuff_time)
-			label_debuff_time:SetText(string.format("%02d:%02d:%02d",math.floor(debuff_timer_time/3600),math.floor((debuff_timer_time%3600)/60),debuff_timer_time%60))
+			label_debuff_time:SetText(string.format("%02d:%02d:%02d",math.floor(p.debuff_timer_time/3600),math.floor((p.debuff_timer_time%3600)/60),p.debuff_timer_time%60))
 		else
 			UnRegisterTimer(p.debuff_timer_tag);
             p.debuff_timer_tag = nil
@@ -217,7 +227,8 @@ local function OnTimer(tag)
 		end
 	else
 		for k,v in pairs(p.protect_timer_tag) do
-			if(tag==p.protect_timer_tag[k])then
+			
+			if(p.protect_timer_tag[k] ~= nil and tag==p.protect_timer_tag[k])then
 				protect_timer_time[k] = protect_timer_time[k]-1
 				if(protect_timer_time[k]>0)then
 					local label_protectTime = GetLabel(GetParent(),ctrl_tag.txt_city1_protect_time+k-1)
@@ -239,13 +250,14 @@ end
 
 
 --参与攻城略地的玩家信息
-function p.HandleBattleCityPlayerInfo(cityID,side,encourageID,encourageLevel,debufferTime,synID,debufferCanReset)
+function p.HandleBattleCityPlayerInfo(cityID,side,encourageID,encourageLevel,debufferTime,synID,debufferCanReset, hasCdTimes)
 	p.playerInfo.cityID = cityID
 	p.playerInfo.side = side
 	p.playerInfo.encourageID = encourageID
 	p.playerInfo.debufferTime = debufferTime
 	p.playerInfo.debufferCanReset = debufferCanReset
 	p.playerInfo.synID = synID
+	p.playerInfo.HasCdTimes = hasCdTimes;
 	
 	if(IsUIShow(NMAINSCENECHILDTAG.BattleCityUI)) then --攻城掠地界面是否打开
 		LogInfo("BattleCity:HandleBattleCityPlayerInfo,debufferTime=%d",debufferTime)
@@ -269,7 +281,7 @@ function p.HandleBattleCityPlayerInfo(cityID,side,encourageID,encourageLevel,deb
 			label_debuff_time:SetText(GetTxtPri("Common_wu"))
             btn_reset:EnalbeGray(true)
 		else
-			debuff_timer_time = debufferTime
+			p.debuff_timer_time = debufferTime
 			label_debuff_time:SetText(string.format("%02d:%02d:%02d",math.floor(debufferTime/3600),math.floor((debufferTime%3600)/60),debufferTime%60))
 			if(p.debuff_timer_tag==nil)then
 				p.debuff_timer_tag = RegisterTimer(OnTimer, 1)

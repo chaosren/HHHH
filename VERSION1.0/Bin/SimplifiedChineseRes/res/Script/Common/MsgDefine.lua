@@ -232,6 +232,8 @@ NMSG_Type =
     
     --==================日常任务=====================--
     _MSG_DAILYTASK    = _MSG_GENERAL+6070,    --
+    
+    _MSG_DAILY_LOTTERY    = _MSG_GENERAL+6080,    --每日抽奖
 
     --==================断线重连=====================--
     _MSG_OPERATE_STATUS     = _MSG_GENERAL+7006,    --客户端操作状态
@@ -285,7 +287,7 @@ NMSG_Type =
     _MSG_7x7_SCOREBOARD         = _MSG_GENERAL + 8167,  --7x7排行榜
     _MSG_7x7_UPDATELEVEL        = _MSG_GENERAL + 8168,  --更新等级
     _MSG_7x7_UPDATECOMBO        = _MSG_GENERAL + 8169,  --更新连击
-	
+    _MSG_EXPLOITSHOP            = _MSG_GENERAL + 6090,  --军功
 		--//城市争夺战
 	_MSG_BATTLECITY_CITYINFO			= _MSG_GENERAL+8170;		--//城市信息
 	_MSG_BATTLECITY_HISTORY				= _MSG_GENERAL+8171;		--//历史记录

@@ -147,10 +147,16 @@ local function HandleBattleCityPlayerInfo(netdata)
 	local debufferTime = netdata:ReadInt()
 	local synID = netdata:ReadInt()
 	local debufferCanReset = netdata:ReadByte()
+	local hasCdTimes = netdata:ReadInt();  --已经清除CD的次数
     LogInfo("BattleCity:HandleBattleCityPlayerInfo cityID=%d,side=%d,encourageID=%d,debufferTime=%d,synID=%d,debufferCanReset=%d",
 		cityID,side,encourageID,debufferTime,synID,debufferCanReset);
-	BattleCity.HandleBattleCityPlayerInfo(cityID,side,encourageID,encourageLevel,debufferTime,synID,debufferCanReset)
+	BattleCity.HandleBattleCityPlayerInfo(cityID,side,encourageID,encourageLevel,debufferTime,synID,debufferCanReset, hasCdTimes)
 end
+
+
+
+
+
 
 local function HandleBattleCityBattleInfo(netdata)
 	local cityID = netdata:ReadByte()
@@ -255,6 +261,22 @@ end
 local function ProcessBattleWeakInfo(netdata)
 	local nAttWeak = netdata:ReadByte();
 	local nDefWeak = netdata:ReadByte();
+	
+	local nPerWeak = netdata:ReadByte();
+	local nDefPerWeak = netdata:ReadByte();
+    local scene = GetSMGameScene();
+	if nil == scene then
+		return nil;
+	end	
+    LogInfo("BattleCity:ProcessBattleWeakInfo,nAttWeak=%d,nDefWeak=%d",nAttWeak,nDefWeak)
+	local layer = GetUiLayer(scene, NMAINSCENECHILDTAG.BattleUI_Title);	
+	BattleUI_Title.SetFightersLevel( layer, nAttWeak + nPerWeak, nDefWeak + nDefPerWeak);
+end
+
+
+local function ProcessBattleWeakInfo(netdata)
+	local nAttWeak = netdata:ReadByte();
+	local nDefWeak = netdata:ReadByte();
     local scene = GetSMGameScene();
 	if nil == scene then
 		return nil;
@@ -263,6 +285,7 @@ local function ProcessBattleWeakInfo(netdata)
 	local layer = GetUiLayer(scene, NMAINSCENECHILDTAG.BattleUI_Title);	
 	BattleUI_Title.SetFightersLevel( layer, nAttWeak, nDefWeak )
 end
+
 
 --注册信息接收消息
 RegisterNetMsgHandler(NMSG_Type._MSG_BATTLECITY_CITYINFO,  "HandleBattleCityInfo", HandleBattleCityInfo);
@@ -276,3 +299,4 @@ RegisterNetMsgHandler(NMSG_Type._MSG_BATTLECITY_STORAGEINFO,  "HandleBattleCityS
 RegisterNetMsgHandler(NMSG_Type._MSG_BATTLECITY_ACTION_RET,  "HandleBattleCityActionRet", HandleBattleCityActionRet);
 RegisterNetMsgHandler(NMSG_Type._MSG_BATTLECITY_MAPINFO, "HandleBattleCityMapInfo", HandleBattleCityMapInfo);
 RegisterNetMsgHandler(NMSG_Type._MSG_BATTLECITY_WEAKINFO, "ProcessBattleWeakInfo", ProcessBattleWeakInfo);
+RegisterNetMsgHandler(NMSG_Type._MSG_BATTLECITY_PLAYERWEAKINFO, "HandleBattleCityPlayerWeakInfo", HandleBattleCityPlayerWeakInfo);

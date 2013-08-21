@@ -82,3 +82,5 @@ LoadDataBaseTable("dailytask_config","dailytask_configTable");
 LoadDataBaseTable("dailytask_score_config","dailytask_score_configTable");
 LoadDataBaseTable("dailytask_level_config","dailytask_level_configTable");
 LoadDataBaseTable("battlecity_config","battlecity_configTable");
+LoadDataBaseTable("exchange_exploits_config","exchange_exploits_configTable");
+
