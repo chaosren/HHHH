@@ -274,19 +274,6 @@ local function ProcessBattleWeakInfo(netdata)
 end
 
 
-local function ProcessBattleWeakInfo(netdata)
-	local nAttWeak = netdata:ReadByte();
-	local nDefWeak = netdata:ReadByte();
-    local scene = GetSMGameScene();
-	if nil == scene then
-		return nil;
-	end	
-    LogInfo("BattleCity:ProcessBattleWeakInfo,nAttWeak=%d,nDefWeak=%d",nAttWeak,nDefWeak)
-	local layer = GetUiLayer(scene, NMAINSCENECHILDTAG.BattleUI_Title);	
-	BattleUI_Title.SetFightersLevel( layer, nAttWeak, nDefWeak )
-end
-
-
 --注册信息接收消息
 RegisterNetMsgHandler(NMSG_Type._MSG_BATTLECITY_CITYINFO,  "HandleBattleCityInfo", HandleBattleCityInfo);
 RegisterNetMsgHandler(NMSG_Type._MSG_BATTLECITY_HISTORY,  "HandleBattleCityHistory", HandleBattleCityHistory);
