@@ -26,9 +26,11 @@ p.DATA_CONFIG_ID =
 {
     RESET_SPRIER_EMONEY = 15;   --重置鼓舞所需金幣
     UNLOCK_SPRIER_EMONEY  = 16;   --解鎖鼓舞所需金币
-	--RESET_CD_EMONEY = 30; --重置cd时间需要的金币
+
+	MAX_FAILE_CD_TIME  = 30;  --战败CD时间累加上限(秒)
 	RESET_CD_EMONEY_FIRST = 32; --第一次重置CD每分钟需要的金币
 	RESET_CD_EMONEY_GROW = 33; --重置CD每次累加的金币
+	
 };
 
 -----------------------------获取父层layer---------------------------------
@@ -203,6 +205,13 @@ local function OnTimer(tag)
 		if(p.debuff_timer_time>0)then
 			local label_debuff_time = GetLabel(GetParent(),ctrl_tag.txt_debuff_time)
 			label_debuff_time:SetText(string.format("%02d:%02d:%02d",math.floor(p.debuff_timer_time/3600),math.floor((p.debuff_timer_time%3600)/60),p.debuff_timer_time%60))
+		
+			local nMaxCdTime = p.GetDbConfigValue(p.DATA_CONFIG_ID.MAX_FAILE_CD_TIME);
+			if p.debuff_timer_time >= nMaxCdTime then
+				label_debuff_time:SetFontColor(ccc4(255,0,0,255));
+			else
+				label_debuff_time:SetFontColor(ccc4(251, 165, 46, 255));
+			end
 		else
 			UnRegisterTimer(p.debuff_timer_tag);
             p.debuff_timer_tag = nil
@@ -255,7 +264,6 @@ function p.HandleBattleCityPlayerInfo(cityID,side,encourageID,encourageLevel,deb
 	p.playerInfo.side = side
 	p.playerInfo.encourageID = encourageID
 	p.playerInfo.debufferTime = debufferTime
-	p.playerInfo.debufferCanReset = debufferCanReset
 	p.playerInfo.synID = synID
 	p.playerInfo.HasCdTimes = hasCdTimes;
 	
@@ -272,8 +280,12 @@ function p.HandleBattleCityPlayerInfo(cityID,side,encourageID,encourageLevel,deb
 		
 		--再次参战冷却时间与清除冷却时间按钮处理
 		local label_debuff_time = GetLabel(GetParent(),ctrl_tag.txt_debuff_time)
+		label_debuff_time:SetFontColor(ccc4(251, 165, 46, 255));
+		
 		local btn_reset = GetButton(GetParent(),ctrl_tag.btn_reset_debuff)
-        if(debufferTime==0)then
+		
+		
+       if(debufferTime==0)then
             if(p.debuff_timer_tag~=nil)then
                 UnRegisterTimer(p.debuff_timer_tag);
                 p.debuff_timer_tag = nil
@@ -283,14 +295,20 @@ function p.HandleBattleCityPlayerInfo(cityID,side,encourageID,encourageLevel,deb
 		else
 			p.debuff_timer_time = debufferTime
 			label_debuff_time:SetText(string.format("%02d:%02d:%02d",math.floor(debufferTime/3600),math.floor((debufferTime%3600)/60),debufferTime%60))
+			
+			local nMaxCdTime = p.GetDbConfigValue(p.DATA_CONFIG_ID.MAX_FAILE_CD_TIME);
+			if debufferTime >= nMaxCdTime then
+				label_debuff_time:SetFontColor(ccc4(255,0,0,255));
+			else
+				label_debuff_time:SetFontColor(ccc4(251, 165, 46, 255));
+			end
+			
+    
 			if(p.debuff_timer_tag==nil)then
 				p.debuff_timer_tag = RegisterTimer(OnTimer, 1)
 			end
-            if(debufferCanReset~=0)then
-                btn_reset:EnalbeGray(false)
-            else
-                btn_reset:EnalbeGray(true)
-            end
+   
+           btn_reset:EnalbeGray(false)
 		end
 		
 		--您所使用的战斗令 显示处理

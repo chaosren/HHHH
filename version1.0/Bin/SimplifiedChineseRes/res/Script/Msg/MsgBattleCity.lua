@@ -273,6 +273,12 @@ local function ProcessBattleWeakInfo(netdata)
 	BattleUI_Title.SetFightersLevel( layer, nAttWeak + nPerWeak, nDefWeak + nDefPerWeak);
 end
 
+local function HandleBattleRecord(netdata)
+	local btResult = netdata:ReadByte()
+	local nWinCdTime = netdata:ReadInt()
+	
+end
+
 
 --注册信息接收消息
 RegisterNetMsgHandler(NMSG_Type._MSG_BATTLECITY_CITYINFO,  "HandleBattleCityInfo", HandleBattleCityInfo);
@@ -286,4 +292,19 @@ RegisterNetMsgHandler(NMSG_Type._MSG_BATTLECITY_STORAGEINFO,  "HandleBattleCityS
 RegisterNetMsgHandler(NMSG_Type._MSG_BATTLECITY_ACTION_RET,  "HandleBattleCityActionRet", HandleBattleCityActionRet);
 RegisterNetMsgHandler(NMSG_Type._MSG_BATTLECITY_MAPINFO, "HandleBattleCityMapInfo", HandleBattleCityMapInfo);
 RegisterNetMsgHandler(NMSG_Type._MSG_BATTLECITY_WEAKINFO, "ProcessBattleWeakInfo", ProcessBattleWeakInfo);
-RegisterNetMsgHandler(NMSG_Type._MSG_BATTLECITY_PLAYERWEAKINFO, "HandleBattleCityPlayerWeakInfo", HandleBattleCityPlayerWeakInfo);
+
+RegisterNetMsgHandler(NMSG_Type._MSG_BATTLECITY_BATTLERECORD, "HandleBattleRecord", HandleBattleRecord);
+
+
+--[[
+typedef struct {
+USHORT unMsgSize;
+USHORT unMsgType;
+BYTE btResult;//0.失败 1.成功
+UINT unWinCdTime;
+}MSG_Info;
+
+檀文腾 2013-8-23 17:20:11
+
+const unsigned short _MSG_BATTLECITY_BATTLERECORD = _MSG_GENERAL+8182; //战斗结果
+]]
