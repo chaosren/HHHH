@@ -168,7 +168,14 @@ function p.LoadUI()
 	return;
 end
 
-
+function p.GetBnttonByTag(nTag)
+	local layer = p.GetTopBar() ;
+	if layer == nil then
+		return;
+	end
+	
+	return GetButton(layer, nTag);
+end
 
 
 function p.OnUIEvent(uiNode, uiEventType, param)

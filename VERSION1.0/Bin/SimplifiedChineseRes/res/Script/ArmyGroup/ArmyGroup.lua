@@ -946,10 +946,10 @@ function p.ChangeItemCount( pBtn, nItemCount )
 		pLabelItemCount = createNDUILabel();
 		pLabelItemCount:Init();
 		pLabelItemCount:SetTag( TAG_ITEM_COUNT );
-		pLabelItemCount:SetFontSize( 14 );
+		pLabelItemCount:SetFontSize( 12 );
 		pLabelItemCount:SetTextAlignment( UITextAlignment.Right );
 		pLabelItemCount:SetFontColor( ccc4(255, 204, 120, 255) );
-		pLabelItemCount:SetFrameRect( CGRectMake( 0.125 * tRect.size.w, 0.5 * tRect.size.h, 0.75 * tRect.size.w, 0.333 * tRect.size.h) );
+		pLabelItemCount:SetFrameRect( CGRectMake( 0.125 * tRect.size.w, 0.5 * tRect.size.h, 0.85 * tRect.size.w, 0.333 * tRect.size.h) );
 		pBtn:AddChild(pLabelItemCount);
 	end
 	pLabelItemCount:SetText( SafeN2S( nItemCount ) );

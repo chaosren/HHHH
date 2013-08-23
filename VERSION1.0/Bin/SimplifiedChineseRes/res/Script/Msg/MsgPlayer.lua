@@ -111,7 +111,8 @@ function p.ProcessUserInfo(netdata)
     local usCritCount			= netdata:ReadInt();                    --装备强化暴击累加次数
     local usQuality             = netdata:ReadByte();
     local uiSpirit				= netdata:ReadInt();					-- 武魂
-    
+    local uiExploits				= netdata:ReadInt();					-- 军功
+
     
 	local strName				= netdata:ReadUnicodeString();
     
@@ -156,6 +157,7 @@ function p.ProcessUserInfo(netdata)
     SetRoleBasicDataN(idUser, USER_ATTR.USER_ATTR_EQUIP_CRIT_COUNT, usCritCount);
     SetRoleBasicDataN(idUser, USER_ATTR.USER_ATTR_AUTO_EXERCISE, usQuality);
     SetRoleBasicDataN(idUser, USER_ATTR.USER_ATTR_SPIRIT, uiSpirit);
+    SetRoleBasicDataN(idUser, USER_ATTR.USER_ATTR_EXPLOITS, uiExploits);
 
 	--++Guosen 2012.7.15
 	local nRideStatus	= usEquipTime2;

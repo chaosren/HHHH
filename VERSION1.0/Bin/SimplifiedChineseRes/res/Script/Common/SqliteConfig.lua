@@ -243,7 +243,24 @@ end
 
 
 
-
+--豪华礼包数据记录
+local LuxuryGift = "LuxuryGift";
+local LuxuryGiftCreateScript = "CREATE TABLE LuxuryGift (ID INTEGER);";
+--nFlag操作类型  1:获取是否存在
+function p.LuxuryGiftTableOperate(nFlag)
+    local isExists = Sqlite_IsExistTable(LuxuryGift);
+	
+	if nFlag ~= nil and 
+	   nFlag == 1 then
+		return isExists;
+	end
+	
+	if(not isExists) then
+		 Sqlite_ExcuteSql(LuxuryGiftCreateScript);
+	end
+	
+	return true;
+end
 
 
 RegisterGlobalEventHandler(GLOBALEVENT.GE_LOGIN_GAME,"SqliteConfig.InitDataBaseTable", p.InitDataBaseTable);

@@ -13,7 +13,7 @@ local container	=nil;
 local scroll	=nil;
 local contentHight=0;
 
-local gRectScaleY = 0.25;
+local gRectScaleY = 0.20;
 --延迟显示ui时间
 p.mTimerTaskTag = nil;
 
@@ -42,7 +42,7 @@ function p.LoadUI()
 	layer:SetTouchEnabled(false);
 
 	--layer:SetFrameRect(CGRectMake(winsize.w*0.1, winsize.h*0.5, winsize.w*0.3, winsize.h*0.3));
-	layer:SetFrameRect(CGRectMake(winsize.w*0.1, winsize.h*0.6, winsize.w*0.7, winsize.h*gRectScaleY));
+	layer:SetFrameRect(CGRectMake(winsize.w*0.1, winsize.h*0.7, winsize.w*0.7, winsize.h*gRectScaleY));
 	layer:SetBackgroundColor(ccc4(0,0,0,30));
 	
 	scene:AddChildZ(layer,4999);
@@ -143,10 +143,19 @@ function p.AddChatText(speakerId,channel,speaker,text,nindex)
 		chatText:SetContent(speakerId,channel,speaker,text,1,6,color);
 		chatText:SetTag(nindex);
 		--chatText:SetContent(speakerId,channel,speaker,text,1,6,ccc4(0,0,255,255));
-		local rect  = CGRectMake(0, contentHight, winsize.w*0.7, winsize.h*gRectScaleY/5); 
+		local rect  = CGRectMake(0, contentHight, winsize.w*0.7, winsize.h*gRectScaleY/5);
 		chatText:SetFrameRect(rect);
-		contentHight=contentHight+chatText:GetContentHeight();
 		
+		local nChatHeight = chatText:GetContentHeight();
+		if nChatHeight > winsize.h*gRectScaleY/4 then
+			nChatHeight = winsize.h*gRectScaleY/2;
+		else
+			nChatHeight = winsize.h*gRectScaleY/4;
+		end
+
+		contentHight=contentHight + nChatHeight;
+		--contentHight = contentHight + winsize.h*0.4/5;
+        
 		LogInfo("gamescene chat AddChatText3")
 		
 		local scrollrect = CGRectMake(0.0, 0.0, winsize.w*0.7, contentHight);

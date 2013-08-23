@@ -4,6 +4,14 @@ setfenv(1, NPC);
 
 MAX_CHAT_OPTION_NUM = 4;
 
+function OpenExploitShop()
+
+    CloseDlg();
+    _G.ExploitShop.LoadUI();
+end
+
+
+
 function OpenKeZhang()
 	LogInfo("OpenKeZhang: test2")
 	CloseDlg();
@@ -36,7 +44,8 @@ NpcOptionFunc =
 	[6] = OpenZhuangBeiDian,
 	[7] = OpenSecretShop,
 	[8] = OpenUpgradeUI,
-	
+    [9] = OpenExploitShop,
+
 	
 };--]]
 
@@ -54,6 +63,7 @@ function IfIsOpen_10004()
     return true;
 end
 
+--npc标题,npc对话内容,选项1,选项1func,选项1开启条件,选项2(重复)...
 
 NpcConfig = 
 {
@@ -69,7 +79,7 @@ NpcConfig =
 	[20004] = {"", _G.GetTxtPri("MPF_T14")};
 	[20005] = {"", _G.GetTxtPri("MPF_T15"), _G.GetTxtPri("MPF_T18") ,8,};
 	[20006] = {"", _G.GetTxtPri("MPF_T16"), _G.GetTxtPri("MPF_T19"), 1,};
-	[20007] = {"", _G.GetTxtPri("MPF_T17"), _G.GetTxtPri("MPF_T20"), 7,};
+    [20007] = {"", _G.GetTxtPri("MPF_T17"), _G.GetTxtPri("MPF_T20"), 7,nil,_G.GetTxtPri("MPF_T21"),9,nil};
 
 };
 

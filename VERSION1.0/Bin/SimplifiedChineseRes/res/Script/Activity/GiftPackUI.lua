@@ -90,6 +90,9 @@ function p.OnUIEvent(uiNode, uiEventType, param)
             
             local gid = p.GiftBackList[i].id;
             if(gid>0) then
+				  if p.GiftBackList[i].type == 121 then
+					SqliteConfig.LuxuryGiftTableOperate();
+				  end
                 MsgActivityMix.SendGetGift(gid);
                 ShowLoadBar();
             else

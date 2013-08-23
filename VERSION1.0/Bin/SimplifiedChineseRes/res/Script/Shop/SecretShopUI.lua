@@ -102,8 +102,6 @@ function p.LoadUI(ShopType)
 
 	local scene = GetSMGameScene();
 	local layer = createNDUILayer();
-	
-	--layer:SetPopupDlgFlag( true );
 	layer:Init();
 	layer:SetTag(p.TagUiLayer);
 	layer:SetFrameRect(RectFullScreenUILayer);
@@ -495,7 +493,10 @@ function p.OnUIEvent(uiNode, uiEventType, param)
             if(itemBtn:GetItemType()==0) then
                 return;
             end
-            CommonDlgNew.ShowInputDlg(GetTxtPri("SSUI_T1"), p.OnUIEventBuyNum,nil,1,3);
+            --CommonDlgNew.ShowInputDlg(GetTxtPri("SSUI_T1"), p.OnUIEventBuyNum,nil,1,3);
+            
+            CommonDlgNew.ShowInputDlg(GetTxtPri("SSUI_T1"), p.OnUIEventBuyNum,nil,1,3,nil,1);
+
         end
     end
     return true;
@@ -517,12 +518,14 @@ function p.GetPageView()
 end
 
 function p.GetPageViewContainer()
+	LogInfo("p.GetPageViewContainer()1")
 	local scene = GetSMGameScene();	
+	LogInfo("p.GetPageViewContainer()2")
 	if not CheckP(scene) then
 		LogInfo("not CheckP(scene),load p.LoadPageView failed!");
 		return;
 	end
-	
+	LogInfo("p.GetPageViewContainer()3")
 	local svc	= RecursiveSVC(scene, {p.TagUiLayer, p.TagPageContainer});
 	return svc;
 end

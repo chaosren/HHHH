@@ -183,4 +183,8 @@ DoFile("Warlord/define.lua");
 --精英特权
 DoFile("ElitePrivilege/define.lua");
 
+--每日抽奖
+DoFile("DailyLottery/define.lua");
 
+--新登入签到功能
+DoFile("CheckIn/define.lua");

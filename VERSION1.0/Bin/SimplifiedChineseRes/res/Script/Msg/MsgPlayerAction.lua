@@ -126,7 +126,8 @@ function p.MsgGetPlayerActionInfo(netdatas)
 
         if cActionType == p.EVENT_ACTION_TYPE.ACTION_INFO then   --要启用的活动
             if (p.PLAYER_ACTION_TYPE.CHECK_IN == iType) then   --登入签到
-                DailyCheckInUI.SetUiInfo(p.StrActionInfo.iData1, p.StrActionInfo.iData2, p.StrActionInfo.iData3);
+                --DailyCheckInUI.SetUiInfo(p.StrActionInfo.iData1, p.StrActionInfo.iData2, p.StrActionInfo.iData3);
+				  CheckInReward.SetUiInfo(p.StrActionInfo.iData1, p.StrActionInfo.iData2, p.StrActionInfo.iData3);
             elseif (p.PLAYER_ACTION_TYPE.ON_LINE == iType) then   --在线奖励
                 OnlineCheckIn.ProccessNetMsg(p.StrActionInfo.iData1, p.StrActionInfo.iData2,p.StrActionInfo.iData3)
             elseif (p.PLAYER_ACTION_TYPE.FIRST_PAY == iType) then  --首次充值
@@ -215,42 +216,15 @@ p.REV_ACTION_TYPE =
 	ACTION_EVENTLIST_CONFIG = 2,	       --活动配置
 	ACTION_EVENTLIST_AWARD_BEGIN = 3,		--活动奖励配置
 	ACTION_EVENTLIST_AWARD = 4,				--活动奖励配置
+	ACTION_EVENTLIST_ACTIVITY_BEGIN = 5,	--活动列表配置
+	ACTION_EVENTLIST_ACTIVITY = 6,			--活动列表配置
+	
+	
+	ACTION_EVENTLIST_VIPAWARD_BEGIN = 7,	--vip奖励配置表
+	ACTION_EVENTLIST_VIPAWARD = 8,			--vip奖励配置表
 };
 
---[[  
-struct EventList
-{
-	OBJID idEventConfig;
-	char szName[_MAX_NAMESIZE];
-	UCHAR ucType;
-	UCHAR ucUIGroup;
-	UCHAR ucTimeType;
-	DWORD dwBeginTime;
-	DWORD dwEndTime;
-	char szContent[_MAX_WORDSSIZE];
-	char szBroadContent[_MAX_WORDSSIZE];
-	USHORT usServer;
-};
-struct EventAward
-{
-	OBJID idAward;
-	OBJID idEventConfig;
-	UCHAR ucStage;
-	DWORD dwStageCondition;
-	OBJID idItemType;
-	UCHAR ucAmount;
-	DWORD dwEMoney;
-	DWORD dwStamina;
-	DWORD dwMoney;
-	DWORD dwSoph;
-	DWORD dwRepute;
-	DWORD dwParam1;
-	DWORD dwParam2;
-	DWORD dwParam3;
-};
-]]
-	
-	
+
 function p.MsgGetRechargeRewardInfo(netdatas)
  
     --数据的类型
@@ -261,9 +235,11 @@ function p.MsgGetRechargeRewardInfo(netdatas)
     if cActionType == p.REV_ACTION_TYPE.ACTION_EVENTLIST_CONFIG_BEGIN then
 		RechargeReward.EventConfig = {};   
     elseif cActionType == p.REV_ACTION_TYPE.ACTION_EVENTLIST_AWARD_BEGIN then
-    	RechargeReward.EventReward = {};  
+    	RechargeReward.EventReward = {}; 
+    elseif cActionType == p.REV_ACTION_TYPE.ACTION_EVENTLIST_VIPAWARD_BEGIN then
+		CheckInReward.VipStageAwardInfo = {};
     end
-    
+
     --处理congfig数据
     if cActionType == p.REV_ACTION_TYPE.ACTION_EVENTLIST_CONFIG_BEGIN or cActionType == p.REV_ACTION_TYPE.ACTION_EVENTLIST_CONFIG then
 		for i = 1, cActionAmount do
@@ -302,8 +278,27 @@ function p.MsgGetRechargeRewardInfo(netdatas)
 			rightTable.Param3 = netdatas:ReadInt(); 
 			table.insert(RechargeReward.EventReward, rightTable);   
 		end
-   end
-end
+		
+	--处理event_vipaward_config
+	elseif cActionType == p.REV_ACTION_TYPE.ACTION_EVENTLIST_VIPAWARD_BEGIN or cActionType == p.REV_ACTION_TYPE.ACTION_EVENTLIST_VIPAWARD then
+		for i = 1, cActionAmount do
+			local rightTable = {};  
+			rightTable.Id = netdatas:ReadInt();
+			rightTable.nStage = netdatas:ReadInt();                  --nStage阶段 签到的阶段
+			rightTable.nVipLevel = netdatas:ReadInt();          
+			rightTable.ItemType  = netdatas:ReadInt();   
+			rightTable.ItemCount = netdatas:ReadInt();      --物品数
+			rightTable.Emoney= netdatas:ReadInt();          --金币
+			rightTable.Stamina = netdatas:ReadInt();        --奖励物品类型  --军令
+			rightTable.Money = netdatas:ReadInt();          --奖励物品类型  --银币  
+			rightTable.Soph = netdatas:ReadInt();           --奖励物品类型                --将魂
+			rightTable.Repute = netdatas:ReadInt();          --声望 
+			
+			table.insert(CheckInReward.VipStageAwardInfo, rightTable); 
+			--CheckInReward.VipStageAwardInfo[rightTable.nStage][rightTable.nVipLevel + 1] = rightTable;
+		end	
+   end   
+end 
 
 --注册消息获取玩家活动信息
 RegisterNetMsgHandler(NMSG_Type._MSG_PLAYER_ACTION_INFO,  "p.MsgGetPlayerActionInfo", p.MsgGetPlayerActionInfo);

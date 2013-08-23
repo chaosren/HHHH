@@ -1146,8 +1146,8 @@ GetTxtPri("CB2_T21"),
 GetTxtPri("CB2_T22"),
 GetTxtPri("CB2_T23"),
 GetTxtPri("CB2_T24"),
-GetTxtPri("CB2_T25"),GetTxtPri("CB2_T251"),GetTxtPri("CB2_T252"),
-GetTxtPri("CB2_T26"),GetTxtPri("CB2_T261"),
+GetTxtPri("CB2_T25"), GetTxtPri("CB2_T251"),GetTxtPri("CB2_T252"),
+GetTxtPri("CB2_T26"),GetTxtPri("CB2_T261"),GetTxtPri("CB2_T26111"),
 GetTxtPri("CB2_T27"),GetTxtPri("CB2_T271"),GetTxtPri("CB2_T272"),
 GetTxtPri("CB2_T28"),
 GetTxtPri("CB2_T29"),GetTxtPri("CB2_T291"),GetTxtPri("CB2_T292"),
@@ -1155,10 +1155,10 @@ GetTxtPri("CB2_T30"),
 GetTxtPri("CB2_T31"),
 GetTxtPri("CB2_T33"),
 GetTxtPri("CB2_T34"),
-GetTxtPri("CB2_T35"),
-GetTxtPri("CB2_T352"),
+GetTxtPri("CB2_T35"),GetTxtPri("CB2_T35111"),
+GetTxtPri("CB2_T352"),GetTxtPri("CB2_T352111"),GetTxtPri("CB2_T352112"),
 GetTxtPri("CB2_T4211"),
-GetTxtPri("CB2_T4311"),
+GetTxtPri("CB2_T4311"),GetTxtPri("CB2_T431111"),
 }
 
 local Tiptag = 9998;
@@ -1226,7 +1226,7 @@ function p.ShowTip()
 			local pLabelScore = nil;
 			
 			
-		  	pLabelTips = _G.CreateColorLabel( TipTxt[nIndex], 11, nWidthLimit );
+		  	pLabelTips = _G.CreateColorLabel( TipTxt[nIndex], 10, nWidthLimit );
 			pLabelTips:SetFrameRect(CGRectMake(0, 0, nWidthLimit, 20 * ScaleFactor));
 			view:AddChild(pLabelTips);
 

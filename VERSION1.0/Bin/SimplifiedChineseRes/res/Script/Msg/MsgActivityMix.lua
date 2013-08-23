@@ -82,18 +82,30 @@ function p.ProcessGiftPackList(netdatas)
 		p.giftBackList = {};
 	end
 	
+	local bExit = SqliteConfig.LuxuryGiftTableOperate(1);
+	
 	for i=1,count do
 		local m = {};
         m = {};
+        
 		m.id=netdatas:ReadInt();
 		m.type=netdatas:ReadInt();
+		
 		m.param0=netdatas:ReadInt();
 		m.param1=netdatas:ReadInt();
 		m.aux_param0=netdatas:ReadInt();
 		m.aux_param1=netdatas:ReadInt();
 		m.gift_desc=netdatas:ReadUnicodeString();
 		
-		table.insert(p.giftBackList, m);
+		--已经领取过豪华礼包
+		if bExit then
+			if m.type ~= 121 then
+				table.insert(p.giftBackList, m);
+			end
+		else
+			table.insert(p.giftBackList, m);
+		end
+
 		LogInfo("GIFT id=%d,type=%d,des=%s",m.id,m.type,m.gift_desc);
 	end
 	

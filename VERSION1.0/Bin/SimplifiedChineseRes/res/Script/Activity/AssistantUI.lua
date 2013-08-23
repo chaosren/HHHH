@@ -155,7 +155,7 @@ function p.initData()
     end
     
     --签到
-    local bIsSigh = DailyCheckInUI.HasSigh();
+    local bIsSigh = CheckInReward.IsCanCheckIn();
     if(bIsSigh) then
         table.insert(p.AssistantList,6);
         p.Infos[6][1] = string.format(p.Infos[6][1]);
@@ -228,7 +228,7 @@ end
 
 function p.qdDeal()
     CloseMainUI();
-    DailyCheckInUI.LoadUI();
+    CheckInReward.LoadUI();
 end
 
 ---------------------------初始化助手信息-----------------------------------
