@@ -119,6 +119,13 @@ function p.OnUIEvent(uiNode, uiEventType, param)
 		if ctrl_tag.btn_close == tag then                   --关闭    
             CloseUI(NMAINSCENECHILDTAG.BattleCityCityUI);
 		elseif ctrl_tag.btn_enter == tag then
+			
+			local retTime = BattleCity.GetSucCdTime();
+			if retTime ~= 0 then
+				CommonDlgNew.ShowYesDlg(string.format(GetTxtPri("BattleCitySucCd"), retTime), nil, nil, 3);
+				return true;
+			end
+			
 			--发送进入
 			--MsgBattleCity.EnterList(self_cityID)
 			if(self_enterType=="att")then

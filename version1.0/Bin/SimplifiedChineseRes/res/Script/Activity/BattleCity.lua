@@ -17,6 +17,9 @@ p.cityInfos = {}
 reset_timer_tag = nil
 reset_timer_time = 0
 
+--战斗胜利定时器
+p.suc_cd_timer_tag = nil
+suc_cd_timer_time = 0
 
 --db battlecity_config
 p.DbBattleCityData = {};
@@ -168,12 +171,22 @@ function p.LeaveBattleCity()
 		UnRegisterTimer(reset_timer_tag);
 		reset_timer_tag = nil
 	end
+	reset_timer_time = 0;
+	
+	if p.suc_cd_timer_tag ~= nil then
+		UnRegisterTimer(p.suc_cd_timer_tag);
+		p.suc_cd_timer_tag = nil
+	end
+	suc_cd_timer_time = 0;
+	
 	
 	for i,v in pairs(p.protect_timer_tag) do
 		if v ~= nil then
 			UnRegisterTimer(v);
+			protect_timer_time[i] = 0;
 		end
 	end	
+	
 end
 
 
@@ -233,6 +246,15 @@ local function OnTimer(tag)
 		local label_reset_time = GetLabel(GetParent(),ctrl_tag.txt_reset_time)
 		if(label_reset_time~=nil)then
 			label_reset_time:SetText(string.format("%02d:%02d:%02d",math.floor(reset_timer_time/3600),math.floor((reset_timer_time%3600)/60),reset_timer_time%60))
+		end
+		
+	elseif (tag== p.suc_cd_timer_tag) then
+		if suc_cd_timer_time > 1 then
+			suc_cd_timer_time = suc_cd_timer_time - 1;
+		else
+			suc_cd_timer_time = 0;
+			UnRegisterTimer(p.suc_cd_timer_tag);
+			p.suc_cd_timer_tag = nil
 		end
 	else
 		for k,v in pairs(p.protect_timer_tag) do
@@ -427,4 +449,21 @@ function p.HandleBattleCityMapInfo(resetLeftTime,citys)
 		LogInfo("k=%d,v=%d",k,v)
 	end
 	LogInfo("########FFFF%d",#p.protect_timer_tag)
+end
+
+
+function p.HandleSucCdTime(nTimes)
+	if p.suc_cd_timer_tag ~= nil then
+		UnRegisterTimer(p.suc_cd_timer_tag);
+		p.suc_cd_timer_tag = nil;
+	end
+
+	suc_cd_timer_time = nTimes;
+	if nTimes ~= 0 then
+	   p.suc_cd_timer_tag = RegisterTimer(OnTimer,1)
+	end
+end
+
+function p.GetSucCdTime()
+	return suc_cd_timer_time;
 end

@@ -276,7 +276,7 @@ end
 local function HandleBattleRecord(netdata)
 	local btResult = netdata:ReadByte()
 	local nWinCdTime = netdata:ReadInt()
-	
+	BattleCity.HandleSucCdTime(nWinCdTime);
 end
 
 
