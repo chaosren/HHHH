@@ -270,7 +270,7 @@ local function ProcessBattleWeakInfo(netdata)
 	end	
     LogInfo("BattleCity:ProcessBattleWeakInfo,nAttWeak=%d,nDefWeak=%d",nAttWeak,nDefWeak)
 	local layer = GetUiLayer(scene, NMAINSCENECHILDTAG.BattleUI_Title);	
-	BattleUI_Title.SetFightersLevel( layer, nAttWeak + nPerWeak, nDefWeak + nDefPerWeak);
+	BattleUI_Title.SetFightersLevel( layer, nPerWeak, nDefPerWeak);
 end
 
 local function HandleBattleRecord(netdata)

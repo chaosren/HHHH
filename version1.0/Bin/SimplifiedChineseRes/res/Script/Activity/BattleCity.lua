@@ -31,8 +31,8 @@ p.DATA_CONFIG_ID =
     UNLOCK_SPRIER_EMONEY  = 16;   --解鎖鼓舞所需金币
 
 	MAX_FAILE_CD_TIME  = 30;  --战败CD时间累加上限(秒)
-	RESET_CD_EMONEY_FIRST = 32; --第一次重置CD每分钟需要的金币
-	RESET_CD_EMONEY_GROW = 33; --重置CD每次累加的金币
+	RESET_CD_EMONEY_FIRST = 31; --第一次重置CD每分钟需要的金币
+	RESET_CD_EMONEY_GROW = 32; --重置CD每次累加的金币
 	
 };
 
@@ -173,17 +173,9 @@ function p.LeaveBattleCity()
 	end
 	reset_timer_time = 0;
 	
-	if p.suc_cd_timer_tag ~= nil then
-		UnRegisterTimer(p.suc_cd_timer_tag);
-		p.suc_cd_timer_tag = nil
-	end
-	suc_cd_timer_time = 0;
-	
-	
 	for i,v in pairs(p.protect_timer_tag) do
 		if v ~= nil then
 			UnRegisterTimer(v);
-			protect_timer_time[i] = 0;
 		end
 	end	
 	
@@ -404,6 +396,11 @@ end
 
 --服务端接收到的攻城略地主城信息
 function p.HandleBattleCityMapInfo(resetLeftTime,citys)
+
+	if not IsUIShow(NMAINSCENECHILDTAG.BattleCityUI) then
+		return;
+	end
+	
     reset_timer_time = resetLeftTime
     
     --显示重置时间信息，以及启动客户端定时器

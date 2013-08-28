@@ -60,7 +60,11 @@ function p.LoadUI (cityID,defValue,weak)
 	local label_weak = GetLabel(layer,ctrl_tag.txt_weak)
 	LogInfo("%s",tostring(label_weak))
 	label_defvalue:SetText(tostring(defValue))
-	label_weak:SetText(tostring(weak).."%");
+	if weak == 0 then
+		label_weak:SetText(GetTxtPri("SYN_D21"));
+	else
+		label_weak:SetText(tostring(weak) .. GetTxtPri("SYN_D30"));
+	end
 	
 	local label_title = GetLabel(layer,ctrl_tag.txt_title)
 	if(BattleCity.playerInfo.side==1)then

@@ -43,7 +43,7 @@ function p.LoadUI()
 	end
 	uiLoad:Load("city_battle/city_battle_rule.ini", layer, p.OnUIEvent, 0, 0);
     local label_rule = GetLabel(layer,ctrl_tag.txt_rule)
-	label_rule:SetText(rule_info)
+	--label_rule:SetText(rule_info)
     return true
 end
 

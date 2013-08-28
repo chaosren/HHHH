@@ -1989,6 +1989,46 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name="city_battle"
+				>
+				<File
+					RelativePath="..\Bin\SimplifiedChineseRes\res\UI\city_battle\city_battle.ini"
+					>
+				</File>
+				<File
+					RelativePath="..\Bin\SimplifiedChineseRes\res\UI\city_battle\city_battle_gift.ini"
+					>
+				</File>
+				<File
+					RelativePath="..\Bin\SimplifiedChineseRes\res\UI\city_battle\city_battle_info.ini"
+					>
+				</File>
+				<File
+					RelativePath="..\Bin\SimplifiedChineseRes\res\UI\city_battle\city_battle_inspire.ini"
+					>
+				</File>
+				<File
+					RelativePath="..\Bin\SimplifiedChineseRes\res\UI\city_battle\city_battle_list1.ini"
+					>
+				</File>
+				<File
+					RelativePath="..\Bin\SimplifiedChineseRes\res\UI\city_battle\city_battle_listitem1.ini"
+					>
+				</File>
+				<File
+					RelativePath="..\Bin\SimplifiedChineseRes\res\UI\city_battle\city_battle_news.ini"
+					>
+				</File>
+				<File
+					RelativePath="..\Bin\SimplifiedChineseRes\res\UI\city_battle\city_battle_news_list.ini"
+					>
+				</File>
+				<File
+					RelativePath="..\Bin\SimplifiedChineseRes\res\UI\city_battle\city_battle_rule.ini"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="TreasureHunt"

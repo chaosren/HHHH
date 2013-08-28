@@ -162,7 +162,7 @@ function p.LoadUI()
     p.Refresh();
     
     --doNDSdkLogin();--Guosen 2012.8.3
-    
+    doHideMobageBalance();
     return true;
 end
 
