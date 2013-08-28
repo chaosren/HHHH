@@ -348,6 +348,10 @@
 			SourceControlFiles="false"
 			>
 			<File
+				RelativePath="..\Bin\SimplifiedChineseRes\res\Script\Common\ClientConfig.lua"
+				>
+			</File>
+			<File
 				RelativePath="..\Bin\SimplifiedChineseRes\res\Script\Common\DataBaseDefine.lua"
 				>
 			</File>

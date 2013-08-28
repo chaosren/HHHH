@@ -33,6 +33,6 @@ DoFile("Common/SqliteConfig.lua");
 DoFile("Common/BattleProcess.lua");
 
 
-
+DoFile("Common/ClientConfig.lua");
 
 

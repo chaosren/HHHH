@@ -213,7 +213,7 @@ function p.OnUIEvent(uiNode, uiEventType, param)
             
         elseif TOOL_BTN[5].Tag == tag then          --每日签到
             LogInfo("tag"..tag);
-            DailyCheckInUI.LoadUI();      
+            CheckInReward.LoadUI();      
             --RechargeReward.LoadUI();      
             return ture;
         elseif TOOL_BTN[6].Tag == tag then          --充值礼包

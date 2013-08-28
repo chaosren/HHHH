@@ -99,9 +99,9 @@ function p.ProcessGiftPackList(netdatas)
 		
 		--已经领取过豪华礼包
 		if bExit then
-			if m.type ~= 121 then
+			--if m.type ~= 121 then
 				table.insert(p.giftBackList, m);
-			end
+			--end
 		else
 			table.insert(p.giftBackList, m);
 		end
