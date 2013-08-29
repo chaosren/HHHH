@@ -2087,7 +2087,7 @@ void* CopyLoginResThread(void* ptr)
 	CZipUnZip* pkUnzip = new CZipUnZip;
 
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
-	pkUnzip->UnZipFile("../SimplifiedChineseRes.zip","dhlj_luxury/");
+	pkUnzip->UnZipFile("../SimplifiedChineseRes.zip","dhlj/");
 	NDBeforeGameMgr::ms_nCopyStatus = 1;
 #elif (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
 
@@ -2133,7 +2133,7 @@ void* CopyLoginResThread(void* ptr)
 	nMaxIndex = kZipEntry.index;
 
 	LOGD("nMaxIndex = %d",kZipEntry.index);
-	string strPath = "/sdcard/dhlj_luxury/";
+	string strPath = "/sdcard/dhlj/";
 
 	for (int i = 0;i < nMaxIndex;i++)
 	{
@@ -2207,9 +2207,9 @@ void* CopyResThread(void* ptr)
 	pkUnzip->UnZipFile("../copy/SimplifiedChineseRes.zip","../");
 	pkUnzip->SetExtStatus(&NDBeforeGameMgr::ms_nCopyStatus);
 #elif (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
-	//pkUnzip->UnZipFile("assets/SimplifiedChineseRes.zip","/sdcard/dhlj_luxury/");
+	//pkUnzip->UnZipFile("assets/SimplifiedChineseRes.zip","/sdcard/dhlj/");
     
-    recursiveDelete("/sdcard/dhlj_luxury");
+    recursiveDelete("/sdcard/dhlj");
     
 	unsigned char* pszZipData = 0;
 	unsigned long ulZipLength = 0;
@@ -2254,7 +2254,7 @@ void* CopyResThread(void* ptr)
 	nMaxIndex = kZipEntry.index;
 
 	LOGD("nMaxIndex = %d",kZipEntry.index);
-	string strPath = "/sdcard/dhlj_luxury/";
+	string strPath = "/sdcard/dhlj/";
 
 	for (int i = 0;i < nMaxIndex;i++)
 	{

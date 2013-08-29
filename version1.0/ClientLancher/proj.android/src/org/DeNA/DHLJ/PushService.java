@@ -6,8 +6,8 @@ import java.io.UnsupportedEncodingException;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
-import tw.mobage.g23000092.MainActivity;
-import tw.mobage.g23000092.R;
+import tw.mobage.g23000052.MainActivity;
+import tw.mobage.g23000052.R;
 
 import com.ibm.mqtt.IMqttClient;
 import com.ibm.mqtt.MqttClient;
@@ -450,7 +450,7 @@ public class PushService extends Service
 		 n.flags |= Notification.FLAG_ONGOING_EVENT; // 璁剧疆甯搁┗ Flag
 
 		 n.defaults = Notification.DEFAULT_ALL;
-		 n.icon = tw.mobage.g23000092.R.drawable.dhlj_icon;
+		 n.icon = tw.mobage.g23000052.R.drawable.dhlj_icon;
 		 n.when = System.currentTimeMillis();
 		 Intent intent = new Intent(this, MainActivity.class); 
 		 intent.setAction(ACTION_START);
@@ -478,7 +478,7 @@ public class PushService extends Service
 	{
 		int versionNumber = 0;
 		try {
-		        PackageInfo pinfo = getPackageManager().getPackageInfo("tw.mobage.g23000092", PackageManager.GET_CONFIGURATIONS);
+		        PackageInfo pinfo = getPackageManager().getPackageInfo("tw.mobage.g23000052", PackageManager.GET_CONFIGURATIONS);
 		        String versionCode = pinfo.versionName;
 		        versionNumber = pinfo.versionCode;
 		} catch (NameNotFoundException e) {
@@ -526,7 +526,7 @@ public class PushService extends Service
 				startKeepAlives();				        
 		}
 		public String GetMarket() {  
-            //璁剧疆瀹氭椂鍣�  
+            //璁剧疆瀹氭椂鍣??  
                int counter = 0;  
                //瀹炰緥鍖朣tringBuilder  
                StringBuilder sb = new StringBuilder("");  
@@ -537,7 +537,7 @@ public class PushService extends Service
                try {  
                    //濡傛灉娌℃湁鍒版枃浠跺熬缁х画鎵ц  
                 while (xrp.getEventType() != XmlResourceParser.END_DOCUMENT) {   
-                    //濡傛灉鏄紑濮嬫爣绛�  
+                    //濡傛灉鏄紑濮嬫爣绛??  
                          if (xrp.getEventType() == XmlResourceParser.START_TAG) {  
                              //鑾峰彇鏍囩鍚嶇О  
                               String name = xrp.getName();  
@@ -550,7 +550,7 @@ public class PushService extends Service
                          } else if (xrp.getEventType() == XmlPullParser.END_TAG) {   
                          } else if (xrp.getEventType() == XmlPullParser.TEXT) {   
                          }   
-                         //涓嬩竴涓爣绛�  
+                         //涓嬩竴涓爣绛??  
                          xrp.next();   
                     }  
                } catch (XmlPullParserException e) {  

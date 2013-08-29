@@ -25,7 +25,7 @@ package org.cocos2dx.lib;
 
 import org.DeNA.DHLJ.DaHuaLongJiang;
 
-import tw.mobage.g23000092.R;
+import tw.mobage.g23000052.R;
 
 import android.content.Context;
 import android.graphics.Bitmap;

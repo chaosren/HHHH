@@ -25,5 +25,5 @@ p.CLIENT_TYPE_CONFIG =
 	CLIENT_TYPE_IOS_NORMAL = 5,            --ios繁体普通版
 	CLIENT_TYPE_IOS_INTERNAL = 6,          --ios繁体国际版
    	CLIENT_TYPE_END = 7, 
-};function p.GetLuxuryConfig()   return p.LUXURY_CONFIG.LUXURY;   --豪华版
-endfunction p.GetClientTypeConfig()   return p.CLIENT_TYPE_CONFIG.CLIENT_TYPE_ANDROID_LUXURY;   --安卓豪华版end
+};function p.GetLuxuryConfig()   return p.LUXURY_CONFIG.NOT_LUXURY;   --非豪华版
+endfunction p.GetClientTypeConfig()   return p.CLIENT_TYPE_CONFIG.CLIENT_TYPE_ANDROID_NORMAL;   --安卓繁体普通版end

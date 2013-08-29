@@ -84,7 +84,7 @@ const string NDPath::GetAppPath()
     return std::string([[[NSBundle mainBundle] resourcePath] UTF8String]) + "/";
 #endif
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
-	return "/sdcard/dhlj_luxury/";
+	return "/sdcard/dhlj/";
 #endif
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
 	return "../../Bin/";
@@ -102,7 +102,7 @@ const string NDPath::GetCashesPath()
      return std::string([CashesDirectory UTF8String]) +"/";
 #endif
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
-	return "/sdcard/dhlj_luxury/";
+	return "/sdcard/dhlj/";
 #endif
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
 	return "../../Bin/";
@@ -119,7 +119,7 @@ const string NDPath::GetDocumentPath()
 //	return std::string([documentsDirectory UTF8String]) + "/";
 //
 //#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
-//	return "/sdcard/dhlj_luxury/";
+//	return "/sdcard/dhlj/";
 //#endif
 //#if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
 //	return "./";
@@ -314,7 +314,7 @@ void NDPath::SetResDirPos( int iPos )
 const string NDPath::GetDBPath()
 {
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
-	return "/sdcard/dhlj_luxury/";
+	return "/sdcard/dhlj/";
 #else
 	return "";
 #endif

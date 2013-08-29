@@ -83,8 +83,8 @@ import android.view.View.OnClickListener;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.FrameLayout;
 import android.widget.VideoView;
-import tw.mobage.g23000092.MainActivity;
-import tw.mobage.g23000092.R;
+import tw.mobage.g23000052.MainActivity;
+import tw.mobage.g23000052.R;
 import android.widget.ImageView;
 import android.graphics.BitmapFactory;
 import android.graphics.Bitmap;
@@ -325,7 +325,7 @@ public class DaHuaLongJiang extends Cocos2dxActivity
 	{
 		CookieSyncManager.createInstance(this);
 
-		Mobage.registerMobageResource(this, "tw.mobage.g23000092.R");
+		Mobage.registerMobageResource(this, "tw.mobage.g23000052.R");
 		// RemoteNotificationView.DisableRemoteNotification();
 		SocialUtils.initializeMobage(this);
 		mPlatformListener = SocialUtils.createPlatformListener(true);
@@ -930,8 +930,8 @@ public class DaHuaLongJiang extends Cocos2dxActivity
 	private void createFloatView()
 	{
 		myFV = new FloatView(getApplicationContext());
-		// myFV.setImageResource(tw.mobage.g23000092.R.drawable.icon);
-		myFV.setBackgroundResource(tw.mobage.g23000092.R.drawable.icon);
+		// myFV.setImageResource(tw.mobage.g23000052.R.drawable.icon);
+		myFV.setBackgroundResource(tw.mobage.g23000052.R.drawable.icon);
 		// 获取WindowManager
 		wm = (WindowManager) getApplicationContext().getSystemService("window");
 		// 设置LayoutParams(全局变量）相关参数

@@ -4044,7 +4044,7 @@ void  NDMapMgr::TransactionError(MBGError *error)
 void  NDMapMgr::CloseTransaction()
 {
     int idAccount = NDBeforeGameMgrObj.GetCurrentUser();
-	int iPayType = NDBeforeGameMgrObj.GetPayType();
+	//int iPayType = NDBeforeGameMgrObj.GetPayType();
     if(idAccount <= 0)
         return;
     std::string transactionId = NDBeforeGameMgrObj.GetCurrentTransactionID();
@@ -4055,10 +4055,10 @@ void  NDMapMgr::CloseTransaction()
     NDTransData bao(_MSG_CLOSE_TRANSACTION);
     bao << idAccount;
     bao.Write(szUnSignedTransactionID, 37);
-	bao << iPayType;
+	//bao << iPayType;
     SEND_DATA(bao);
 
-	NDLog("SEND_DATA1196 idAccount = %d, iPayType = %d", idAccount, iPayType);
+	//NDLog("SEND_DATA1196 idAccount = %d, iPayType = %d", idAccount, iPayType);
     CloseProgressBar;
 }
 
@@ -4270,8 +4270,8 @@ void  NDMapMgr::sendVerifier(std::string verifier)
 	CCLog("SEND_DATA1192 sendVerifier");
     int idAccount = NDBeforeGameMgrObj.GetCurrentUser();
 	CCLog("SEND_DATA1192 sendVerifier idAccount = %d", idAccount);
-	int iPayType = NDBeforeGameMgrObj.GetPayType();
-	CCLog("SEND_DATA1192 sendVerifier iPayType = %d", iPayType);
+	//int iPayType = NDBeforeGameMgrObj.GetPayType();
+	//CCLog("SEND_DATA1192 sendVerifier iPayType = %d", iPayType);
     if(idAccount <= 0)
         return;
     
@@ -4282,10 +4282,10 @@ void  NDMapMgr::sendVerifier(std::string verifier)
     NDTransData bao(_MSG_REQUEST_ACCESS_TOKEN);
     bao << idAccount;
     bao.Write(szUnSignedVerifier, sizeof(strVer));
-	bao << iPayType;
+	//bao << iPayType;
 
  //CCLog("SEND_DATA1192 szUnSignedVerifier = %s, szVerifier = %d", szUnSignedVerifier, strlen(szVerifier));
-	CCLog("SEND_DATA1192 idAccount = %d, iPayType = %d", idAccount, iPayType);
+	//CCLog("SEND_DATA1192 idAccount = %d, iPayType = %d", idAccount, iPayType);
     SEND_DATA(bao);
 }
 #endif
