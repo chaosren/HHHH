@@ -50,8 +50,8 @@ function p.LoadUI()
 	
 	p.InitData();
 	
-	--local label_rule = GetLabel(layer,ctrl_tag.txt_rule)
-	--label_rule:SetText(rule_info)
+	local label_rule = GetLabel(layer,ctrl_tag.txt_rule)
+	label_rule:SetText("");
 	
 	return true
 end
@@ -70,7 +70,7 @@ function p.InitData()
 	end
     
 	local Container = GetScrollViewContainer(layer, ID_CONTAINER);
-	local ListViewSize = CGSizeMake(230*CoordScaleX, 185*CoordScaleY);
+	local ListViewSize = CGSizeMake(230*CoordScaleX, 200*CoordScaleY);
 	Container:EnableScrollBar(true);
 	Container:SetViewSize(ListViewSize);
 	
