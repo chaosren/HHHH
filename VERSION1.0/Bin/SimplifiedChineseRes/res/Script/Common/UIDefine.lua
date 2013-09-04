@@ -213,8 +213,14 @@ NMAINSCENECHILDTAG =
 	SG7x7UI					= NUITAG_BEGIN + 190,					--7x7
 	SG7x7BoardUI			= NUITAG_BEGIN + 191,					--7x7
 	SG7x7RuleUI				= NUITAG_BEGIN + 192,					--7x7
-	
 	CheckInReward			= NUITAG_BEGIN + 194,					--新版每日签到功能	
+	
+	BattleCityCityUI = NUITAG_BEGIN + 195,					--资源争夺战，城市信息ui
+	BattleCityGuardInfoUI = NUITAG_BEGIN + 196,				--资源争夺战,队列信息
+	BattleCityRecordUI = NUITAG_BEGIN + 197,				--资源争夺战,历史记录
+	BattlecityInspireUI = NUITAG_BEGIN + 198,				--资源争夺战，鼓舞界面
+	BattlecityGiftUI = NUITAG_BEGIN + 199,					--资源争夺战,奖励界面
+	BattleCityUI = 2015,				--资源争夺战,队列信息
 	
 	SlaveUI					= 2015,                   --斗地主
 

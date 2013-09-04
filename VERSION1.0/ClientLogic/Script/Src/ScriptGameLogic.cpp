@@ -781,8 +781,8 @@ void doExchangeEmoney(int nQuantity)
 	CCLog("SEND_DATA1194 doExchangeEmoney nQuantity = %d", nQuantity);
 	int idAccount = NDBeforeGameMgrObj.GetCurrentUser();
 	CCLog("SEND_DATA1194 doExchangeEmoney idAccount = %d", idAccount);
-	int iPayType = NDBeforeGameMgrObj.GetPayType();
-	CCLog("SEND_DATA1194 doExchangeEmoney iPayType = %d", iPayType);
+	//int iPayType = NDBeforeGameMgrObj.GetPayType();
+	//CCLog("SEND_DATA1194 doExchangeEmoney iPayType = %d", iPayType);
 	if(idAccount <= 0)
 	{
 		CCLog("SEND_DATA1194 idAccount <= 0 return");
@@ -796,9 +796,9 @@ void doExchangeEmoney(int nQuantity)
 	NDTransData bao(_MSG_CREATE_TRANSACTION);
 	bao << idAccount;
 	bao << nQuantity;
-	bao << iPayType;
+	//bao << iPayType;
 
-	CCLog("SEND_DATA1194 idAccount = %d, iPayType = %d", idAccount, iPayType);
+	//CCLog("SEND_DATA1194 idAccount = %d, iPayType = %d", idAccount, iPayType);
 	SEND_DATA(bao);
 }
 
@@ -834,7 +834,7 @@ void sendMsgCreateTempCredential()
 {
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS) || (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
 	int idAccount = NDBeforeGameMgrObj.GetCurrentUser();
-	int iPayType = NDBeforeGameMgrObj.GetPayType();
+	//int iPayType = NDBeforeGameMgrObj.GetPayType();
 	if(idAccount <= 0)
 	{
  		return;
@@ -842,8 +842,8 @@ void sendMsgCreateTempCredential()
 	NDTransData data(_MSG_CREATE_TEMP_CREDENTIAL);
 
 	data << idAccount;
-  	data << iPayType;
-	NDLog("SEND_DATA1190 idAccount = %d, iPayType = %d", idAccount, iPayType);
+  	//data << iPayType;
+	//NDLog("SEND_DATA1190 idAccount = %d, iPayType = %d", idAccount, iPayType);
 
 	NDDataTransThread::DefaultThread()->GetSocket()->Send(&data);
 #endif

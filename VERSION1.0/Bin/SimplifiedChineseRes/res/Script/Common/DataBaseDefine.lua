@@ -1793,7 +1793,7 @@ DB_PET_CONFIG=
 	BODY_PIC			=38,	--半身像
     QUALITY           =39,    --武将品质
     SPIRIT            = 40,   --武魂
-    ORA_PET_POS = 41,
+    ORA_PET_POS        = 41,  --橙将位置
 };
 --++ Guosen ++-- 2012.6.2
 DB_RANK_CONFIG=
@@ -1840,6 +1840,7 @@ DB_ACHIEVEMENT_CONFIG=
     TITLE                        =7,
     DESCRIBE               =8,
 };
+
 
 
 DB_VIP_CONFIG= 
@@ -2066,6 +2067,9 @@ DB_ENCOURAGE_CONFIG = {
     MODIFY_VALUE3   = 11,
     ARRT4       = 12,
     MODIFY_VALUE4   = 13,
+	ICON 		= 14,
+	NAME		= 15,
+	INFO		= 16,
 }
 
 DB_DAOFA_STATIC_CONFIG = {
@@ -2194,4 +2198,10 @@ DB_DAILYTASK_LEVEL_CONFIG = {
     DAILYTASK_NUM_ODDS = 15,
 }
 
+
+DB_BATTLECITY_CONFIG = {
+    CONFIG_ID = 0,
+    CONFIG_VALUE = 1,
+    COMMENT = 2,
+}
 
