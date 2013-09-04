@@ -256,7 +256,7 @@ function p.SetResult(result,money,repute,soph,emoney)
         local str="";
         
         if result ==1 then         
-            if ArenaUI.isInChallenge == 1 then    
+            if ArenaUI.isInChallenge == 1 or ArenaUI.isInChallenge == 9 then    
                 bg:SetPicture(pool:AddPicture(GetSMImg00Path("battle/battle_icon4.png"), false), true);
             elseif ArenaUI.isInChallenge == 2 then
                 bg:SetPicture(pool:AddPicture(GetSMImg00Path("transport/icon_transport3.png"), false), true);
@@ -267,7 +267,7 @@ function p.SetResult(result,money,repute,soph,emoney)
             Music.PlayEffectSound(1094);
 
         elseif result ==0 then   
-          if ArenaUI.isInChallenge == 1 then    
+          if ArenaUI.isInChallenge == 1  or ArenaUI.isInChallenge == 9 then    
                 bg:SetPicture(pool:AddPicture(GetSMImg00Path("battle/battle_icon5.png"), false),true);
           elseif  ArenaUI.isInChallenge == 2 then
                 bg:SetPicture(pool:AddPicture(GetSMImg00Path("transport/icon_transport4.png"), false), true);

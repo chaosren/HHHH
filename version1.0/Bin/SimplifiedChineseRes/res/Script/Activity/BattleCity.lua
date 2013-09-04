@@ -54,6 +54,7 @@ end
 
 function p.LoadUI ()
 	LogInfo("BattleCity:LoadUI()")
+	ArenaUI.isInChallenge = 9;
     --------------------获得游戏主场景------------------------------------------
     local scene = GetSMGameScene();	
 	if scene == nil then
