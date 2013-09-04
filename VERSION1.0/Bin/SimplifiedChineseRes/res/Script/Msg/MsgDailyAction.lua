@@ -49,23 +49,25 @@ function p.MsgReciveDailyAcionInfo(netdatas)
             tbInfos = DailyAction.ClassActions;
         end
         
-        if actionType == 1 then
-            table.insert(tbInfos, record);
-        else
-            local bHasFind = false;
-            for j, v in pairs(tbInfos) do
-                if record.nId == v.nId then
-                    tbInfos[j] = record;
-                    bHasFind = true;
-                    break;
-                end
-            end
-            
-            if not bHasFind then
-                table.insert(tbInfos, record);
-            end
-        end
+        if record.nId ~= 12 then
         
+			 if actionType == 1 then
+				 table.insert(tbInfos, record);
+			 else
+				 local bHasFind = false;
+				 for j, v in pairs(tbInfos) do
+					  if record.nId == v.nId then
+						  tbInfos[j] = record;
+						  bHasFind = true;
+						  break;
+					  end
+				 end
+	            
+				 if not bHasFind then
+					  table.insert(tbInfos, record);
+				 end
+			 end
+        end
         LogInfo("i = %d recmsg nId = %d, bStatus = %d, nGroup = %d", i, record.nId, record.bStatus, nGroup); 
     end
     
