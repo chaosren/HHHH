@@ -13,8 +13,6 @@ p.tbActionListInfo = {};
 --活动列表(服务器下发)     
 function p.MsgReciveDailyAcionInfo(netdatas)
     
-    LogInfo("actionlist recmsg begin");    
-
     local actionType = netdatas:ReadByte();  --1:add  2:update   1的话为清空后更新  2为更新
     local nAmount = netdatas:ReadByte();  --活动数量 
     
@@ -22,16 +20,6 @@ function p.MsgReciveDailyAcionInfo(netdatas)
         DailyAction.WorldActions = {};    --世界活动信息
         DailyAction.ClassActions = {};     --帮派活动信息  
     end
-    
-    for i, v in pairs(DailyAction.WorldActions) do
-        LogInfo("begin i = %d  nId = %d, bStatus = %d", i, v.nId, v.bStatus); 
-    end
-    
-    for i, v in pairs(DailyAction.ClassActions) do
-        LogInfo("begin i = %d  nId = %d, bStatus = %d", i, v.nId, v.bStatus); 
-    end
-    
-    LogInfo("recmsg actionType = %d, nAmount = %d", actionType, nAmount); 
     
     --获取所有要更新的信息
     for i = 1, nAmount do
@@ -43,10 +31,12 @@ function p.MsgReciveDailyAcionInfo(netdatas)
         
         local nGroup = GetDataBaseDataN("event_activity", record.nId, DB_EVENT_ACTIVITY.GROUP);    
         
+        --定时活动
         if nGroup == 1 then
-            tbInfos = DailyAction.WorldActions;
-        elseif  nGroup == 2 then
             tbInfos = DailyAction.ClassActions;
+        --全天活动
+        elseif  nGroup == 2 then
+            tbInfos = DailyAction.WorldActions;
         end
         
         if actionType == 1 then
@@ -65,28 +55,25 @@ function p.MsgReciveDailyAcionInfo(netdatas)
                 table.insert(tbInfos, record);
             end
         end
-        
-        LogInfo("i = %d recmsg nId = %d, bStatus = %d, nGroup = %d", i, record.nId, record.bStatus, nGroup); 
-    end
-    
-    for i, v in pairs(DailyAction.WorldActions) do
-        LogInfo("end i = %d  nId = %d, bStatus = %d", i, v.nId, v.bStatus); 
-    end
-    
-    for i, v in pairs(DailyAction.ClassActions) do
-        LogInfo("end i = %d  nId = %d, bStatus = %d", i, v.nId, v.bStatus); 
+     
     end
     
     table.sort(DailyAction.WorldActions, function(a,b) return a.nId < b.nId   end);
     table.sort(DailyAction.ClassActions, function(a,b) return a.nId < b.nId   end);    
 
     if IsUIShow(NMAINSCENECHILDTAG.DailyActionUI) then
-        --刷新活动页面
-        LogInfo("refresh BtnId = %d", DailyAction.CurFocusBtnId); 
-        DailyAction.RefreshUI(DailyAction.CurFocusBtnId);
-    end
+       --刷新活动页面
+       DailyAction.RefreshUI(DailyAction.CurFocusBtnId);
+    end    
+end
 
-    LogInfo("p.MsgGetPlayerActionInfo  end");    
+
+--请求获取活动列表消息
+function p.MsgSendGetActionListInfo()  
+	local netdata = createNDTransData(NMSG_Type._MSG_PLAYER_ACTION_LIST);
+	SendMsg(netdata);	
+	netdata:Free();	
+	return true;	
 end
 
 

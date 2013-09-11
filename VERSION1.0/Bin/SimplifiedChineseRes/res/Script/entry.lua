@@ -188,3 +188,6 @@ DoFile("DailyLottery/define.lua");
 
 --新登入签到功能
 DoFile("CheckIn/define.lua");
+
+--跨服竞技场功能
+DoFile("CrossArena/define.lua");

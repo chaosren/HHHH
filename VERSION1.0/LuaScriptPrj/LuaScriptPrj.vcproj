@@ -1334,6 +1334,70 @@
 				>
 			</File>
 		</Filter>
+		<Filter
+			Name="CheckIn"
+			>
+			<File
+				RelativePath="..\Bin\SimplifiedChineseRes\res\Script\CheckIn\CheckInCommon.lua"
+				>
+			</File>
+			<File
+				RelativePath="..\Bin\SimplifiedChineseRes\res\Script\CheckIn\CheckInReward.lua"
+				>
+			</File>
+			<File
+				RelativePath="..\Bin\SimplifiedChineseRes\res\Script\CheckIn\define.lua"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="CrossArena"
+			>
+			<File
+				RelativePath="..\Bin\SimplifiedChineseRes\res\Script\CrossArena\CrossArenaCommon.lua"
+				>
+			</File>
+			<File
+				RelativePath="..\Bin\SimplifiedChineseRes\res\Script\CrossArena\CrossArenaReward.lua"
+				>
+			</File>
+			<File
+				RelativePath="..\Bin\SimplifiedChineseRes\res\Script\CrossArena\CrossArenaRule.lua"
+				>
+			</File>
+			<File
+				RelativePath="..\Bin\SimplifiedChineseRes\res\Script\CrossArena\CrossArenaUI.lua"
+				>
+			</File>
+			<File
+				RelativePath="..\Bin\SimplifiedChineseRes\res\Script\CrossArena\define.lua"
+				>
+			</File>
+			<File
+				RelativePath="..\Bin\SimplifiedChineseRes\res\Script\CrossArena\MsgCrossArena.lua"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="UI"
+			>
+			<Filter
+				Name="DragonRank"
+				>
+				<File
+					RelativePath="..\Bin\SimplifiedChineseRes\res\UI\DragonRank\DragonRank.ini"
+					>
+				</File>
+				<File
+					RelativePath="..\Bin\SimplifiedChineseRes\res\UI\DragonRank\DragonRank_list.ini"
+					>
+				</File>
+				<File
+					RelativePath="..\Bin\SimplifiedChineseRes\res\UI\DragonRank\DragonRank_rule.ini"
+					>
+				</File>
+			</Filter>
+		</Filter>
 		<File
 			RelativePath="..\Bin\SimplifiedChineseRes\res\Script\DBLoad.lua"
 			>
