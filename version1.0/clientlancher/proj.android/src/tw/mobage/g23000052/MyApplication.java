@@ -1,4 +1,4 @@
-package tw.mobage.g23000092;
+package tw.mobage.g23000052;
 
 import android.app.Application;
 import android.view.WindowManager;
