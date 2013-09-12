@@ -706,7 +706,7 @@ function GetSMGameSceneLayerByTag(nTagId)
 		return nil;
 	end
 	
-	local layer = GetUiLayer(scene, NnTagId);
+	local layer = GetUiLayer(scene, nTagId);
 	if nil == layer then
 		return nil;
 	end

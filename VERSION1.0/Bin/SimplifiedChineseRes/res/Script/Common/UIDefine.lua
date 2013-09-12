@@ -205,7 +205,8 @@ NMAINSCENECHILDTAG =
  	PVPADDUI           =  NUITAG_BEGIN + 184,                   --PVP属性界面
 
  	DestinyUI               = NUITAG_BEGIN + 182,                   --占星
-    DestinyFeteUI           = NUITAG_BEGIN + 183,                   --占星祭祀    
+    DestinyFeteUI           = NUITAG_BEGIN + 183,                   --占星祭祀  
+          Buff           = NUITAG_BEGIN + 186,                   --玩家状态
  	MountSoul               = NUITAG_BEGIN + 190,                   --兽魂
 	RankListUI              = NUITAG_BEGIN + 189,                   --名人堂
  	DailyLottery            = NUITAG_BEGIN + 193,                   --每日抽奖
@@ -213,18 +214,27 @@ NMAINSCENECHILDTAG =
 	SG7x7UI					= NUITAG_BEGIN + 190,					--7x7
 	SG7x7BoardUI			= NUITAG_BEGIN + 191,					--7x7
 	SG7x7RuleUI				= NUITAG_BEGIN + 192,					--7x7
-	
 	CheckInReward			= NUITAG_BEGIN + 194,					--新版每日签到功能	
 	
+	BattleCityCityUI = NUITAG_BEGIN + 195,					--资源争夺战，城市信息ui
+	BattleCityGuardInfoUI = NUITAG_BEGIN + 196,				--资源争夺战,队列信息
+	BattleCityRecordUI = NUITAG_BEGIN + 197,				--资源争夺战,历史记录
+	BattlecityInspireUI = NUITAG_BEGIN + 198,				--资源争夺战，鼓舞界面
+	BattlecityGiftUI = NUITAG_BEGIN + 199,					--资源争夺战,奖励界面
+	BattleCityUI = 2015,				--资源争夺战,队列信息
 	SlaveUI					= 2015,                   --斗地主
 
-    Buff           = NUITAG_BEGIN + 186,                   --玩家状态
+
     MissionUI       = NUITAG_BEGIN + 200,                   --日常任务
     Warlord			= NUITAG_BEGIN + 201,                   --战神像
-    
     ExploitShop			= NUITAG_BEGIN + 202,                   --军功商城
+    
+    
+	CrossArenaUI             = 2015,                      --跨服竞技场主界面
+	CrossArenaRule           = NUITAG_BEGIN + 203,          --跨服竞技场规则界面
+	CrossArenaReward         = NUITAG_BEGIN + 204,          --跨服竞技场奖励查看
 
-    CommonDlg				= NDLGTAG_BEGIN,						--通用对话框
+	CommonDlg				= NDLGTAG_BEGIN,						--通用对话框
 	CommonDlgNew              = NDLGTAGNEW_BEGIN,                     --新通用对话框
 	--后面都被对话框占用了,请不要使用
 };

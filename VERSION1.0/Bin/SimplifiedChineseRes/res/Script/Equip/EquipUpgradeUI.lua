@@ -22,8 +22,8 @@ p.TAG = {
     MOSAIC        = 1003,     --镶嵌层
 };
 
-local GEMINFO       = 1004;     --宝石信息层
-
+local GEMINFO       = 1004;     --宝石未镶嵌信息层
+local GEMINFOXQ 	= 1005;		--宝石镶嵌信息层
 
 p.TAG_CHANGE_BTNS = {[p.TAG.STRENGTHEN] = p.TagStreng, [p.TAG.BAPTIZE] = p.TagBaptize,[p.TAG.MOSAIC] = p.TagMosaic,};
 
@@ -299,7 +299,7 @@ function p.LoadUI(page)
 	uiLoad:Free();
     
     
-    --查看宝石layer
+    --查看未镶嵌宝石layer
     local layerGemView = createNDUILayer();
 	if layerGemView == nil then
 		return false;
@@ -320,7 +320,30 @@ function p.LoadUI(page)
     uiLoad:Free();
     
     
-	-------------------------------初始化数据------------------------------------    
+    
+    --查看已镶嵌宝石
+     local layerGemViewXQ = createNDUILayer();
+	if layerGemViewXQ == nil then
+		return false;
+	end
+	layerGemViewXQ:Init();
+	layerGemViewXQ:SetTag(GEMINFOXQ);
+	layerGemViewXQ:SetFrameRect(RectFullScreenUILayer);
+    	layerGemViewXQ:SetVisible(false);
+	layer:AddChildZ(layerGemViewXQ,1);
+    
+    local uiLoad = createNDUILoad();
+	if nil == uiLoad then
+		layer:Free();
+		return false;
+	end
+	uiLoad:Load("foster_A_R3_GEM.ini", layerGemViewXQ, p.OnUIEventGemXQ, 0, 0);
+    uiLoad:Free();
+   
+    
+    
+    
+-------------------------------初始化数据------------------------------------    
     p.initData();
     if(CheckN(page)) then
         p.ChangeTab(page);
@@ -364,7 +387,14 @@ function p.LoadGemInfo(nGemId, nType)
     if(nGemId==0) then
         return;
     end
-    local layer             = p.GetGemInfoLayer();
+    
+    local layer  = nil;
+    if nType ==  GEM_OPER_TYPE.MOSAIC then
+     	layer             = p.GetGemInfoLayer();
+    elseif nType == GEM_OPER_TYPE.UNSNATCH then
+    	layer             = p.GetGemInfoXQLayer();
+    end
+    
     if(layer == nil) then
         LogInfo("p.LoadGemInfo layer is nil!");
         return;
@@ -397,6 +427,7 @@ function p.LoadGemInfo(nGemId, nType)
         
         
     elseif(nType == GEM_OPER_TYPE.UNSNATCH) then
+    
         nItemType   = nGemId;
         nAmount     = 1;
         l_pic:ChangeItemType(nItemType);
@@ -1184,6 +1215,44 @@ function p.OnUIEventGem(uiNode, uiEventType, param)
         end
     end
 end
+
+
+function p.OnUIEventGemXQ(uiNode, uiEventType, param)
+    local btn = ConverToButton(uiNode);
+    local nTag = btn:GetTag();
+    local nItemId = btn:GetParam1();
+    local nType = btn:GetParam2();
+    
+    LogInfo("p.OnUIEventGem nTag:[%d], uiEventType:[%d], nItemId:[%d], nType:[%d]",nTag, uiEventType, nItemId, nType);
+    
+    if(uiEventType == NUIEventType.TE_TOUCH_BTN_CLICK) then
+        if(nTag == TAG_GEM_CLOSE)then
+            local layer = p.GetGemInfoXQLayer();
+            layer:SetVisible(false);
+        elseif(nTag == TAG_GEM_USE)then
+            if(nItemId == 0) then
+                return true;
+            end
+        
+            if(nType == GEM_OPER_TYPE.MOSAIC) then
+                p.GemMosaic(nItemId);
+            elseif(nType == GEM_OPER_TYPE.UNSNATCH) then
+                p.GemUnMosaic(nItemId)
+            end
+            
+            --关闭宝石信息层
+            local layer = p.GetGemInfoXQLayer();
+            layer:SetVisible(false);
+        elseif(nTag == TAG_GEM_SYNTHESIS)then
+            BackLevelThreeWin.GemSynthesis(nItemId);
+            
+            --关闭宝石信息层
+            local layer = p.GetGemInfoXQLayer();
+            layer:SetVisible(false);
+        end
+    end
+end
+
 
 --发送镶嵌消息
 function p.GemMosaic(nGemItemId)
@@ -2464,6 +2533,24 @@ function p.GetGemInfoLayer()
     end
     return taglayer;
 end
+
+
+--获得镶嵌宝石信息层
+function p.GetGemInfoXQLayer()
+    local layer = p.GetLayer();
+    if(layer == nil) then
+        LogInfo("p.GetLayerByTag layer is nil!");
+        return nil;
+    end
+    local taglayer = GetUiLayer(layer, GEMINFOXQ);
+    if(taglayer == nil) then
+        LogInfo("p.GetLayerByTag taglayer is nil!");
+        return nil;
+    end
+    return taglayer;
+end
+
+
 
 function p.GetLayerByTag(tag)
     local layer = p.GetLayer();

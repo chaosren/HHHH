@@ -10,16 +10,17 @@ p.EOPERATE_ACTION =
 {
     EOPERATE_ACTION_ADD_CHALLENGE_COUNT_REQUEST = 1,
     EOPERATE_ACTION_ADD_CHALLENGE_COUNT_OVER = 2,  
-    EOPERATE_ACTION_CHALLENGE  = 3;          
+    EOPERATE_ACTION_CHALLENGE  = 3,         
 };
 
 function p.RevCrossArenaList(netdatas)
 	
 	CrossArenaUI.UserInfo = {};
 
-	UserInfo.usRank =         netdatas:ReadShort();            --玩家排名
-	UserInfo.ucLeftCount =     netdatas:ReadByte();            --剩余挑战次数
-	UserInfo.dwCDTime    =     netdatas:ReadInt();            --CD时间
+	CrossArenaUI.UserInfo.usRank =          netdatas:ReadShort();           --玩家排名
+	CrossArenaUI.UserInfo.ucLeftCount =     netdatas:ReadByte();            --剩余挑战次数
+	CrossArenaUI.UserInfo.ucHasAddCount =   netdatas:ReadByte();            --已增加次数
+	CrossArenaUI.UserInfo.dwCDTime    =     netdatas:ReadInt();             --CD时间
 	
 	local ucAcount =     netdatas:ReadByte();            --列表数据量
 	
@@ -73,14 +74,20 @@ function p.RevChallengeTimes(netdatas)
 	local usAccion = netdatas:ReadShort();
 	
 	--更新用户挑战次数
-	if usAccount == p.EOPERATE_ACTION.EOPERATE_ACTION_ADD_CHALLENGE_COUNT_OVER then
+	if usAccion == p.EOPERATE_ACTION.EOPERATE_ACTION_ADD_CHALLENGE_COUNT_OVER then
 		if CrossArenaUI.UserInfo ~= nil then
-			UserInfo.ucLeftCount = netdatas:ReadInt();  --挑战次数
+			CrossArenaUI.UserInfo.ucLeftCount = netdatas:ReadInt();  --挑战次数
+			CrossArenaUI.UserInfo.ucHasAddCount = netdatas:ReadInt();  --已增加次数	
+			if not IsUIShow(NMAINSCENECHILDTAG.TransportUI) then
+				CrossArenaUI.LoadUI();
+			else
+				CrossArenaUI.RefreshUI(); 
+			end
 		end
 	end
 end
 
 
 
---RegisterNetMsgHandler(NMSG_Type._MSG_WORLDBATTLE_OPERATE, "p.RevChallengeTimes", p.RevChallengeTimes);
---RegisterNetMsgHandler(NMSG_Type._MSG_WORLDBATTLE_PLAYERINFO, "p.RevCrossArenaList", p.RevCrossArenaList);
+RegisterNetMsgHandler(NMSG_Type._MSG_WORLDBATTLE_OPERATE, "p.RevChallengeTimes", p.RevChallengeTimes);
+RegisterNetMsgHandler(NMSG_Type._MSG_WORLDBATTLE_PLAYERINFO, "p.RevCrossArenaList", p.RevCrossArenaList);

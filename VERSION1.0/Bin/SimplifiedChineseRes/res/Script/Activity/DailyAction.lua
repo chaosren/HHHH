@@ -7,8 +7,8 @@ DailyAction = {}
 local p = DailyAction;
 
 p.dbEnventActivicyInfo = {};  --静态表event_activity的数据
-p.WorldActions = {};    --世界活动信息
-p.ClassActions = {};     --帮派活动信息
+p.TimerActions = {};    --定時活動活动信息
+p.DailyActions = {};     --每日活動
 
 
 p.CurFocusBtnId   = 0;    --当前的焦点按钮
@@ -257,9 +257,9 @@ function p.refreshViewItem(view, nId)
     local btn = GetButton(view, p.ViewCtrlId.btnCtr);
     btn:SetParam1(nId);   
     
-    --按钮是否置灰判断   世界活动的时候才用到
+    --按钮是否置灰判断   定時活动的时候才用到
     if p.CurFocusBtnId == p.TabInfo.WorldInfo.tabBtnId then
-        local DataList = p.WorldActions;
+        local DataList = p.TimerActions;
         for i, v in pairs(DataList) do
             if v.nId == nId then
                 if v.bStatus ~= 3 then  --未开启
@@ -390,7 +390,7 @@ function p.WorldRefresh()
     ListContainer:SetDebugName( "ScrollViewContainer" );
     
     --设置当前要显示的说明信息
-    for i, v in pairs(p.WorldActions) do
+    for i, v in pairs(p.TimerActions) do
         LogInfo("refresh i = %d  nId = %d", i, v.nId); 
         p.AddViewItem(ListContainer, v.nId, "event/event_1_L.ini");
     end
@@ -410,7 +410,7 @@ function p.ClassRefresh()
     ListContainer:RemoveAllView();
     
     --设置当前要显示的说明信息
-    for i, v in pairs(p.ClassActions) do
+    for i, v in pairs(p.DailyActions) do
         LogInfo("refresh i = %d  nId = %d", i, v.nId); 
         p.AddViewItem(ListContainer, v.nId, "event/event_1_L.ini");
     end

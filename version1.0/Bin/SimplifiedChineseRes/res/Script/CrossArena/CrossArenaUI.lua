@@ -16,7 +16,7 @@ local ID_BTN_CHALLEAGE = 50;
 local ID_TEXT_RANK = 4;  --排名
 local ID_TEXT_NAME = 5;  --姓名
 
-local ListViewSize = CGSizeMake(120*CoordScaleX, 20*CoordScaleY);
+local ListViewSize = CGSizeMake(200*CoordScaleX, 30*CoordScaleY);
 
 p.tbTopThreeId = {{idPic = 51, idText = 22}, {idPic = 52, idText = 23}, {idPic = 53, idText = 24}};
 p.tbRankId = {81, 82, 83, 84, 85};
@@ -24,14 +24,16 @@ p.tbRankId = {81, 82, 83, 84, 85};
 p.CrossArenaListInfo = {};
 p.UserInfo = {};  
 p.tbNumPics = {};
-p.DbCrossArenaAwardData = {};
+
 p.DbCrossArenaConfig = {};
+
 
 --要用的数据对应的id枚举  
 p.DATA_CONFIG_ID =
 {
-    ENUM_WORLDBATTLE_CONFIG_BASE_COST = 6,   --初始消耗金币数
-    ENUM_WORLDBATTLE_CONFIG_ADD_COST  = 7,   --每次增加金币数
+	ENUM_WORLDBATTLE_CONFIG_TOP_AMOUNT = 1,  --競技場前幾名可參加
+	ENUM_WORLDBATTLE_CONFIG_BASE_COST = 6,   --初始消耗金币数
+	ENUM_WORLDBATTLE_CONFIG_ADD_COST  = 7,   --每次增加金币数
 };
 
 function p.LoadUI()
@@ -66,23 +68,6 @@ function p.LoadUI()
 end
 
 function p.InitDbData()
-    --获取id集合
-    local ids = GetDataBaseIdList("worldbattle_award_config");
-    p.DbCrossArenaAwardData = {};
-
-    for i,v in ipairs(ids) do
-		local record = {};
-		record.id = v;
-		record.nMinRank = GetDataBaseDataN("worldbattle_award_config", v, DB_WORLDBATTLE_AWARD_CONFIG.RANK_MIN);  
-		record.nMaxRank = GetDataBaseDataN("worldbattle_award_config", v, DB_WORLDBATTLE_AWARD_CONFIG.RANK_MAX);  
-		record.nMoney = GetDataBaseDataN("worldbattle_award_config", v, DB_WORLDBATTLE_AWARD_CONFIG.MONEY);  	
-		record.nEMoney = GetDataBaseDataN("worldbattle_award_config", v, DB_WORLDBATTLE_AWARD_CONFIG.EMONEY); 
-		record.nExploit = GetDataBaseDataN("worldbattle_award_config", v, DB_WORLDBATTLE_AWARD_CONFIG.EXPLOIT); 
-		record.nRepute = GetDataBaseDataN("worldbattle_award_config", v, DB_WORLDBATTLE_AWARD_CONFIG.REPUTE); 
-		record.nSope = GetDataBaseDataN("worldbattle_award_config", v, DB_WORLDBATTLE_AWARD_CONFIG.SOPH); 	
-		table.insert(p.DbCrossArenaAwardData, record);
-    end
-    
     ids = GetDataBaseIdList("worldbattle_config");
     p.DbCrossArenaConfig = {};
 	for i,v in ipairs(ids) do
@@ -93,13 +78,13 @@ end
 
 
 function p.GetDbWorldBattleConfigValue(nId)
-    local nRet = p.DbBattleCityData[nId];
-	
+	local nRet = p.DbCrossArenaConfig[nId];
+
 	if nRet == nil then
 		nRet = 0;
 	end
 
-    return nRet;
+	return nRet;
 end
 
 function p.RefreshUI()
@@ -123,15 +108,28 @@ function p.RefreshRankList()
     ListContainer:EnableScrollBar(true);
     ListContainer:RemoveAllView();
 
+	local nShowIndex = 0;
     --设置当前要显示的说明信息
 	for i, v in pairs(p.CrossArenaListInfo) do
 		if i > 3 then
-			p.AddViewItem(ListContainer, v, "DragonRank/DragonRank_list.ini");
+			p.AddViewItem(ListContainer, i-3, v, "DragonRank/DragonRank_list.ini");
+		end
+		
+		if v.nRank == p.UserInfo.usRank then
+			nShowIndex = i - 3;
 		end
 	end
+	
+	if nShowIndex > 7 then
+		nShowIndex = nShowIndex - 7;
+	else
+		nShowIndex = 0;
+	end
+
+	ListContainer:ShowViewByIndex(nShowIndex); 
 end
 
-function p.AddViewItem(container, info, uiFile)
+function p.AddViewItem(container, nIndex, info, uiFile)
     
     local view = createUIScrollView();
     if view == nil then
@@ -140,9 +138,9 @@ function p.AddViewItem(container, info, uiFile)
     
     container:SetViewSize(ListViewSize);
     
-    view:Init(false);
-	--view:SetViewId(nId);
-	--view:SetTag(nId);  
+	view:Init(false);
+	view:SetViewId(nIndex);
+	view:SetTag(nIndex);  
     container:AddView(view);
     
     --初始化ui
@@ -159,6 +157,14 @@ function p.AddViewItem(container, info, uiFile)
     
     SetLabel(view, ID_TEXT_RANK, SafeN2S(info.nRank)); 
     SetLabel(view, ID_TEXT_NAME, info.szName); 
+    
+	if info.nRank == p.UserInfo.usRank then
+		local textName = GetLabel(view, ID_TEXT_NAME);
+		local textRank = GetLabel(view, ID_TEXT_RANK);	
+		textName:SetFontColor(ccc4(245, 0, 0, 255));
+		textRank:SetFontColor(ccc4(245, 0, 0, 255));	
+		btn:SetVisible(false);
+	end
 end
 
 
@@ -172,10 +178,15 @@ function p.OnViewUIEvent(uiNode, uiEventType, param)
             return;
         end
 
-        if p.ViewCtrlId.btnCtr == tag then    
-			 --发送挑战请求   
-            local nId = btn:GetParam1();
-            MsgCrossArena.MsgSendAcrossArenaAction(MsgCrossArena.EOPERATE_ACTION.EOPERATE_ACTION_CHALLENGE, nId);	
+        if ID_BTN_CHALLEAGE == tag then  
+			if p.UserInfo.usRank == 0 then
+				local nNeedNum = p.GetDbWorldBattleConfigValue(p.DATA_CONFIG_ID.ENUM_WORLDBATTLE_CONFIG_TOP_AMOUNT);
+				CommonDlgNew.ShowYesDlg(string.format(GetTxtPri("CrossArena_03"), nNeedNum));
+			else
+				--发送挑战请求   
+				local nId = btn:GetParam1();
+				MsgCrossArena.MsgSendAcrossArenaAction(MsgCrossArena.EOPERATE_ACTION.EOPERATE_ACTION_CHALLENGE, nId);	
+			end
         end
     end
 	return true;
@@ -192,13 +203,18 @@ function p.RefreshTopThreeAndUserInfo()
 	
 	--显示前三名图片以及名字
 	for i, v in ipairs(p.tbTopThreeId) do 
+		
 		local info = p.CrossArenaListInfo[i];
+		if info == nil then
+			return;
+		end
+		
 		local ctrlPic = GetImage(layer, v.idPic);  
 		local pic = GetCrossArenaUIPlayerHeadPic(info.nIdLookface);
-		ctrlPic:SetImage(pic);
+		ctrlPic:SetPicture(pic);
 		SetLabel(layer, v.idText, info.szName);
 	end
-	
+
 	--显示玩家当前名次
 	p.SetPicFromNum(p.UserInfo.usRank);
 
@@ -217,107 +233,119 @@ function p.SetPicFromNum(nNum)
 	
 	--先清空旧有图片
 	for i, v in ipairs(p.tbRankId) do
-		local ctrlPic = GetImage(layer, v.idPic);  
-		ctrlPic:SetImage(nil);
+		local ctrlPic = GetImage(layer, v);  
+		ctrlPic:SetPicture(nil);
 	end
 	
 	local pool = _G.DefaultPicPool();
-	local Pic = pool:AddPicture( _G.GetSMImgPath( "DragonRank/num.png"), false);  
 	p.tbNumPics = {};
 	local N_W = 50;
 	local N_H = 52;
    
  
    if nNum < 10 then
-		local pic1 = Pic;
-		local ctrlPic = GetImage(layer, p.tbRankId[3]); 
+		local pic1 = pool:AddPicture( _G.GetSMImgPath( "DragonRank/num.png"), false); 
+		local ctrlPic1 = GetImage(layer, p.tbRankId[3]); 
+		
 		pic1:Cut( _G.CGRectMake( nNum*N_W, 0, N_W, N_H ) );
-		ctrlPic:SetPicture(pic1);
+		ctrlPic1:SetPicture(pic1);
+		
 	elseif nNum < 100 then
 		if math.fmod(nNum, 10) == 0 then
+			local pic1 = pool:AddPicture( _G.GetSMImgPath( "DragonRank/num.png"), false); 
+			local pic2 = pool:AddPicture( _G.GetSMImgPath( "DragonRank/num.png"), false); 
+			local ctrlPic1 = GetImage(layer, p.tbRankId[2]); 
+			local ctrlPic2 = GetImage(layer, p.tbRankId[3]); 
+			
 			--显示10位
-			local pic1 = Pic;
-			local ctrlPic = GetImage(layer, p.tbRankId[2]); 
 			pic1:Cut( _G.CGRectMake( nNum/10*N_W, 0, N_W, N_H ) );
-			ctrlPic:SetPicture(pic1);
+			ctrlPic1:SetPicture(pic1);
 			
 			--显示十
-			pic1 = Pic;
-			ctrlPic = GetImage(layer, p.tbRankId[3]); 
-			pic1:Cut( _G.CGRectMake( 10*N_W, 0, N_W, N_H ) );
-			ctrlPic:SetPicture(pic1);
+			pic2:Cut( _G.CGRectMake( 10*N_W, 0, N_W, N_H ) );
+			ctrlPic2:SetPicture(pic2);
 		else
 			--显示10位
-			local pic1 = Pic;
-			local ctrlPic = GetImage(layer, p.tbRankId[2]); 
-			pic1:Cut( _G.CGRectMake( nNum/10*N_W, 0, N_W, N_H ) );
-			ctrlPic:SetPicture(pic1);
+			local pic1 = pool:AddPicture( _G.GetSMImgPath( "DragonRank/num.png"), false); 
+			local pic2 = pool:AddPicture( _G.GetSMImgPath( "DragonRank/num.png"), false); 
+			local pic3 = pool:AddPicture( _G.GetSMImgPath( "DragonRank/num.png"), false); 
+			local ctrlPic1 = GetImage(layer, p.tbRankId[2]); 
+			local ctrlPic2 = GetImage(layer, p.tbRankId[3]); 
+			local ctrlPic3 = GetImage(layer, p.tbRankId[4]); 
+			
+			pic1:Cut( _G.CGRectMake( math.floor(nNum/10)*N_W, 0, N_W, N_H ) );
+			ctrlPic1:SetPicture(pic1);
 			
 			--显示十
-			pic1 = Pic;
-			ctrlPic = GetImage(layer, p.tbRankId[3]); 
-			pic1:Cut( _G.CGRectMake( 10*N_W, 0, N_W, N_H ) );
-			ctrlPic:SetPicture(pic1);
+			pic2:Cut( _G.CGRectMake( 10*N_W, 0, N_W, N_H ) );
+			ctrlPic2:SetPicture(pic2);
 			
 			--显示个位
-			pic1 = Pic;
-			ctrlPic = GetImage(layer, p.tbRankId[4]); 
-			local nMod = math.fmod(nNum, 10);
-			pic1:Cut( _G.CGRectMake( nMod*N_W, 0, N_W, N_H ) );
-			ctrlPic:SetPicture(pic1);	
+			pic3:Cut( _G.CGRectMake( math.fmod(nNum, 10)*N_W, 0, N_W, N_H ) );
+			ctrlPic3:SetPicture(pic3);	
 		end
 	else
 		--被百整除
 		if math.fmod(nNum, 100) == 0 then
+			local pic1 = pool:AddPicture( _G.GetSMImgPath( "DragonRank/num.png"), false); 
+			local pic2 = pool:AddPicture( _G.GetSMImgPath( "DragonRank/num.png"), false); 
+			local ctrlPic1 = GetImage(layer, p.tbRankId[2]); 
+			local ctrlPic2 = GetImage(layer, p.tbRankId[3]); 
+			
 			--显示百位
-			local pic1 = Pic;
-			local ctrlPic = GetImage(layer, p.tbRankId[2]); 
 			pic1:Cut( _G.CGRectMake( nNum/100*N_W, 0, N_W, N_H ) );
-			ctrlPic:SetPicture(pic1);
+			ctrlPic1:SetPicture(pic1);
 			
 			--显示百
-			pic1 = Pic;
-			ctrlPic = GetImage(layer, p.tbRankId[3]); 
-			pic1:Cut( _G.CGRectMake( 11*N_W, 0, N_W, N_H ) );
-			ctrlPic:SetPicture(pic1);
+			pic2:Cut( _G.CGRectMake( 11*N_W, 0, N_W, N_H ) );
+			ctrlPic2:SetPicture(pic2);
 		--被十整除
 		else
+			local pic1 = pool:AddPicture( _G.GetSMImgPath( "DragonRank/num.png"), false); 
+			local pic2 = pool:AddPicture( _G.GetSMImgPath( "DragonRank/num.png"), false); 
+			local pic3 = pool:AddPicture( _G.GetSMImgPath( "DragonRank/num.png"), false); 
+			local pic4 = pool:AddPicture( _G.GetSMImgPath( "DragonRank/num.png"), false); 
+			local pic5 = pool:AddPicture( _G.GetSMImgPath( "DragonRank/num.png"), false); 
+			local ctrlPic1 = GetImage(layer, p.tbRankId[1]); 
+			local ctrlPic2 = GetImage(layer, p.tbRankId[2]); 
+			local ctrlPic3 = GetImage(layer, p.tbRankId[3]); 
+			local ctrlPic4 = GetImage(layer, p.tbRankId[4]); 
+			local ctrlPic5 = GetImage(layer, p.tbRankId[5]); 
+			
 			--显示百位
-			local pic1 = Pic;
-			local ctrlPic = GetImage(layer, p.tbRankId[1]); 
-			pic1:Cut( _G.CGRectMake( nNum/100*N_W, 0, N_W, N_H ) );
-			ctrlPic:SetPicture(pic1);
+			pic1:Cut( _G.CGRectMake( math.floor(nNum/100)*N_W, 0, N_W, N_H ) );
+			ctrlPic1:SetPicture(pic1);
 			
 			--显示百
-			pic1 = Pic;
-			ctrlPic = GetImage(layer, p.tbRankId[2]); 
-			pic1:Cut( _G.CGRectMake( 11*N_W, 0, N_W, N_H ) );
-			ctrlPic:SetPicture(pic1);
+			pic2:Cut( _G.CGRectMake( 11*N_W, 0, N_W, N_H ) );
+			ctrlPic2:SetPicture(pic2);
 			
 			--显示十位
-			pic1 = Pic;
-			ctrlPic = GetImage(layer, p.tbRankId[3]); 
 			local nMod = math.fmod(nNum, 100);
-			nMod = math.floor(nMod, 10);
-			pic1:Cut( _G.CGRectMake( nMod*N_W, 0, N_W, N_H ) );
-			ctrlPic:SetPicture(pic1);
+			nMod = math.floor(nMod/10);
+			pic3:Cut( _G.CGRectMake( nMod*N_W, 0, N_W, N_H ) );
+			ctrlPic3:SetPicture(pic3);
 			
 			--显示十
-			pic1 = Pic;
-			ctrlPic = GetImage(layer, p.tbRankId[4]); 
-			pic1:Cut( _G.CGRectMake( 10*N_W, 0, N_W, N_H ) );
-			ctrlPic:SetPicture(pic1);
+			pic4:Cut( _G.CGRectMake( 10*N_W, 0, N_W, N_H ) );
+			ctrlPic4:SetPicture(pic4);
 			
 			--显示个位
 			nMod = math.fmod(nNum, 10);
 			if nMod ~= 0 then
-				pic1 = Pic;
-				ctrlPic = GetImage(layer, p.tbRankId[5]); 
-				pic1:Cut( _G.CGRectMake( nMod*N_W, 0, N_W, N_H ) );
-				ctrlPic:SetPicture(pic1);
+				pic5:Cut( _G.CGRectMake( nMod*N_W, 0, N_W, N_H ) );
+				ctrlPic5:SetPicture(pic5);
 			end
 		end
 	end
+end
+
+
+--增加挑战次数回调
+local function DoAddChallengeTimes(id, param)
+    if (CommonDlgNew.BtnOk == id ) then
+        MsgCrossArena.MsgSendAcrossArenaAction(MsgCrossArena.EOPERATE_ACTION.EOPERATE_ACTION_ADD_CHALLENGE_COUNT_REQUEST);	
+    end
 end
 
 function p.OnUIEvent(uiNode, uiEventType, param)
@@ -330,9 +358,23 @@ function p.OnUIEvent(uiNode, uiEventType, param)
 		elseif ID_BTN_RULE == tag then
 			CrossArenaRule.LoadUI();
 		elseif ID_BTN_REWARD == tag then
-			CrossArenaReward.LoadUI();	
+			if CrossArenaUI.UserInfo.usRank == 0 then
+				local nNeedNum = p.GetDbWorldBattleConfigValue(p.DATA_CONFIG_ID.ENUM_WORLDBATTLE_CONFIG_TOP_AMOUNT);
+				CommonDlgNew.ShowYesDlg(string.format(GetTxtPri("CrossArena_03"), nNeedNum));
+			else
+				CrossArenaReward.LoadUI();	
+			end
 		elseif ID_BTN_ADD == tag then  --增加挑战次数请求
-			MsgCrossArena.MsgSendAcrossArenaAction(MsgCrossArena.EOPERATE_ACTION.EOPERATE_ACTION_ADD_CHALLENGE_COUNT_REQUEST);	
+		
+			if CrossArenaUI.UserInfo.usRank == 0 then
+				local nNeedNum = p.GetDbWorldBattleConfigValue(p.DATA_CONFIG_ID.ENUM_WORLDBATTLE_CONFIG_TOP_AMOUNT);
+				CommonDlgNew.ShowYesDlg(string.format(GetTxtPri("CrossArena_03"), nNeedNum));
+			else
+				local nFirstNeed = p.GetDbWorldBattleConfigValue(p.DATA_CONFIG_ID.ENUM_WORLDBATTLE_CONFIG_BASE_COST);
+				local nGrowNeed = p.GetDbWorldBattleConfigValue(p.DATA_CONFIG_ID.ENUM_WORLDBATTLE_CONFIG_ADD_COST);
+				local nNeedEMoney = nFirstNeed + nGrowNeed * p.UserInfo.ucHasAddCount;
+				CommonDlgNew.ShowYesOrNoDlg( string.format(GetTxtPri("CrossArena_01"), nNeedEMoney), DoAddChallengeTimes, true );
+			end
 		end
 	end
 	

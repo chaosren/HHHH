@@ -85,7 +85,7 @@ end
 
 --获得跨服竞技场头像
 function GetCrossArenaUIPlayerHeadPic(petTypeId)
-    return GetPotraitPic(petTypeId, "pet_config", DB_PET_CONFIG.ICON, "PlayerHeadBig1", 150, 150, -1, 0);
+    return GetPotraitPic(petTypeId, "pet_config", DB_PET_CONFIG.ICON, "PlayerHeadBig", 150, 150, -1, 0);
 end
 
 

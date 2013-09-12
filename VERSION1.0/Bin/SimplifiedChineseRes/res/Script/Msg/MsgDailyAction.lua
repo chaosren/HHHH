@@ -17,8 +17,8 @@ function p.MsgReciveDailyAcionInfo(netdatas)
     local nAmount = netdatas:ReadByte();  --活动数量 
     
     if actionType == 1 then
-        DailyAction.WorldActions = {};    --世界活动信息
-        DailyAction.ClassActions = {};     --帮派活动信息  
+        DailyAction.TimerActions = {};    --定時活動活动信息
+        DailyAction.DailyActions = {};     --每日活动信息  
     end
     
     --获取所有要更新的信息
@@ -31,12 +31,12 @@ function p.MsgReciveDailyAcionInfo(netdatas)
         
         local nGroup = GetDataBaseDataN("event_activity", record.nId, DB_EVENT_ACTIVITY.GROUP);    
         
-        --定时活动
-        if nGroup == 1 then
-            tbInfos = DailyAction.ClassActions;
         --全天活动
+        if nGroup == 1 then
+            tbInfos = DailyAction.DailyActions;
+        --定時活動 9.12改註釋
         elseif  nGroup == 2 then
-            tbInfos = DailyAction.WorldActions;
+            tbInfos = DailyAction.TimerActions;
         end
         
         if actionType == 1 then
@@ -58,8 +58,8 @@ function p.MsgReciveDailyAcionInfo(netdatas)
      
     end
     
-    table.sort(DailyAction.WorldActions, function(a,b) return a.nId < b.nId   end);
-    table.sort(DailyAction.ClassActions, function(a,b) return a.nId < b.nId   end);    
+    table.sort(DailyAction.TimerActions, function(a,b) return a.nId < b.nId   end);
+    table.sort(DailyAction.DailyActions, function(a,b) return a.nId < b.nId   end);    
 
     if IsUIShow(NMAINSCENECHILDTAG.DailyActionUI) then
        --刷新活动页面
