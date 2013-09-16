@@ -9,7 +9,7 @@ local p = CrossArenaRule;
 local ID_BTN_CLOSE = 49;
 local ID_CONTAINER = 6;
 local ID_TEXT_RULE = 87;
-
+local strRule = "規則說明:\n  1.爭龍榜活動時間為每日0點~22點\n  2.當日競技場結算時，排名前10的玩家可以參加次日的爭龍榜活動\n  3.次日活動開始時，擁有參賽資格的玩家將會自動出現在爭龍榜的排名列表內並且可以挑戰其他玩家；無資格的玩家只能進行查看，無法挑戰其他玩家\n  4.爭龍榜開啟後，參賽玩家的排名為隨機排名，玩家需要擊敗排名比自己靠前的對手來提升自己的排名\n  5.每日22點活動結束並結算獎勵，根據玩家當時所處排名發放對應獎勵\n  6.爭龍榜活動為跨服活動，參賽玩家資料採用即時資料（PVE活動結束後，請注意隨時調整自己的戰鬥陣型，以免在被其他參賽玩家擊敗。）\n";
 
 
 function p.LoadUI()
@@ -56,6 +56,7 @@ function p.InitData()
 		return nil;
 	end
     
+    --[[
 	local Container = GetScrollViewContainer(layer, ID_CONTAINER);
 	Container:EnableScrollBar(true);
 
@@ -73,11 +74,12 @@ function p.InitData()
 	view:AddChild(pLabelTips);	
 
 	Container:AddView(view);
+	]]
 
 
 
 	local RuleLable = GetLabel(layer, ID_TEXT_RULE);
-	--RuleLable:SetText("哪里来的已大队1\n哪里来的已大队2\n哪里来的已大队3\n哪里来的已大队4\n哪里来的已大队5\n哪里来的已大队6\n哪里来的已大队1\n哪里来的已大队2\n哪里来的已大队3\n哪里来的已大队4\n哪里来的已大队5\n哪里来的已大队6\n哪里来的已大队1\n哪里来的已大队2\n哪里来的已大队3\n哪里来的已大队4\n哪里来的已大队5\n哪里来的已大队6\n哪里来的已大队1\n哪里来的已大队2\n哪里来的已大队3\n哪里来的已大队4\n哪里来的已大队5\n哪里来的已大队6\n哪里来的已大队1\n哪里来的已大队2\n哪里来的已大队3\n哪里来的已大队4\n哪里来的已大队5\n哪里来的已大队6\n哪里来的已大队1\n哪里来的已大队2\n哪里来的已大队3\n哪里来的已大队4\n哪里来的已大队5\n哪里来的已大队6\n哪里来的已大队1\n哪里来的已大队2\n哪里来的已大队3\n哪里来的已大队4\n哪里来的已大队5\n哪里来的已大队6\n");
+	RuleLable:SetText(strRule);
 
 end
 	
