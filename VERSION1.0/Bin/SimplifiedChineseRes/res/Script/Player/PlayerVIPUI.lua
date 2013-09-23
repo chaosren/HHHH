@@ -292,7 +292,7 @@ function p.OnUIEventUseNum(nEventType, param, val)
             CommonDlgNew.ShowYesDlg(GetTxtPri("RLUI_T13"));
             return;
         end
-        MsgRankList.SendGetListInfoMsg(MsgRankList.RANKING_ACT.ATC_ACTIVITY_CODE, val);
+        MsgRankList.SendActivityCodeInfoMsg(MsgRankList.RANKING_ACT.ATC_ACTIVITY_CODE, val);
     end
 end
 

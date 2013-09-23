@@ -60,6 +60,45 @@ function p.GetRankType()
 end
 
 
+--发送检测激活码
+function p.SendActivityCodeInfoMsg( nRankingAct, val )
+    LogInfo("p.SendActivityInfoMsg nRankingAct:[%d]",nRankingAct);
+    ShowLoadBar();
+    local netdata = createNDTransData(NMSG_Type._MSG_ACTIVITY_CODE);
+    if nil == netdata then
+        return false;
+    end
+    netdata:WriteByte(1);
+    if( CheckS(val) ) then
+        netdata:WriteStr(val);
+    end
+    SendMsg(netdata);
+    netdata:Free();
+    return true;
+end
+
+
+--激活码消息返回
+function p.ProcessGetActivityInfo(netdata)
+	CloseLoadBar();
+
+	local btAction = netdata:ReadByte();
+    local nStatus = netdata:ReadByte();  
+    LogInfo("qbw btAction nStatus"..btAction.." "..nStatus);
+        if(nStatus == 0) then
+            CommonDlgNew.ShowYesDlg(GetTxtPri("RLUI_T8"));
+        elseif(nStatus == 1) then
+            CommonDlgNew.ShowYesDlg(GetTxtPri("RLUI_T9"));
+        elseif(nStatus == 2) then
+            CommonDlgNew.ShowYesDlg(GetTxtPri("RLUI_T10"));
+        elseif(nStatus == 3) then
+            CommonDlgNew.ShowYesDlg(GetTxtPri("RLUI_T11"));
+        elseif(nStatus == 4) then
+            CommonDlgNew.ShowYesDlg(GetTxtPri("RLUI_T12"));
+        end   	 
+end
+
+
 function p.ProcessGetListInfo(netdata) 
     CloseLoadBar();
     --获取活动类型
@@ -424,3 +463,7 @@ RegisterNetMsgHandler(NMSG_Type._MSG_DAILYTASK, "p.ProcessSendDailytaskMsg", p.P
 
 
 RegisterNetMsgHandler(NMSG_Type._MSG_RANKING, "p.ProcessGetListInfo", p.ProcessGetListInfo);
+
+
+RegisterNetMsgHandler(NMSG_Type._MSG_ACTIVITY_CODE, "p.ProcessGetActivityInfo", p.ProcessGetActivityInfo);
+

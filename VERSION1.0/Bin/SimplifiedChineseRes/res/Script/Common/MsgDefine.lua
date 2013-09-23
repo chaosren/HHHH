@@ -302,4 +302,7 @@ NMSG_Type =
 	_MSG_BATTLECITY_MAPINFO				= _MSG_GENERAL+8180;		--//地图信息
     _MSG_BATTLECITY_WEAKINFO          = _MSG_GENERAL+8181,        --虚弱信息
     _MSG_BATTLECITY_BATTLERECORD      = _MSG_GENERAL+8182,        --战斗结果
+    
+   _MSG_ACTIVITY_CODE      				= _MSG_GENERAL+8112,        --激活码
+      
 };
