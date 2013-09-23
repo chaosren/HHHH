@@ -262,8 +262,8 @@ function p.OnUIEventBg(uiNode, uiEventType, param)
             RemoveChildByTagNew(NMAINSCENECHILDTAG.PlayerVIPUI, true,true);
             return true;
 
-		elseif tag == ID_VIP_CTRL_BUTTON_MONEY then
-            doGoToMobageVipPage();
+		--elseif tag == ID_VIP_CTRL_BUTTON_MONEY then
+            --doGoToMobageVipPage();
 
         elseif tag == ID_VIP_CTRL_BUTTON_129 then
             p.ShowInputBox();

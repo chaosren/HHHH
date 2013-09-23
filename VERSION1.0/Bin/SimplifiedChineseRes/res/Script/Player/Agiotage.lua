@@ -18,7 +18,7 @@ local ID_BTN_EXCHANGE_10				= 1;	-- 兑换10元宝按钮ID
 local ID_BTN_EXCHANGE_50				= 2;	-- 兑换50元宝按钮ID
 local ID_BTN_EXCHANGE_100				= 3;	-- 兑换100元宝按钮ID
 local ID_BTN_EXCHANGE_ANY				= 4;	-- 兑换任意元宝按钮ID
-
+local ID_BTN_RECHARGE_16				= 16;	-- 充值按鈕
 
 local ID_LABEL_BALANCE					= 25;	-- 账户余额标签ID
 local ID_LABEL_GOLD						= 23;	-- 任意兑换换算的金币值标签ID
@@ -27,6 +27,8 @@ local ID_EDIT_INPUT						= 17;	-- 任意元宝值输入框控件ID
 
 -- 
 local EXCHANGE_RATE						= 10;	-- 元宝对金币的汇率 1:10
+
+
 
 ---------------------------------------------------
 local szBalance		= GetTxtPri("PLAYER_T1");
@@ -115,6 +117,8 @@ function p.OnUIEvent( uiNode, uiEventType, param )
 			p.AgiotageQuest( 10 );
 		elseif ( ID_BTN_EXCHANGE_50 == tag ) then
 			p.AgiotageQuest( 50 );
+		elseif ( ID_BTN_RECHARGE_16 == tag ) then
+			doGoToMobageVipPage();
 		elseif ( ID_BTN_EXCHANGE_100 == tag ) then
 			p.AgiotageQuest( 100 );
 		elseif ( ID_BTN_EXCHANGE_ANY == tag ) then
