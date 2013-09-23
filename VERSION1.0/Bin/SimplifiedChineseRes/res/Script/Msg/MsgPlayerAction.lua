@@ -273,6 +273,9 @@ function p.MsgGetRechargeRewardInfo(netdatas)
 			rightTable.Money = netdatas:ReadInt();          --奖励物品类型  --银币  
 			rightTable.Soph = netdatas:ReadInt();           --奖励物品类型                --将魂
 			rightTable.Repute = netdatas:ReadInt();          --声望 
+			rightTable.Spirit = netdatas:ReadInt();           --武魂
+			rightTable.Exploits = netdatas:ReadInt();          --军功
+
 			rightTable.Param1 = netdatas:ReadInt();  
 			rightTable.Param2 = netdatas:ReadInt();  
 			rightTable.Param3 = netdatas:ReadInt(); 
@@ -293,7 +296,9 @@ function p.MsgGetRechargeRewardInfo(netdatas)
 			rightTable.Money = netdatas:ReadInt();          --奖励物品类型  --银币  
 			rightTable.Soph = netdatas:ReadInt();           --奖励物品类型                --将魂
 			rightTable.Repute = netdatas:ReadInt();          --声望 
-			
+			rightTable.Spirit = netdatas:ReadInt();           --武魂
+			rightTable.Exploits = netdatas:ReadInt();          --军功
+
 			table.insert(CheckInReward.VipStageAwardInfo, rightTable); 
 			--CheckInReward.VipStageAwardInfo[rightTable.nStage][rightTable.nVipLevel + 1] = rightTable;
 		end	
