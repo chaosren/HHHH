@@ -71,7 +71,7 @@ end
 function p.MsgGetPlayerActionInfo(netdatas)
     
     local nPreSerId, nCurSerId = Login_ServerUI.GetPreCurSerId();
-    LogInfo("tzq p.MsgGetPlayerActionInfo nPreSerId= %d, nCurSerId = %d begin", nPreSerId, nCurSerId);   
+
     if nPreSerId ~= nCurSerId then
         for i, v in pairs(p.PLAYER_ACTION_STATION) do
             v.IsExit = 0;   
@@ -83,12 +83,7 @@ function p.MsgGetPlayerActionInfo(netdatas)
     local cActionType = netdatas:ReadByte();
     --活动的数量
     local cActionAmount = netdatas:ReadByte();
-    LogInfo("p.MsgGetPlayerActionInfo cActionType = %d, cActionAmount = %d", cActionType, cActionAmount);    
-    
-    for i, v in pairs(p.PLAYER_ACTION_STATION) do
-        LogInfo("action station = %d, before msg", v.IsExit);   
-    end 
-    
+
     for i = 1, cActionAmount do
         p.StrActionInfo = {};
         p.StrActionInfo.iDb_event_config_id = netdatas:ReadInt();
@@ -96,8 +91,6 @@ function p.MsgGetPlayerActionInfo(netdatas)
         p.StrActionInfo.iData2 = netdatas:ReadInt(); 
         p.StrActionInfo.iData3 = netdatas:ReadInt();  
         p.StrActionInfo.iBeginTime = netdatas:ReadInt();      
-        LogInfo("i = %d, idevent = %d, iData1 = %d, iData2 = %d, iData3 = %d, iBeginTime = %d", i, p.StrActionInfo.iDb_event_config_id, 
-                        p.StrActionInfo.iData1, p.StrActionInfo.iData2, p.StrActionInfo.iData3, p.StrActionInfo.iBeginTime);
 
         local iType = nil;
    
@@ -145,7 +138,6 @@ function p.MsgGetPlayerActionInfo(netdatas)
         
         --更新用户是否存在这张表
         if iType > p.PLAYER_ACTION_TYPE.BEGIN  and iType < p.PLAYER_ACTION_TYPE.END then
-            LogInfo("receive msg type = %d, action = %d", iType, cActionType);   
             if cActionType == p.EVENT_ACTION_TYPE.ACTION_INFO then  --下发活动信息
                 p.PLAYER_ACTION_STATION[iType].IsExit = 1;
             else
@@ -153,14 +145,8 @@ function p.MsgGetPlayerActionInfo(netdatas)
             end
         end
     end
-    
-    for i, v in pairs(p.PLAYER_ACTION_STATION) do
-        LogInfo("action station = %d, after msg", v.IsExit);   
-    end 
-    
+
     MainUI.RefreshFuncIsOpen();
-    
-    LogInfo("p.MsgGetPlayerActionInfo  end");    
 end
 
 function p.IsActionOpen(iType)

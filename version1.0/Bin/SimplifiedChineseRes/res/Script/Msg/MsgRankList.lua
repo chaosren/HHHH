@@ -25,10 +25,9 @@ p.RANKING_ACT = {
     ACT_EMONEY      = 7,    --金币排名
     ACT_ELITE_STAGE = 8,    --精英副本
     ACT_REFRESHTIME = 9,    --剩余刷新时间
-    ATC_ACTIVITY_CODE = 10, --激活码获取礼包接口
     
-    RANKING_ACT_CURRENT_EVENT = 11,  --当前活动查询
-    ATC_RANK_COMMON_INFO = 12, --公共数据接收
+    RANKING_ACT_CURRENT_EVENT = 10,  --当前活动查询
+    ATC_RANK_COMMON_INFO = 11, --公共数据接收
 }
 p.Action = p.RANKING_ACT.ACT_NONE;
 p.btActionType = p.RANKING_ACT.ACT_NONE;
@@ -61,7 +60,7 @@ end
 
 
 --发送检测激活码
-function p.SendActivityCodeInfoMsg( nRankingAct, val )
+function p.SendActivityCodeInfoMsg(val)
     LogInfo("p.SendActivityInfoMsg nRankingAct:[%d]",nRankingAct);
     ShowLoadBar();
     local netdata = createNDTransData(NMSG_Type._MSG_ACTIVITY_CODE);
@@ -107,22 +106,6 @@ function p.ProcessGetListInfo(netdata)
     if(btAction == p.RANKING_ACT.ACT_REFRESHTIME) then
         local nTime = netdata:ReadInt();
         RankListUI.RefreshTime(nTime);
-        return;
-    --激活码礼包使用接口
-    elseif(btAction == p.RANKING_ACT.ATC_ACTIVITY_CODE) then
-        local nStatus = netdata:ReadInt();
-        if(nStatus == 0) then
-            CommonDlgNew.ShowYesDlg(GetTxtPri("RLUI_T8"));
-        elseif(nStatus == 1) then
-            CommonDlgNew.ShowYesDlg(GetTxtPri("RLUI_T9"));
-        elseif(nStatus == 2) then
-            CommonDlgNew.ShowYesDlg(GetTxtPri("RLUI_T10"));
-        elseif(nStatus == 3) then
-            CommonDlgNew.ShowYesDlg(GetTxtPri("RLUI_T11"));
-        elseif(nStatus == 4) then
-            CommonDlgNew.ShowYesDlg(GetTxtPri("RLUI_T12"));
-        end
-        CloseLoadBar();
         return;
     end
     
@@ -181,80 +164,6 @@ function p.ProcessGetListInfo(netdata)
     end
 
 end
-
---[[
-function p.ProcessGetListInfo(netdata) 
-    LogInfo("p.ProcessGetListInfo");
-    local nAction = netdata:ReadByte();
-    
-    if(nAction == p.RANKING_ACT.ACT_REFRESHTIME) then
-        local nTime = netdata:ReadInt();
-        LogInfo("p.ProcessGetListInfo ACT_REFRESHTIME:[%d]",nTime);
-        RankListUI.RefreshTime(nTime);
-        return;
-    elseif(nAction == p.RANKING_ACT.ATC_ACTIVITY_CODE) then
-        local nStatus = netdata:ReadInt();
-        if(nStatus == 0) then
-            CommonDlgNew.ShowYesDlg(GetTxtPri("RLUI_T8"));
-        elseif(nStatus == 1) then
-            CommonDlgNew.ShowYesDlg(GetTxtPri("RLUI_T9"));
-        elseif(nStatus == 2) then
-            CommonDlgNew.ShowYesDlg(GetTxtPri("RLUI_T10"));
-        elseif(nStatus == 3) then
-            CommonDlgNew.ShowYesDlg(GetTxtPri("RLUI_T11"));
-        elseif(nStatus == 4) then
-            CommonDlgNew.ShowYesDlg(GetTxtPri("RLUI_T12"));
-        end
-        CloseLoadBar();
-        return;
-    end
-    
-    
-    local nPackageType = netdata:ReadByte();
-    local nRecordCount = netdata:ReadShort();
-    LogInfo("nAction:[%d],nPackageType:[%d],nRecordCount:[%d]",nAction,nPackageType,nRecordCount);
-    p.Action = nAction;
-    
-    if nPackageType == PACKAGE_BEGIN or nPackageType == PACKAGE_SINGLE then
-        LogInfo("p.RankLists clear");
-        p.RankLists = {};
-    end
-    local nt = #p.RankLists;
-    for i=1,nRecordCount do
-        local pRank = {};
-        
-        pRank.nRank = nt + i;
-        pRank.nNum = netdata:ReadInt();
-        
-        LogInfo("pRank.nRank:[%d],pRank.nNum:[%d]",pRank.nRank,pRank.nNum);
-        if(p.RANKING_ACT.ACT_SOPH == nAction) then
-            if(pRank.nNum == 0) then
-                pRank.nNum = 1;
-            end
-            pRank.nStar = netdata:ReadInt();
-            pRank.nSoph = netdata:ReadInt();
-            
-            LogInfo("pRank.nStar:[%d],pRank.nSoph:[%d]",pRank.nStar,pRank.nSoph);
-        end
-        
-        pRank.sName = netdata:ReadUnicodeString();
-        
-        LogInfo("pRank.sName:[%s]",pRank.sName);
-        
-        table.insert(p.RankLists, pRank);
-    end
-    
-    if nPackageType == PACKAGE_END or nPackageType == PACKAGE_SINGLE then
-        if(p.mUIListener) then
-            p.mUIListener(NMSG_Type._MSG_RANKING,p.RankLists);
-        end
-    end
-    
-    CloseLoadBar();
-end
-]]
-
-
 
 DAILYTASK_ACTION = {
     OPEN = 1,               --打开界面
