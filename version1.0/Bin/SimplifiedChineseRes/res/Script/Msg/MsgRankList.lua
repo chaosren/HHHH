@@ -136,7 +136,13 @@ function p.ProcessGetListInfo(netdata)
 	--记录条数
     local nRecordCount = netdata:ReadShort();
     
-    local nt = #RankListUI.tbRankInfo.tbRankList;
+	local nt = 0; 
+	if RankListUI.tbRankInfo.tbRankList ~= nil then
+		nt = #RankListUI.tbRankInfo.tbRankList;
+	else
+		RankListUI.tbRankInfo.tbRankList = {};
+	end
+	
     for i=1,nRecordCount do
         local tbRank = {};
         tbRank.nRank = nt + i;    --获取排名

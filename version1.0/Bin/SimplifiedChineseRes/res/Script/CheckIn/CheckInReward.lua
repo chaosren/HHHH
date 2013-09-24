@@ -588,11 +588,11 @@ function  p.GetAwardStrFromInfo(Info)
     end  
     
     --武魂
-    if Info.Spirit ~= nil then
+    if Info.Spirit ~= nil and Info.Spirit ~= 0 then
         ShowText = ShowText .."  "..GetTxtPub("Spirit").."X"..Info.Spirit.."\n";
     end
     --军功
-    if Info.Exploits ~= nil then
+    if Info.Exploits ~= nil and Info.Exploits ~= 0 then
         ShowText = ShowText .."  "..GetTxtPub("Exploit").."X"..Info.Exploits.."\n";
     end  
     
