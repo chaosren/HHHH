@@ -75,7 +75,13 @@ function p.LoadUI()
 		return false;
 	end
 	
-	uiLoad:Load( "AgiotageUI.ini", pLayer, p.OnUIEvent, 0, 0 );
+	if ClientConfig.GetClientTypeConfig() >= ClientConfig.CLIENT_TYPE_CONFIG.CLIENT_TYPE_ANDROID_LUXURY
+	   and ClientConfig.GetClientTypeConfig() <= ClientConfig.CLIENT_TYPE_CONFIG.CLIENT_TYPE_ANDROID_INTERNAL then
+	   	uiLoad:Load( "AgiotageUI_android.ini", pLayer, p.OnUIEvent, 0, 0 );
+	else
+		uiLoad:Load( "AgiotageUI.ini", pLayer, p.OnUIEvent, 0, 0 );
+	end
+
 	uiLoad:Free();
 	p.pAgiotageUILayer	= pLayer;
 	
