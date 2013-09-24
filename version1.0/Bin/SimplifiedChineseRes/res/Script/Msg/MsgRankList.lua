@@ -61,7 +61,6 @@ end
 
 --发送检测激活码
 function p.SendActivityCodeInfoMsg(val)
-    LogInfo("p.SendActivityInfoMsg nRankingAct:[%d]",nRankingAct);
     ShowLoadBar();
     local netdata = createNDTransData(NMSG_Type._MSG_ACTIVITY_CODE);
     if nil == netdata then
