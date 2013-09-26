@@ -125,6 +125,8 @@ function p.ProcessGetListInfo(netdata)
        return;
     end
     
+    
+    
     --包类型
     local btPackageType = netdata:ReadByte();   
     --初始包数据清空

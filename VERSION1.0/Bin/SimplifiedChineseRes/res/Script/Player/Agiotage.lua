@@ -75,8 +75,13 @@ function p.LoadUI()
 		return false;
 	end
 	
-	if ClientConfig.GetClientTypeConfig() >= ClientConfig.CLIENT_TYPE_CONFIG.CLIENT_TYPE_ANDROID_LUXURY
-	   and ClientConfig.GetClientTypeConfig() <= ClientConfig.CLIENT_TYPE_CONFIG.CLIENT_TYPE_ANDROID_INTERNAL then
+	local nType = ClientConfig;
+	
+	if nType ~= nil then
+		nType = ClientConfig.GetClientTypeConfig();
+	end
+	
+	if nType == nil or (nType >= 1 and nType <= 3) then
 	   	uiLoad:Load( "AgiotageUI_android.ini", pLayer, p.OnUIEvent, 0, 0 );
 	else
 		uiLoad:Load( "AgiotageUI.ini", pLayer, p.OnUIEvent, 0, 0 );
@@ -97,10 +102,7 @@ LogInfo( "test111: 204" );
 	p.pLabelGold	= GetLabel( pLayer, ID_LABEL_GOLD );
 	p.pLabelGold:SetText( "0" .. szDestGold );
 				LogInfo( "test111: 22" );
-	-- 您账户有XX元宝
-	local pLabelBalance	= GetLabel( pLayer, ID_LABEL_BALANCE );
-	pLabelBalance:SetVisible(false);
-    				LogInfo( "test111: 23" );
+
 	doShowMobageBalance();
 	
 	return true;
