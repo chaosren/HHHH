@@ -770,7 +770,7 @@ end
 
 function p.GetNotice()
     local record = SqliteConfig.SelectNotice(1);
-    ActivityNoticeUI.ShowUI(record.VER);
+    ActivityNoticeUI.ShowUI(0);
 end
 
 --踢人
