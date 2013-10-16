@@ -188,6 +188,12 @@ DoFile("DailyLottery/define.lua");
 
 --新登入签到功能
 DoFile("CheckIn/define.lua");
+--装备魔化
+bgnTimeSlice("EvilMelt/define.lua")
+	DoFile("EvilMelt/define.lua");
+endTimeSlice("EvilMelt/define.lua")
+--血战
+DoFile("BloodBattle/define.lua");
 
 --跨服竞技场功能
 DoFile("CrossArena/define.lua");

@@ -4,7 +4,6 @@ LoadDataBaseTable("npc", "npcTable");
 
 LoadDataBaseTable("matrix_config","matrix_configTable");
 LoadDataBaseTable("matrix_up_level","matrix_up_levelTable");
-LoadDataBaseTable("npc", "npcTable");
 LoadDataBaseTable("skill_config","skill_configTable");
 
 LoadDataBaseTable("skill_result_cfg","skill_result_cfgTable");
@@ -86,3 +85,6 @@ LoadDataBaseTable("exchange_exploits_config","exchange_exploits_configTable");
 
 LoadDataBaseTable("worldbattle_award_config","worldbattle_award_configTable");
 LoadDataBaseTable("worldbattle_config","worldbattle_configTable");
+LoadDataBaseTable("itemtype_evilmelt","itemtype_evilmeltTable");
+LoadDataBaseTable("bloodbattle_monster_generate","bloodbattle_monster_generateTable");
+LoadDataBaseTable("bloodbattle_monster_addition","bloodbattle_monster_additionTable");

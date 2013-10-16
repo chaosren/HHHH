@@ -2123,6 +2123,7 @@ DB_MOUNT_TRAIN_TYPE_DESC = {
 }
 
 
+-- 幸运宝箱、古迹寻宝静态数据索引
 DB_FINDBOX_CONFIG = {
 	ID			= 0,
 	VALUE		= 1,
@@ -2198,12 +2199,54 @@ DB_DAILYTASK_LEVEL_CONFIG = {
     DAILYTASK_NUM_ODDS = 15,
 }
 
+DB_ITEMTYPE_EVILMELT = {
+	ID					= 0,
+	MELT_LEVEL_MAX		= 1,
+	REQ_MONEY_BASE		= 2,
+	REQ_MONEY_GROW		= 3,
+	REQ_ITEMTYPE_ID		= 4,
+	REQ_ITEMTYPE_BASE	= 5,
+	REQ_ITEMTYPE_GROW	= 6,
+	EVIL_TYPE1			= 7,
+	EVIL_VALUE1			= 8,
+	EVIL_GROW1			= 9,
+	EVIL_TYPE2			= 10,
+	EVIL_VALUE2			= 11,
+	EVIL_GROW2			= 12,
+	EVIL_TYPE3			= 13,
+	EVIL_VALUE3			= 14,
+	EVIL_GROW3			= 15,
+};
 
 DB_BATTLECITY_CONFIG = {
     CONFIG_ID = 0,
     CONFIG_VALUE = 1,
     COMMENT = 2,
 }
+
+--血战所用到的怪物表的字段索引
+DB_BLOODBATTLE_MONSTER_ADDITION = {
+	ID			= 0,
+	NAME		= 1,
+	LOOKFACE	= 2,
+	TYPE		= 3,
+	ATK_TYPE	= 4,
+	SKILL		= 5,
+};
+--血战怪物生成规则
+DB_BLOODBATTLE_MONSTER_GENERATE = {
+	ID			= 0,
+	GRADE		= 1,
+	STATIONS1	= 2,--对应 bloodbattle_monster_addition 的ID
+	STATIONS2	= 3,
+	STATIONS3	= 4,
+	STATIONS4	= 5,
+	STATIONS5	= 6,
+	STATIONS6	= 7,
+	STATIONS7	= 8,
+	STATIONS8	= 9,
+	STATIONS9	= 10,
+};
 
 		
 DB_WORLDBATTLE_AWARD_CONFIG = {
@@ -2223,6 +2266,8 @@ DB_WORLDBATTLE_CONFIG = {
 	DESTRIBE = 1,     --鎻忚堪
 	VALUE = 2,    --鍊?
 }
+
+
 
 
 
