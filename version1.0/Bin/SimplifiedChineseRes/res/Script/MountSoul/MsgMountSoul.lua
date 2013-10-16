@@ -61,8 +61,8 @@ function p.HandleMsgCultivate( tNetDataPackete )
 	local nLevel	= tNetDataPackete:ReadInt();	-- 升了几级
 	local nExp		= tNetDataPackete:ReadInt();	-- 获得经验
 	local nStr		= tNetDataPackete:ReadInt();	-- 获得力量加成
-	local nAgi		= tNetDataPackete:ReadInt();	-- 获得敏捷加成
-	local nIni		= tNetDataPackete:ReadInt();	-- 获得智力加成
+	local nIni		= tNetDataPackete:ReadInt();	-- 获得智力加成--
+	local nAgi		= tNetDataPackete:ReadInt();	-- 获得敏捷加成--
 	local nLife		= tNetDataPackete:ReadInt();	-- 获得生命加成
 	local nImmuneDamage	= tNetDataPackete:ReadInt();	-- 获得免伤加成
 	local nCritNum	= tNetDataPackete:ReadInt();	-- 暴击次数

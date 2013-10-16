@@ -191,6 +191,8 @@ NMSG_Type =
 	_MSG_QUESTION_INFO						= _MSG_GENERAL + 6044,		-- 古迹寻宝-问答
     _MSG_BANQUET                            = _MSG_GENERAL+6050,	--宴会
     _MSG_WARLORD                            = _MSG_GENERAL+6071,	--战神像
+	_MSG_BLOODBATTLE							= _MSG_GENERAL + 6092,		-- 血战（过关斩将）
+	_MSG_BLOODBATTLERANKING							= _MSG_GENERAL + 6093,		-- 血战排名
 
     _MSG_PLAYER_ACTION_INFO            =   _MSG_GENERAL + 7001,              --活动信息
     _MSG_PLAYER_ACTION_OPERATE   =   _MSG_GENERAL + 7002,               --活动操作
@@ -270,6 +272,7 @@ NMSG_Type =
     
 
     _MSG_MOUNTSOUL            =   _MSG_GENERAL + 6060,	-- 兽魂
+    _MSG_EVILMELT             =   _MSG_GENERAL + 6091,	-- 装备魔化
     
     _MSG_GMCOMMAND              = 139,      --gm com
     

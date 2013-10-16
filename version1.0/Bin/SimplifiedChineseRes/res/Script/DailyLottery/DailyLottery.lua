@@ -191,6 +191,10 @@ function p.OpenBox()
 	if not CheckP( pLayer ) then
 		return;
 	end
+	local pBtnLottery	= GetButton( pLayer, ID_BTN_LOTTERY );--按钮隐藏
+	if CheckP( pBtnLottery ) then
+		pBtnLottery:SetVisible( false );
+	end
 	if ( p.nAniIndex == BOX_INDEX_CLOSED ) then
 		local pSpriteNode = RecursivUISprite( pLayer, {ID_CTRL_SPRITE} );
 		if ( pSpriteNode ~= nil ) then
