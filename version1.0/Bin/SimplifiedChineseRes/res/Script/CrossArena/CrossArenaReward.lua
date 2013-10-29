@@ -67,8 +67,7 @@ function p.RefreshUI()
 		if CrossArenaUI.UserInfo.usRank >= v.nMinRank and
 		   CrossArenaUI.UserInfo.usRank <= v.nMaxRank then
 				local ShowText = "";
-				ShowText = ShowText..GetTxtPri("CrossArena_02").."\n";
-				
+				--ShowText = ShowText..GetTxtPri("CrossArena_02").."\n";
 				if v.nMoney ~= 0 then
 					ShowText = ShowText .."  "..GetTxtPub("coin").."X"..v.nMoney.."\n";
 				end

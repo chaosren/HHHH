@@ -16,7 +16,7 @@ local ID_BTN_CHALLEAGE = 50;
 local ID_TEXT_RANK = 4;  --排名
 local ID_TEXT_NAME = 5;  --姓名
 
-local ListViewSize = CGSizeMake(200*CoordScaleX, 30*CoordScaleY);
+local ListViewSize = CGSizeMake(198*CoordScaleX, 29.6*CoordScaleY);
 
 p.tbTopThreeId = {{idPic = 51, idText = 22}, {idPic = 52, idText = 23}, {idPic = 53, idText = 24}};
 p.tbRankId = {81, 82, 83, 84, 85};
@@ -120,7 +120,7 @@ function p.RefreshRankList()
 		end
 	end
 	
-	if nShowIndex > 7 then
+	if nShowIndex > 7 then 
 		nShowIndex = nShowIndex - 7;
 	else
 		nShowIndex = 0;
@@ -182,14 +182,33 @@ function p.OnViewUIEvent(uiNode, uiEventType, param)
 			if p.UserInfo.usRank == 0 then
 				local nNeedNum = p.GetDbWorldBattleConfigValue(p.DATA_CONFIG_ID.ENUM_WORLDBATTLE_CONFIG_TOP_AMOUNT);
 				CommonDlgNew.ShowYesDlg(string.format(GetTxtPri("CrossArena_03"), nNeedNum));
+			elseif CrossArenaUI.UserInfo.ucLeftCount == 0 then
+				CommonDlgNew.ShowYesDlg(GetTxtPri("CrossArena_05"));
 			else
 				--发送挑战请求   
 				local nId = btn:GetParam1();
-				MsgCrossArena.MsgSendAcrossArenaAction(MsgCrossArena.EOPERATE_ACTION.EOPERATE_ACTION_CHALLENGE, nId);	
+				local strName = "";
+				--增加二次確認窗口
+				
+				for i, v in pairs(p.CrossArenaListInfo) do
+					if v.nRank == nId then
+						strName = v.szName;
+					end
+				end
+				
+				CommonDlgNew.ShowYesOrNoDlg(GetTxtPri("AREAUI_T6").. strName, p.onChallengeDlg, nId);
+				--MsgCrossArena.MsgSendAcrossArenaAction(MsgCrossArena.EOPERATE_ACTION.EOPERATE_ACTION_CHALLENGE, nId);	
 			end
         end
     end
 	return true;
+end
+
+
+function p.onChallengeDlg(nId, param)
+    if ( CommonDlgNew.BtnOk == nId ) then
+    	MsgCrossArena.MsgSendAcrossArenaAction(MsgCrossArena.EOPERATE_ACTION.EOPERATE_ACTION_CHALLENGE, param);	
+    end
 end
 
 

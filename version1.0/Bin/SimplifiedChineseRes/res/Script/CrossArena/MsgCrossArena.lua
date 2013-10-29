@@ -25,7 +25,8 @@ function p.RevCrossArenaList(netdatas)
 	local ucAcount =     netdatas:ReadByte();            --列表数据量
 	
 	if ucAcount < 3 then
-		return;   --前三名为左边要显示的前三名玩家
+		CommonDlgNew.ShowYesDlg(GetTxtPri("CrossArena_04"), nil, nil, 15);
+		--return;   --前三名为左边要显示的前三名玩家
 	end
 	
 	CrossArenaUI.CrossArenaListInfo = {};
