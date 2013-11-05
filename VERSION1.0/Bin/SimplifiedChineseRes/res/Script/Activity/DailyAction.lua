@@ -262,8 +262,8 @@ function p.refreshViewItem(view, nId)
         local DataList = p.TimerActions;
         for i, v in pairs(DataList) do
             if v.nId == nId then
-                if v.bStatus ~= 3 then  --未开启
-                    btn:EnalbeGray(true);                          
+                if v.bStatus == 3 then  --未开启
+                    btn:EnalbeGray(true);    
                 end
                 break;
             end

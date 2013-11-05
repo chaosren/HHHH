@@ -27,6 +27,8 @@ p.tbNumPics = {};
 
 p.DbCrossArenaConfig = {};
 
+p.nShowIndex = -1;   --要显示的索引
+
 
 --要用的数据对应的id枚举  
 p.DATA_CONFIG_ID =
@@ -68,6 +70,7 @@ function p.LoadUI()
 end
 
 function p.InitDbData()
+	p.nShowIndex = -1;
     ids = GetDataBaseIdList("worldbattle_config");
     p.DbCrossArenaConfig = {};
 	for i,v in ipairs(ids) do
@@ -106,9 +109,9 @@ function p.RefreshRankList()
 
     ListContainer:SetViewSize(ListViewSize);
     ListContainer:EnableScrollBar(true);
-    ListContainer:RemoveAllView();
+    ListContainer:RemoveAllView();    
 
-	local nShowIndex = 0;
+	local nIndex = 0;
     --设置当前要显示的说明信息
 	for i, v in pairs(p.CrossArenaListInfo) do
 		if i > 3 then
@@ -116,17 +119,22 @@ function p.RefreshRankList()
 		end
 		
 		if v.nRank == p.UserInfo.usRank then
-			nShowIndex = i - 3;
+			nIndex = i - 3;
 		end
 	end
 	
-	if nShowIndex > 7 then 
-		nShowIndex = nShowIndex - 7;
+	if (p.nShowIndex == -1) then
+		if nIndex > 7 then 
+			nIndex = nIndex - 7;
+		else
+			nIndex = 0;
+		end
+		p.nShowIndex = nIndex;
 	else
-		nShowIndex = 0;
-	end
+		p.nShowIndex = ListContainer:GetCurrentIndex();
+    end
 
-	ListContainer:ShowViewByIndex(nShowIndex); 
+	ListContainer:ShowViewByIndex(p.nShowIndex); 
 end
 
 function p.AddViewItem(container, nIndex, info, uiFile)
@@ -231,7 +239,7 @@ function p.RefreshTopThreeAndUserInfo()
 		local ctrlPic = GetImage(layer, v.idPic);  
 		local pic = GetCrossArenaUIPlayerHeadPic(info.nIdLookface);
 		ctrlPic:SetPicture(pic);
-		SetLabel(layer, v.idText, info.szName);
+		SetLabel(layer, v.idText, info.szName.."  lv.".. info.ucLevel);
 	end
 
 	--显示玩家当前名次

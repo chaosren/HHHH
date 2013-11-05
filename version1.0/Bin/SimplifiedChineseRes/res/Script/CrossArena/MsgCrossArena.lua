@@ -22,6 +22,8 @@ function p.RevCrossArenaList(netdatas)
 	CrossArenaUI.UserInfo.ucHasAddCount =   netdatas:ReadByte();            --已增加次数
 	CrossArenaUI.UserInfo.dwCDTime    =     netdatas:ReadInt();             --CD时间
 	
+	local bFlag = netdatas:ReadByte();  --0请求的发送， 1其他人更新时的
+	
 	local ucAcount =     netdatas:ReadByte();            --列表数据量
 	
 	if ucAcount < 3 then
@@ -42,7 +44,9 @@ function p.RevCrossArenaList(netdatas)
 	end
 	
 	 if not IsUIShow(NMAINSCENECHILDTAG.TransportUI) then
-		CrossArenaUI.LoadUI();
+		if bFlag == 0 then
+			CrossArenaUI.LoadUI();
+		end
 	 else
 	 	CrossArenaUI.RefreshUI(); 
 	 end
