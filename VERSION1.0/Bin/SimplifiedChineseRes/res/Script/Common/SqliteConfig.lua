@@ -47,10 +47,10 @@ function p.InitDataBaseTable()
     --Sqlite_ExcuteSql("DROP TABLE ServerList");
     --Sqlite_ExcuteSql("DROP TABLE RoleList");
     
-    p.CreateServerListTable();
-    p.CreateRoleInfoTable();
-    p.CreateNoticeTable();
-    
+	p.CreateServerListTable();
+	p.CreateRoleInfoTable();
+	p.CreateNoticeTable();
+	p.CreateSelfLoginTable(); 
     --p.InsertServerList({nServerID=222,sServerName="zzj",nServerIP="192.168.65.7",nServePort=9528,nServerStatus=2,sRecommend="ss"});
 end
 
@@ -243,6 +243,20 @@ end
 
 
 
+
+
+--自登入数据库表信息
+function p.CreateSelfLoginTable()
+    LoginCommon.CreateSelfLoginTable();
+end
+
+function p.SelectSelfLogin(nID)
+	return LoginCommon.SelectSelfLogin(nID);
+end
+
+function p.InsertSelfLogin(record)
+	LoginCommon.InsertSelfLogin(record);
+end
 --豪华礼包数据记录
 local LuxuryGift = "LuxuryGift";
 local LuxuryGiftCreateScript = "CREATE TABLE LuxuryGift (ID INTEGER);";

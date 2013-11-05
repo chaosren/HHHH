@@ -167,6 +167,10 @@ NMAINSCENECHILDTAG =
     TransportLootUI                   = NUITAG_BEGIN + 118,                   --运送粮草准备处理层       
     BattleBossUI                    = 2015,--NUITAG_BEGIN + 119,   
     TransPlayerListUI                    = NUITAG_BEGIN + 120,                  --运送粮草玩家列表     
+    LoginUI                          = NUITAG_BEGIN + 122,                  --SDK登入页面  
+    LoginRegisterUI                   = NUITAG_BEGIN + 123,                  --SDK登入注册页面  
+    LoginChgPassWord                  = NUITAG_BEGIN + 124,                  --SDK登入修改密码页面  
+    
     
     TopBar                  = NUITAG_BEGIN + 158,
     BottomMsgBtn               = NUITAG_BEGIN + 159,

@@ -22,3 +22,5 @@ DoFile("Player/Fete.lua");
 
 --兑换
 DoFile("Player/Agiotage.lua");
+
+DoFile("Player/PlayerDataConfig.lua");

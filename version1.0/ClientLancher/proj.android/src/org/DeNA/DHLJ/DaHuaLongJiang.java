@@ -235,48 +235,44 @@ public class DaHuaLongJiang extends Cocos2dxActivity
 
 	protected void onCreate(Bundle savedInstanceState)
 	{
-		Log.d("init", "@@ DaHuaLongJiang.onCreate()");
-		if (isSDCardCanUse())
-		{
-			ms_pkDHLJ = this;
-			Context context = getApplication().getApplicationContext();
-			s_context = context;
-			mDeviceID = Secure.getString(this.getContentResolver(),
-					Secure.ANDROID_ID);
-			PushService.actionStart(context);
+		Log.d(TAG, "@@ DaHuaLongJiang.onCreate()");
 
-			MobageLogin();
-			// addTextView();
-			s_TextViewlayout = null;
+		ms_pkDHLJ = this;
+		Context context = getApplication().getApplicationContext();
+		s_context = context;
+		
+		mDeviceID = Secure.getString(this.getContentResolver(),
+				Secure.ANDROID_ID);
+		PushService.actionStart(context);
 
-			Log.e(TAG, "onCreate called");
-			nativeInit(480, 320);
-			super.onCreate(savedInstanceState);
-			
-		} else
-		{
-			AlertDialog alertDialog = new AlertDialog.Builder(this).create();
-			alertDialog.setTitle("Title");
-			alertDialog.setMessage("Message");
+		//MobageLogin();
+		// addTextView();
+		s_TextViewlayout = null;
 
-			// alertDialog.setIcon(R.drawable.dhlj_icon);
-			alertDialog.show();
-		}
+		Log.d(TAG, "onCreate called");
+		nativeInit(480, 320);
+		Log.d(TAG, "onCreate called11");
+		setMain();
+		Log.d(TAG, "onCreate called12");
+		LoginComplete(0);
+		Log.d(TAG, "onCreate called13");
+		super.onCreate(savedInstanceState);
+		
 	}
 
 	@Override
 	public void onPause()
 	{
 		super.onPause();
-		Mobage.onPause();
+		//Mobage.onPause();
 	}
 
 	@Override
 	public void onResume()
 	{
-		Mobage.setCurrentActivity(this);
+		//Mobage.setCurrentActivity(this);
 		super.onResume();
-		Mobage.onResume();
+		//Mobage.onResume();
 	}
 
 	@Override
@@ -296,7 +292,7 @@ public class DaHuaLongJiang extends Cocos2dxActivity
 	{
 		Log.e(TAG, "onDestroy called");
 		super.onDestroy();
-		Mobage.onStop();
+		//Mobage.onStop();
 
 		if (myFV != null)
 		{
@@ -310,7 +306,7 @@ public class DaHuaLongJiang extends Cocos2dxActivity
 	{
 		Log.e(TAG, "onRestart called");
 		super.onRestart();
-		Mobage.onRestart();
+		//Mobage.onRestart();
 		if (myFV != null)
 			myFV.setVisibility(View.VISIBLE);
 	}
@@ -384,21 +380,28 @@ public class DaHuaLongJiang extends Cocos2dxActivity
 	public void setMain()
 	{
 		Log.d(TAG, "@@ DaHuaLongJiang::setMain()");
-
+		Log.d(TAG, "@@ DaHuaLongJiang::setMain() 00");
 		// remove all views
 		rootView = (View) getView();
+		Log.d(TAG, "@@ DaHuaLongJiang::setMain() 01");
 		FrameLayout parent = (FrameLayout) rootView.getParent();
+		
+		Log.d(TAG, "@@ DaHuaLongJiang::setMain() 02");
 		if (parent != null)
 		{
+			Log.d(TAG, "@@ DaHuaLongJiang::setMain() 03");
 			parent.removeView(rootView);
 		}
+		Log.d(TAG, "@@ DaHuaLongJiang::setMain() 04");
 		menubar.removeAllViews();
-
+		Log.d(TAG, "@@ DaHuaLongJiang::setMain()11");
 		// add edit view
 		addEditView();
+		Log.d(TAG, "@@ DaHuaLongJiang::setMain()22");
 		addRootView();
-		addTextView();
-		addBalanceView();
+		Log.d(TAG, "@@ DaHuaLongJiang::setMain()33");
+		//addTextView();
+		//addBalanceView();
 
 		// menubar.addView(testbutton);
 
@@ -407,9 +410,10 @@ public class DaHuaLongJiang extends Cocos2dxActivity
 				ViewGroup.LayoutParams.FILL_PARENT,
 				ViewGroup.LayoutParams.FILL_PARENT);
 		this.setContentView(menubar, pkParams);
-
+		Log.d(TAG, "@@ DaHuaLongJiang::setMain()44");
 		// set menu bar visible
 		menubar.setMenubarVisibility(View.VISIBLE);
+		Log.d(TAG, "@@ DaHuaLongJiang::setMain()55");
 	}
 
 	// @init: not used.
@@ -728,18 +732,6 @@ public class DaHuaLongJiang extends Cocos2dxActivity
 	{
 	}
 
-	public boolean isSDCardCanUse()
-	{
-		String strState = Environment.getExternalStorageState();
-
-		if (Environment.MEDIA_MOUNTED.equals(strState))
-		{
-			return true;
-		}
-
-		return false;
-	}
-
 	// @video
 	public static int playVideo(final String strFile)
 	{
@@ -972,7 +964,7 @@ public class DaHuaLongJiang extends Cocos2dxActivity
 
 	static
 	{
-		System.loadLibrary("mobage");
+		//System.loadLibrary("mobage");
 		System.loadLibrary("GameLauncher");
 	}
 

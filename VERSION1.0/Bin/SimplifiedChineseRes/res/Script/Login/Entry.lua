@@ -100,12 +100,18 @@ function p.OnUIEvent( uiNode, uiEventType, param )
         if ( ID_BTN_TOUCH == tag ) then
 			if ( p.nAccountID ~= nil ) then
 				nAccountID = p.nAccountID;
-				p.CloseUI();
+				--Entry.CloseUI();
+				
 				SqliteConfig.InitDataBaseTable();
 				Login_ServerUI.worldIP	= EXTERNAL_WORLD_SERVER_IP;
 				Login_ServerUI.worldPort = EXTERNAL_WORLD_SERVER_PORT;
-				Login_ServerUI.LoadUI();
-				Login_ServerUI.LoginOK_Normal( nAccountID )
+				--Login_ServerUI.LoadUI();
+				
+				--SelfSdkLogin.LoginControl();
+				--ShowLoadBar();
+				--Login_ServerUI.LoginOK_Normal( nAccountID )
+				Login_ServerUI.LoginOK_Normal( 0 )
+				SelfSdkLogin.LoginControl();
 			end
 		elseif ( ID_BTN_LOCAL_SERVER == tag ) then
 				nAccountID = p.nAccountID;
@@ -119,4 +125,19 @@ function p.OnUIEvent( uiNode, uiEventType, param )
 	return true;
 end
 
+
+function p.ProcessGameAccount(netdatas)
+	CloseLoadBar();
+	local nGameAccount = netdatas:ReadInt();
+	
+	--seft sdk 登入成功调用
+	LoginUI.LoginSuccess();
+	
+	LogInfo( "ProcessGameAccount nGameAccount:"..nGameAccount );
+	Login_ServerUI.SetGameAccountID(nGameAccount);
+	Login_ServerUI.LoadUI();
+end
+
 ---------------------------------------------------
+
+RegisterNetMsgHandler(NMSG_Type._MSG_GAMEACCOUNT,"p.ProcessGameAccount",p.ProcessGameAccount);

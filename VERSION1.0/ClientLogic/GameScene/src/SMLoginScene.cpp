@@ -1081,7 +1081,9 @@ void CSMLoginScene::StartEntry()
 	CCLog( "@@login041: StartEntry(%u)\r\n" , m_iAccountID);
     if(m_iAccountID != 0) {
         NDBeforeGameMgrObj.SetLoginTry(false);
-        ScriptMgrPtr->excuteLuaFunc( "ShowUI", "Entry", m_iAccountID );
+       // ScriptMgrPtr->excuteLuaFunc( "ShowUI", "Entry", m_iAccountID );
+		m_iAccountID = 0;
+		ScriptMgrPtr->excuteLuaFunc( "ShowUI", "Entry", m_iAccountID );
     }
     else
         NDBeforeGameMgrObj.SetLoginTry(true);

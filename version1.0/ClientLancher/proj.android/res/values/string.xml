@@ -12,5 +12,10 @@
     <string name="dialog_share_text3">《大話龍將》高清Q版RPG，與三國武將們並肩作戰，體驗三國豪情～</string>
     <string name="dialog_share_success">分享成功</string>
     <string name="dialog_share_fail">分享失敗</string>
-    
+    <string name="dialog_sdcard_title">提示</string>
+    <string name="dialog_sdcard_notexist">本游戏运行需要SD卡支持，请插入SD卡！</string>
+    <string name="dialog_sdcard_exit">退出</string>
+    <string name="dialog_network_title">提示</string>
+    <string name="dialog_network_notexist">本游戏运行需要网络支持，请连上网络！</string>
+    <string name="dialog_network_exit">退出</string> 
 </resources>

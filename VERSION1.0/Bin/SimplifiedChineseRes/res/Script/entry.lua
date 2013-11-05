@@ -167,6 +167,9 @@ endTimeSlice("Banquet/define.lua")
 
 --幸运宝箱
 DoFile("LuckyBox/define.lua");
+
+--接入自己实现的sdk
+DoFile("SelfSdk/define.lua");
 --占星
 DoFile("Destiny/define.lua");
 --名人
@@ -193,4 +196,5 @@ bgnTimeSlice("EvilMelt/define.lua")
 	DoFile("EvilMelt/define.lua");
 endTimeSlice("EvilMelt/define.lua")
 --血战
+
 DoFile("BloodBattle/define.lua");

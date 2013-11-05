@@ -978,6 +978,64 @@ int ConvertReset(int nNum, int nMapId)
 	return numS * 2 + numG;
 }
 
+
+bool StartNetWork(const char* pszIp, int nPort)
+{
+	NDDataTransThread::DefaultThread()->Stop();
+	NDDataTransThread::ResetDefaultThread();
+	NDDataTransThread::DefaultThread()->Start(pszIp, nPort);
+	if (NDDataTransThread::DefaultThread()->GetThreadStatus()
+		!= ThreadStatusRunning)
+	{
+		return false;
+	}
+	return true;
+}
+
+void SendMsgLoginAccount(const char* pszIp, int nPort, const char* pszAccount, const char* pszPassWord, int iAccountLen, int iPassWordLen, int iMsgID)
+{
+	if (!StartNetWork(pszIp, nPort))
+	{
+		return;
+	}
+
+	NDTransData data(iMsgID);
+	data.Write((const unsigned char*)pszAccount, iAccountLen);
+	data.Write((const unsigned char*)pszPassWord, iPassWordLen);
+
+	NDDataTransThread::DefaultThread()->GetSocket()->Send(&data);
+}
+
+void SendMsgRegisterAccount(const char* pszIp, int nPort, const char* pszAccount, const char* pszPassWord, int iAccountLen, int iPassWordLen, int iMsgID)
+{
+	if (!StartNetWork(pszIp, nPort))
+	{
+		return;
+	}
+
+	NDTransData data(iMsgID);
+	data.Write((const unsigned char*)pszAccount, iAccountLen);
+	data.Write((const unsigned char*)pszPassWord, iPassWordLen);
+	NDDataTransThread::DefaultThread()->GetSocket()->Send(&data);
+}
+
+void SendMsgChangePassWord(const char* pszIp, int nPort, const char* pszAccount, 
+						   const char* pszOldPassWord, const char* pszNewPassWord, 
+						   int iAccountLen, int iPassWordLen, int iMsgID)
+{
+	if (!StartNetWork(pszIp, nPort))
+	{
+		return;
+	}
+
+	NDTransData data(iMsgID);
+	data.Write((const unsigned char*)pszAccount, iAccountLen);
+	data.Write((const unsigned char*)pszOldPassWord, iPassWordLen);
+	data.Write((const unsigned char*)pszNewPassWord, iPassWordLen);
+
+	NDDataTransThread::DefaultThread()->GetSocket()->Send(&data);
+}
+
 ///////////////////////////////////////////////
 void ScriptGameLogicLoad()
 {
@@ -1077,6 +1135,11 @@ void ScriptGameLogicLoad()
 
 	ETCFUNC("ConvertReset", ConvertReset);
 	ETCFUNC("getStringSize", getStringSize);
+	//SELF SDK 更新
+	ETCFUNC("SendMsgLoginAccount", SendMsgLoginAccount);		//登入请求	 
+	ETCFUNC("SendMsgRegisterAccount", SendMsgRegisterAccount);  //注册请求	 
+	ETCFUNC("SendMsgRegisterAccount", SendMsgChangePassWord);   //修改密码请求	 
+									
 }
 
 }

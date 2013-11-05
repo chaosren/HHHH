@@ -2,6 +2,8 @@ local _MSG_GENERAL = 1000;
 
 NMSG_Type = 
 {
+    _MSG_GAMEACCOUNT                       = _MSG_GENERAL + 157,
+    
     _MSG_LOAD                       = 110;
     _MSG_TALK                       = _MSG_GENERAL + 4,
 	_MSG_USERINFO					= _MSG_GENERAL + 8,
@@ -307,5 +309,11 @@ NMSG_Type =
     _MSG_BATTLECITY_BATTLERECORD      = _MSG_GENERAL+8182,        --战斗结果
     
    _MSG_ACTIVITY_CODE      				= _MSG_GENERAL+8112,        --激活码
+
+    _MSG_REGISTER_ACCOUNT = _MSG_GENERAL+151;
+	_MSG_LOGIN_ACCOUNT     = _MSG_GENERAL+152;
+	_MSG_RENAME_ACCOUNT    = _MSG_GENERAL+153;
+	_MSG_CHANGE_PASSWORD   = _MSG_GENERAL+154;
+	_MSG_RESET_PASSWORD    = _MSG_GENERAL+155; 
       
 };

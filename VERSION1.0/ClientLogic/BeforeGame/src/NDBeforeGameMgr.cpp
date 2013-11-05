@@ -558,10 +558,15 @@ void NDBeforeGameMgr::sendMsgConnect(int idAccount)
 
 	NDTransData data(_MSG_CONNECT);
 
+	int iPlatType = ScriptMgrObj.excuteLuaFunc("GetCurPlatFormType", "PlayerDataConfig");
 	int dwAuthorize = 0;
 	data << idAccount;
 	data << dwAuthorize;
+
+	generateClientKey();
 	data.Write((unsigned char*) (phoneKey.c_str()), phoneKey.size());
+	data << iPlatType;
+
 	NDDataTransThread::DefaultThread()->GetSocket()->Send(&data);
 }
 
