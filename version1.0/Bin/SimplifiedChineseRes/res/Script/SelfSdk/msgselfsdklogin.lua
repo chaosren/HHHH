@@ -6,12 +6,6 @@
 MsgSelfSdkLogin = {}
 local p = MsgSelfSdkLogin;
 
-local ACCOUNT_LEN        = 36;   
-local PASSWORD_LEN    = 21;   
-
-local SerIp = GetGameConfig("world_server_ip");
-local port = GetWorldServerPort();	
-
 --账号密码验证请求返回枚举
 p.ENUM_LOGIN_ACCOUNT_REPLY =
 {
@@ -19,14 +13,28 @@ p.ENUM_LOGIN_ACCOUNT_REPLY =
     INVALID_PASSWORD = 1,    --密码错误
 };
 
---发送账号密码验证请求
-function p.MsgSendLoginAccount(Account, PassWord)  
-	SendMsgLoginAccount(SerIp, port, Account, PassWord, ACCOUNT_LEN, PASSWORD_LEN, NMSG_Type._MSG_LOGIN_ACCOUNT);
+p.nAcntLen = 36;
+p.nPwdLen  = 21;
+p.strSerIp = GetGameConfig("world_server_ip");
+p.nPort = GetWorldServerPort();
+
+--初始化一些数据
+function p.MsgDataInit()  
+	local strPwd = LoginCommon.GetEncryptString(PassWord);   
+	SendMsgLoginAccount(p.strSerIp, p.nPort, Account, strPwd, p.nAcntLen, p.nPwdLen, NMSG_Type._MSG_LOGIN_ACCOUNT);
 end
 
---收到服务端下发的登入账号密码验证结果
+--发送账号密码验证请求
+function p.MsgSendLoginAccount(Account, PassWord)    
+	ShowLoadBar() 
+	local strPwd = LoginCommon.GetEncryptString(PassWord);      
+	SendMsgLoginAccount(p.strSerIp, p.nPort, Account, strPwd, p.nAcntLen, p.nPwdLen, NMSG_Type._MSG_LOGIN_ACCOUNT);
+end
+
+--收到服务端下发的登入账号密码验证结果(只有登入错误才回收到此消息)登入成功收到_MSG_GAMEACCOUNT
 function p.MsgReciveLoginAccount(netdatas)   
 	--如果登入界面不存在那么打开登入界面
+	CloseLoadBar()
 	local scene = GetSMLoginScene();
 	if scene == nil then
 		return false;
@@ -39,10 +47,10 @@ function p.MsgReciveLoginAccount(netdatas)
 	
 	local nResult = netdatas:ReadInt(); 
 	--登入请求错误返回
-	if nResult == p.ENUM_LOGIN_ACCOUNT_REPLY.ACCOUNT_NOT_EXIST then             --账号不存在
-	    CommonDlgNew.ShowYesDlg(GetTxtPri("SELF_SDK_TIP3"), nil, nil, 3);
-	elseif nResult == p.ENUM_LOGIN_ACCOUNT_REPLY.INVALID_PASSWORD then          --密码错误
-		CommonDlgNew.ShowYesDlg(GetTxtPri("SELF_SDK_TIP4"), nil, nil, 3);
+	if nResult == p.ENUM_LOGIN_ACCOUNT_REPLY.ACCOUNT_NOT_EXIST then   
+		LoginCommon.ShowErrorTipInfo(LoginCommon.CHECK_FLAG.TYPE_REV_LOG_ACNT_ERR); --您输入的账号有误,请重新输入 
+	elseif nResult == p.ENUM_LOGIN_ACCOUNT_REPLY.INVALID_PASSWORD then   
+		LoginCommon.ShowErrorTipInfo(LoginCommon.CHECK_FLAG.TYPE_REV_LOG_PWD_ERR); --您输入的密码有误,请重新输入  
 	end 
 end
 
@@ -56,24 +64,26 @@ p.ENUM_REGISTER_ACCOUNT_REPLY =
 };
 --发送注册账号请求
 function p.MsgSendRegisterAccount(Account, PassWord)  
-	SendMsgRegisterAccount(SerIp, port, Account, PassWord, ACCOUNT_LEN, PASSWORD_LEN, NMSG_Type._MSG_REGISTER_ACCOUNT);
+	ShowLoadBar()
+	local strPwd = LoginCommon.GetEncryptString(PassWord);
+	SendMsgRegisterAccount(p.strSerIp, p.nPort, Account, strPwd, p.nAcntLen, p.nPwdLen, NMSG_Type._MSG_REGISTER_ACCOUNT);
 end
 --收到服务端下发的注册账号请求结果
 function p.MsgReciveRegisterAccount(netdatas)   
-
+	CloseLoadBar()
 	local nResult = netdatas:ReadInt(); 
 
 	if nResult == p.ENUM_REGISTER_ACCOUNT_REPLY.REGISTER_OK then             --注册成功
 		--关闭注册页面,并将当前账号密码填入登入界面账号密码处
 		LoginCommon.CloseUI(NMAINSCENECHILDTAG.LoginRegisterUI);  
-		LoginRegisterUI.SetLoginEditData();
-	elseif nResult == p.ENUM_REGISTER_ACCOUNT_REPLY.ACCOUNT_EXIST then     --账号已存在
-		--提示账号已存在并清空编辑框中数据
-		CommonDlgNew.ShowYesDlg(GetTxtPri("SELF_SDK_TIP6"), nil, nil, 3);
-		LoginRegisterUI.ClearEditData();
-	elseif nResult == p.ENUM_REGISTER_ACCOUNT_REPLY.REGISTER_FAIL then     --注册失败 
-		--提示注册失败，重新注册
-		CommonDlgNew.ShowYesDlg(GetTxtPri("SELF_SDK_TIP7"), nil, nil, 3);
+		LoginUI.LoadUI(LoginRegisterUI.Account, LoginRegisterUI.FstPassWord, 1);
+		--LoginRegisterUI.SetLoginEditData();
+	elseif nResult == p.ENUM_REGISTER_ACCOUNT_REPLY.ACCOUNT_EXIST then     
+		--账号已存在
+		LoginCommon.ShowErrorTipInfo(LoginCommon.CHECK_FLAG.TYPE_REV_REG_ACNT_EXIT);
+	elseif nResult == p.ENUM_REGISTER_ACCOUNT_REPLY.REGISTER_FAIL then     
+		--注册失败 
+		LoginCommon.ShowErrorTipInfo(LoginCommon.CHECK_FLAG.TYPE_REV_REG_FAIL);
 	end 
 end
 
@@ -90,7 +100,7 @@ function p.MsgSendChangePassWord(OldPassWord, NewPassWord)
 	end
 	
 	local Account = record.Account;
-	SendMsgChangePassWord(SerIp, port, Account, OldPassWord, NewPassWord, ACCOUNT_LEN, PASSWORD_LEN, NMSG_Type._MSG_CHANGE_PASSWORD);
+	SendMsgChangePassWord(p.strSerIp, p.nPort, Account, OldPassWord, NewPassWord, p.nAcntLen, p.nPwdLen, NMSG_Type._MSG_CHANGE_PASSWORD);
 end
 
 		

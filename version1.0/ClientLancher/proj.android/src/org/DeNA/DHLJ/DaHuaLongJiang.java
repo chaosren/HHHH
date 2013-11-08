@@ -24,7 +24,6 @@ import com.mobage.android.social.BalanceButton;
 import com.mobage.android.social.common.RemoteNotification;
 import com.mobage.android.social.common.RemoteNotification.RemoteNotificationListener;
 import com.mobage.android.social.common.RemoteNotificationResponse;
-
 import org.DeNA.DHLJ.PushService;
 
 import org.DeNA.DHLJ.SocialUtils;
@@ -110,6 +109,7 @@ public class DaHuaLongJiang extends Cocos2dxActivity
 	private static Context s_context;
 	private static LinearLayout s_balancelayout;
 	private static LinearLayout s_TextViewlayout = null;
+	private static FrameLayout s_Viewlayout = null;
 
 	private static Cocos2dxEditText edittext; // @ime
 	private static Button testbutton;
@@ -164,16 +164,15 @@ public class DaHuaLongJiang extends Cocos2dxActivity
 	{
 		public void run()
 		{
-			if (tv != null && s_TextViewlayout != null && menubar != null)
+			if (tv != null && s_TextViewlayout != null)  
 			{
 				Log.d(TAG, "Clear Splash");
 				s_TextViewlayout.removeView(tv);
-				menubar.removeView(s_TextViewlayout);
+				s_Viewlayout.removeView(s_TextViewlayout);
 				tv = null;
 			} else
 			{
-				Log.d(TAG, "Clear Splash2 " + tv + " " + s_TextViewlayout + " "
-						+ menubar);
+				Log.d(TAG, "Clear Splash2 " + tv + " " + s_TextViewlayout);
 			}
 		};
 	};
@@ -245,19 +244,18 @@ public class DaHuaLongJiang extends Cocos2dxActivity
 				Secure.ANDROID_ID);
 		PushService.actionStart(context);
 
-		//MobageLogin();
-		// addTextView();
 		s_TextViewlayout = null;
 
 		Log.d(TAG, "onCreate called");
 		nativeInit(480, 320);
 		Log.d(TAG, "onCreate called11");
+		super.onCreate(savedInstanceState);
 		setMain();
 		Log.d(TAG, "onCreate called12");
-		LoginComplete(0);
+		//LoginComplete(0);
+		onLoginComplete(0, mDeviceID);
 		Log.d(TAG, "onCreate called13");
-		super.onCreate(savedInstanceState);
-		
+		//super.onCreate(savedInstanceState);
 	}
 
 	@Override
@@ -374,46 +372,38 @@ public class DaHuaLongJiang extends Cocos2dxActivity
 	public void addRootView()
 	{
 		// add surface view
-		menubar.addView(rootView);
+		//menubar.addView(rootView);
+		
+		rootView = (View) getView();
+		// add surface view
+		s_Viewlayout.addView(rootView);
 	}
 
 	public void setMain()
 	{
-		Log.d(TAG, "@@ DaHuaLongJiang::setMain()");
-		Log.d(TAG, "@@ DaHuaLongJiang::setMain() 00");
-		// remove all views
-		rootView = (View) getView();
-		Log.d(TAG, "@@ DaHuaLongJiang::setMain() 01");
-		FrameLayout parent = (FrameLayout) rootView.getParent();
-		
-		Log.d(TAG, "@@ DaHuaLongJiang::setMain() 02");
-		if (parent != null)
+		int iFirstFlag = 0;
+		if (s_Viewlayout == null)
 		{
-			Log.d(TAG, "@@ DaHuaLongJiang::setMain() 03");
-			parent.removeView(rootView);
+			s_Viewlayout = new FrameLayout(s_context);
+			LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+					ViewGroup.LayoutParams.FILL_PARENT,
+					ViewGroup.LayoutParams.FILL_PARENT);
+			s_Viewlayout.setLayoutParams(layoutParams);
+			s_Viewlayout.setVisibility(View.VISIBLE);
 		}
-		Log.d(TAG, "@@ DaHuaLongJiang::setMain() 04");
-		menubar.removeAllViews();
-		Log.d(TAG, "@@ DaHuaLongJiang::setMain()11");
 		// add edit view
 		addEditView();
-		Log.d(TAG, "@@ DaHuaLongJiang::setMain()22");
 		addRootView();
-		Log.d(TAG, "@@ DaHuaLongJiang::setMain()33");
-		//addTextView();
-		//addBalanceView();
-
-		// menubar.addView(testbutton);
-
+		Log.d(TAG, "setMain called14");
+		addTextView();
+		Log.d(TAG, "setMain called15");
 		// set content view
 		ViewGroup.LayoutParams pkParams = new ViewGroup.LayoutParams(
 				ViewGroup.LayoutParams.FILL_PARENT,
 				ViewGroup.LayoutParams.FILL_PARENT);
-		this.setContentView(menubar, pkParams);
-		Log.d(TAG, "@@ DaHuaLongJiang::setMain()44");
-		// set menu bar visible
-		menubar.setMenubarVisibility(View.VISIBLE);
-		Log.d(TAG, "@@ DaHuaLongJiang::setMain()55");
+		Log.d(TAG, "setMain called16");
+		this.setContentView(s_Viewlayout, pkParams);
+		Log.d(TAG, "setMain called17");
 	}
 
 	// @init: not used.
@@ -421,7 +411,7 @@ public class DaHuaLongJiang extends Cocos2dxActivity
 
 	public void setTextViewBg()
 	{
-		Drawable srcb = getResources().getDrawable(R.drawable.mobage_splash);
+		Drawable srcb = getResources().getDrawable(R.drawable.bg_load);
 
 		DisplayMetrics dm = new DisplayMetrics();
 		getWindowManager().getDefaultDisplay().getMetrics(dm);
@@ -436,9 +426,8 @@ public class DaHuaLongJiang extends Cocos2dxActivity
 		Canvas cv = new Canvas(bg);
 		Bitmap srcbitmap0 = ((BitmapDrawable) srcb).getBitmap();
 
-		int size = (int) dm.heightPixels;
 
-		Bitmap srcbitmap = Bitmap.createScaledBitmap(srcbitmap0, size, size,
+		Bitmap srcbitmap = Bitmap.createScaledBitmap(srcbitmap0, dm.widthPixels, dm.heightPixels,
 				true);
 
 		cv.drawBitmap(srcbitmap, (dm.widthPixels - srcbitmap.getWidth()) / 2,
@@ -505,7 +494,6 @@ public class DaHuaLongJiang extends Cocos2dxActivity
 			ViewGroup.LayoutParams edittext_layout_params = new ViewGroup.LayoutParams(
 					ViewGroup.LayoutParams.FILL_PARENT,
 					ViewGroup.LayoutParams.WRAP_CONTENT);
-
 			edittext = new Cocos2dxEditText(this);
 			edittext.setLayoutParams(edittext_layout_params);
 		}
@@ -518,13 +506,11 @@ public class DaHuaLongJiang extends Cocos2dxActivity
 				parent.removeView(edittext);
 			}
 			// add edit to layout
-			menubar.addView(edittext);
-
+			s_Viewlayout.addView(edittext);
 			// set this edit to cocos2dx surface view
 			Cocos2dxGLSurfaceView surfaceView = getView();
 			surfaceView.setCocos2dxEditText(edittext);
 			surfaceView.setDHLJ(this);
-
 			// single line
 			edittext.setSingleLine();
 		}
@@ -645,7 +631,7 @@ public class DaHuaLongJiang extends Cocos2dxActivity
 		{
 			parent.removeView(s_TextViewlayout);
 		}
-		menubar.addView(s_TextViewlayout);
+		s_Viewlayout.addView(s_TextViewlayout);
 
 		UpdateTextHandler.post(mUpdateText);
 	}

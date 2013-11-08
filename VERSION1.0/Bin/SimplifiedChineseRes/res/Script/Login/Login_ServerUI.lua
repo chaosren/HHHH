@@ -11,6 +11,7 @@ p.curSel=0;
 p.Account=nil;
 p.Pwd="";
 p.UIN=317003333;
+p.GUIN = nil;
 
 p.LoginWait = true;
 p.LoginUiUpdate = false;          --在服务器列表是否要检测版本更新的标志
@@ -104,6 +105,17 @@ p.RoleListTag = {};
 --end
 local bIsSwichKey = false;
 	
+function p.GetGameAccountID()
+	LogInfo("p.GetGameAccountID");
+    if p.GUIN == nil then
+        LogInfo("p.GUIN == nil");
+		return -9999;
+	end
+	LogInfo("p.GUIN ==  "..p.GUIN);
+	return p.GUIN;
+end	
+
+
 function p.LoadUI()
     p.ProcessNotifyClient2();
     bIsSwichKey = false;
@@ -475,7 +487,7 @@ end
 function p.LoginGame(strServerName,strServerIp,strServerPort)
     LogInfo("strServerName[%s],strServerIp[%s],strServerPort[%d],p.UIN[%d]",strServerName,strServerIp,strServerPort,p.UIN);
     --发起登陆
-    local bSucc=SwichKeyToServer(strServerIp,strServerPort,SafeN2S(p.UIN),p.Pwd,strServerName);
+    local bSucc=SwichKeyToServer(strServerIp,strServerPort,SafeN2S(p.GUIN),p.Pwd,strServerName);
     
     if bSucc == false then
         CommonDlgNew.ShowYesDlg(GetTxtPri("LoginFailReLogin"));
@@ -551,13 +563,13 @@ function p.LoginOK_Guest(param)
 end
 
 function p.LoginOK_Normal(param)
-    LogInfo("@@ Login_ServerUI::LoginOK_Normal()" );
-    
     p.UIN = param;
-    LogInfo("p.LoginOK_Normal uin:[%d]",param);
+    p.GUIN = p.UIN;
     p.ChangeUserLogin(p.UIN);
-    p.RunGetServerListTimer();
-    LogInfo("p.LoginOK_Normal p.worldIP:[%s]",p.worldIP);
+    
+	if p.UIN ~= 0 then
+		p.RunGetServerListTimer();
+	end
 end
 
 function p.LoginOK_Guest2Normal(param)
@@ -590,7 +602,22 @@ function p.TimerGetServerList(nTimer)
         end
     
     --end
+    
+    LogInfo("p.TimerGetServerList 2!");
+    
     if bIsSwichKey == false then
+    	LogInfo("p.TimerGetServerList bIsSwichKey == false!");
+    else
+    	LogInfo("p.TimerGetServerList bIsSwichKey == true!");
+    end
+    
+    if p.GUIN == nil then
+    	LogInfo("p.TimerGetServerList p.GUIN nil!");
+    else
+    	LogInfo("p.TimerGetServerList p.GUIN == "..p.GUIN);
+    end
+       
+    if bIsSwichKey == false and p.GUIN ~= nil then
     	sendMsgConnect(p.worldIP, p.worldPort, p.UIN);	 	
     end
     	--bIsSwichKey = false;
@@ -770,7 +797,7 @@ end
 
 function p.GetNotice()
     local record = SqliteConfig.SelectNotice(1);
-    ActivityNoticeUI.ShowUI(0);
+    --ActivityNoticeUI.ShowUI(0);
 end
 
 --踢人

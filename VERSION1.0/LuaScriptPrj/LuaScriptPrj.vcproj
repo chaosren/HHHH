@@ -994,6 +994,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\Bin\SimplifiedChineseRes\res\Script\Player\PlayerDataConfig.lua"
+				>
+			</File>
+			<File
 				RelativePath="..\Bin\SimplifiedChineseRes\res\Script\Player\PlayerEnum.lua"
 				>
 			</File>
@@ -2687,6 +2691,38 @@
 			</File>
 			<File
 				RelativePath="..\Bin\SimplifiedChineseRes\res\Script\Warlord\Warlord.lua"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="SelfSdk"
+			>
+			<File
+				RelativePath="..\Bin\SimplifiedChineseRes\res\Script\SelfSdk\define.lua"
+				>
+			</File>
+			<File
+				RelativePath="..\Bin\SimplifiedChineseRes\res\Script\SelfSdk\LoginChgPassWord.lua"
+				>
+			</File>
+			<File
+				RelativePath="..\Bin\SimplifiedChineseRes\res\Script\SelfSdk\LoginCommon.lua"
+				>
+			</File>
+			<File
+				RelativePath="..\Bin\SimplifiedChineseRes\res\Script\SelfSdk\LoginRegisterUI.lua"
+				>
+			</File>
+			<File
+				RelativePath="..\Bin\SimplifiedChineseRes\res\Script\SelfSdk\LoginUI.lua"
+				>
+			</File>
+			<File
+				RelativePath="..\Bin\SimplifiedChineseRes\res\Script\SelfSdk\Msgselfsdklogin.lua"
+				>
+			</File>
+			<File
+				RelativePath="..\Bin\SimplifiedChineseRes\res\Script\SelfSdk\SelfSdkLogin.lua"
 				>
 			</File>
 		</Filter>

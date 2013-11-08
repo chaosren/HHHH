@@ -16,7 +16,7 @@ local ID_EDIT_ACCOUNT        = 88;     --账号输入控件
 local ID_EDIT_FST_PASSWORD    = 89;    --第一次密码控件
 local ID_EDIT_SED_PASSWORD    = 90;    --第二次密码控件
 
-local ID_BTN_BIND       = 10;    --绑定账号按钮
+local ID_BTN_BIND       = 10;    --确认按钮
 local ID_BTN_CANCEL     = 86;    --离开按钮
 
 function p.LoadUI()
@@ -43,7 +43,7 @@ function p.LoadUI()
 		layer:Free();
 		return;
 	end
-	uiLoad:Load("Login/login_1_2.ini", layer, p.OnUIEvent, 0, 0);
+	uiLoad:Load("Login/login_1_3.ini", layer, p.OnUIEvent, 0, 0);
 	
 	p.InitData();
 end
@@ -53,16 +53,16 @@ function p.InitData()
 	local uiNode = GetUiNode(p.CurLayer, ID_EDIT_ACCOUNT);
     if CheckP(uiNode) then
         local edit = ConverToEdit(uiNode);
-        edit:SetMaxLength(4);
-        edit:SetMaxLength(32);
+        edit:SetMaxLength(LoginCommon.NUM_LIMITE.ACCOUNT_NUM_MIN);
+        edit:SetMaxLength(LoginCommon.NUM_LIMITE.ACCOUNT_NUM_MAX);
     end
     
     --设置密码项为不可见模式 
     uiNode = GetUiNode(p.CurLayer, ID_EDIT_FST_PASSWORD);
     if CheckP(uiNode) then
         local edit = ConverToEdit(uiNode);
-        edit:SetMaxLength(6);
-        edit:SetMaxLength(12);
+        edit:SetMaxLength(LoginCommon.NUM_LIMITE.PASSWORD_NUM_MIN);
+        edit:SetMaxLength(LoginCommon.NUM_LIMITE.PASSWORD_NUM_MAX);
         edit:SetPassword(true);
     end
     
@@ -71,8 +71,8 @@ function p.InitData()
     uiNode = GetUiNode(p.CurLayer, ID_EDIT_SED_PASSWORD);
     if CheckP(uiNode) then
         local edit = ConverToEdit(uiNode);
-        edit:SetMaxLength(6);
-        edit:SetMaxLength(12);
+        edit:SetMaxLength(LoginCommon.NUM_LIMITE.PASSWORD_NUM_MIN);
+        edit:SetMaxLength(LoginCommon.NUM_LIMITE.PASSWORD_NUM_MAX);
         edit:SetPassword(true);
     end
 end
@@ -80,34 +80,34 @@ end
 function p.OnUIEvent(uiNode, uiEventType, param)
 
     local tag = uiNode:GetTag();
-    LogInfo("p.OnUIEvent hit tag = %d", tag);
-    
+
     --ui按钮响应
 	if uiEventType == NUIEventType.TE_TOUCH_BTN_CLICK then
 		if ID_BTN_BIND == tag then     --绑定账号
 			--账号基本校验  
-			local Account = LoginCommon.GetEditData(p.CurLayer, ID_EDIT_ACCOUNT);
-			if not LoginCommon.CheckDataValidity(Account, LoginCommon.ENUM_DATA_FLAG.ACCOUNT_DATA) then
+			p.Account = LoginCommon.GetEditData(p.CurLayer, ID_EDIT_ACCOUNT);
+			if not LoginCommon.CheckDataValidity(p.Account, LoginCommon.CHECK_FLAG.TYPE_REG_ACNT) then
 				return true;
 			end
 			
 			--密码基本校验
-			local PassWord = LoginCommon.GetEditData(p.CurLayer, ID_EDIT_FST_PASSWORD);
-			if not LoginCommon.CheckDataValidity(PassWord, LoginCommon.ENUM_DATA_FLAG.PASSWORD_DATA) then
+			p.FstPassWord = LoginCommon.GetEditData(p.CurLayer, ID_EDIT_FST_PASSWORD);
+			if not LoginCommon.CheckDataValidity(p.FstPassWord, LoginCommon.CHECK_FLAG.TYPE_REG_PWD_FST) then
 				return true;
 			end
 			
 			--第二次输入的密码校验
-			local SedPassWord = LoginCommon.GetEditData(p.CurLayer, ID_EDIT_SED_PASSWORD);
-			if PassWord ~= SedPassWord then
-				CommonDlgNew.ShowYesDlg(GetTxtPri("SELF_SDK_TIP5"));
+			p.SedPassWord = LoginCommon.GetEditData(p.CurLayer, ID_EDIT_SED_PASSWORD);
+			if p.FstPassWord ~= p.SedPassWord then
+				LoginCommon.ShowErrorTipInfo(LoginCommon.CHECK_FLAG.TYPE_REG_PWD_SND);
 				return true;
 			end
 			
 			--发起注册请求
-			MsgSelfSdkLogin.MsgSendRegisterAccount(Account, PassWord);
+			MsgSelfSdkLogin.MsgSendRegisterAccount(p.Account, p.FstPassWord);
 		elseif ID_BTN_CANCEL == tag then          --离开            
 			LoginCommon.CloseUI(NMAINSCENECHILDTAG.LoginRegisterUI);
+			LoginUI.LoadUI();
 		end
 		
 	--输入键盘回调响应
@@ -117,7 +117,7 @@ function p.OnUIEvent(uiNode, uiEventType, param)
 			local edit = ConverToEdit(uiNode);
 			if CheckP(edit) then
 				--账号校验
-				LoginCommon.CheckDataValidity(edit:GetText(), LoginCommon.ENUM_DATA_FLAG.ACCOUNT_DATA);
+				--LoginCommon.CheckDataValidity(edit:GetText(), LoginCommon.CHECK_FLAG.TYPE_REG_ACNT);
 			end
 			
 		elseif tag == ID_EDIT_FST_PASSWORD then
@@ -125,7 +125,7 @@ function p.OnUIEvent(uiNode, uiEventType, param)
 			if CheckP(edit) then
 				p.FstPassWord = edit:GetText();
 				--第一次输入密码校验
-				LoginCommon.CheckDataValidity(edit:GetText(), LoginCommon.ENUM_DATA_FLAG.PASSWORD_DATA);
+				--LoginCommon.CheckDataValidity(edit:GetText(), LoginCommon.CHECK_FLAG.TYPE_REG_PWD_FST);
 			end	
 			
 		elseif tag == ID_EDIT_SED_PASSWORD then
@@ -135,8 +135,8 @@ function p.OnUIEvent(uiNode, uiEventType, param)
 				
 				--第二次输入密码校验
 				if p.FstPassWord ~= p.SedPassWord then
-					edit:SetText("");
-					CommonDlgNew.ShowYesDlg(GetTxtPri("SELF_SDK_TIP5"));
+					--edit:SetText("");
+					--LoginCommon.ShowErrorTipInfo(LoginCommon.CHECK_FLAG.TYPE_REG_PWD_SND);
 				end
 			end			
 		end		
@@ -155,5 +155,5 @@ end
 
 
 function p.SetLoginEditData()
-	LoginUI.SetEditData(p.Account, p.FstPassWord);
+	LoginUI.SetLoginEditData(p.Account, p.FstPassWord);
 end

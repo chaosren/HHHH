@@ -151,6 +151,10 @@
 				Name="inc"
 				>
 				<File
+					RelativePath="..\BeforeGame\inc\MobageSdkLoginAndroid.h"
+					>
+				</File>
+				<File
 					RelativePath="..\BeforeGame\inc\NDBeforeGameMgr.h"
 					>
 				</File>
@@ -162,6 +166,10 @@
 			<Filter
 				Name="src"
 				>
+				<File
+					RelativePath="..\BeforeGame\src\MobageSdkLoginAndroid.cpp"
+					>
+				</File>
 				<File
 					RelativePath="..\BeforeGame\src\NDBeforeGameMgr.cpp"
 					>

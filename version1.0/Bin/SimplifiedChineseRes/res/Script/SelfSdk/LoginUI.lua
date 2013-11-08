@@ -21,14 +21,22 @@ local ID_BOX_AUTO_LOGIN    = 87;    --自动登入单选框
 
 local ID_BTN_GUEST_LOGIN       = 85;    --游客登入按钮
 local ID_BTN_START_GAME        = 10;    --开始游戏按钮
-local ID_BTN_CHANGE_PASSWORD    = 86;    --修改密码按钮
+local ID_BTN_REGISTER    = 86;    --注册账号按钮
+
+local ID_TXT_ERROR_TIP    = 9;    --登入错误提示框
+	
 
 
-function p.LoadUI(Account, PassWord)
+function p.LoadUI(Account, PassWord, AutoLogin)
+	
+	if p.CurLayer ~= nil then
+		return;
+	end
 	
 	--记录传入的账号密码
 	p.Account = Account;
 	p.PassWord = PassWord;
+	p.nAutoLogin = AutoLogin;
 	
 	local scene = GetSMLoginScene();	
 	if scene == nil then
@@ -57,7 +65,8 @@ function p.LoadUI(Account, PassWord)
     --初始化数据
 	p.InitData();   
     
-    p.SetEditData(Account, PassWord); 
+    --设置编辑控件的内容
+    p.SetLoginEditData(Account, PassWord); 
 end
 
 function p.InitData()
@@ -65,16 +74,16 @@ function p.InitData()
 	local uiNode = GetUiNode(p.CurLayer, ID_EDIT_ACCOUNT);
     if CheckP(uiNode) then
         local edit = ConverToEdit(uiNode);
-        edit:SetMaxLength(4);
-        edit:SetMaxLength(32);
+        edit:SetMaxLength(LoginCommon.NUM_LIMITE.ACCOUNT_NUM_MIN);
+        edit:SetMaxLength(LoginCommon.NUM_LIMITE.ACCOUNT_NUM_MAX);
     end
     
     --设置密码项为不可见模式 
     uiNode = GetUiNode(p.CurLayer, ID_EDIT_PASSWORD);
     if CheckP(uiNode) then
         local edit = ConverToEdit(uiNode);
-        edit:SetMaxLength(6);
-        edit:SetMaxLength(12);
+        edit:SetMaxLength(LoginCommon.NUM_LIMITE.PASSWORD_NUM_MIN);
+        edit:SetMaxLength(LoginCommon.NUM_LIMITE.PASSWORD_NUM_MAX);
         edit:SetPassword(true);
     end
     
@@ -82,11 +91,18 @@ function p.InitData()
     uiNode = GetUiNode(p.CurLayer, ID_BOX_AUTO_LOGIN);
     local pCheckBox = ConverToCheckBox( uiNode );
 	
-	if pCheckBox:IsSelect() then
-		p.nAutoLogin = 1;
+	if p.nAutoLogin == 1 then
+		pCheckBox:SetSelect(true);
 	else
+		pCheckBox:SetSelect(false);
 		p.nAutoLogin = 0;
 	end
+end
+
+--设置编辑控件的内容
+function p.SetLoginEditData(pszAccount, pszPassWord)
+	LoginCommon.SetEditData(p.CurLayer, ID_EDIT_ACCOUNT, pszAccount);
+	LoginCommon.SetEditData(p.CurLayer, ID_EDIT_PASSWORD, pszPassWord);
 end
 
 
@@ -99,24 +115,31 @@ function p.OnUIEvent(uiNode, uiEventType, param)
 	if uiEventType == NUIEventType.TE_TOUCH_BTN_CLICK then
 		if ID_BTN_START_GAME == tag then    --开始游戏 
 			--账号密码基本校验  
-			if not LoginCommon.CheckDataValidity(p.Account, LoginCommon.ENUM_DATA_FLAG.ACCOUNT_DATA) 
-			   or not LoginCommon.CheckDataValidity(p.PassWord, LoginCommon.ENUM_DATA_FLAG.PASSWORD_DATA) then
+			p.Account = LoginCommon.GetEditData(p.CurLayer, ID_EDIT_ACCOUNT);
+			p.PassWord = LoginCommon.GetEditData(p.CurLayer, ID_EDIT_PASSWORD);
+			
+			if not LoginCommon.CheckDataValidity(p.Account, LoginCommon.CHECK_FLAG.TYPE_LOG_ACNT) 
+			or  not LoginCommon.CheckDataValidity(p.PassWord, LoginCommon.CHECK_FLAG.TYPE_LOG_PWD) then
 				return true;
 			end
 			
 			--发起登入请求
 			MsgSelfSdkLogin.MsgSendLoginAccount(p.Account, p.PassWord);
-		elseif ID_BTN_CHANGE_PASSWORD == tag then          --修改密码                     
-			LoginChgPassWord.LoadUI();
+			
+		elseif ID_BTN_REGISTER == tag then          --注册账号                    
+			p.CloseLoginUI();   
+			LoginRegisterUI.LoadUI();
 			
 		elseif ID_BTN_GUEST_LOGIN == tag then          --游客登入
 			--暂时实现为注册功能
 			LoginRegisterUI.LoadUI();
 		end
 	elseif ( uiEventType == NUIEventType.TE_TOUCH_CHECK_CLICK ) then
-		if ID_BOX_AUTO_LOGIN == tag then  --自动登入单选框
+		--自动登入单选框点击操作
+		if ID_BOX_AUTO_LOGIN == tag then  
 			local pCheckBox = ConverToCheckBox( uiNode );
 			
+			--获取当前相反结果
 			if pCheckBox:IsSelect() then
 				p.nAutoLogin = 1;
 			else
@@ -143,16 +166,18 @@ function p.OnUIEvent(uiNode, uiEventType, param)
 	return true;
 end
 
-function p.SetEditData(pszAccount, pszPassWord)
-	LoginCommon.SetEditData(p.CurLayer, ID_EDIT_ACCOUNT, pszAccount);
-	LoginCommon.SetEditData(p.CurLayer, ID_EDIT_PASSWORD, pszPassWord);
-end
+
 
 --注册成功调用
 function p.LoginSuccess()
 	--关闭注册页面
-	LoginCommon.CloseUI(NMAINSCENECHILDTAG.LoginUI);
-	
+	p.CloseLoginUI()
+
 	--保存注册信息至数据库
 	local record = {};	record.ID = 1;	record.nAutoLogin = p.nAutoLogin;	record.Account = p.Account;	record.PassWord = p.PassWord;	SqliteConfig.InsertSelfLogin(record);
+end
+
+function p.CloseLoginUI()
+	LoginCommon.CloseUI(NMAINSCENECHILDTAG.LoginUI);
+	p.CurLayer = nil;
 end

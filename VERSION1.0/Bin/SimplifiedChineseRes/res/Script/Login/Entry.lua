@@ -106,9 +106,6 @@ function p.OnUIEvent( uiNode, uiEventType, param )
 				Login_ServerUI.worldIP	= EXTERNAL_WORLD_SERVER_IP;
 				Login_ServerUI.worldPort = EXTERNAL_WORLD_SERVER_PORT;
 				--Login_ServerUI.LoadUI();
-				
-				--SelfSdkLogin.LoginControl();
-				--ShowLoadBar();
 				--Login_ServerUI.LoginOK_Normal( nAccountID )
 				Login_ServerUI.LoginOK_Normal( 0 )
 				SelfSdkLogin.LoginControl();
@@ -131,11 +128,14 @@ function p.ProcessGameAccount(netdatas)
 	local nGameAccount = netdatas:ReadInt();
 	
 	--seft sdk 登入成功调用
-	LoginUI.LoginSuccess();
+	local nAutoFlag = SelfSdkLogin.GetAutoFlag();
 	
-	LogInfo( "ProcessGameAccount nGameAccount:"..nGameAccount );
-	Login_ServerUI.SetGameAccountID(nGameAccount);
+	if nAutoFlag ~= 1 then
+		LoginUI.LoginSuccess();
+	end
+	
 	Login_ServerUI.LoadUI();
+	Login_ServerUI.LoginOK_Normal( nGameAccount )
 end
 
 ---------------------------------------------------

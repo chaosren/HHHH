@@ -17,13 +17,25 @@
 #include "SMGameScene.h"
 #include "NDDataTransThread.h"
 
-#include "platform/android/jni/JniHelper.h"
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
 #include <jni.h>
 #include <android/log.h>
+#include "android/jni/JniHelper.h"
+#include "CCTMXTiledMap.h"
+#include "CCSprite.h"
 
-#define  LOG_TAG    "DaHua"
-#define  LOGD(...) __android_log_print(ANDROID_LOG_DEBUG,LOG_TAG,__VA_ARGS__)
+#define  LOG_TAG    "DaHuaLongJiang"
+#define  LOGD(...)  __android_log_print(ANDROID_LOG_DEBUG,LOG_TAG,__VA_ARGS__)
+#define  LOGERROR(...)  __android_log_print(ANDROID_LOG_ERROR,LOG_TAG,__VA_ARGS__)
+#else
+#define  LOG_TAG    "DaHuaLongJiang"
+#define  LOGD(...)
+#define  LOGERROR(...)
+#endif
+
+
 extern void clearSplash();
+
 
 void MobageSdkLoginAndroid::onLoginComplete(int userId) {
 	LOGD("@@login app delegate onLoginComplete userId %d", userId);

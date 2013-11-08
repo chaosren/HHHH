@@ -1138,7 +1138,7 @@ void ScriptGameLogicLoad()
 	//SELF SDK 更新
 	ETCFUNC("SendMsgLoginAccount", SendMsgLoginAccount);		//登入请求	 
 	ETCFUNC("SendMsgRegisterAccount", SendMsgRegisterAccount);  //注册请求	 
-	ETCFUNC("SendMsgRegisterAccount", SendMsgChangePassWord);   //修改密码请求	 
+	ETCFUNC("SendMsgChangePassWord", SendMsgChangePassWord);   //修改密码请求	 
 									
 }
 

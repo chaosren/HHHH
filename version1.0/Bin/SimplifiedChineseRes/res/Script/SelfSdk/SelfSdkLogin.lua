@@ -6,13 +6,15 @@
 SelfSdkLogin = {}
 local p = SelfSdkLogin;
 
-
+p.nAutoFlag = 0;
 --登入处理流程
 function p.LoginControl()
 	
-	local nTestFlag = 1;
+	p.nAutoFlag = 0;
+	local nTestFlag = 0;
 	local record = {};
 	
+	--首先查找本地数据库,
 	if nTestFlag == 0 then
 		record = SqliteConfig.SelectSelfLogin(1);
 	else
@@ -23,6 +25,7 @@ function p.LoginControl()
 	
 	if record == nil then
 		--在数据库中读取不到记录，进入自己的登入界面
+		LoginCommon.CommonDataInit();
 		LoginUI.LoadUI();	
 	else
 		local nAutoLogin = record.nAutoLogin;
@@ -30,8 +33,10 @@ function p.LoginControl()
 		local PassWord = record.PassWord;
 		
 		if nAutoLogin == 0 then  		--非自动登入
+			LoginCommon.CommonDataInit();
 			LoginUI.LoadUI(Account, PassWord);
 		else                         --自动登入
+			p.nAutoFlag = 1;
 			MsgSelfSdkLogin.MsgSendLoginAccount(Account, PassWord);
 		end
 	end
@@ -41,3 +46,8 @@ function p.LoginControl()
 end
 
 
+
+--获取是否为自动登入，自动登入不继续写数据库
+function p.GetAutoFlag()
+	return p.nAutoFlag
+end
