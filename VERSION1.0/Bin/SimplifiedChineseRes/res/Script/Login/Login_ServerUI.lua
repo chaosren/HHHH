@@ -62,11 +62,8 @@ local RECOMMEND_ID          = 10000;
 
 local ServerItemSize = CGSizeMake(470*ScaleFactor,45*ScaleFactor);
 
---p.worldIP='192.168.64.32';--qbw
 p.worldIP = nil;--common
 p.worldPort= nil;
---p.worldIP='192.168.65.7';--qbw
---p.worldIP='222.77.177.209';--外网
 
 p.recvServerFlag=0;
 p.recvIndex=0;
@@ -563,30 +560,23 @@ function p.LoginOK_Guest(param)
 end
 
 function p.LoginOK_Normal(param)
-    p.UIN = param;
-    p.GUIN = p.UIN;
-    p.ChangeUserLogin(p.UIN);
-    
-	if p.UIN ~= 0 then
-		p.RunGetServerListTimer();
-	end
-end
+	p.UIN = param;
+	p.GUIN = nil;
+	p.Refresh();
 
-function p.LoginOK_Guest2Normal(param)
-    p.UIN = param;
-    LogInfo("p.LoginOK_Guest2Normal uin:[%d]",param);
-    p.ChangeUserLogin(p.UIN);
-    p.RunGetServerListTimer();
-    LogInfo("p.LoginOK_Guest2Normal p.worldIP:[%s]",p.worldIP);
+	p.RunGetServerListTimer();
 end
 
 p.nTimerID = nil;
 function p.RunGetServerListTimer()
     if(p.nTimerID == nil) then
-        LogInfo("p.RunGetServerListTimer send!");
         sendMsgConnect(p.worldIP, p.worldPort, p.UIN);
         p.nTimerID = RegisterTimer( p.TimerGetServerList, 10 );
     end
+end
+
+function p.SetGameAccountID(nAccountId)
+	p.GUIN = nAccountId;
 end
 
 --定时向服务器取列表
@@ -602,8 +592,7 @@ function p.TimerGetServerList(nTimer)
         end
     
     --end
-    
-    LogInfo("p.TimerGetServerList 2!");
+
     
     if bIsSwichKey == false then
     	LogInfo("p.TimerGetServerList bIsSwichKey == false!");
@@ -618,7 +607,7 @@ function p.TimerGetServerList(nTimer)
     end
        
     if bIsSwichKey == false and p.GUIN ~= nil then
-    	sendMsgConnect(p.worldIP, p.worldPort, p.UIN);	 	
+    	sendMsgConnect(p.worldIP, p.worldPort, p.GUIN);	 	
     end
     	--bIsSwichKey = false;
 
@@ -778,10 +767,6 @@ function p.SetPreCurSerId(nPre, nCur)
     p.nCurSerId = nCur;
 end
 
---_G.RegisterGlobalEventHandler(_G.GLOBALEVENT.GE_LOGINOK_GUEST,"Login_ServerUI.LoginGuest",p.LoginOK_Guest);--Guosen 2012.8.4
---_G.RegisterGlobalEventHandler(_G.GLOBALEVENT.GE_LOGINOK_NORMAL,"Login_ServerUI.LoginNormal",p.LoginOK_Normal);
---_G.RegisterGlobalEventHandler(_G.GLOBALEVENT.GE_LOGINOK_GUEST2NORMAL,"Login_ServerUI.LoginGuest2Normal",p.LoginOK_Guest2Normal);
---_G.RegisterGlobalEventHandler(_G.GLOBALEVENT.GE_LOGINERROR,"Login_ServerUI.LoginError",p.LoginError);
 
 RegisterNetMsgHandler(NMSG_Type._MSG_SERVERROLE,"p.ProcessServerRole",p.ProcessServerRole);
 RegisterNetMsgHandler(NMSG_Type._MSG_SERVERLISTITEM,"p.ProcessServerList",p.ProcessServerList);
@@ -797,7 +782,7 @@ end
 
 function p.GetNotice()
     local record = SqliteConfig.SelectNotice(1);
-    --ActivityNoticeUI.ShowUI(0);
+	ActivityNoticeUI.ShowUI(0);
 end
 
 --踢人

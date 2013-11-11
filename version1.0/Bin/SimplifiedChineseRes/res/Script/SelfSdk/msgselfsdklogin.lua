@@ -75,6 +75,7 @@ function p.MsgReciveRegisterAccount(netdatas)
 
 	if nResult == p.ENUM_REGISTER_ACCOUNT_REPLY.REGISTER_OK then             --注册成功
 		--关闭注册页面,并将当前账号密码填入登入界面账号密码处
+		LoginRegisterUI.LoginRegSuccess();
 		LoginCommon.CloseUI(NMAINSCENECHILDTAG.LoginRegisterUI);  
 		LoginUI.LoadUI(LoginRegisterUI.Account, LoginRegisterUI.FstPassWord, 1);
 		--LoginRegisterUI.SetLoginEditData();
@@ -90,24 +91,48 @@ end
 
 
 
-
 --发送修改密码消息
-function p.MsgSendChangePassWord(OldPassWord, NewPassWord)  
+function p.MsgSendChangePassWord(Account, OldPassWord, NewPassWord)  
 	--获取当前的登入的账号
-	local record = SqliteConfig.SelectSelfLogin(1);
-	if record == nil then
-		return;
-	end
-	
-	local Account = record.Account;
-	SendMsgChangePassWord(p.strSerIp, p.nPort, Account, OldPassWord, NewPassWord, p.nAcntLen, p.nPwdLen, NMSG_Type._MSG_CHANGE_PASSWORD);
+	ShowLoadBar()
+	local OldPwd = LoginCommon.GetEncryptString(OldPassWord);
+	local NewPwd = LoginCommon.GetEncryptString(NewPassWord);
+
+	SendMsgChangePassWord(p.strSerIp, p.nPort, Account, OldPwd, NewPwd, p.nAcntLen, p.nPwdLen, NMSG_Type._MSG_CHANGE_PASSWORD);
 end
 
-		
-		
+
+--修改密码请求返回枚举
+p.ENUM_CHG_PWD_REPLY =
+{
+    CHG_OK = 0,   --修改成功
+    ACNT_NOT_EXIT = 1, --账号不存在
+    SAME_PWD = 2, --注册失败 
+	PWD_ERROR = 3, --
+    FAILED = 4, -- 
+};
+
+
+
+--收到服务端下发的修改密码请求结果
+function p.MsgReciveChgPwd(netdatas)   
+
+	CloseLoadBar()
+	local nResult = netdatas:ReadInt(); 
+
+	if nResult == p.ENUM_CHG_PWD_REPLY.CHG_OK then             --修改密码成功成功
+		--关闭修改密码页面,并将当前账号密码填入登入界面账号密码处
+		LoginChgPassWord.LoginChgSuccess();
+		LoginCommon.CloseUI(NMAINSCENECHILDTAG.LoginChgPassWord);  
+		LoginUI.LoadUI(LoginChgPassWord.Account, LoginChgPassWord.FstPassWord, 1);
+	end 
+end
 
 --接收登入请求返回结果
 RegisterNetMsgHandler(NMSG_Type._MSG_LOGIN_ACCOUNT,  "p.MsgReciveLoginAccount", p.MsgReciveLoginAccount);
 
 --接收注册请求返回结果
 RegisterNetMsgHandler(NMSG_Type._MSG_REGISTER_ACCOUNT,  "p.MsgReciveRegisterAccount", p.MsgReciveRegisterAccount);
+
+--接收修改密码请求返回结果
+RegisterNetMsgHandler(NMSG_Type._MSG_CHANGE_PASSWORD,  "p.MsgReciveChgPwd", p.MsgReciveChgPwd);

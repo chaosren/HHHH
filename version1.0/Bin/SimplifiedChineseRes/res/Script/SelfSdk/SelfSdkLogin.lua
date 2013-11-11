@@ -11,7 +11,7 @@ p.nAutoFlag = 0;
 function p.LoginControl()
 	
 	p.nAutoFlag = 0;
-	local nTestFlag = 0;
+	local nTestFlag = 1;
 	local record = {};
 	
 	--首先查找本地数据库,
@@ -19,8 +19,8 @@ function p.LoginControl()
 		record = SqliteConfig.SelectSelfLogin(1);
 	else
 		record.nAutoLogin = 0;
-		record.Account = "323DFD";
-		record.PassWord = "12345W3";
+		record.Account = "aaabbc";
+		record.PassWord = "aaaaaa";
 	end
 	
 	if record == nil then

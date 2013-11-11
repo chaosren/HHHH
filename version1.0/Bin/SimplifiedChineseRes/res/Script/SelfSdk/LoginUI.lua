@@ -131,8 +131,10 @@ function p.OnUIEvent(uiNode, uiEventType, param)
 			LoginRegisterUI.LoadUI();
 			
 		elseif ID_BTN_GUEST_LOGIN == tag then          --游客登入
-			--暂时实现为注册功能
-			LoginRegisterUI.LoadUI();
+			--暂时实现为修改密码功能
+			p.CloseLoginUI();
+			LoginChgPassWord.LoadUI();
+			
 		end
 	elseif ( uiEventType == NUIEventType.TE_TOUCH_CHECK_CLICK ) then
 		--自动登入单选框点击操作

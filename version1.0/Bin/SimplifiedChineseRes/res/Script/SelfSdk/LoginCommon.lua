@@ -47,6 +47,11 @@ p.CHECK_FLAG =
 	TYPE_REG_PWD_SND = 7,   --注册第二个密码校验
 	TYPE_REV_REG_ACNT_EXIT = 8,   --注册返回账号已存在
 	TYPE_REV_REG_FAIL = 9,   --注册返回失败
+	
+	TYPE_CHG_PWD_OLD = 10,   --修改密码原密码校验
+	TYPE_CHG_PWD_FST = 11,   --修改密码第一次输入密码校验
+	TYPE_CHG_PWD_SND = 12,   --修改密码第二次输入密码校验
+	TYPE_CHG_OLD_NEW = 13,   --新旧密码相同性校验
 };
 
 --获取的数据段对应CommonDataInit中每条记录的每个字段例如 nTipId,nCtrId等
@@ -79,8 +84,12 @@ function p.CommonDataInit()
 	{nCheckFlag = 8, nTipId = 6, nCtrId = 43, nUITag = NMAINSCENECHILDTAG.LoginRegisterUI, nEditId1 = 88, nEditId2 = 89, nEditId3 = 90},
 	{nCheckFlag = 9, nTipId = 7, nCtrId = 43, nUITag = NMAINSCENECHILDTAG.LoginRegisterUI, nEditId1 = 88, nEditId2 = 89, nEditId3 = 90},	
 	
-	
-	
+	--修改密码页面
+	{nCheckFlag = 10, nTipId = 2, nCtrId = 8, nUITag = NMAINSCENECHILDTAG.LoginChgPassWord, nEditId1 = 88, nEditId2 = 89, nEditId3 = 90},
+	{nCheckFlag = 11, nTipId = 2, nCtrId = 8, nUITag = NMAINSCENECHILDTAG.LoginChgPassWord, nEditId1 = 89, nEditId2 = 90},
+	{nCheckFlag = 12, nTipId = 5, nCtrId = 8, nUITag = NMAINSCENECHILDTAG.LoginChgPassWord, nEditId1 = 89, nEditId2 = 90},
+	{nCheckFlag = 13, nTipId = 8, nCtrId = 8, nUITag = NMAINSCENECHILDTAG.LoginChgPassWord, nEditId1 = 89, nEditId2 = 90},
+
 	};
 end
 
@@ -204,8 +213,7 @@ function p.CheckDataValidity(Pdata, nFlag)
 		or p.CHECK_FLAG.TYPE_REG_ACNT == nFlag then --账号校验
 		nMin = p.NUM_LIMITE.ACCOUNT_NUM_MIN;
 		nMax = p.NUM_LIMITE.ACCOUNT_NUM_MAX;
-	elseif  p.CHECK_FLAG.TYPE_LOG_PWD == nFlag 
-		or p.CHECK_FLAG.TYPE_REG_PWD_FST == nFlag then --密码校验
+	else
 		nMin = p.NUM_LIMITE.PASSWORD_NUM_MIN;
 		nMax = p.NUM_LIMITE.PASSWORD_NUM_MAX;
 	end

@@ -15,10 +15,8 @@ local ID_BTN_LOCAL_SERVER				= 2;	-- 内服按钮控件ID
 
 ---------------------------------------------------
 local LOCAL_WORLD_SERVER_IP				= "121.207.239.91"	-- 内网世界服务器IP
---local EXTERNAL_WORLD_SERVER_IP			= "222.77.177.209"	-- 外网世界服务器IP
-local EXTERNAL_WORLD_SERVER_IP				= GetGameConfig("world_server_ip");--"192.168.19.169"	-- 内网世界服务器IP
-local EXTERNAL_WORLD_SERVER_PORT			= GetWorldServerPort();--GetGameConfig("server_port");	-- 世界服务器PORT
---local EXTERNAL_WORLD_SERVER_IP			= "222.77.177.176"	-- 外网世界服务器IP mobage测试
+local EXTERNAL_WORLD_SERVER_IP				= GetGameConfig("world_server_ip");
+local EXTERNAL_WORLD_SERVER_PORT			= GetWorldServerPort();
 ---------------------------------------------------
 p.nAccountID	= nil;
 
@@ -106,7 +104,6 @@ function p.OnUIEvent( uiNode, uiEventType, param )
 				Login_ServerUI.worldIP	= EXTERNAL_WORLD_SERVER_IP;
 				Login_ServerUI.worldPort = EXTERNAL_WORLD_SERVER_PORT;
 				--Login_ServerUI.LoadUI();
-				--Login_ServerUI.LoginOK_Normal( nAccountID )
 				Login_ServerUI.LoginOK_Normal( 0 )
 				SelfSdkLogin.LoginControl();
 			end
@@ -123,6 +120,7 @@ function p.OnUIEvent( uiNode, uiEventType, param )
 end
 
 
+--登入成功后回调
 function p.ProcessGameAccount(netdatas)
 	CloseLoadBar();
 	local nGameAccount = netdatas:ReadInt();
@@ -134,8 +132,8 @@ function p.ProcessGameAccount(netdatas)
 		LoginUI.LoginSuccess();
 	end
 	
+	Login_ServerUI.SetGameAccountID(nGameAccount);
 	Login_ServerUI.LoadUI();
-	Login_ServerUI.LoginOK_Normal( nGameAccount )
 end
 
 ---------------------------------------------------

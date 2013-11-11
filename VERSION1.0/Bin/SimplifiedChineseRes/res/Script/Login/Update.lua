@@ -364,14 +364,6 @@ function p.LoginOK_Normal( nAccountID )
 	p.InitCheck();
 end
 
-function p.LoginOK_Guest2Normal( nAccountID )
-	if ( p.GetUILayer() == nil ) then
-		LogInfo( "Update: LoginOK_Guest2Normal() failed! layer is nil" );
-		return;
-	end
-	p.nAccountID = nAccountID;
-	p.InitCheck();
-end
 
 function p.LoginError( nErrorCode )
 	
@@ -392,7 +384,6 @@ end
 --
 --RegisterGlobalEventHandler( GLOBALEVENT.GE_LOGINOK_GUEST, "Update.LoginOK_Guest", p.LoginOK_Guest );
 --RegisterGlobalEventHandler( GLOBALEVENT.GE_LOGINOK_NORMAL, "Update.LoginOK_Normal", p.LoginOK_Normal );
---RegisterGlobalEventHandler( GLOBALEVENT.GE_LOGINOK_GUEST2NORMAL, "Update.LoginOK_Guest2Normal", p.LoginOK_Guest2Normal );
 RegisterGlobalEventHandler( GLOBALEVENT.GE_LOGINERROR, "Update.LoginError", p.LoginError);
 
 --RegisterNetMsgHandler( NMSG_Type._MSG_CLIENT_VERSION, "Update.OnMsg_CheckVersion", p.OnMsg_CheckVersion );

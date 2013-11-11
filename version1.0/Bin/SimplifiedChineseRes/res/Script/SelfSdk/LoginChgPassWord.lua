@@ -14,6 +14,8 @@ local ID_BTN_CANCEL    = 86;    --离开
 p.CurLayer = nil;
 p.FstPassWord = nil;
 p.SedPassWord = nil;
+p.Account = nil;
+
 
 function p.LoadUI()
 	
@@ -49,8 +51,8 @@ function p.InitData()
     local uiNode = GetUiNode(p.CurLayer, ID_EDIT_OLD_PASSWORD);
     if CheckP(uiNode) then
         local edit = ConverToEdit(uiNode);
-        edit:SetMaxLength(6);
-        edit:SetMaxLength(12);
+        edit:SetMaxLength(LoginCommon.NUM_LIMITE.PASSWORD_NUM_MIN);
+        edit:SetMaxLength(LoginCommon.NUM_LIMITE.PASSWORD_NUM_MAX);
         edit:SetPassword(true);
     end
     
@@ -58,8 +60,8 @@ function p.InitData()
     uiNode = GetUiNode(p.CurLayer, ID_EDIT_NEW_PASSWORD);
     if CheckP(uiNode) then
         local edit = ConverToEdit(uiNode);
-        edit:SetMaxLength(6);
-        edit:SetMaxLength(12);
+        edit:SetMaxLength(LoginCommon.NUM_LIMITE.PASSWORD_NUM_MIN);
+        edit:SetMaxLength(LoginCommon.NUM_LIMITE.PASSWORD_NUM_MAX);
         edit:SetPassword(true);
     end
     
@@ -68,8 +70,8 @@ function p.InitData()
     uiNode = GetUiNode(p.CurLayer, ID_EDIT_SEC_PASSWORD);
     if CheckP(uiNode) then
         local edit = ConverToEdit(uiNode);
-        edit:SetMaxLength(6);
-        edit:SetMaxLength(12);
+        edit:SetMaxLength(LoginCommon.NUM_LIMITE.PASSWORD_NUM_MIN);
+        edit:SetMaxLength(LoginCommon.NUM_LIMITE.PASSWORD_NUM_MAX);
         edit:SetPassword(true);
     end
 end
@@ -84,38 +86,53 @@ function p.OnUIEvent(uiNode, uiEventType, param)
 
 			--原密码校验
 			local OldPassWord = LoginCommon.GetEditData(p.CurLayer, ID_EDIT_OLD_PASSWORD);
-			if not LoginCommon.CheckDataValidity(OldPassWord, LoginCommon.ENUM_DATA_FLAG.PASSWORD_DATA) then
+			if not LoginCommon.CheckDataValidity(OldPassWord, LoginCommon.CHECK_FLAG.TYPE_CHG_PWD_OLD) then
 				return true;
 			end	
 			
 			--新密码校验
-			local NewPassWord = LoginCommon.GetEditData(p.CurLayer, ID_EDIT_NEW_PASSWORD);
-			if not LoginCommon.CheckDataValidity(NewPassWord, LoginCommon.ENUM_DATA_FLAG.PASSWORD_DATA) then
+			p.FstPassWord = LoginCommon.GetEditData(p.CurLayer, ID_EDIT_NEW_PASSWORD);
+			if not LoginCommon.CheckDataValidity(p.FstPassWord, LoginCommon.CHECK_FLAG.TYPE_CHG_PWD_FST) then
 				return true;
 			end	
 			
 			--两次密码输入一致性校验
-			if OldPassWord ~= NewPassWord then
-				CommonDlgNew.ShowYesDlg(GetTxtPri("SELF_SDK_TIP5"));
+			local SndPassWord = LoginCommon.GetEditData(p.CurLayer, ID_EDIT_SEC_PASSWORD);
+			if p.FstPassWord ~= SndPassWord then
+				LoginCommon.ShowErrorTipInfo(LoginCommon.CHECK_FLAG.TYPE_CHG_PWD_SND);
 				return true;
 			end
-
+			
+			--旧密码与新密码一致性校验
+			if OldPassWord == p.FstPassWord then
+				LoginCommon.ShowErrorTipInfo(LoginCommon.CHECK_FLAG.TYPE_CHG_OLD_NEW);
+				return true;
+			end
+			
+			local record = SqliteConfig.SelectSelfLogin(1);
+			if record == nil then
+				return true;
+			end
+			p.Account = record.Account;
+			
 			--发起修改密码请求
-			MsgSelfSdkLogin.MsgSendChangePassWord(OldPassWord, NewPassWord);
+			MsgSelfSdkLogin.MsgSendChangePassWord(p.Account, OldPassWord, p.FstPassWord);
 		
 		elseif ID_BTN_CANCEL == tag then          --离开                     
 			LoginCommon.CloseUI(NMAINSCENECHILDTAG.LoginChgPassWord);
+			LoginUI.LoadUI();
 		end
 		
 		
 		--输入键盘回调响应
 	elseif uiEventType == NUIEventType.TE_TOUCH_EDIT_INPUT_FINISH then
 
+		--[[
 		if tag == ID_EDIT_OLD_PASSWORD then     
 			local edit = ConverToEdit(uiNode);
 			if CheckP(edit) then
-				--账号校验
-				LoginCommon.CheckDataValidity(edit:GetText(), LoginCommon.ENUM_DATA_FLAG.PASSWORD_DATA);
+				--原密码校验
+				LoginCommon.CheckDataValidity(edit:GetText(), LoginCommon.CHECK_FLAG.TYPE_CHG_PWD_OLD);
 			end
 			
 		elseif tag == ID_EDIT_NEW_PASSWORD then
@@ -123,7 +140,7 @@ function p.OnUIEvent(uiNode, uiEventType, param)
 			if CheckP(edit) then
 				p.FstPassWord = edit:GetText();
 				--第一次输入密码校验
-				LoginCommon.CheckDataValidity(edit:GetText(), LoginCommon.ENUM_DATA_FLAG.PASSWORD_DATA);
+				LoginCommon.CheckDataValidity(edit:GetText(), LoginCommon.CHECK_FLAG.TYPE_CHG_PWD_FST);
 			end	
 			
 		elseif tag == ID_EDIT_SEC_PASSWORD then
@@ -134,11 +151,18 @@ function p.OnUIEvent(uiNode, uiEventType, param)
 				--第二次输入密码校验
 				if p.FstPassWord ~= p.SedPassWord then
 					edit:SetText("");
-					CommonDlgNew.ShowYesDlg(GetTxtPri("SELF_SDK_TIP5"));
+					LoginCommon.ShowErrorTipInfo(LoginCommon.CHECK_FLAG.TYPE_CHG_PWD_SND);
 				end
 			end			
 		end		
+		]]
 	end
 
 	return true;
+end
+
+
+--修改密码成功保存至数据库
+function p.LoginChgSuccess()
+	local record = {};	record.ID = 0;	record.nAutoLogin = 0;	record.Account = p.Account;	record.PassWord = p.FstPassWord;	SqliteConfig.InsertSelfLogin(record);
 end

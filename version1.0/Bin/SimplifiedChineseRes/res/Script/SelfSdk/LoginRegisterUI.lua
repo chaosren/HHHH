@@ -10,6 +10,7 @@ p.CurLayer = nil;           --保存当前层数据
 p.Account = nil;            --保存账号数据
 p.FstPassWord = nil;        --保存第一次密码数据
 p.SedPassWord = nil;        --保存第二次密码数据
+p.nAutoLogin = 0;
 
 --控件id
 local ID_EDIT_ACCOUNT        = 88;     --账号输入控件
@@ -156,4 +157,10 @@ end
 
 function p.SetLoginEditData()
 	LoginUI.SetLoginEditData(p.Account, p.FstPassWord);
+end
+
+
+--注册成功保存至数据库
+function p.LoginRegSuccess()
+	local record = {};	record.ID = 0;	record.nAutoLogin = p.nAutoLogin;	record.Account = p.Account;	record.PassWord = p.FstPassWord;	SqliteConfig.InsertSelfLogin(record);
 end
