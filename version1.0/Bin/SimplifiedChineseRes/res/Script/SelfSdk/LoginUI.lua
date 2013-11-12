@@ -131,9 +131,10 @@ function p.OnUIEvent(uiNode, uiEventType, param)
 			LoginRegisterUI.LoadUI();
 			
 		elseif ID_BTN_GUEST_LOGIN == tag then          --游客登入
-			--暂时实现为修改密码功能
-			p.CloseLoginUI();
-			LoginChgPassWord.LoadUI();
+			--游客登入功能实现
+			CommonDlgNew.ShowYesOrNoDlg(GetTxtPri("SELF_SDK_TIP9"), p.OnGuestLogin, true);
+			--p.CloseLoginUI();
+			--LoginChgPassWord.LoadUI();
 			
 		end
 	elseif ( uiEventType == NUIEventType.TE_TOUCH_CHECK_CLICK ) then
@@ -169,6 +170,11 @@ function p.OnUIEvent(uiNode, uiEventType, param)
 end
 
 
+function p.OnGuestLogin(nId, param)
+	if ( CommonDlgNew.BtnOk == nId ) then
+		LoginGuest.GusetLogin();
+	end
+end
 
 --注册成功调用
 function p.LoginSuccess()

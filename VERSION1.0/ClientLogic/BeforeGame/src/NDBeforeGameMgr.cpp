@@ -498,6 +498,11 @@ void NDBeforeGameMgr::SetServerInfo(const char* serverIP,
 
 void NDBeforeGameMgr::generateClientKey()
 {
+	if(phoneKey.size() > 0)
+	{
+		return;
+	}
+
 	// ------ 产生随机key ------
 	//获取自2001年1月1号零时到当前时间的秒数
 	tm timeStrt20010101;
@@ -512,15 +517,15 @@ void NDBeforeGameMgr::generateClientKey()
 	time_t secOf20010101 = mktime(&timeStrt20010101);
 	time_t secNow = time(NULL);
 	int diff = secNow - secOf20010101;
-
+	//Guosen 2013.3.8++ 新版本key字符串限制36个字符
 	//将得到的秒数保存在tmpStr中
-	char tmpArr[32];
-	_snprintf(tmpArr, 32, "%d", diff);
+	char tmpArr[36];
+	_snprintf(tmpArr, 36, "%d", diff);
 	string tmpStr(tmpArr);
 
 	srandom (time(NULL));
 	//tmpStr总长度为24，后面用a-z的随机串补齐，目的是得到一个24位的唯一key，注意：key的第一位必须是数字，否则发送的数据包会被服务端直接丢弃
-for(	int i = tmpStr.length(); i < 24; i++)
+	for(	int i = tmpStr.length(); i < 36; i++)
 	{
 		char tmpChar = (char) ((random()%100 +1) % 26 + 97);
 		char tmpCharArr[2];
@@ -529,7 +534,8 @@ for(	int i = tmpStr.length(); i < 24; i++)
 		tmpStr.append(tmpCharStr);
 	}
 
-	for (int i = 0; i < 24; i++)
+	phoneKey.clear();
+	for (int i = 0; i < 36; i++)
 	{
 		char sigleChar = tmpStr.at(i);
 		phoneKey.push_back(sigleChar);
@@ -558,7 +564,7 @@ void NDBeforeGameMgr::sendMsgConnect(int idAccount)
 
 	NDTransData data(_MSG_CONNECT);
 
-	int iPlatType = ScriptMgrObj.excuteLuaFunc("GetCurPlatFormType", "PlayerDataConfig");
+	int iPlatType = ScriptMgrObj.excuteLuaFuncRetN("GetCurPlatFormType", "PlayerDataConfig");
 	int dwAuthorize = 0;
 	data << idAccount;
 	data << dwAuthorize;

@@ -154,6 +154,8 @@ function p.OnUIEvent( uiNode, uiEventType, param )
 			p.CloseUI();
 		elseif ( ID_BTN_CHANGE_ACCOUNT == tag ) then
 			p.OnBtnChangeAccount();
+			--LoginChgPassWord.LoadUI();
+			--p.CloseUI()
 		elseif ( ID_BTN_CHANGE_SERVER == tag ) then
 			p.OnBtnChangeServer();
 		elseif ( ID_BTN_CALL_GM == tag ) then

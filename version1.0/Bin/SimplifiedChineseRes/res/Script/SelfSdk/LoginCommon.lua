@@ -116,9 +116,15 @@ end
 
 
 --显示错误提示信息nFlag校验的数据类型
-function p.ShowErrorTipInfo(nFlag)
-
-	local scene = GetSMLoginScene();
+function p.ShowErrorTipInfo(nFlag, bGameSceneFlag)
+	
+	local scene = nil;
+	if bGameSceneFlag == nil then
+		scene = GetSMLoginScene();
+	else
+		scene = GetSMGameScene();
+	end
+	
 	if scene == nil then
 		return false;
 	end
@@ -193,6 +199,12 @@ function p.CheckDataValidity(Pdata, nFlag)
 		return;
 	end
 	
+	local bGameSceneFlag = nil;
+	if nFlag >= p.CHECK_FLAG.TYPE_CHG_PWD_OLD and
+	   nFlag <= p.CHECK_FLAG.TYPE_CHG_OLD_NEW then
+	   bGameSceneFlag = true;
+	end
+
 	for i = 1, nLen do
 		local nAscleNum = string.byte(Pdata, i);
 		if not ( (nAscleNum >= 48 and  nAscleNum <= 57)    --为数字
@@ -201,7 +213,7 @@ function p.CheckDataValidity(Pdata, nFlag)
 		         or (nAscleNum == 95)                     --下划线              
 		         ) then
 			 
-			p.ShowErrorTipInfo(nFlag);
+			p.ShowErrorTipInfo(nFlag, bGameSceneFlag);
 			return false; 
 		end
 	end
@@ -222,7 +234,7 @@ function p.CheckDataValidity(Pdata, nFlag)
 
 	--字符个数验证
 	if Pdata == nil or  nLen < nMin or nLen > nMax then
-		p.ShowErrorTipInfo(nFlag);
+		p.ShowErrorTipInfo(nFlag, bGameSceneFlag);
 		return false
 	end
 	

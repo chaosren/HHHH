@@ -125,11 +125,16 @@ function p.ProcessGameAccount(netdatas)
 	CloseLoadBar();
 	local nGameAccount = netdatas:ReadInt();
 	
-	--seft sdk 登入成功调用
-	local nAutoFlag = SelfSdkLogin.GetAutoFlag();
-	
-	if nAutoFlag ~= 1 then
-		LoginUI.LoginSuccess();
+	local nGuestFlag = LoginGuest.GetGuestLoginFlag();
+	if nGuestFlag then
+		LoginGuest.LoginSuccess();
+	else
+		--seft sdk 登入成功调用
+		local nAutoFlag = SelfSdkLogin.GetAutoFlag();
+		
+		if nAutoFlag ~= 1 then
+			LoginUI.LoginSuccess();
+		end
 	end
 	
 	Login_ServerUI.SetGameAccountID(nGameAccount);

@@ -561,8 +561,13 @@ end
 
 function p.LoginOK_Normal(param)
 	p.UIN = param;
-	p.GUIN = nil;
+	
+	if p.UIN == 0 then
+		p.GUIN = nil;
+	end
+	
 	p.Refresh();
+	
 
 	p.RunGetServerListTimer();
 end
@@ -816,7 +821,8 @@ function p.LoginGameNew()
 	LogInfo( "@@ Login_ServerUI: LoginGameNew()" );
 	Music.PlayLoginMusic()
 	p.LoadUI();
-	p.LoginOK_Normal( p.UIN )
+	--p.LoginOK_Normal( p.UIN );
+	p.LoginOK_Normal( p.GUIN )
 end
 RegisterGlobalEventHandler( GLOBALEVENT.GE_LOGIN_GAME,"Login_ServerUI.LoginGame", p.LoginGameNew );
 

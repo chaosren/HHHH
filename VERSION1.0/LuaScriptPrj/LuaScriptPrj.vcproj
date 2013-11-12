@@ -2710,6 +2710,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\Bin\SimplifiedChineseRes\res\Script\SelfSdk\LoginGuest.lua"
+				>
+			</File>
+			<File
 				RelativePath="..\Bin\SimplifiedChineseRes\res\Script\SelfSdk\LoginRegisterUI.lua"
 				>
 			</File>

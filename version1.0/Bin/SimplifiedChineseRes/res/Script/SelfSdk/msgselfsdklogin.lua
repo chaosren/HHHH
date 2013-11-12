@@ -33,6 +33,15 @@ end
 
 --收到服务端下发的登入账号密码验证结果(只有登入错误才回收到此消息)登入成功收到_MSG_GAMEACCOUNT
 function p.MsgReciveLoginAccount(netdatas)   
+	
+	--游客登入处理
+	local nGuestFlag = LoginGuest.GetGuestLoginFlag();
+	if nGuestFlag then
+		LoginGuest.GusetLogin();  --注册失败 重新注册
+		return;
+	end
+	
+	
 	--如果登入界面不存在那么打开登入界面
 	CloseLoadBar()
 	local scene = GetSMLoginScene();
@@ -72,13 +81,27 @@ end
 function p.MsgReciveRegisterAccount(netdatas)   
 	CloseLoadBar()
 	local nResult = netdatas:ReadInt(); 
-
+	local nGuestFlag = LoginGuest.GetGuestLoginFlag();
+	
+	--游客登入的处理
+	if nGuestFlag then
+		if nResult == p.ENUM_REGISTER_ACCOUNT_REPLY.REGISTER_OK then --注册成功
+			local strAcnt = LoginGuest.GetAcount();
+			local strPwd  = LoginGuest.GetPassWord();
+			--发起登入请求
+			MsgSelfSdkLogin.MsgSendLoginAccount(strAcnt, strPwd);
+		else 
+			LoginGuest.GusetLogin();  --注册失败 重新注册
+		end
+		return;
+	end
+	
+	--正常注册结果处理
 	if nResult == p.ENUM_REGISTER_ACCOUNT_REPLY.REGISTER_OK then             --注册成功
 		--关闭注册页面,并将当前账号密码填入登入界面账号密码处
 		LoginRegisterUI.LoginRegSuccess();
 		LoginCommon.CloseUI(NMAINSCENECHILDTAG.LoginRegisterUI);  
 		LoginUI.LoadUI(LoginRegisterUI.Account, LoginRegisterUI.FstPassWord, 1);
-		--LoginRegisterUI.SetLoginEditData();
 	elseif nResult == p.ENUM_REGISTER_ACCOUNT_REPLY.ACCOUNT_EXIST then     
 		--账号已存在
 		LoginCommon.ShowErrorTipInfo(LoginCommon.CHECK_FLAG.TYPE_REV_REG_ACNT_EXIT);
@@ -123,7 +146,7 @@ function p.MsgReciveChgPwd(netdatas)
 	if nResult == p.ENUM_CHG_PWD_REPLY.CHG_OK then             --修改密码成功成功
 		--关闭修改密码页面,并将当前账号密码填入登入界面账号密码处
 		LoginChgPassWord.LoginChgSuccess();
-		LoginCommon.CloseUI(NMAINSCENECHILDTAG.LoginChgPassWord);  
+		CloseUI(NMAINSCENECHILDTAG.LoginChgPassWord);
 		LoginUI.LoadUI(LoginChgPassWord.Account, LoginChgPassWord.FstPassWord, 1);
 	end 
 end

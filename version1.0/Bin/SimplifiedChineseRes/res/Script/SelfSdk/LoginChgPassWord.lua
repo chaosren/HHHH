@@ -19,7 +19,9 @@ p.Account = nil;
 
 function p.LoadUI()
 	
-	local scene = GetSMLoginScene();	
+	--local scene = GetSMLoginScene();	
+	local scene = GetSMGameScene();
+	
 	if scene == nil then
 		return;
 	end
@@ -99,13 +101,13 @@ function p.OnUIEvent(uiNode, uiEventType, param)
 			--两次密码输入一致性校验
 			local SndPassWord = LoginCommon.GetEditData(p.CurLayer, ID_EDIT_SEC_PASSWORD);
 			if p.FstPassWord ~= SndPassWord then
-				LoginCommon.ShowErrorTipInfo(LoginCommon.CHECK_FLAG.TYPE_CHG_PWD_SND);
+				LoginCommon.ShowErrorTipInfo(LoginCommon.CHECK_FLAG.TYPE_CHG_PWD_SND, true);
 				return true;
 			end
 			
 			--旧密码与新密码一致性校验
 			if OldPassWord == p.FstPassWord then
-				LoginCommon.ShowErrorTipInfo(LoginCommon.CHECK_FLAG.TYPE_CHG_OLD_NEW);
+				LoginCommon.ShowErrorTipInfo(LoginCommon.CHECK_FLAG.TYPE_CHG_OLD_NEW, true);
 				return true;
 			end
 			
@@ -119,8 +121,9 @@ function p.OnUIEvent(uiNode, uiEventType, param)
 			MsgSelfSdkLogin.MsgSendChangePassWord(p.Account, OldPassWord, p.FstPassWord);
 		
 		elseif ID_BTN_CANCEL == tag then          --离开                     
-			LoginCommon.CloseUI(NMAINSCENECHILDTAG.LoginChgPassWord);
-			LoginUI.LoadUI();
+			--LoginCommon.CloseUI(NMAINSCENECHILDTAG.LoginChgPassWord);
+			--LoginUI.LoadUI();
+			CloseUI(NMAINSCENECHILDTAG.LoginChgPassWord);
 		end
 		
 		
