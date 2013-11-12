@@ -223,6 +223,8 @@ function p.RefreshRankItem(view, v)
     elseif(rankType == MsgRankList.RANKING_ACT.ACT_ELITE_STAGE) then
 		local nTitle	= AffixBossFunc.findName(v.nNum);
 		desc = string.format("%s",nTitle);
+	elseif(rankType == MsgRankList.RANKING_ACT.ACT_EMONEY_CONSUME) then
+		desc = string.format("%s",MoneyFormat(v.nNum));
     end
     
     --排名
