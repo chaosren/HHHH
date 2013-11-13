@@ -138,6 +138,7 @@ function p.ProcessGameAccount(netdatas)
 	end
 	
 	Login_ServerUI.SetGameAccountID(nGameAccount);
+	p.CloseUI();
 	Login_ServerUI.LoadUI();
 end
 

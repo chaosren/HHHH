@@ -11,7 +11,7 @@ p.nAutoFlag = 0;
 function p.LoginControl()
 	
 	p.nAutoFlag = 0;
-	local nTestFlag = 1;
+	local nTestFlag = 0;
 	local record = {};
 	
 	--首先查找本地数据库,
@@ -31,6 +31,7 @@ function p.LoginControl()
 		local nAutoLogin = record.nAutoLogin;
 		local Account = record.Account;
 		local PassWord = record.PassWord;
+		nAutoLogin = 0;
 		
 		if nAutoLogin == 0 then  		--非自动登入
 			LoginCommon.CommonDataInit();

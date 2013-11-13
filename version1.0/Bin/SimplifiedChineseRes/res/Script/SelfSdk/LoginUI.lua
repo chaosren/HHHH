@@ -74,7 +74,7 @@ function p.InitData()
 	local uiNode = GetUiNode(p.CurLayer, ID_EDIT_ACCOUNT);
     if CheckP(uiNode) then
         local edit = ConverToEdit(uiNode);
-        edit:SetMaxLength(LoginCommon.NUM_LIMITE.ACCOUNT_NUM_MIN);
+        edit:SetMinLength(LoginCommon.NUM_LIMITE.ACCOUNT_NUM_MIN);
         edit:SetMaxLength(LoginCommon.NUM_LIMITE.ACCOUNT_NUM_MAX);
     end
     
@@ -82,7 +82,7 @@ function p.InitData()
     uiNode = GetUiNode(p.CurLayer, ID_EDIT_PASSWORD);
     if CheckP(uiNode) then
         local edit = ConverToEdit(uiNode);
-        edit:SetMaxLength(LoginCommon.NUM_LIMITE.PASSWORD_NUM_MIN);
+        edit:SetMinLength(LoginCommon.NUM_LIMITE.PASSWORD_NUM_MIN);
         edit:SetMaxLength(LoginCommon.NUM_LIMITE.PASSWORD_NUM_MAX);
         edit:SetPassword(true);
     end

@@ -711,6 +711,7 @@ void HideMobageSplashScreen() //Guosen 2012.8.3
 }
 void doGoToMobageVipPage()
 {
+#if 0
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
 	[MBGSocialService showBankUI:^
 	{
@@ -730,10 +731,12 @@ void doGoToMobageVipPage()
         t.env->DeleteLocalRef(t.classID);
     }
 #endif
+#endif
 }
 
 void doShowMobageBalance()
 {
+#if 0
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
 	MobageViewController* pMobageView = [MobageViewController sharedViewController];
 	[pMobageView showBalanceButton:CGRectMake(200, 70, 100, 36)];
@@ -751,10 +754,12 @@ void doShowMobageBalance()
         t.env->DeleteLocalRef(t.classID);
     }
 #endif
+#endif
 }
 
 void doHideMobageBalance()
 {
+#if 0
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
 	MobageViewController* pMobageView = [MobageViewController sharedViewController];
 	[pMobageView hideBalanceButton];
@@ -773,10 +778,12 @@ void doHideMobageBalance()
         t.env->DeleteLocalRef(t.classID);
     }
 #endif
+#endif
 }
 
 void doExchangeEmoney(int nQuantity)
 {	
+#if 0
 	CCLog("SEND_DATA1194 doExchangeEmoney");
 	CCLog("SEND_DATA1194 doExchangeEmoney nQuantity = %d", nQuantity);
 	int idAccount = NDBeforeGameMgrObj.GetCurrentUser();
@@ -800,6 +807,7 @@ void doExchangeEmoney(int nQuantity)
 
 	//CCLog("SEND_DATA1194 idAccount = %d, iPayType = %d", idAccount, iPayType);
 	SEND_DATA(bao);
+#endif
 }
 
 std::string Int2StrIP(int ip_Int)

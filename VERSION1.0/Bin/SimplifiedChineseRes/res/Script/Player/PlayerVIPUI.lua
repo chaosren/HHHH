@@ -258,7 +258,7 @@ function p.OnUIEventBg(uiNode, uiEventType, param)
 	if uiEventType == NUIEventType.TE_TOUCH_BTN_CLICK then
 	
 		if tag == ID_VIP_CTRL_BUTTON_3 then
-            doHideMobageBalance();
+            --doHideMobageBalance();
             RemoveChildByTagNew(NMAINSCENECHILDTAG.PlayerVIPUI, true,true);
             return true;
 
@@ -271,7 +271,7 @@ function p.OnUIEventBg(uiNode, uiEventType, param)
 		elseif tag == ID_VIP_CTRL_BUTTON_15 then	
 			p.OnClickBuyMilOrderBtn();
 		elseif ( tag == ID_BTN_AGIOTAGE ) then
-			Agiotage.LoadUI();
+			--Agiotage.LoadUI();
 			
 		elseif tag >= 51 and tag<= 62 then
 			local nVipLev = tVipTagLev[tag];

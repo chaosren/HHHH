@@ -200,7 +200,7 @@ public class DaHuaLongJiang extends Cocos2dxActivity
 			ViewGroup.LayoutParams pkParams = new ViewGroup.LayoutParams(
 					ViewGroup.LayoutParams.FILL_PARENT,
 					ViewGroup.LayoutParams.FILL_PARENT);
-			ms_pkDHLJ.setContentView(menubar, pkParams);
+			ms_pkDHLJ.setContentView(s_Viewlayout, pkParams);
 			ms_pkDHLJ.rootView.setVisibility(View.VISIBLE);
 		};
 	};
@@ -444,10 +444,10 @@ public class DaHuaLongJiang extends Cocos2dxActivity
 
 	private static void dump_menubar()
 	{
-		int n = menubar.getChildCount();
+		int n = s_Viewlayout.getChildCount();
 		for (int i = 0; i < n; i++)
 		{
-			View v = menubar.getChildAt(i);
+			View v = s_Viewlayout.getChildAt(i);
 			Log.d("test", "@@ menubar.child[" + i + "]=" + v.toString()
 					+ ",vis=" + v.getVisibility());
 		}
@@ -549,15 +549,15 @@ public class DaHuaLongJiang extends Cocos2dxActivity
 			if (bImeOpen)
 			{
 				// bring editView to top
-				menubar.bringChildToFront(edittext);
+				s_Viewlayout.bringChildToFront(edittext);
 				// bringLayoutToFront();
 			} else
 			{
 				// bring surface view to top
-				menubar.bringChildToFront(getView());
+				s_Viewlayout.bringChildToFront(getView());
 				// menubar.bringToFront();
 				bringLayoutToFront();
-				menubar.postInvalidate();
+				s_Viewlayout.postInvalidate();
 				dump_menubar();
 			}
 		}
@@ -569,10 +569,10 @@ public class DaHuaLongJiang extends Cocos2dxActivity
 
 		ArrayList<View> viewList = new ArrayList<View>();
 
-		int n = menubar.getChildCount();
+		int n = s_Viewlayout.getChildCount();
 		for (int i = 0; i < n; i++)
 		{
-			View v = menubar.getChildAt(i);
+			View v = s_Viewlayout.getChildAt(i);
 			if ((v.toString().indexOf("LinearLayout") != -1)
 					|| (v.toString().indexOf("RelativeLayout") != -1))
 			{
@@ -582,7 +582,7 @@ public class DaHuaLongJiang extends Cocos2dxActivity
 
 		for (int i = 0; i < viewList.size(); i++)
 		{
-			menubar.bringChildToFront((View) viewList.get(i));
+			s_Viewlayout.bringChildToFront((View) viewList.get(i));
 		}
 	}
 

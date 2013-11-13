@@ -194,16 +194,20 @@ end
 --验证数据合法性, Pdata要校验的数据 , nFlag数据类型
 function p.CheckDataValidity(Pdata, nFlag)
 	--数据类型验证(字母,数字,下划线)
-	local nLen = string.len(Pdata);
-	if nLen == 0 then
-		return;
-	end
 	
 	local bGameSceneFlag = nil;
 	if nFlag >= p.CHECK_FLAG.TYPE_CHG_PWD_OLD and
 	   nFlag <= p.CHECK_FLAG.TYPE_CHG_OLD_NEW then
 	   bGameSceneFlag = true;
 	end
+	
+	local nLen = string.len(Pdata);
+	if nLen == 0 then
+		p.ShowErrorTipInfo(nFlag, bGameSceneFlag);
+		return false;
+	end
+	
+
 
 	for i = 1, nLen do
 		local nAscleNum = string.byte(Pdata, i);

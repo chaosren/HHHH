@@ -124,13 +124,6 @@ CSMLoginScene* CSMLoginScene::Scene( bool bShowEntry /*= false*/  )
     pkScene->Initialization();
     pkScene->SetTag(SMLOGINSCENE_TAG);
 
-	///< 給湯自勤哥展示用法……
-// 	NDJsonReader kReader;
-// 	kReader.readJsonFile("assets/conf.json");
-// 
-// 	string strID = kReader.readData("app_id");
-
-	//LOGD("strID = %s",strID.c_str());
     
 	if ( bShowEntry )
 	{
@@ -1079,15 +1072,22 @@ void CSMLoginScene::StartEntry()
 #endif
     
 	CCLog( "@@login041: StartEntry(%u)\r\n" , m_iAccountID);
-    if(m_iAccountID != 0) {
+
+	m_iAccountID = 0;
+	NDBeforeGameMgrObj.SetLoginTry(true);
+	ScriptMgrPtr->excuteLuaFunc( "ShowUI", "Entry", m_iAccountID );
+	/*
+    if(m_iAccountID != 0) 
+	{
         NDBeforeGameMgrObj.SetLoginTry(false);
-       // ScriptMgrPtr->excuteLuaFunc( "ShowUI", "Entry", m_iAccountID );
-		m_iAccountID = 0;
-		ScriptMgrPtr->excuteLuaFunc( "ShowUI", "Entry", m_iAccountID );
+        ScriptMgrPtr->excuteLuaFunc( "ShowUI", "Entry", m_iAccountID );
     }
     else
+	{
         NDBeforeGameMgrObj.SetLoginTry(true);
-	//    ScriptMgrObj.excuteLuaFunc("ProecssLocalNotification", "MsgLoginSuc");
+	}
+	*/
+
 
 #else //多线程不会有什么好处，反而是崩溃和不稳定，
 	  //实际上网络线程和控制台线程都是多余的！单线程足够了！

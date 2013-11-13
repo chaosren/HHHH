@@ -1,0 +1,16 @@
+const unsigned long ID_GAMESETTINGUI_CTRL_TEXT_22						= 22;
+const unsigned long ID_GAMESETTINGUI_CTRL_TEXT_21						= 21;
+const unsigned long ID_GAMESETTINGUI_CTRL_TEXT_20						= 20;
+const unsigned long ID_GAMESETTINGUI_CTRL_CHECK_BUTTON_17				= 17;
+const unsigned long ID_GAMESETTINGUI_CTRL_CHECK_BUTTON_16				= 16;
+const unsigned long ID_GAMESETTINGUI_CTRL_CHECK_BUTTON_15				= 15;
+const unsigned long ID_GAMESETTINGUI_CTRL_BUTTON_CLOSE				= 6;
+const unsigned long ID_GAMESETTINGUI_CTRL_PICTURE_69					= 69;
+const unsigned long ID_GAMESETTINGUI_CTRL_PICTURE_68					= 68;
+const unsigned long ID_GAMESETTINGUI_CTRL_PICTURE_67					= 67;
+const unsigned long ID_GAMESETTINGUI_CTRL_PICTURE_66					= 66;
+const unsigned long ID_GAMESETTINGUI_CTRL_PICTURE_65					= 65;
+const unsigned long ID_GAMESETTINGUI_CTRL_PICTURE_64					= 64;
+const unsigned long ID_GAMESETTINGUI_CTRL_PICTURE_63					= 63;
+const unsigned long ID_GAMESETTINGUI_CTRL_PICTURE_62					= 62;
+const unsigned long ID_GAMESETTINGUI_CTRL_PICTURE_61					= 61;
