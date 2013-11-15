@@ -41,12 +41,6 @@ void MobageSdkLoginAndroid::onLoginComplete(int userId) {
 	LOGD("@@login app delegate onLoginComplete userId %d", userId);
 	NDBeforeGameMgr& mgr = NDBeforeGameMgrObj;
 	mgr.SetCurrentUser(userId);
-    if(NDBeforeGameMgrObj.GetLoginTry()) {
-        clearSplash();
-        ScriptMgrObj.excuteLuaFunc( "SetAccountID", "Login_ServerUI", userId );
-        ScriptMgrPtr->excuteLuaFunc( "ShowUI", "Entry", userId );
-    }
-	LOGD("SetAccountID success!");
 }
 
 void MobageSdkLoginAndroid::onLoginError() {

@@ -1980,20 +1980,9 @@ bool NDBeforeGameMgr::CheckFirstTimeRuning()
 {
 	LOGD("Entry NDBeforeGameMgr::CheckFirstTimeRuning()");
 	bool bFirstTime	= false;
-	string strInstallVersionINIPath	= "";
-	string strCopyVersionINIPath = "";
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
-	strInstallVersionINIPath = string("assets/") + SZ_VERINI_PATH;
-	strCopyVersionINIPath = NDPath::GetCashesPath() + NDPath::GetRootResDirName() + SZ_VERINI_PATH;
-#elif (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
-	strInstallVersionINIPath = NDPath::GetCashesPath() + NDPath::GetRootResDirName() + SZ_VERINI_PATH;
-    strCopyVersionINIPath = NDPath::GetCashesPath() + NDPath::GetRootResDirName() + SZ_VERINI_PATH;
-#else
-	///< IOS未作 郭浩
-#endif
 
 	string strInstallResVersion = "";
-
+	//android 版本获取 apk包中 assert文件夹下  SimplifiedChineseRes下的version.ini读取其中的值存在	strInstallResVersion
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
 
 	string strAPKPath = getApkPath();
@@ -2043,42 +2032,30 @@ bool NDBeforeGameMgr::CheckFirstTimeRuning()
 
 #endif
 
+	//本地的version.ini路径  在bin目录下的   SimplifiedChineseRes下
+	string strLocalVersionPath = "";
+   strLocalVersionPath = NDPath::GetCashesPath() + NDPath::GetRootResDirName() + SZ_VERINI_PATH;
+
 	FILE* pkFile = 0;
+   	pkFile = fopen(strLocalVersionPath.c_str(), "rb" );
 	unsigned long ulFileLength = 0;
-	pkFile = fopen(strCopyVersionINIPath.c_str(), "rb" );
 
  	if (0 == pkFile)
  	{
+		//本地version.ini不存在需要解压apk包  (一般为第一次安装)
  		bFirstTime = true;
- 	    LOGERROR( "\"Library/Caches/SimplifiedChineseRes/version.ini\" is not exist" );
  	}
 	else
 	{
-		char szCopyResVersion[5] = {0};
 		char szInstallResVersion[5] = {0};
-		fread(szCopyResVersion, 1, 4, pkFile);
+
+		//保存本地version.ini值用
+		char szLocalVersion[5] = {0};
+		fread(szLocalVersion, 1, 4, pkFile);
 		fclose( pkFile );
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
-		//如果是原下载的版本安装的包导致version.ini等资源文件已经存在,而且版本号小于当前安装的版本号，则删除当前的资源目录，再重新拷贝
-		FILE* pkInstallFile = 0;
-		pkInstallFile = fopen(strInstallVersionINIPath.c_str(), "rb" );
 
-		if (pkInstallFile)
-		{
-			fread(szInstallResVersion, 1, 4, pkInstallFile);
-			strInstallResVersion = szInstallResVersion;
-			fclose(pkInstallFile);
-		}
-		else
-		{
-			LOGERROR("%s is can't open.",strInstallVersionINIPath.c_str());
-		}
-#endif
-
-		LOGD("szCopyResVersion(%d),szInstallResVersion(%d)",
-			atol(szCopyResVersion),atol(strInstallResVersion.c_str()));
-
-        if ( atol(szCopyResVersion) < atol(strInstallResVersion.c_str()))
+		 //如果本地的version.ini中的值小于apk中的，那么需要解压
+        if ( atol(szLocalVersion) < atol(strInstallResVersion.c_str()))
         {
             bFirstTime = true;
         }

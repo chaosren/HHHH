@@ -58,8 +58,8 @@ using namespace CocosDenshion;
 
 #define UPDATE_TIP_TEXT_ANDROID 0x7f080039	///< 安卓解壓介面提示文字，對應安卓String.xml里的unzip_text 郭浩
 
-#define UPDATE_ON		1	//0关闭下载，1开启下载
-#define CACHE_MODE 		1  //发布模式//0关闭拷贝；1开启将资源拷贝至cache目录来访问
+#define UPDATE_ON		0	//0关闭下载，1开启下载
+#define CACHE_MODE 		0  //发布模式//0关闭拷贝；1开启将资源拷贝至cache目录来访问
 //--------------------//
 
 #define TAG_INSTALL_SUCCESS			1
@@ -121,12 +121,11 @@ IMPLEMENT_CLASS(CSMLoginScene, NDScene)
 CSMLoginScene* CSMLoginScene::Scene( bool bShowEntry /*= false*/  )
 {
 	CSMLoginScene* pkScene = new CSMLoginScene;
-    pkScene->Initialization();
-    pkScene->SetTag(SMLOGINSCENE_TAG);
 
-    
+    //显示进入页面
 	if ( bShowEntry )
 	{
+		//加载启动的时候需要用到的字符资源
 		if (NDLocalXmlString::GetSingleton().LoadLoginString())
 		{
 			pkScene->setIsLoadLocalString(true);
@@ -134,52 +133,33 @@ CSMLoginScene* CSMLoginScene::Scene( bool bShowEntry /*= false*/  )
 		SimpleAudioEngine::sharedEngine()->setMusicStream(true);
 		SimpleAudioEngine::sharedEngine()->raiseMusicStream();
         
+		//非安卓平台才进入
 #if (CC_TARGET_PLATFORM != CC_PLATFORM_ANDROID)
-		CCSize kWinSize = CCDirector::sharedDirector()->getWinSizeInPixels();
-
+		//生成一个层加载进入场景 为了添加第一个启动场景(android在java中实现)
 		NDUILayer* pkLayer = new NDUILayer();
-
+	 	CCSize kWinSize = CCDirector::sharedDirector()->getWinSizeInPixels();
 		pkLayer->Initialization();
 		pkLayer->SetFrameRect(CCRectMake(0, 0, kWinSize.width, kWinSize.height));
 		pkScene->AddChild(pkLayer);
 		pkScene->m_pLayerOld = pkLayer;
 
+		//加载一个启动图片
 		NDPicturePool& kPool = *(NDPicturePool::DefaultPool());
 		NDUIImage* pkBackgroundImage = new NDUIImage;
-
-		ccColor4B kColor = {100,100,100,255};
-
-		pkScene->m_pkProgressTextLabel = new NDUILabel();
-		pkScene->m_pkProgressTextLabel->Initialization();
-		pkScene->m_pkProgressTextLabel->SetRenderTimes(1);
-		pkScene->m_pkProgressTextLabel->SetTag(0);
-		pkScene->m_pkProgressTextLabel->SetFontSize(15);
-		pkScene->m_pkProgressTextLabel->SetFontColor(kColor);
-
 		pkBackgroundImage->Initialization();
+		pkBackgroundImage->SetFrameRect( CCRectMake(0, 0, kWinSize.width, kWinSize.height ));
 
-		NDUIImage* pkUILoadingImage = 0;
-		NDPicture* pkLoadingPic = 0;
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
-		NDPicture* pkPicture = kPool.AddPicture( NDPath::GetImgPath("Res00/Load/Unzipping.png") );
-#elif (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
-		NDPicture* pkPicture = kPool.AddPicture( NDPath::GetImg00Path("Res00/Load/Unzipping.png") );
-#endif
+		NDPicture* pkPicture = kPool.AddPicture( NDPath::GetImg00Path("Res00/Load/bg_load.png") );
 		if (pkPicture)
 		{
 			pkBackgroundImage->SetPicture(pkPicture, true);
-        }
-        
-        CCSize winSize = CCDirector::sharedDirector()->getWinSizeInPixels();
-        pkBackgroundImage->SetFrameRect( CCRectMake(0, 0, winSize.width, winSize.height ));
-        
-        pkLayer->AddChild(pkBackgroundImage);
+		} 
+
+		pkLayer->AddChild(pkBackgroundImage);
 #endif
 
-		CCLog( "@@login01: open CSMLoginScene\r\n" );
-		
-		LOGD("TAG_TIMER_FIRST_RUN is register");
-		pkScene->m_pTimer->SetTimer( pkScene, TAG_TIMER_FIRST_RUN,0.5f );
+		//pkScene->ontimer_first_run();	    --此时不能直接调用的原因在于这个时候SCENE还没有入栈
+		pkScene->m_pTimer->SetTimer( pkScene, TAG_TIMER_FIRST_RUN, 0.5f);
     }
 	return pkScene;
 }
@@ -196,10 +176,10 @@ CSMLoginScene::CSMLoginScene()
 , m_iState(0)
 , m_pLayerCheckWIFI(NULL)
 , m_bIsLoadingLocalString(false)
-, m_pkProgressTextLabel(0)
 {
 	INC_NDOBJ_RTCLS
-
+	Initialization();
+	SetTag(SMLOGINSCENE_TAG);
 	WriteCon( "%08X: CSMLoginScene::CSMLoginScene()\r\n", this);
 }
 
@@ -211,7 +191,6 @@ CSMLoginScene::~CSMLoginScene()
 	WriteCon( "%08X: CSMLoginScene::~CSMLoginScene()\r\n", this);
 
    	SAFE_DELETE( m_pTimer );
-	//SAFE_DELETE(m_pkProgressTextLabel);
 
 	NDDirector::DefaultDirector()->Recyle();
 }
@@ -228,18 +207,25 @@ void CSMLoginScene::Initialization(void)
 	m_pTimer = new NDTimer();
 }
 
-void clearSplash()
+//清除初始化进度的页面
+void CSMLoginScene::clearSplash(void)
 {
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
-    JniMethodInfo t;
-    if (JniHelper::getStaticMethodInfo(t, "org/DeNA/DHLJ/DaHuaLongJiang",
-                                       "clearSplash",
-                                       "()V"))
-    {
-        t.env->CallStaticObjectMethod(t.classID, t.methodID);
-        t.env->DeleteLocalRef(t.classID);
-    }
-#endif
+	#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
+		JniMethodInfo t;
+		if (JniHelper::getStaticMethodInfo(t, "org/DeNA/DHLJ/DaHuaLongJiang",
+										   "clearSplash",
+										   "()V"))
+		{
+			t.env->CallStaticObjectMethod(t.classID, t.methodID);
+			t.env->DeleteLocalRef(t.classID);
+		}
+	#else
+		if (m_pLayerOld)
+		{
+			m_pLayerOld->RemoveFromParent(true);
+			m_pLayerOld = NULL;
+		}
+	#endif
 }
 
 void notifyProcess(int nPercent)
@@ -368,130 +354,13 @@ void CSMLoginScene::OnTimer( OBJID idTag )
 	}
 	else if ( TAG_TIMER_CHECK_COPY == idTag )
 	{
-        int nCopyStatus = NDBeforeGameMgr::GetCopyStatus();
-        switch (nCopyStatus) 
-        {
-            case -1:
-                m_pTimer->KillTimer( this, TAG_TIMER_CHECK_COPY );
-                LOGERROR("Copy files error!");
-                exit(0);
-                break;
-            case 0:
-                break;
-            case 100:
-				{
-					if (!m_bIsLoadingLocalString)
-					{
-						NDLocalXmlString::GetSingleton().LoadLoginString();
-						m_bIsLoadingLocalString = true;
-					}
-
-					CCImage::changeSystemFont(false);
-					LOGD("Copy files succeeded!");
-					CCDirector::sharedDirector()->setGLDefaultValues();
-					m_pTimer->KillTimer( this, TAG_TIMER_CHECK_COPY );
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32) || (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
-					m_pkProgressTextLabel->SetVisible(false);
-					NDBeforeGameMgrObj.doNDSdkLogin();
-					ShowWaitingAni();
-#endif
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
-                    notifyProcess(100);
-
-					//此时资源才完整,别忘记初始化数据库
-					CSqliteDBMgr::shareInstance().InitDataBase("DNSG.sqlite");
-#endif
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
-					usleep(200);
-#endif
-					OnProcessUpdate();
-				}
-                break;
-            default:
-				{
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
-					CCString* pstrString = NULL;
-                    notifyProcess(nCopyStatus);
-#elif(CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
-					CCString* pstrString = CCString::stringWithFormat("解壓資源……已經解壓了%d%%",nCopyStatus);
-					//string strText = CONVERT_GBK_TO_UTF8(pstrString->getCString());
-					
-					CCSize kTextSize = getStringSize(pstrString->getCString(), 20 * FONT_SCALE);
-					CCSize kWinSize = CCDirector::sharedDirector()->getWinSizeInPixels();
-
- 					m_pkProgressTextLabel->SetFrameRect(CCRectMake(kWinSize.width / 2.0f - kTextSize.width / 3.0f,
-                                                                   kWinSize.height - kTextSize.height * 1.1f, kTextSize.width, kTextSize.height));
-
-					//LOGD("kTextSize.width is %d,kTextSize.height is %d",(int)kTextSize.width,(int)kTextSize.height);
-                    
-                    if(pstrString)
-                        m_pkProgressTextLabel->SetText(pstrString->getCString());
-#elif(CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
-					CCAssert(0);///< 未实现 郭浩
-#endif
-				}
-                break;
-        }
-	}
-	else if (TAG_TIMER_CHECK_LOGIN_COPY == idTag)
-	{
+		//解压资源包定时显示处理
+		ontimer_check_copy();
 	}
     else if ( TAG_TIMER_FIRST_RUN == idTag )
-	{
-		LOGD("Entry TAG_TIMER_FIRST_RUN == idTag");
-		m_pTimer->KillTimer( this, TAG_TIMER_FIRST_RUN );
-		
-		//CreateUpdateUILayer();
-
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32) || (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
- 		CCLog( "@@login02: to call OnEvent_LoginOKNormal()\r\n" );
-		m_iAccountID = NDBeforeGameMgrObj.GetCurrentUser();
-		OnEvent_LoginOKNormal(m_iAccountID);
-#endif
-
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
-		NDUIImage * pImage = (NDUIImage *)m_pLayerUpdate->GetChild( TAG_CTRL_PIC_BG);
-		if ( pImage )
-		{
-			NDPicture * pPicture = new NDPicture;
-			pPicture->Initialization( NDPath::GetUIImgPath( SZ_MOBAGE_BG_PNG_PATH ).c_str() );
-			pImage->SetPicture( pPicture, true );
-		}
-#endif
-
-#if CACHE_MODE == 1
-    	if ( NDBeforeGameMgrObj.CheckFirstTimeRuning() )
-        {
-			CCLog( "@@ first time running!!!\r\n");
-
-			NDBeforeGameMgrObj.CopyRes();
-
-        	if ( m_pLabelPromtp )
-            {
-        		m_pLabelPromtp->SetText( NDCommonCString2(SZ_FIRST_INSTALL).c_str() );
-        		m_pLabelPromtp->SetVisible( true );
-                ShowWaitingAni();
-		#ifdef USE_MGSDK
-        		m_pLabelPromtp->SetVisible( false );//Mobage的版本暂将文字绘在背景图上
-		#endif
-            }
-			
-			m_pTimer->SetTimer( this, TAG_TIMER_CHECK_COPY, 0.5f );
-        }
-        else
-        {
-			CCImage::changeSystemFont(false);
-            NDBeforeGameMgrObj.doNDSdkLogin();
-			CloseWaitingAni();
-			OnProcessUpdate();
-		}
-#else
-		NDBeforeGameMgrObj.doNDSdkLogin();
-		CloseWaitingAni();
-		OnProcessUpdate();
-#endif
-    	//CreateUpdateUILayer();
-		//NDBeforeGameMgrObj.CheckClientVersion(SZ_UPDATE_URL);
+	{	
+		//启动时初始定时器
+		ontimer_first_run();
 	}
 	else if ( TAG_TIMER_LOAD_RES_OK == idTag )
 	{
@@ -510,6 +379,99 @@ void CSMLoginScene::OnTimer( OBJID idTag )
 	}
 }
 
+//解压资源包定时显示处理
+void CSMLoginScene::ontimer_check_copy()
+{
+
+	int nCopyStatus = NDBeforeGameMgr::GetCopyStatus();
+	switch (nCopyStatus) 
+	{
+	case -1:
+		m_pTimer->KillTimer( this, TAG_TIMER_CHECK_COPY );
+		LOGERROR("Copy files error!");
+		exit(0);
+		break;
+	case 0:
+		break;
+	case 100:
+		{
+			CCImage::changeSystemFont(false);
+			CCDirector::sharedDirector()->setGLDefaultValues();
+			m_pTimer->KillTimer( this, TAG_TIMER_CHECK_COPY );
+
+			//解压完成开始登入sdk
+			#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
+				NDBeforeGameMgrObj.doNDSdkLogin();
+				ShowWaitingAni();
+				usleep(200);
+			#endif
+
+			#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
+				notifyProcess(100);
+				//此时资源才完整,别忘记初始化数据库
+				CSqliteDBMgr::shareInstance().InitDataBase("DNSG.sqlite");
+			#endif
+
+			//进入更新流程
+			OnProcessUpdate();
+		}
+		break;
+	default:
+		{
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
+			notifyProcess(nCopyStatus);
+#endif
+		}
+		break;
+	}
+
+}
+
+//启动时初始定时器
+void CSMLoginScene::ontimer_first_run()
+{
+	m_pTimer->KillTimer( this, TAG_TIMER_FIRST_RUN );
+
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32) || (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
+	//获取账号数据
+	m_iAccountID = NDBeforeGameMgrObj.GetCurrentUser();
+
+	//不走更新的话，直接进入登入页面
+	#if (UPDATE_ON == 0 && CACHE_MODE == 0)
+		StartEntry();
+		return;
+	#endif
+#endif
+
+#if CACHE_MODE == 1
+	//走缓存机制的话(通过version.ini来判断是否解压资源包  (windows一定为false,android比较apk与本地version.ini)
+	if ( NDBeforeGameMgrObj.CheckFirstTimeRuning() )
+	{
+		//启动一线程专门进行资源的加压
+		NDBeforeGameMgrObj.CopyRes();
+		m_pTimer->SetTimer( this, TAG_TIMER_CHECK_COPY, 0.5f );
+	}
+	else
+	{
+		CCImage::changeSystemFont(false);
+
+		//ios在此时在开始初始化sdk
+		#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
+			NDBeforeGameMgrObj.doNDSdkLogin();
+		#endif
+
+		CloseWaitingAni();
+		OnProcessUpdate();
+	}
+#else
+	//ios在此时在开始初始化sdk
+	#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
+		NDBeforeGameMgrObj.doNDSdkLogin();
+	#endif
+	CloseWaitingAni();
+	OnProcessUpdate();
+#endif
+}
 //==========================================================
 //--Guosen 2012.8.7
 //int     
@@ -766,9 +728,12 @@ bool CSMLoginScene::CreateUpdateUILayer()
 {
 	LOGD("Entry CreateUpdateUILayer");
 
-	if ( m_pLayerUpdate )
+	//创建更新层的时候先清除掉初始页面显示层
+	clearSplash();
+
+	if ( m_pLayerUpdate != NULL)
 	{
-		LOGERROR("m_pLayerUpdate is null");
+		//如果更新层已存在就不需要重新生成
 		return false;
 	}
 	
@@ -933,62 +898,6 @@ void CSMLoginScene::OnMsg_ClientVersion(NDTransData& kData)
 	LOGD("Leave OnMsg_ClientVersion");
 	CCLog("@@ Leave OnMsg_ClientVersion");
 }
-
-//===========================================================================
-
-void CSMLoginScene::OnEvent_LoginOKNormal( int iAccountID )
-{
-	CCLog( "@@login03: OnEvent_LoginOKNormal()\r\n" );
-
-	m_iAccountID = iAccountID;
-#ifdef USE_MGSDK
-	if(m_pLayerUpdate)
-	{
-		NDUIImage * pImage = (NDUIImage *)m_pLayerUpdate->GetChild( TAG_CTRL_PIC_BG);
-		if ( pImage )
-		{
-			NDPicture * pPicture = new NDPicture;
-			std::string str = SZ_UPDATE_BG_PNG_PATH;
-			pPicture->Initialization( NDPath::GetUIImgPath( str.c_str() ).c_str() );
-			pImage->SetPicture( pPicture, true );
-		}
-    }
-#endif
-	
-#if (UPDATE_ON == 0 && CACHE_MODE == 0)
-    CloseWaitingAni();
-    StartEntry();
-    clearSplash();
-#endif
-#if UPDATE_ON == 1
-#endif
-}
-
-//---------------------------------------------------------------------------
-void CSMLoginScene::OnEvent_LoginOKGuest( int iAccountID )
-{
-	OnEvent_LoginOKNormal( iAccountID );
-}
-
-//---------------------------------------------------------------------------
-void CSMLoginScene::OnEvent_LoginOKGuest2Normal( int iAccountID )
-{
-	OnEvent_LoginOKNormal( iAccountID );
-}
-
-//---------------------------------------------------------------------------
-void CSMLoginScene::OnEvent_LoginError( int iError )
-{
-	std::stringstream  tmpSS;
-	tmpSS << "Error:" << iError;
-	if ( m_pLabelPromtp )
-	{
-		m_pLabelPromtp->SetVisible( true );
-		m_pLabelPromtp->SetText( tmpSS.str().c_str() );
-		m_pLabelPromtp->SetVisible( true );
-	}
-}
-
 //===========================================================================
 void CSMLoginScene::StartDownload()
 {
@@ -1036,76 +945,52 @@ void CSMLoginScene::StartEntry()
 {
 	WriteCon( "@@ CSMLoginScene::StartEntry()\r\n" );
 	CCLog( "@@login04: StartEntry()\r\n" );
-#if 1
+
+	//只有进入过更新页面才会存在  (提示连接服务器)
 	if (m_pLabelPromtp)
 	{
 		m_pLabelPromtp->SetText( NDCommonCString2(SZ_SETUP).c_str() );
 		m_pLabelPromtp->SetVisible( true );
 	}
 
-//	ShowWaitingAni();
-
 	{
+		//加载要使用的字符资源
 		WriteCon( "@@ NDLocalXmlString::LoadData()...\r\n" );
 		TIME_SLICE("NDLocalXmlString::LoadData()");
 		NDLocalXmlString::GetSingleton().LoadData();
 	}
 
 	{
+		//加载LUA脚本
 		WriteCon( "@@ ScriptMgrObj.Load()...\r\n" );
 		TIME_SLICE("ScriptMgrObj.Load()");
-		ScriptMgrObj.Load(); //加载LUA脚本
+		ScriptMgrObj.Load(); 
 	}
 
+	//在这里读取游戏中设置项,启动音乐等
 	ScriptMgrPtr->excuteLuaFunc( "LoadData", "GameSetting" ); 
+
+	//关闭为了显示更新页面而产生的层
 	CloseUpdateUILayer();
 
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
+	//windows的账号是直接写在Login_ServerUI.lua前面的(单账号系统)(如果是多账号系统，也是先获取写死的再有世界服务器下发一个正式账号)
 	m_iAccountID = ScriptMgrPtr->excuteLuaFuncRetN( "GetAccountID", "Login_ServerUI" );
-#endif
-    
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
-	m_iAccountID = NDBeforeGameMgrObj.GetCurrentUser();
-#endif
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
+#else
+	//android为sdk调用成功后调用onLoginComplete的时候赋值(ios未整理)
 	m_iAccountID = NDBeforeGameMgrObj.GetCurrentUser();
 #endif
     
-	CCLog( "@@login041: StartEntry(%u)\r\n" , m_iAccountID);
+	CCLog("StartEntry(%d)\r\n", m_iAccountID);
 
-	m_iAccountID = 0;
-	NDBeforeGameMgrObj.SetLoginTry(true);
+	//登入自己SDK的时候先发送0给服务端登入成功后服务端下发新的id
+	m_iAccountID = 0;	//(账号是否合法的判断应该在产生账号的各处要做好判断，这里获取的账号都默认合法)
+	//进入点击登入页面的层
+
+	//清除初始页面
+	clearSplash();
+
 	ScriptMgrPtr->excuteLuaFunc( "ShowUI", "Entry", m_iAccountID );
-	/*
-    if(m_iAccountID != 0) 
-	{
-        NDBeforeGameMgrObj.SetLoginTry(false);
-        ScriptMgrPtr->excuteLuaFunc( "ShowUI", "Entry", m_iAccountID );
-    }
-    else
-	{
-        NDBeforeGameMgrObj.SetLoginTry(true);
-	}
-	*/
-
-
-#else //多线程不会有什么好处，反而是崩溃和不稳定，
-	  //实际上网络线程和控制台线程都是多余的！单线程足够了！
-	if (m_pLabelPromtp)
-	{
-		m_pLabelPromtp->SetText( NDCommonCString2(SZ_SETUP).c_str() );
-		m_pLabelPromtp->SetVisible( true );
-	}
-//	ShowWaitingAni();
-	NDLocalXmlString::GetSingleton();
-	ScriptMgrObj;
-	pthread_t pid = {0};
-	pthread_create(&pid, NULL, CSMLoginScene::LoadTextAndLua, (void*)this);	
-#endif
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
-    clearSplash();
-#endif
-	CCLOG( "@@ CSMLoginScene::StartEntry() -- done.\r\n" );
 }
 
 //===========================================================================
@@ -1248,6 +1133,7 @@ void* CSMLoginScene::LoadTextAndLua( void * pPointer )
 	return pPointer;
 }
 
+//开启更新流程
 void CSMLoginScene::OnProcessUpdate()
 {
 #if UPDATE_ON == 1
@@ -1257,8 +1143,6 @@ void CSMLoginScene::OnProcessUpdate()
 
 	LOGD("%s%s:%d",CONVERT_GBK_TO_UTF8("此時更新的IP地址為："),strUpdateURL.c_str(),uiServerPort);
 	CreateUpdateUILayer();
-    
-    clearSplash();
 
 	if ( !strUpdateURL.length() )
 	{
@@ -1280,8 +1164,6 @@ void CSMLoginScene::OnProcessUpdate()
 		StartEntry();
 		return;
 	}
-#else
-	//StartEntry();
 #endif
 }
 

@@ -110,11 +110,6 @@ public:
 	//œÏ”¶"_MSG_CLIENT_VERSION"œ˚œ¢ 
 	void OnMsg_ClientVersion(NDTransData& kData);
 	
-	void OnEvent_LoginOKNormal( int iAccountID );
-	void OnEvent_LoginOKGuest( int iAccountID );
-	void OnEvent_LoginOKGuest2Normal( int iAccountID );
-	void OnEvent_LoginError( int iError );
-	
 	void StartDownload();
 	void StartInstall();
 	void StartEntry();
@@ -129,9 +124,6 @@ public:
 	//
 	void ShowUpdateOff();
     int  GetCurrentUser() { return m_iAccountID; }
-
-	NDUILabel*      m_pkProgressTextLabel;
-	
 protected:
 
 	static void * LoadTextAndLua( void * pScene );
@@ -151,5 +143,10 @@ protected:
 	int				m_iState;
     NDUILayer *		m_pLayerCheckWIFI;
 	CC_SYNTHESIZE(bool,m_bIsLoadingLocalString,IsLoadLocalString);
+
+private:
+	void ontimer_first_run();
+	void ontimer_check_copy();
+	void clearSplash();
 };
 #endif
