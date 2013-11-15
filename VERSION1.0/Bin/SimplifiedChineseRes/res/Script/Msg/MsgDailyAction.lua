@@ -27,7 +27,7 @@ function p.MsgReciveDailyAcionInfo(netdatas)
         local tbInfos = {};
         
         record.nId = netdatas:ReadInt();                      --玩家id
-        record.bStatus = netdatas:ReadByte();          --状态 0:开启  3:结束
+        record.bStatus = netdatas:ReadByte();          --状态 0:结束  3:开启
         
         local nGroup = GetDataBaseDataN("event_activity", record.nId, DB_EVENT_ACTIVITY.GROUP);    
         
