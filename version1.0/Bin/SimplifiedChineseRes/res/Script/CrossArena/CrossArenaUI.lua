@@ -15,6 +15,9 @@ local ID_LIST_CONTAINER = 1001;
 local ID_BTN_CHALLEAGE = 50;
 local ID_TEXT_RANK = 4;  --排名
 local ID_TEXT_NAME = 5;  --姓名
+local ID_TEXT_EMONEY = 29;  --金币显示
+
+
 
 local ListViewSize = CGSizeMake(198*CoordScaleX, 29.6*CoordScaleY);
 
@@ -93,7 +96,10 @@ end
 function p.RefreshUI()
 	--刷新前三名数据以及玩家数据信息
 	p.RefreshTopThreeAndUserInfo();
-	
+
+	--刷新金币显示
+	p.RefreshMoney();
+	 
 	--刷新排行版
 	p.RefreshRankList();
 end
@@ -109,8 +115,10 @@ function p.RefreshRankList()
 
     ListContainer:SetViewSize(ListViewSize);
     ListContainer:EnableScrollBar(true);
+    local nBeginViewIndex = ListContainer:GetBeginIndex();
     ListContainer:RemoveAllView();    
-
+		
+	--玩家在排名列表的第几个位置	  
 	local nIndex = 0;
     --设置当前要显示的说明信息
 	for i, v in pairs(p.CrossArenaListInfo) do
@@ -119,11 +127,13 @@ function p.RefreshRankList()
 		end
 		
 		if v.nRank == p.UserInfo.usRank then
+			--减去3是因为前三名也是放在同一个列表中
 			nIndex = i - 3;
 		end
 	end
 	
 	if (p.nShowIndex == -1) then
+		--同一个页面只能显示7行的信息，为了一开始就能够看到玩家自己的信息
 		if nIndex > 7 then 
 			nIndex = nIndex - 7;
 		else
@@ -131,7 +141,7 @@ function p.RefreshRankList()
 		end
 		p.nShowIndex = nIndex;
 	else
-		p.nShowIndex = ListContainer:GetCurrentIndex();
+		p.nShowIndex = nBeginViewIndex;
     end
 
 	ListContainer:ShowViewByIndex(p.nShowIndex); 
@@ -164,7 +174,7 @@ function p.AddViewItem(container, nIndex, info, uiFile)
     btn:SetParam1(info.nRank);   
     
     SetLabel(view, ID_TEXT_RANK, SafeN2S(info.nRank)); 
-    SetLabel(view, ID_TEXT_NAME, info.szName); 
+    SetLabel(view, ID_TEXT_NAME, info.szName.."  lv.".. info.ucLevel); 
     
 	if info.nRank == p.UserInfo.usRank then
 		local textName = GetLabel(view, ID_TEXT_NAME);
@@ -407,3 +417,18 @@ function p.OnUIEvent(uiNode, uiEventType, param)
 	
 	return true;
 end
+
+
+function p.RefreshMoney()
+    local nPlayerId = GetPlayerId();
+	if nil == nPlayerId then
+		return;
+	end
+
+    local layer = GetSMGameSceneLayerByTag(NMAINSCENECHILDTAG.CrossArenaUI);
+    local nEMoney 	= GetRoleBasicDataN(nPlayerId, USER_ATTR.USER_ATTR_EMONEY);
+    SetLabel(layer, ID_TEXT_EMONEY, fomatBigNumber(nEMoney)); 
+end
+
+
+GameDataEvent.Register(GAMEDATAEVENT.USERATTR,"CrossArenaUI.RefreshMoney", p.RefreshMoney);
