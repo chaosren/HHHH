@@ -42,6 +42,7 @@ p.DATA_CONFIG_ID =
 };
 
 function p.LoadUI()
+    ArenaUI.isInChallenge = 11;
     --------------------获得游戏主场景------------------------------------------
 	local scene = GetSMGameScene();	
 	if scene == nil then

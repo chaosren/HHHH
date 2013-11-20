@@ -48,7 +48,9 @@ function p.RevCrossArenaList(netdatas)
 			CrossArenaUI.LoadUI();
 		end
 	 else
-	 	CrossArenaUI.RefreshUI(); 
+		if ArenaUI.isInChallenge == 11 then
+	 		CrossArenaUI.RefreshUI(); 
+	 	end
 	 end
 end
 
