@@ -15,7 +15,7 @@ local ID_LIST_CONTAINER = 1001;
 local ID_BTN_CHALLEAGE = 50;
 local ID_TEXT_RANK = 4;  --排名
 local ID_TEXT_NAME = 5;  --姓名
-local ID_TEXT_EMONEY = 29;  --金币显示
+local ID_TEXT_EMONEY = 3029;  --金币显示
 
 
 
