@@ -124,8 +124,8 @@ function p.OnUIEvent(uiNode, uiEventType, param)
 			end
 			
 			--发起登入请求
-			MsgSelfSdkLogin.MsgSendLoginAccount(p.Account, p.PassWord);
-			
+			--MsgSelfSdkLogin.MsgSendLoginAccount(p.Account, p.PassWord);
+			SendHttpMsgLogin.HttpSendLoginAccount(p.Account, p.PassWord);
 		elseif ID_BTN_REGISTER == tag then          --注册账号                    
 			p.CloseLoginUI();   
 			LoginRegisterUI.LoadUI();

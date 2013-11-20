@@ -71,8 +71,6 @@ public:
 	KHttp* m_pkHttp;
 	std::string m_strDownloadURL;
 	std::string m_strDownloadPath;
-	//MainThreadSelector *m_selObj;
-	
 };
 
 

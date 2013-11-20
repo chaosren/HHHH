@@ -2729,6 +2729,10 @@
 				RelativePath="..\Bin\SimplifiedChineseRes\res\Script\SelfSdk\SelfSdkLogin.lua"
 				>
 			</File>
+			<File
+				RelativePath="..\Bin\SimplifiedChineseRes\res\Script\SelfSdk\SendHttpMsglogin.lua"
+				>
+			</File>
 		</Filter>
 		<File
 			RelativePath="..\Bin\SimplifiedChineseRes\res\Script\DBLoad.lua"

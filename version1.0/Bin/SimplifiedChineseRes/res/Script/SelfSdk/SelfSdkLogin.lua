@@ -11,7 +11,7 @@ p.nAutoFlag = 0;
 function p.LoginControl()
 	
 	p.nAutoFlag = 0;
-	local nTestFlag = 0;
+	local nTestFlag = 1;
 	local record = {};
 	
 	--首先查找本地数据库,
@@ -19,7 +19,7 @@ function p.LoginControl()
 		record = SqliteConfig.SelectSelfLogin(1);
 	else
 		record.nAutoLogin = 0;
-		record.Account = "aaabbc";
+		record.Account = "qqqqqq";
 		record.PassWord = "aaaaaa";
 	end
 	
@@ -38,7 +38,8 @@ function p.LoginControl()
 			LoginUI.LoadUI(Account, PassWord);
 		else                         --自动登入
 			p.nAutoFlag = 1;
-			MsgSelfSdkLogin.MsgSendLoginAccount(Account, PassWord);
+			--MsgSelfSdkLogin.MsgSendLoginAccount(Account, PassWord);
+			SendHttpMsgLogin.HttpSendLoginAccount(Account, PassWord);
 		end
 	end
 	

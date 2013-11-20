@@ -254,7 +254,7 @@ bool NDGameApplication::applicationDidFinishLaunching()
 
 	// set FPS. the default value is 1.0/60 if you don't call this
 	//pDirector->setAnimationInterval(1.0 / 60);
-	LOGD("pDirector->setAnimationInterval() value is %d", (int) pDirector);
+	LOGD("tzqtzqtzq pDirector->setAnimationInterval() value is %d", (int) pDirector);
 	pDirector->setAnimationInterval(1.0 / 24.0);
 
 #if 0 //@todo @hello
@@ -294,9 +294,6 @@ void NDGameApplication::MyInit()
 {
 	SimpleAudioEngine::sharedEngine()->setEffectsVolume(7.0f);
 
-	CCLog( "@@ NDGameApplication::MyInit()\r\n" );
-	LOGD("Start MyInit");
-
 	REGISTER_CLASS(NDBaseBattle,BattleUILayer);
 	REGISTER_CLASS(NDBaseFighter,Fighter);
 	REGISTER_CLASS(NDBaseBattleMgr,BattleMgr);
@@ -305,32 +302,23 @@ void NDGameApplication::MyInit()
 	REGISTER_CLASS(NDBaseNetMgr,NDNetMsgPool);
 	REGISTER_CLASS(NDBaseScriptMgr,ScriptMgr);
 	REGISTER_CLASS(NDBaseGlobalDialog,CIDFactory);
-	//REGISTER_CLASS(CUIItemButton,CUIEquipItem);
 	REGISTER_CLASS(NDUIBaseItemButton,CUIItemButton);
 	REGISTER_CLASS(NDUIBaseItemButton,CUIEquipItem);
 	REGISTER_CLASS(NDUILoadEngine,NDUILoad);
 
-	LOGD("REGISTER_CLASS Over");
 
 	NDMapMgr& kMapMgr = NDMapMgrObj;
-
-	LOGD("kMapMgr get Over");
-	//ScriptMgr &kScriptManager = ScriptMgr::GetSingleton();
 	NDBeforeGameMgrObj;
 	LOGD("NDBeforeGameMgrObj Over");
 
 	NDDirector* pkDirector = NDDirector::DefaultDirector();
-	LOGD("pkDirector get Over,%d",(int)pkDirector);
 	pkDirector->Initialization();
-	LOGD("pkDirector Initialization Over");
 
 	NDScriptRegLua::doReg(); //@reglua
 	ScriptMgrObj.LoadRegClassFuncs(); //注册C++接口到LUA（不涉及加载LUA）.
 
 //---init++Guosen 2012.11.29
     CSqliteDBMgr::shareInstance().InitDataBase("DNSG.sqlite");
-    //GetLocalLanguage();
-    //BattleMgrObj;
     NDColorPoolObj;
     NDBeforeGameMgrObj.InitAccountTable();
 //---init
@@ -342,10 +330,7 @@ void NDGameApplication::MyInit()
 
 	//-------------------------------------------------------------
 	dumpCocos2dx(); //@android //@del
-	//NDDebugOpt::setDrawDebugEnabled(1);
 	//-------------------------------------------------------------
-
-	CCLog( "@@ NDGameApplication::MyInit() -- done.\r\n" );
 }
 
 void NDGameApplication::applicationDidEnterBackground()

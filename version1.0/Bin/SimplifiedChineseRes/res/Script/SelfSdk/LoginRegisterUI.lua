@@ -105,7 +105,7 @@ function p.OnUIEvent(uiNode, uiEventType, param)
 			end
 			
 			--发起注册请求
-			MsgSelfSdkLogin.MsgSendRegisterAccount(p.Account, p.FstPassWord);
+			SendHttpMsgLogin.HttpSendRegisterAccount(p.Account, p.FstPassWord);
 		elseif ID_BTN_CANCEL == tag then          --离开            
 			LoginCommon.CloseUI(NMAINSCENECHILDTAG.LoginRegisterUI);
 			LoginUI.LoadUI();

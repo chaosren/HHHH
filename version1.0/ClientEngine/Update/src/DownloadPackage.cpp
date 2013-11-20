@@ -27,15 +27,7 @@
 #define  LOGERROR(...)
 #endif
 
-//¥˝ µœ÷
-// bool isWifiNetWork()
-// {
-// 	Reachability *r = [Reachability reachabilityWithHostName:@"www.baidu.com"];
-// 	if (r == nil || [r currentReachabilityStatus] != ReachableViaWiFi) 
-// 		return false;
-// 	else 
-// 		return true;
-// }
+//搜索src中倒数第一个delimit字符,将开始出到delimit出现处的字符串赋值给outFile
 void Rstrchr(const char* src,char delimit,char* outFile)
 {
 	int i = strlen(src);
@@ -82,13 +74,10 @@ void* threadExcute(void* ptr)
 	return NULL;
 }
 
-
-//IMPLEMENT_CLASS(DownloadPackage, NDObject)
-
-DownloadPackage::DownloadPackage():
-m_pkHttp(0)
+DownloadPackage::DownloadPackage()
 {	
 	m_nFileLen = 0;
+	m_pkHttp = NULL;
  	m_pkHttp = new KHttp;
  	m_pkHttp->setNotifyCallback(DownloadCallback, this, 1);
 }
@@ -201,21 +190,4 @@ int DownloadPackage::GetFileSize(const char* filepath)
 		fclose(file);
 	}
 	return size;
-#if 0
-
- #ifdef WIN32
-if (file)
-	{
-		size = filelength(fileno(file));
-		fclose(file);
-		return size;
-	}
-	#else
-		struct stat info;  
-		stat(filepath, &info);  
-		size = info.st_size;  
-		return size;
-	#endif
-#endif
-
 }

@@ -118,7 +118,7 @@ function p.OnUIEvent(uiNode, uiEventType, param)
 			p.Account = record.Account;
 			
 			--发起修改密码请求
-			MsgSelfSdkLogin.MsgSendChangePassWord(p.Account, OldPassWord, p.FstPassWord);
+			SendHttpMsgLogin.HttpSendChangePassWord(p.Account, OldPassWord, p.FstPassWord);
 		
 		elseif ID_BTN_CANCEL == tag then          --离开                     
 			--LoginCommon.CloseUI(NMAINSCENECHILDTAG.LoginChgPassWord);

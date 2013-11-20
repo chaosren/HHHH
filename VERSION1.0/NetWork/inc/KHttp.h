@@ -17,11 +17,14 @@ public:
 	void setCookie( KData cookie );
 	int getHttpFile( const KData& fullUrl, const KData& savefile, int startpos=0 );
 	int getHttpFile( const KData& server, const KData& httpfile, const KData& savefile, int startpos=0 );
+	int getHttpFile( const KData& fullUrl, char*& saveBuf);
+
 	int getHttpFileMemory( const KData& server, const KData& httpfile, char** pKData );
 	void setNotifyCallback( NotifyCallback callback, void* param, int percent=10 );
 	void clear();
 	void setUserAgent( const KData& agent );
 	KData getRespFieldValue( const KData& field );
+	void  ParseParam(KData &dPathData);
 
 	int getHttpFileLength(const KData & fullUrl);
 	
@@ -36,6 +39,9 @@ public:
 	void stop();
 	int getWriteLen();
 	int getFileLen();
+
+	unsigned char ToHex(unsigned char x);   
+	std::string UrlEncode(const std::string& str); 
 	
 protected:
 	NotifyCallback m_pNotifyCallback;
@@ -59,6 +65,13 @@ protected:
 	unsigned int	m_iReadedBytes;
 	unsigned int	m_iWritedBytes;
 	KConnection m_kCnnect;
+
+	//¼ÇÂ¼¶Ë¿ÚºÅ
+	int    m_iServerPort;
+	int    m_bWriteBufFlag;
+	char*  m_pWriteBuf;
+	KData  m_dtParam;
+
 
 public:
 	void clearParam();

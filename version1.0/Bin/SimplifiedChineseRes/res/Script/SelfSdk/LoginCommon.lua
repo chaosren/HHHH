@@ -266,6 +266,7 @@ end
 
 --给数据strData加密,返回加密后数据
 function p.GetEncryptString(strData)
+	--[[
 	local strRet = "";
 	local strTemp = "";
 	local nLen = string.len(strData);
@@ -273,10 +274,18 @@ function p.GetEncryptString(strData)
 	
 	for i = 1, nLen do
 		local nAscleNum = string.byte(strTemp, i);
-		strRet = strRet .. string.char(nAscleNum - 30 - i);
+		local nNum = nAscleNum - 30 - i;
+		if nNum == string.byte("=")
+		   or nNum == string.byte("&") 
+		   or nNum == string.byte("?")
+		   or nNum == string.byte(" ")then
+		   nNum = nNum + 1;
+		end
+		strRet = strRet .. string.char(nNum);
 	end
+	]]
 	
-	return strRet;
+	return strData;
 end
 
 

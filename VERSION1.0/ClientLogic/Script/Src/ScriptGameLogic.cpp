@@ -32,6 +32,7 @@
 #include "ScriptMgr.h"
 #include "UsePointPls.h"
 #include "../CocosDenshion/include/SimpleAudioEngine.h"
+#include "DenaSdkLoginScene.h"
 
 #ifdef USE_MGSDK
 #import <Foundation/Foundation.h>
@@ -1044,6 +1045,12 @@ void SendMsgChangePassWord(const char* pszIp, int nPort, const char* pszAccount,
 	NDDataTransThread::DefaultThread()->GetSocket()->Send(&data);
 }
 
+
+void SendHttpLoginMsg(const char* pszReqData)
+{
+	CDenaSdkLoginSceneObj.SendHttpRequest(pszReqData);
+}
+
 ///////////////////////////////////////////////
 void ScriptGameLogicLoad()
 {
@@ -1146,8 +1153,9 @@ void ScriptGameLogicLoad()
 	//SELF SDK 更新
 	ETCFUNC("SendMsgLoginAccount", SendMsgLoginAccount);		//登入请求	 
 	ETCFUNC("SendMsgRegisterAccount", SendMsgRegisterAccount);  //注册请求	 
-	ETCFUNC("SendMsgChangePassWord", SendMsgChangePassWord);   //修改密码请求	 
-									
+	ETCFUNC("SendMsgChangePassWord", SendMsgChangePassWord);   //修改密码请求	
+
+	ETCFUNC("SendHttpLoginMsg", SendHttpLoginMsg);		//http方式登入请求	 		
 }
 
 }

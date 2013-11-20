@@ -34,6 +34,9 @@ m_iNotifyPos(0)
 	m_timeout = -1;
 	m_iReadedBytes = 0;
 	m_iWritedBytes = 0;
+	m_iServerPort = 80; //端口默认为80
+	m_bWriteBufFlag = false; 
+	m_pWriteBuf = NULL;
 }
 
 KHttp::~KHttp()
@@ -90,14 +93,61 @@ void Trim(string &strString)
 	strString = strString.substr(nStart,nEnd - nStart + 1);
 }
 
-int KHttp::getHttpFile(const KData& fullUrl, const KData& savefile,
-		int startpos)
+//解析参数
+void  KHttp::ParseParam(KData &dPathData)
+{	   
+	KData kTempData = dPathData;
+	int nPos = kTempData.find("?");
+	if (nPos == -1)
+	{
+		return;
+	}
+
+	//解析出路径以及参数串
+	dPathData = kTempData.substr(0, nPos);
+	m_dtParam = kTempData.substr(nPos + 1);
+}
+
+unsigned char KHttp::ToHex(unsigned char x)   
+{   
+    return  x > 9 ? x + 55 : x + 48;   
+} 
+
+std::string KHttp::UrlEncode(const std::string& str)  
+{  
+	std::string strTemp = "";  
+	size_t length = str.length();  
+	for (size_t i = 0; i < length; i++)  
+	{  
+		if (isalnum((unsigned char)str[i]) ||   
+			(str[i] == '-') ||  
+			(str[i] == '_') ||   
+			(str[i] == '.') ||   
+			(str[i] == '~'))  
+			strTemp += str[i];  
+		else if (str[i] == ' ')  
+			strTemp += "+";  
+		else  
+		{  
+			strTemp += '%';  
+			strTemp += ToHex((unsigned char)str[i] >> 4);  
+			strTemp += ToHex((unsigned char)str[i] % 16);  
+		}  
+	}  
+	return strTemp;  
+}
+
+int KHttp::getHttpFile( const KData& fullUrl, char*& saveBuf)
 {
 	string strPath = fullUrl;
 	Trim(strPath);
 	KData dtServer;
 	KData dtFile;
 	KData kDTFullUrl = strPath;
+	KData dtTemp;
+	m_bWriteBufFlag	= true;
+	m_pWriteBuf = saveBuf;
+	KData dAdd = "/";
 
 	LOGD("kDTFullUrl is %s",kDTFullUrl.getDataBuf());
 
@@ -115,9 +165,76 @@ int KHttp::getHttpFile(const KData& fullUrl, const KData& savefile,
 	}
 	else
 	{
-		dtServer = kDTFullUrl.substr(0, nPos);
+		dtTemp = kDTFullUrl.substr(0, nPos);
+		int nPortPos = dtTemp.find(":");
+		if (nPortPos != -1)
+		{
+			dtServer = dtTemp.substr(0, nPortPos);
+			m_iServerPort = int(dtTemp.substr(nPortPos + 1));
+
+		}
+		else
+		{
+			dtServer = kDTFullUrl.substr(0, nPos);
+		}
+
+		//dtFile = kDTFullUrl.substr(nPos + 1);
 		dtFile = kDTFullUrl.substr(nPos);
+		m_dtParam = "";
+		ParseParam(dtFile);
 	}
+	m_dtParam = UrlEncode(m_dtParam);
+	dtFile = dtFile + "?" + m_dtParam; 
+	//dtFile = dAdd + dtFile;
+	return getHttpFile(dtServer, dtFile, "", 0);
+}
+
+int KHttp::getHttpFile(const KData& fullUrl, const KData& savefile,
+		int startpos)
+{
+	string strPath = fullUrl;
+	Trim(strPath);
+	KData dtServer;
+	KData dtFile;
+	KData kDTFullUrl = strPath;
+	KData dtTemp;
+	m_bWriteBufFlag = false;
+
+	LOGD("kDTFullUrl is %s",kDTFullUrl.getDataBuf());
+
+	if (isEqualNoCase(kDTFullUrl.substr(0, 7), "http://"))
+	{
+		kDTFullUrl = kDTFullUrl.substr(7);
+	}
+
+	int nPos = kDTFullUrl.find("/");
+
+	if (nPos == -1)
+	{
+		LOGERROR("nPos = -1");
+		return 0;
+	}
+	else
+	{
+		dtTemp = kDTFullUrl.substr(0, nPos);
+		int nPortPos = dtTemp.find(":");
+		if (nPortPos != -1)
+		{
+			dtServer = dtTemp.substr(0, nPortPos);
+			m_iServerPort = int(dtTemp.substr(nPortPos + 1));
+
+		}
+		else
+		{
+			dtServer = kDTFullUrl.substr(0, nPos);
+		}
+
+		dtFile = kDTFullUrl.substr(nPos);
+		//m_dtParam = "";
+		//ParseParam(dtFile);
+	}
+
+
 	return getHttpFile(dtServer, dtFile, savefile, startpos);
 }
 
@@ -156,14 +273,18 @@ int KHttp::getHttpFile(const KData& server, const KData& httpfile,
 	else
 	{
 		kHttpRequest = "POST ";
-		map<KData, KData>::iterator iter;
-		for (iter = _paramMap.begin(); iter != _paramMap.end(); iter++)
+
+		if (_paramMap.size() != 0)
 		{
-			if (iter != _paramMap.begin())
-				kDataPost += "&";
-			kDataPost += iter->first;
-			kDataPost += "=";
-			kDataPost += iter->second;
+			map<KData, KData>::iterator iter;
+			for (iter = _paramMap.begin(); iter != _paramMap.end(); iter++)
+			{
+				if (iter != _paramMap.begin())
+					kDataPost += "&";
+				kDataPost += iter->first;
+				kDataPost += "=";
+				kDataPost += iter->second;
+			}
 		}
 	}
 
@@ -175,6 +296,8 @@ int KHttp::getHttpFile(const KData& server, const KData& httpfile,
 	kHttpRequest += CRLF;
 	kHttpRequest += "Accept: */*";
 	kHttpRequest += CRLF;
+
+
 	if (!m_dtUserAgent.isEmpty())
 	{
 		kHttpRequest += "User-Agent: ";
@@ -213,12 +336,15 @@ int KHttp::getHttpFile(const KData& server, const KData& httpfile,
 	if (m_dtHttpProxy.isEmpty())
 	{
 		LOGD("Connect to Server:  %s", server.getData() );
-		m_clientSock.setServer(server, 80);
+		//m_clientSock.setServer(server, 80);
+	   m_clientSock.setServer(server, m_iServerPort);
 	}
 	else
 	{
 		LOGD("Connect to Server:  %s", m_dtHttpProxy.getData() );
-		m_clientSock.setServer(m_dtHttpProxy, 80);
+		//m_clientSock.setServer(m_dtHttpProxy, 80);
+		m_clientSock.setServer(m_dtHttpProxy, m_iServerPort);
+
 	}
 	m_clientSock.initSocket();
 	if (!m_clientSock.connect())
@@ -334,23 +460,28 @@ int KHttp::getHttpFile(const KData& server, const KData& httpfile,
 		return 0;
 	}
 
-	if (startpos <= 0)
+	//有时不是为了下载文件，这个时候 savefile没有传入值
+	if (savefile.length() != 0)
 	{
-		if (!kFile.setFile(savefile, KFile::KFILE_READWRITE))
+		if (startpos <= 0)
 		{
-			LOGERROR("open file %s err", savefile.getData() );
-			return 0;
+			if (!kFile.setFile(savefile, KFile::KFILE_READWRITE))
+			{
+				LOGERROR("open file %s err", savefile.getData() );
+				return 0;
+			}
+		}
+		else
+		{
+			if (!kFile.setFile(savefile, KFile::KFILE_MODIFY))
+			{
+				LOGERROR("open file %s err", savefile.getData() );
+				return 0;
+			}
+			kFile.seekTo(startpos, SEEK_SET);
 		}
 	}
-	else
-	{
-		if (!kFile.setFile(savefile, KFile::KFILE_MODIFY))
-		{
-			LOGERROR("open file %s err", savefile.getData() );
-			return 0;
-		}
-		kFile.seekTo(startpos, SEEK_SET);
-	}
+
 
 	if (m_bChunked)
 	{
@@ -424,36 +555,44 @@ int KHttp::getHttpFile(const KData& server, const KData& httpfile,
 	}
 	else
 	{
-		while ((iRead = m_kCnnect.readn(szBuffer, MTU)) > 0 && bRun)
+		//读取buffer
+		if (m_bWriteBufFlag)
 		{
-			//LOGD("m_iReadedBytes += iRead; %d",iRead);
-			m_iReadedBytes += iRead;
-			kFile.write((unsigned char*) szBuffer, iRead);
-			m_iWriteLen += iRead;
-
-			if (m_iLength > 0)
+			iRead = m_kCnnect.readn(m_pWriteBuf, 300);
+		}
+		else   //读取内存
+		{
+			while ((iRead = m_kCnnect.readn(szBuffer, MTU)) > 0 && bRun)
 			{
-				if (m_iWriteLen >= m_iLength)
+				//LOGD("m_iReadedBytes += iRead; %d",iRead);
+				m_iReadedBytes += iRead;
+				kFile.write((unsigned char*) szBuffer, iRead);
+				m_iWriteLen += iRead;
+
+				if (m_iLength > 0)
 				{
-					if (m_iNotifyGap > 0)
+					if (m_iWriteLen >= m_iLength)
 					{
-						m_pNotifyCallback(m_pNotifyParam, 100, m_iWriteLen,
+						if (m_iNotifyGap > 0)
+						{
+							m_pNotifyCallback(m_pNotifyParam, 100, m_iWriteLen,
 								m_iLength);
-					}
+						}
 
-					break;
-				}
-				if (m_iNotifyGap > 0 && m_iWriteLen > m_iNotifyPos)
-				{
-					int nPercent = int((m_iWriteLen / (float) m_iLength) * 100);
-					m_iNotifyPos += m_iNotifyGap;
-					m_pNotifyCallback(m_pNotifyParam, nPercent, m_iWriteLen,
+						break;
+					}
+					if (m_iNotifyGap > 0 && m_iWriteLen > m_iNotifyPos)
+					{
+						int nPercent = int((m_iWriteLen / (float) m_iLength) * 100);
+						m_iNotifyPos += m_iNotifyGap;
+						m_pNotifyCallback(m_pNotifyParam, nPercent, m_iWriteLen,
 							m_iLength);
+					}
 				}
-			}
-			while (m_bPause)
-			{
-				vsleep(1000);
+				while (m_bPause)
+				{
+					vsleep(1000);
+				}
 			}
 		}
 	}
@@ -631,6 +770,7 @@ int KHttp::getWriteLen()
 {
 	return m_iWriteLen;
 }
+
 
 int KHttp::getHttpFileLength(const KData & fullUrl)
 {

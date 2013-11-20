@@ -311,6 +311,10 @@
 				Name="inc"
 				>
 				<File
+					RelativePath="..\GameScene\inc\DenaSdkLoginScene.h"
+					>
+				</File>
+				<File
 					RelativePath="..\GameScene\inc\GameScene.h"
 					>
 				</File>
@@ -338,6 +342,10 @@
 			<Filter
 				Name="src"
 				>
+				<File
+					RelativePath="..\GameScene\src\DenaSdkLoginScene.cpp"
+					>
+				</File>
 				<File
 					RelativePath="..\GameScene\src\GameScene.cpp"
 					>

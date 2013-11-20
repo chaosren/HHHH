@@ -18,11 +18,6 @@ p.nPwdLen  = 21;
 p.strSerIp = GetGameConfig("world_server_ip");
 p.nPort = GetWorldServerPort();
 
---初始化一些数据
-function p.MsgDataInit()  
-	local strPwd = LoginCommon.GetEncryptString(PassWord);   
-	SendMsgLoginAccount(p.strSerIp, p.nPort, Account, strPwd, p.nAcntLen, p.nPwdLen, NMSG_Type._MSG_LOGIN_ACCOUNT);
-end
 
 --发送账号密码验证请求
 function p.MsgSendLoginAccount(Account, PassWord)    
@@ -77,6 +72,8 @@ function p.MsgSendRegisterAccount(Account, PassWord)
 	local strPwd = LoginCommon.GetEncryptString(PassWord);
 	SendMsgRegisterAccount(p.strSerIp, p.nPort, Account, strPwd, p.nAcntLen, p.nPwdLen, NMSG_Type._MSG_REGISTER_ACCOUNT);
 end
+
+
 --收到服务端下发的注册账号请求结果
 function p.MsgReciveRegisterAccount(netdatas)   
 	CloseLoadBar()

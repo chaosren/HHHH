@@ -238,6 +238,9 @@
 //神魔登陆场景tag
 #define SMLOGINSCENE_TAG                        3003
 
+//DENA sdk初始化场景
+#define DENA_SDK_LOGIN_SCENE_TAG             3004
+
 // 阵营
 #define CAMP_NAME_WU		NDCommonCString("wu")
 #define CAMP_NAME_TANG		NDCommonCString("CampTang")

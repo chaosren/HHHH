@@ -62,13 +62,13 @@ function p.GusetLogin()
 	p.SetGuestLoginFlag(true);
 	
 	--发起注册请求
-	MsgSelfSdkLogin.MsgSendRegisterAccount(p.Account, p.PassWord);
+	SendHttpMsgLogin.HttpSendRegisterAccount(p.Account, p.PassWord);
 end
 
 
 --注册成功调用
 function p.LoginSuccess()
-	--关闭注册页面
+	--关闭登入页面
 	LoginCommon.CloseUI(NMAINSCENECHILDTAG.LoginUI);
 
 	--保存注册信息至数据库
