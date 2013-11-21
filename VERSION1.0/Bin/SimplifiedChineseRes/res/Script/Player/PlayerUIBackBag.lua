@@ -311,7 +311,9 @@ function p.DelEquip(idPet, idItem, nPostion)
 end
 
 function p.LoadUI(tab,nPetId)
-	p.Init();
+	--初始化背包一些数据
+	p.InitBgData();
+	
 	local scene = GetSMGameScene();	
 	if scene == nil then
 		LogInfo("scene == nil,load PlayerBackBag failed!");
@@ -364,7 +366,7 @@ function p.LoadUI(tab,nPetId)
 	uiLoad:Load("RoleBag_R.ini", layerGrid, p.OnUIEventRightPanel, 0, 0);
 	
 	uiLoad:Free();
-    --==(End)初始化左边背景===================================================================
+    --==(End)初始化右边背景===================================================================
 	
     
     
@@ -1801,6 +1803,7 @@ function p.RefreshBackBag()
 	end
 	
     
+    --设置焦点按钮
     local scene = GetSMGameScene();	
     local rlayer	= RecursiveUILayer(scene, {NMAINSCENECHILDTAG.PlayerBackBag, TAG_LAYER_GRID});
     for i,v in pairs(p.TAG_BAG_BTNS) do
@@ -1825,12 +1828,15 @@ function p.RefreshBackBag()
     for i, v in ipairs(idlistItem) do
         
         local nItemType		= Item.GetItemInfoN(v, Item.ITEM_TYPE);
+		--nItemType = 40000001;
         local nType			= ItemFunc.GetBigType(nItemType);
         
         LogInfo("nType:[%d],p.BagPos.TYPE:[%d]",nType,p.BagPos.TYPE);
-        
+        local nNum = p.BagPos.TYPE;
         if (nType == p.BagPos.TYPE) then
             table.insert(idTypeListItem,v);
+		elseif nType == 4 and p.BagPos.TYPE == 3 then
+			table.insert(idTypeListItem,v);
         end
     end
     
@@ -1849,40 +1855,42 @@ function p.RefreshBackBag()
     
     
     --刷新表格
-    --==初始化分页栏======================
+    --==初始化数字分页栏======================
 	p.LoadPageView();
     
-    --==初始化背包UI最大为4页，每页16格物品框=======
+    --==初始化背包UI 每页16格物品框=======
 	p.LoadBackBagUI();
     
-    for i=1, MAX_BACK_BAG_NUM do
+	for i=1, MAX_BACK_BAG_NUM do
 		local view = container:GetViewById(i);
+		
 		if nil ~= view then
 			for j=1, MAX_GRID_NUM_PER_PAGE do
 				local nTag		= p.GetGridTag(j);
 				local itemBtn	= _G.GetItemButton(view, nTag);
+				
 				if nil ~= itemBtn then
 					local nItemId	= 0;
 					local nIndex	= (i - 1) * MAX_GRID_NUM_PER_PAGE + j;
 					if nIndex <= tSize then
 						nItemId		= idTypeListItem[nIndex];
 					end
+					
 					nItemId			= nItemId or 0;
-                    LogInfo("nItemId:[%d]",nItemId);
-                    if nIndex <= nGridNum then
-                        itemBtn:ChangeItem(nItemId);
-                        
-                        if(nItemId == 0) then
-                            itemBtn:SetFocus(false);
-                        else
-                            itemBtn:SetFocus(true);
-                        end
-                        
-                    else
-                        itemBtn:ChangeItem(0);
-                        itemBtn:SetFocus(false);
-                    end
-                    
+					LogInfo("nItemId:[%d]",nItemId);
+					if nIndex <= nGridNum then
+						itemBtn:ChangeItem(nItemId);
+
+						if(nItemId == 0) then
+							itemBtn:SetFocus(false);
+						else
+							itemBtn:SetFocus(true);
+						end
+					else
+						itemBtn:ChangeItem(0);
+						itemBtn:SetFocus(false);
+					end
+
 				else
 					LogError("p.RefreshBackBag item button tag[%d][%d] error", j, nTag);
 				end
@@ -2064,13 +2072,21 @@ function p.IsGridTag(nTag)
 	return false;
 end
 
-function p.Init()
-    p.BagPos = {TYPE = nil, PAGE = nil, PRE_TYPE = nil,};
+--初始化背包一些数据
+function p.InitBgData()
+	p.BagPos = {TYPE = nil, PAGE = nil, PRE_TYPE = nil,};
+	
+	--初始化背包格子tag集合
 	p.InitGridTag();
+	
+	--初始化左侧武器物品id与tag的对应关系
 	p.InitEquipTag();
-    p.InitData();
+	
+	--初始化背包默认显示位置
+	p.InitPagePosData();
 end
 
+--初始化背包格子tag集合
 function p.InitGridTag()
 	if not CheckT(TAG_BAG_LIST) or 0 ~= table.getn(TAG_BAG_LIST) then
 		return;
@@ -2094,11 +2110,13 @@ function p.InitGridTag()
 	table.insert(TAG_BAG_LIST, ID_ROLEBAG_R_LIST_CTRL_OBJECT_BUTTON_16);
 end
 
+--初始化左侧武器物品id与tag的对应关系
 function p.InitEquipTag()
 	if not CheckT(p.TAG_EQUIP_LIST) or p.TAG_EQUIP_LIST[Item.POSITION_EQUIP_1] then
 		return;
 	end 
 	
+	--Item.POSITION_EQUIP_1 为ItemEnum中定义的id
 	p.TAG_EQUIP_LIST[Item.POSITION_EQUIP_1] = ID_ROLEATTR_L_CTRL_BUTTON_SOUL;
 	p.TAG_EQUIP_LIST[Item.POSITION_EQUIP_2] = ID_ROLEATTR_L_CTRL_BUTTON_WEAPON;
 	p.TAG_EQUIP_LIST[Item.POSITION_EQUIP_3] = ID_ROLEATTR_L_CTRL_BUTTON_AMULET;
@@ -2107,7 +2125,9 @@ function p.InitEquipTag()
 	p.TAG_EQUIP_LIST[Item.POSITION_EQUIP_6] = ID_ROLEATTR_L_CTRL_BUTTON_SHOES;
 end
 
-function p.InitData()
+--初始化背包默认显示位置
+function p.InitPagePosData()
+	 --默认显示装备分页
     if(p.BagPos.TYPE == nil) then
         p.BagPos.TYPE = Item.bTypeEquip;
         p.BagPos.PRE_TYPE = Item.bTypeEquip;
@@ -2117,6 +2137,7 @@ function p.InitData()
         LogInfo("p.InitData p.BagPos.PAGE:[%d]",p.BagPos.PAGE);
     end
     
+    --类型id与tag对应关系
     p.TAG_BAG_BTNS = {
         [Item.bTypeEquip]=ID_ROLEBAG_R_CTRL_BUTTON_EQUIP,
         [Item.bTypeGem]=ID_ROLEBAG_R_CTRL_BUTTON_GEM,
@@ -2124,9 +2145,11 @@ function p.InitData()
         [Item.bTypeProp]=ID_ROLEBAG_R_CTRL_BUTTON_PROP,
     };
     
+    --初始化回调函数
     MsgCompose.mUIListener = p.processNet;
 end
 
+--数据刷新回调
 function p.processNet(msgId, m)
 	if (msgId == nil ) then
 		LogInfo("processNet msgId == nil" );
@@ -2248,6 +2271,8 @@ function p.GameDataUserInfoRefresh(datalist)
 	for i=1, #datalist, 2 do
 		if datalist[i] and datalist[i] == USER_ATTR.USER_ATTR_PACKAGE_LIMIT then
 			p.SetGridNum(GetPlayerId());
+			CloseLoadBar();
+			p.SetBagCapacity();
 		end
 	end
     
