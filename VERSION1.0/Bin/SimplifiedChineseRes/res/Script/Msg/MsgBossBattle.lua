@@ -38,6 +38,7 @@ ACTIVITY_TYPE = {
     GRAIN   = 2,    --运粮
     CHAOS   = 3,    --大乱斗
     SYNDICATE_BATTLE = 4,  --军团战
+	BATTLECITY = 11,	--城市争夺战
 	GAME7X7 = 12, --7x7
 };
 
@@ -119,6 +120,8 @@ function p.ProcessActivity( netdata )
             	CampBattle.LoadUI(nActivityId);
 			elseif ACTIVITY_TYPE.GAME7X7 == nType then
 				SG7x7.LoadUI()
+			elseif ACTIVITY_TYPE.BATTLECITY == nType then --资源争夺战
+				BattleCity.LoadUI(nActivityId);
             end
             
         elseif nActivityStatus == ACTIVITY_STATUS.END then

@@ -19,11 +19,12 @@ p.ITEM_EXP							= 8;	-- 道法经验
 p.ITEM_ATTR_NUM						= 9;	-- 属性数量
 p.ITEM_GEN_NUM                      = 10;   -- 宝石数量
 p.ITEM_HOLE_OPEN_FLAG					= 11;	--开洞属性标志
-p.ITEM_ATTR_BEGIN					= 12;	-- 属性定义开始()
+p.ITEM_EVIL_LEVEL					= 12;	-- 魔化等级
+p.ITEM_ATTR_BEGIN					= 13;	-- 属性定义开始()
 -- type
 -- val
 -- ...
-p.ITEM_END							= 16;	-- 物品数据结束
+p.ITEM_END							= 17;	-- 物品数据结束
 
 function p.IsExistItem(nItemId)
 	local nItemId = Item.GetItemInfoN(nItemId, p.ITEM_ID);

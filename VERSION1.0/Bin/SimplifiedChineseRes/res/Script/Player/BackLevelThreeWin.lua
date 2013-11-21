@@ -67,6 +67,14 @@ local TAG_DESTINY_SELL        = 65;                  --出售
 local TAG_DESTINY_ADD_DESC    = 20;                  --属性加层说明
 local TAG_DESTINY_PRICE         = 52;               
 
+-- 魔化属性 标签
+local ID_LABEL_EM_PROPERTY_1	= 312;
+local ID_LABEL_EM_PROPERTY_2	= 313;
+local ID_LABEL_EM_PROPERTY_3	= 314;
+local ID_LABEL_EM_PROPERTY_4	= 315;
+local ID_LABEL_EM_PROPERTY_5	= 316;
+local ID_LABEL_EM_PROPERTY_6	= 317;
+
 local TAG_EQUIP_EQUIP_TIP   = {equip=GetTxtPri("BLTW_T1"),unsnatch=GetTxtPri("BLTW_T2"),};
 
 p.parent = nil;
@@ -320,6 +328,8 @@ function p.ShowUIEquip(nItemId, currPetId , bEquip)
     local l_attr_txt = RecursiveLabel(p.parent,{EQUIP_LAYER,TAG_EQUIP_ATTR_TXT});
     if(btAttrAmount==0) then
         l_attr_txt:SetVisible(false);
+    else
+        l_attr_txt:SetVisible(true);
     end
     
     
@@ -372,6 +382,33 @@ function p.ShowUIEquip(nItemId, currPetId , bEquip)
             ItemFunc.SetLabelColor( l_gem,gemId);
         end
     end
+    
+    -- 魔化属性
+    local pLabelEMPro1		= RecursiveLabel(p.parent,{EQUIP_LAYER,ID_LABEL_EM_PROPERTY_1});
+    local pLabelEMPro2		= RecursiveLabel(p.parent,{EQUIP_LAYER,ID_LABEL_EM_PROPERTY_2});
+    local pLabelEMPro3		= RecursiveLabel(p.parent,{EQUIP_LAYER,ID_LABEL_EM_PROPERTY_3});
+	local tBaseData			= EvilMelt.GetEvilItemDBData( nItemType );
+	if ( tBaseData == nil ) or ( table.getn(tBaseData) == 0 ) then
+		pLabelEMPro1:SetText("");
+		pLabelEMPro2:SetText("");
+		pLabelEMPro3:SetText("");
+	else
+		-- 属性名
+		local szPro1Name	= ItemFunc.GetAttrTypeDesc(tBaseData[DB_ITEMTYPE_EVILMELT.EVIL_TYPE1]);
+		local szPro2Name	= ItemFunc.GetAttrTypeDesc(tBaseData[DB_ITEMTYPE_EVILMELT.EVIL_TYPE2]);
+		local szPro3Name	= ItemFunc.GetAttrTypeDesc(tBaseData[DB_ITEMTYPE_EVILMELT.EVIL_TYPE3]);
+		local nEvilLevel	= Item.GetItemInfoN( nItemId, Item.ITEM_EVIL_LEVEL );--当前魔化等级
+		-- 属性当前值
+		local nPro1Cur		= tBaseData[DB_ITEMTYPE_EVILMELT.EVIL_VALUE1] + tBaseData[DB_ITEMTYPE_EVILMELT.EVIL_GROW1] * nEvilLevel;
+		local nPro2Cur		= tBaseData[DB_ITEMTYPE_EVILMELT.EVIL_VALUE2] + tBaseData[DB_ITEMTYPE_EVILMELT.EVIL_GROW2] * nEvilLevel;
+		local nPro3Cur		= tBaseData[DB_ITEMTYPE_EVILMELT.EVIL_VALUE3] + tBaseData[DB_ITEMTYPE_EVILMELT.EVIL_GROW3] * nEvilLevel;
+		local szPro1Cur		= EvilMelt.GetAttrTypeValueDesc(tBaseData[DB_ITEMTYPE_EVILMELT.EVIL_TYPE1], nPro1Cur);
+		local szPro2Cur		= EvilMelt.GetAttrTypeValueDesc(tBaseData[DB_ITEMTYPE_EVILMELT.EVIL_TYPE2], nPro2Cur);
+		local szPro3Cur		= EvilMelt.GetAttrTypeValueDesc(tBaseData[DB_ITEMTYPE_EVILMELT.EVIL_TYPE3], nPro3Cur);
+		pLabelEMPro1:SetText(szPro1Name..szPro1Cur);
+		pLabelEMPro2:SetText(szPro2Name..szPro2Cur);
+		pLabelEMPro3:SetText(szPro3Name..szPro3Cur);
+	end
     
     p.layerShowOrHide(EQUIP_LAYER, true);
 end
@@ -865,9 +902,6 @@ function p.OnUIEventProp(uiNode, uiEventType, param)
             elseif(nType == 2) then     --任务物品
             
             elseif(nType == 3) then     --升阶
-                
-                local btn = ConverToButton(uiNode);
-                local nItemId   = btn:GetParam1();
                 PlayerEquipUpStepUI.LoadUI(nItemId);
                 
             elseif(nType == 4) then     --经验卡
@@ -895,12 +929,32 @@ function p.OnUIEventProp(uiNode, uiEventType, param)
                 
                 p.nTagId = CommonDlgNew.ShowInputDlg(GetTxtPri("PLAYER_T3"), p.OnUIEventUseNum, {nItemId,nCurrPetId},count,2);
             elseif(nType == 5) then     --神铸
-                local btn = ConverToButton(uiNode);
-                local nItemId   = btn:GetParam1();
-                PlayerEquipGlidUI.LoadUI(nItemId);
-            elseif(nType == 6) then     --神马鞭
-                CloseMainUI();
-                PetUI.LoadUI(true);
+				if ( nItemType == EvilMelt.EVIL_CRYSTAL_ITEM_TYPE_ID ) then-- 魔晶-魔化
+					CloseMainUI();
+					EvilMelt.Entry();
+				else
+					CloseMainUI();
+                	PlayerEquipGlidUI.LoadUI(nItemId);--神铸
+				end
+			elseif ( nType == 6 ) then		-- 神马鞭/兽魂丹
+            	if ( nItemType == 36000001 or nItemType == 36000002 or nItemType == 36000003 ) then
+            		-- 兽魂丹
+					if ( MsgMount.RolePetInfo.star >= 21 ) and ( MainUIBottomSpeedBar.GetFuncIsOpen( 131 ) ) then --
+						CloseMainUI();
+						MountSoul.Entry();
+					else
+        				--MountSoul.ShowIntro();
+						CommonDlgNew.ShowYesDlg( GetTxtPri("BLTW_E1"), nil, nil, 3 );
+					end
+            	else
+            		-- 神马鞭
+					if ( MainUIBottomSpeedBar.GetFuncIsOpen( 117 ) ) then
+						CloseMainUI();
+						PetUI.LoadUI(true);
+					else
+						CommonDlgNew.ShowYesDlg( GetTxtPri("BLTW_E1"), nil, nil, 3 );
+					end
+            	end
            elseif nType == 7 then	--斗地主道具
             	local count = Item.GetItemInfoN(nItemId, Item.ITEM_AMOUNT);
             	p.nTagId = CommonDlgNew.ShowInputDlg(GetTxtPri("PLAYER_T3"), p.OnUIEventUseNum, {nItemId}, count, 2);               
