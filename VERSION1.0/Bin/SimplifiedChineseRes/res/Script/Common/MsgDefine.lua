@@ -278,7 +278,11 @@ NMSG_Type =
     
     
      _MSG_ELITE_PRIVILEGE_INFO     = _MSG_GENERAL + 7009,  --精英特权消息
-	
+     
+     _MSG_WORLDBATTLE_PLAYERINFO     = _MSG_GENERAL + 7010, 
+     _MSG_WORLDBATTLE_OPERATE     = _MSG_GENERAL + 7011,  
+ 
+	    
 	    -----------------7x7小游戏-------------------
     _MSG_7x7_ACTION             = _MSG_GENERAL + 8160,  --7x7动作
     _MSG_7x7_ACTION_RET         = _MSG_GENERAL + 8161,  --7x7动作返回

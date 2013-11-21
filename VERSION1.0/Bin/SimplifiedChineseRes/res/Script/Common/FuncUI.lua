@@ -700,3 +700,16 @@ function ConvertIntTimeToString(nBegin, nEnd, nFlag)
 end
 
 
+function GetSMGameSceneLayerByTag(nTagId)
+	local scene = GetSMGameScene();
+	if nil == scene then
+		return nil;
+	end
+	
+	local layer = GetUiLayer(scene, nTagId);
+	if nil == layer then
+		return nil;
+	end
+    
+	return layer;
+end

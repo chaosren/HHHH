@@ -155,23 +155,23 @@ NMAINSCENECHILDTAG =
     EquipUI 				= NUITAG_BEGIN + 107,                   --装备养成
     PlayerGiftBagUI         = NUITAG_BEGIN + 108,                   --礼包
     GameAssistantUI         = NUITAG_BEGIN + 109,                   --助手
-    ArenaFightReplayUI      = NUITAG_BEGIN + 110,                   --战斗查看以及副本攻略结果界面
-    DragonTactic            = NUITAG_BEGIN + 111,                   --龙将兵法界面
-    BattleMapCtrl           = NUITAG_BEGIN + 112,                   --战斗界面的控件处理层
-    DailyCheckIn            = NUITAG_BEGIN + 113,                   --每日签到处理层   
-    RechargeReward          = NUITAG_BEGIN + 114,                   --充值奖励处理层       
-    DailyActionUI           = NUITAG_BEGIN + 115,                   --每日活动处理层         
+    ArenaFightReplayUI       = NUITAG_BEGIN + 110,                   --战斗查看以及副本攻略结果界面
+    DragonTactic                   = NUITAG_BEGIN + 111,                   --龙将兵法界面
+    BattleMapCtrl                   = NUITAG_BEGIN + 112,                   --战斗界面的控件处理层
+    DailyCheckIn                    = NUITAG_BEGIN + 113,                   --每日签到处理层   
+    RechargeReward              = NUITAG_BEGIN + 114,                   --充值奖励处理层       
+    DailyActionUI                    = NUITAG_BEGIN + 115,                   --每日活动处理层         
     --TransportUI                           = NUITAG_BEGIN + 116,                   --运送粮草处理层   
-    TransportUI             = 2015,                   --运送粮草处理层         
-    TransportPrepareUI      = NUITAG_BEGIN + 117,                   --运送粮草准备处理层
-    TransportLootUI         = NUITAG_BEGIN + 118,                   --运送粮草准备处理层       
-    BattleBossUI            = 2015,--NUITAG_BEGIN + 119,   
-    TransPlayerListUI       = NUITAG_BEGIN + 120,                  --运送粮草玩家列表     
+    TransportUI                           = 2015,                   --运送粮草处理层         
+    TransportPrepareUI              = NUITAG_BEGIN + 117,                   --运送粮草准备处理层
+    TransportLootUI                   = NUITAG_BEGIN + 118,                   --运送粮草准备处理层       
+    BattleBossUI                    = 2015,--NUITAG_BEGIN + 119,   
+    TransPlayerListUI                    = NUITAG_BEGIN + 120,                  --运送粮草玩家列表     
     
     TopBar                  = NUITAG_BEGIN + 158,
-    BottomMsgBtn            = NUITAG_BEGIN + 159,
+    BottomMsgBtn               = NUITAG_BEGIN + 159,
     BottomFind              = NUITAG_BEGIN + 160,
-    BottomMsg               = NUITAG_BEGIN + 161,
+    BottomMsg              = NUITAG_BEGIN + 161,
     RaidersLoad             = NUITAG_BEGIN + 162,                   --查看攻略结束后弹出框
     BottomControlBtn        = NUITAG_BEGIN + 163,
     EffectAniLayer			= NUITAG_BEGIN + 164,					-- 播放特效动画层--Z-Order=NDLGTAGNEW_BEGIN+1
@@ -183,49 +183,61 @@ NMAINSCENECHILDTAG =
     Entry					= NUITAG_BEGIN + 170,					-- 入口界面
     GMProblemBtn            = NUITAG_BEGIN + 171,
     OLGiftBtn               = NUITAG_BEGIN + 172,                   --在线奖励活动
-    RechargeGiftBtn         = NUITAG_BEGIN + 173,                   --充值奖励活动
+    RechargeGiftBtn               = NUITAG_BEGIN + 173,                   --充值奖励活动
     ArmyGroup				= NUITAG_BEGIN + 174,					-- 军团界面
     CreateOrJoinArmyGroup	= NUITAG_BEGIN + 175,					-- 创建或加入军团界面(含军团列表)
 	ActivityNoticeUI		= NUITAG_BEGIN + 176,					-- 活动公告界面--
-    LoginListUI             = NUITAG_BEGIN + 177,                    --登入等待界面
+    LoginListUI          = NUITAG_BEGIN + 177,                    --登入等待界面
     MainPlayerListUI        = NUITAG_BEGIN + 178,                   --主城查看其它玩家
     Banquet					= NUITAG_BEGIN + 179,                    --宴会界面
+    BattleUI_Title			= NUITAG_BEGIN + 180,                    --战斗TITLE界面
+ 	QuickSwapEquipUI        = NUITAG_BEGIN + 181,                   --快速换装备
     CampBattle              = 2015,                   --阵营战
      	
- 	SyndicateBattleUI       = 2015,                   --军团战ui
- 	SyndicateBattleSignUpUI = NUITAG_BEGIN + 180,                  --军团战报名ui
- 	SyndicateBattleResultUI = NUITAG_BEGIN + 181,                   --军团战进程ui
+ 	SyndicateBattleUI         =  2015,                   --军团战ui
+ 	SyndicateBattleSignUpUI           =  NUITAG_BEGIN + 180,                  --军团战报名ui
+ 	SyndicateBattleResultUI           =  NUITAG_BEGIN + 181,                   --军团战进程ui
+
+	LuckyBox							= NUITAG_BEGIN + 185,		-- 幸运宝箱
+	TreasureHunt						= 2015,--NUITAG_BEGIN + 183,		-- 古迹寻宝
+ 	
+
+ 	PVPADDUI           =  NUITAG_BEGIN + 184,                   --PVP属性界面
+
  	DestinyUI               = NUITAG_BEGIN + 182,                   --占星
-    DestinyFeteUI           = NUITAG_BEGIN + 183,                   --占星祭祀 
- 	PVPADDUI                = NUITAG_BEGIN + 184,                   --PVP属性界面
-	LuckyBox				= NUITAG_BEGIN + 185,					-- 幸运宝箱
-    Buff                    = NUITAG_BEGIN + 186,                   --玩家状态
-	TreasureHunt			= 2015,--NUITAG_BEGIN + 187,			-- 古迹寻宝
-    BattleUI_Title			= NUITAG_BEGIN + 188,                    -- 战斗TITLE界面
+    DestinyFeteUI           = NUITAG_BEGIN + 183,                   --占星祭祀  
+ 	MountSoul               = NUITAG_BEGIN + 190,                   --兽魂
+ 	BloodBattle             = 2015;--NUITAG_BEGIN + 191,                   --血战（过关斩将）
+ 	BloodBattleRanking      = NUITAG_BEGIN + 192,                   --血战排名
 	RankListUI              = NUITAG_BEGIN + 189,                   --名人堂
- 	MountSoul               = NUITAG_BEGIN + 190,                   -- 兽魂
- 	BloodBattle             = 2015;--NUITAG_BEGIN + 191,                   -- 血战（过关斩将）
- 	BloodBattleRanking      = NUITAG_BEGIN + 192,                   -- 血战排名
- 	DailyLottery            = NUITAG_BEGIN + 193,                   -- 每日抽奖
+ 	DailyLottery            = NUITAG_BEGIN + 193,                   --每日抽奖
+	
+	SG7x7UI					= NUITAG_BEGIN + 290,					--7x7
+	SG7x7BoardUI			= NUITAG_BEGIN + 291,					--7x7
+	SG7x7RuleUI				= NUITAG_BEGIN + 292,					--7x7
 	CheckInReward			= NUITAG_BEGIN + 194,					--新版每日签到功能	
-	BattleCityCityUI        = NUITAG_BEGIN + 195,					--资源争夺战，城市信息ui
-	BattleCityGuardInfoUI   = NUITAG_BEGIN + 196,				--资源争夺战,队列信息
-	BattleCityRecordUI      = NUITAG_BEGIN + 197,				--资源争夺战,历史记录
-	BattlecityInspireUI     = NUITAG_BEGIN + 198,				--资源争夺战，鼓舞界面
-	BattlecityGiftUI        = NUITAG_BEGIN + 199,					--资源争夺战,奖励界面
-	BattleCityUI            = 2015,				--资源争夺战,队列信息
+	
+	BattleCityCityUI = NUITAG_BEGIN + 195,					--资源争夺战，城市信息ui
+	BattleCityGuardInfoUI = NUITAG_BEGIN + 196,				--资源争夺战,队列信息
+	BattleCityRecordUI = NUITAG_BEGIN + 197,				--资源争夺战,历史记录
+	BattlecityInspireUI = NUITAG_BEGIN + 198,				--资源争夺战，鼓舞界面
+	BattlecityGiftUI = NUITAG_BEGIN + 199,					--资源争夺战,奖励界面
+	BattleCityUI = 2015,				--资源争夺战,队列信息
+	
 	SlaveUI					= 2015,                   --斗地主
 
-    MissionUI               = NUITAG_BEGIN + 200,                   --日常任务
-    Warlord					= NUITAG_BEGIN + 201,                   -- 战神像
-    ExploitShop				= NUITAG_BEGIN + 202,                   --军功商城
-    EvilMelt				= NUITAG_BEGIN + 203, 					-- 装备魔化
- 	QuickSwapEquipUI        = NUITAG_BEGIN + 204,                   --快速换装备
-	SG7x7UI					= NUITAG_BEGIN + 205,					--7x7
-	SG7x7BoardUI			= NUITAG_BEGIN + 206,					--7x7
-	SG7x7RuleUI				= NUITAG_BEGIN + 207,					--7x7
+    EvilMelt           = NUITAG_BEGIN + 202, 			-- 装备魔化
+    Buff           = NUITAG_BEGIN + 186,                   --玩家状态
+    MissionUI       = NUITAG_BEGIN + 200,                   --日常任务
+    Warlord			= NUITAG_BEGIN + 201,                   --战神像
+    
+    ExploitShop			= NUITAG_BEGIN + 203,                   --军功商城
 
-    CommonDlg				= NDLGTAG_BEGIN,						--通用对话框
+	CrossArenaUI             = 2015,                      --跨服竞技场主界面
+	CrossArenaRule           = NUITAG_BEGIN + 204,          --跨服竞技场规则界面
+	CrossArenaReward         = NUITAG_BEGIN + 205,          --跨服竞技场奖励查看
+
+	CommonDlg				= NDLGTAG_BEGIN,						--通用对话框
 	CommonDlgNew              = NDLGTAGNEW_BEGIN,                     --新通用对话框
 	--后面都被对话框占用了,请不要使用
 };

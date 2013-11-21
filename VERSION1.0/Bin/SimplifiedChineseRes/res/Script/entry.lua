@@ -194,3 +194,6 @@ bgnTimeSlice("EvilMelt/define.lua")
 endTimeSlice("EvilMelt/define.lua")
 --血战
 DoFile("BloodBattle/define.lua");
+
+--跨服竞技场功能
+DoFile("CrossArena/define.lua");

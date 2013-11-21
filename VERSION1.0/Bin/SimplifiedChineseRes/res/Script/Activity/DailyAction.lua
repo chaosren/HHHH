@@ -7,19 +7,14 @@ DailyAction = {}
 local p = DailyAction;
 
 p.dbEnventActivicyInfo = {};  --静态表event_activity的数据
-p.WorldActions = {};    --世界活动信息
-p.ClassActions = {};     --帮派活动信息
+p.TimerActions = {};    --定時活動活动信息
+p.DailyActions = {};     --每日活動
 
 
 p.CurFocusBtnId   = 0;    --当前的焦点按钮
-p.TabInfo = { WorldInfo      =     {LayerTag = 1001, tabBtnId = 24,  focusIndex = 1, 
-                                                            FucRefresh = nil, viewId = 101,},
-                       
-                       ClassInfo  =    {LayerTag = 1002,  tabBtnId = 25,  focusIndex = 2, 
-                                                           FucRefresh = nil, FucOnEvent = nil, viewId = 101,},
-                       
-                       EveryDayActInfo  =  {LayerTag = 1003,  tabBtnId = 26,  focusIndex = 1, 
-                                                            FucRefresh = nil, FucOnEvent = nil, },
+p.TabInfo = { WorldInfo       =  {LayerTag = 1001, tabBtnId = 24, focusIndex = 1, FucRefresh = nil, viewId = 101,},     
+             ClassInfo       =  {LayerTag = 1002, tabBtnId = 25, focusIndex = 2, FucRefresh = nil, viewId = 101,},
+             EveryDayActInfo  =  {LayerTag = 1003,  tabBtnId = 26, focusIndex = 1, FucRefresh = nil, FucOnEvent = nil, },
 }
 
 p.CtrlId = {btnClose = 5, };
@@ -58,9 +53,9 @@ function p.LoadUI()
 
 	uiLoad:Load("event/event.ini", layer, p.OnUIEvent, CONTAINTER_X, CONTAINTER_Y);
 
-    local btn = GetButton(layer, p.TabInfo.ClassInfo.tabBtnId);
+    --local btn = GetButton(layer, p.TabInfo.ClassInfo.tabBtnId);
     --btn:EnalbeGray(true);
-    btn:SetVisible(false);
+    --btn:SetVisible(false);
     ------------------------------------------------------------------添加世界活动层-----------------------------------------------------------------------
     local layer0 = createNDUILayer();
 	if layer0 == nil then
@@ -80,7 +75,7 @@ function p.LoadUI()
 		return false;
 	end
 
-	uiLoad:Load("event/event_1.ini", layer0,  p.TabInfo.WorldInfo.FucOnEvent, CONTAINTER_X, CONTAINTER_Y);
+	uiLoad:Load("event/event_1.ini", layer0,  nil, CONTAINTER_X, CONTAINTER_Y);
     uiLoad:Free();
     ------------------------------------------------------------------添加帮派活动层-----------------------------------------------------------------------
     local layer1 = createNDUILayer();
@@ -101,7 +96,7 @@ function p.LoadUI()
 		return false;
 	end
 
-	uiLoad:Load("event/event_1.ini", layer1,  p.TabInfo.ClassInfo.FucOnEvent, CONTAINTER_X, CONTAINTER_Y);
+	uiLoad:Load("event/event_1.ini", layer1,  nil, CONTAINTER_X, CONTAINTER_Y);
     uiLoad:Free();
     
     ------------------------------------------------------------------添加日常活动层-----------------------------------------------------------------------
@@ -262,13 +257,13 @@ function p.refreshViewItem(view, nId)
     local btn = GetButton(view, p.ViewCtrlId.btnCtr);
     btn:SetParam1(nId);   
     
-    --按钮是否置灰判断   世界活动的时候才用到
+    --按钮是否置灰判断   定時活动的时候才用到
     if p.CurFocusBtnId == p.TabInfo.WorldInfo.tabBtnId then
-        local DataList = p.WorldActions;
+        local DataList = p.TimerActions;
         for i, v in pairs(DataList) do
             if v.nId == nId then
                 if v.bStatus ~= 3 then  --未开启
-                    btn:EnalbeGray(true);                          
+                    btn:EnalbeGray(true);    
                 end
                 break;
             end
@@ -366,15 +361,9 @@ function p.initData()
         record.Describe = GetDataBaseDataS("event_activity", v, DB_EVENT_ACTIVITY.DESCRIBE);       
     end
     
-    for i, v in pairs(p.dbEnventActivicyInfo) do
-        LogInfo("i = %d name = %s, icon = %d, timetype = %d, beginDay = %d, endDay = %d, pointTime = %d, continouans = %d, describe = %s",
-                        i, v.Name, v.Icon, v.TimeType, v.BeginDay, v.EndDay, v.PointTime, v.Continouans, v.Describe); 
-    end
     
    p.TabInfo.WorldInfo.FucRefresh = p.WorldRefresh;
-   
    p.TabInfo.ClassInfo.FucRefresh = p.ClassRefresh;
-   p.TabInfo.ClassInfo.FucOnEvent = p.ClassOnEvent;
    
    p.TabInfo.EveryDayActInfo.FucRefresh = p.EveryDayActRefresh;
    p.TabInfo.EveryDayActInfo.FucOnEvent = p.EveryDayActOnEvent;
@@ -384,8 +373,6 @@ function p.initData()
     AssistantUI.initData();
     --注册军令更新事件
     AssistantUI.RegisterGameDataEvent();
-   
-    LogInfo("p.initData end");
 end
 
 ---------------------------初始化-------------------------------------
@@ -403,7 +390,7 @@ function p.WorldRefresh()
     ListContainer:SetDebugName( "ScrollViewContainer" );
     
     --设置当前要显示的说明信息
-    for i, v in pairs(p.WorldActions) do
+    for i, v in pairs(p.TimerActions) do
         LogInfo("refresh i = %d  nId = %d", i, v.nId); 
         p.AddViewItem(ListContainer, v.nId, "event/event_1_L.ini");
     end
@@ -423,17 +410,12 @@ function p.ClassRefresh()
     ListContainer:RemoveAllView();
     
     --设置当前要显示的说明信息
-    for i, v in pairs(p.ClassActions) do
+    for i, v in pairs(p.DailyActions) do
         LogInfo("refresh i = %d  nId = %d", i, v.nId); 
         p.AddViewItem(ListContainer, v.nId, "event/event_1_L.ini");
     end
 end
 
-
-
-function p.ClassOnEvent()
-
-end
 
 function p.EveryDayActRefresh()
     AssistantUI.RefreshUI();

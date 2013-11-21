@@ -83,6 +83,8 @@ LoadDataBaseTable("dailytask_level_config","dailytask_level_configTable");
 LoadDataBaseTable("battlecity_config","battlecity_configTable");
 LoadDataBaseTable("exchange_exploits_config","exchange_exploits_configTable");
 
+LoadDataBaseTable("worldbattle_award_config","worldbattle_award_configTable");
+LoadDataBaseTable("worldbattle_config","worldbattle_configTable");
 LoadDataBaseTable("itemtype_evilmelt","itemtype_evilmeltTable");
 LoadDataBaseTable("bloodbattle_monster_generate","bloodbattle_monster_generateTable");
 LoadDataBaseTable("bloodbattle_monster_addition","bloodbattle_monster_additionTable");

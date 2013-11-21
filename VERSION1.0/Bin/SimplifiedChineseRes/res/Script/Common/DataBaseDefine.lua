@@ -2122,6 +2122,7 @@ DB_MOUNT_TRAIN_TYPE_DESC = {
     EMONEY  = 1,   
 }
 
+
 -- 幸运宝箱、古迹寻宝静态数据索引
 DB_FINDBOX_CONFIG = {
 	ID			= 0,
@@ -2246,3 +2247,27 @@ DB_BLOODBATTLE_MONSTER_GENERATE = {
 	STATIONS8	= 9,
 	STATIONS9	= 10,
 };
+
+		
+DB_WORLDBATTLE_AWARD_CONFIG = {
+	ID = 0,       --鎺掑悕
+	RANK_MIN = 1,  --寮€濮嬪尯闂?
+	RANK_MAX = 2,  --缁撴潫鍖洪棿
+	MONEY = 3,     --閾跺竵
+	EMONEY = 4,    --閲戝竵
+	EXPLOIT = 5,   --鍐涘姛
+	REPUTE = 6,    --澹版湜
+	SOPH = 7,      --灏嗛瓊
+	VITALITY = 8,  --鍦ｅ厓
+}
+
+DB_WORLDBATTLE_CONFIG = {
+	ID = 0,       
+	DESTRIBE = 1,     --鎻忚堪
+	VALUE = 2,    --鍊?
+}
+
+
+
+
+
