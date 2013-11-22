@@ -195,48 +195,49 @@ NMAINSCENECHILDTAG =
     CampBattle              = 2015,                   --阵营战
      	
  	SyndicateBattleUI         =  2015,                   --军团战ui
- 	SyndicateBattleSignUpUI           =  NUITAG_BEGIN + 180,                  --军团战报名ui
- 	SyndicateBattleResultUI           =  NUITAG_BEGIN + 181,                   --军团战进程ui
+ 	SyndicateBattleSignUpUI           =  NUITAG_BEGIN + 182,                  --军团战报名ui
+ 	SyndicateBattleResultUI           =  NUITAG_BEGIN + 183,                   --军团战进程ui
 
-	LuckyBox							= NUITAG_BEGIN + 185,		-- 幸运宝箱
-	TreasureHunt						= 2015,--NUITAG_BEGIN + 183,		-- 古迹寻宝
+	LuckyBox							= NUITAG_BEGIN + 184,		-- 幸运宝箱
+	TreasureHunt						= 2015,		              -- 古迹寻宝
  	
 
- 	PVPADDUI           =  NUITAG_BEGIN + 184,                   --PVP属性界面
+ 	PVPADDUI           =  NUITAG_BEGIN + 185,                   --PVP属性界面
 
- 	DestinyUI               = NUITAG_BEGIN + 182,                   --占星
-    DestinyFeteUI           = NUITAG_BEGIN + 183,                   --占星祭祀  
- 	MountSoul               = NUITAG_BEGIN + 190,                   --兽魂
+ 	DestinyUI               = NUITAG_BEGIN + 186,                   --占星
+    DestinyFeteUI           = NUITAG_BEGIN + 187,                   --占星祭祀  
+ 	MountSoul               = NUITAG_BEGIN + 188,                   --兽魂
  	BloodBattle             = 2015;--NUITAG_BEGIN + 191,                   --血战（过关斩将）
- 	BloodBattleRanking      = NUITAG_BEGIN + 192,                   --血战排名
-	RankListUI              = NUITAG_BEGIN + 189,                   --名人堂
- 	DailyLottery            = NUITAG_BEGIN + 193,                   --每日抽奖
+ 	BloodBattleRanking      = NUITAG_BEGIN + 189,                   --血战排名
+	RankListUI              = NUITAG_BEGIN + 190,                   --名人堂
+ 	DailyLottery            = NUITAG_BEGIN + 191,                   --每日抽奖
 	
-	SG7x7UI					= NUITAG_BEGIN + 290,					--7x7
-	SG7x7BoardUI			= NUITAG_BEGIN + 291,					--7x7
-	SG7x7RuleUI				= NUITAG_BEGIN + 292,					--7x7
-	CheckInReward			= NUITAG_BEGIN + 194,					--新版每日签到功能	
+	SG7x7UI					= NUITAG_BEGIN + 192,					--7x7
+	SG7x7BoardUI			= NUITAG_BEGIN + 193,					--7x7
+	SG7x7RuleUI				= NUITAG_BEGIN + 194,					--7x7
+	CheckInReward			= NUITAG_BEGIN + 195,					--新版每日签到功能	
 	
-	BattleCityCityUI = NUITAG_BEGIN + 195,					--资源争夺战，城市信息ui
-	BattleCityGuardInfoUI = NUITAG_BEGIN + 196,				--资源争夺战,队列信息
-	BattleCityRecordUI = NUITAG_BEGIN + 197,				--资源争夺战,历史记录
-	BattlecityInspireUI = NUITAG_BEGIN + 198,				--资源争夺战，鼓舞界面
-	BattlecityGiftUI = NUITAG_BEGIN + 199,					--资源争夺战,奖励界面
+	BattleCityCityUI = NUITAG_BEGIN + 196,					--资源争夺战，城市信息ui
+	BattleCityGuardInfoUI = NUITAG_BEGIN + 197,				--资源争夺战,队列信息
+	BattleCityRecordUI = NUITAG_BEGIN + 198,				--资源争夺战,历史记录
+	BattlecityInspireUI = NUITAG_BEGIN + 199,				--资源争夺战，鼓舞界面
+	BattlecityGiftUI = NUITAG_BEGIN + 200,					--资源争夺战,奖励界面
 	BattleCityUI = 2015,				--资源争夺战,队列信息
 	
 	SlaveUI					= 2015,                   --斗地主
-
-    EvilMelt           = NUITAG_BEGIN + 202, 			-- 装备魔化
-    Buff           = NUITAG_BEGIN + 186,                   --玩家状态
-    MissionUI       = NUITAG_BEGIN + 200,                   --日常任务
-    Warlord			= NUITAG_BEGIN + 201,                   --战神像
+    EvilMelt           = NUITAG_BEGIN + 201, 			-- 装备魔化
+    Buff           = NUITAG_BEGIN + 202,                   --玩家状态
+    MissionUI       = NUITAG_BEGIN + 203,                   --日常任务
+    Warlord			= NUITAG_BEGIN + 204,                   --战神像
     
-    ExploitShop			= NUITAG_BEGIN + 203,                   --军功商城
+    ExploitShop			= NUITAG_BEGIN + 205,                   --军功商城
 
 	CrossArenaUI             = 2015,                      --跨服竞技场主界面
-	CrossArenaRule           = NUITAG_BEGIN + 204,          --跨服竞技场规则界面
-	CrossArenaReward         = NUITAG_BEGIN + 205,          --跨服竞技场奖励查看
-
+	CrossArenaRule           = NUITAG_BEGIN + 206,          --跨服竞技场规则界面
+	CrossArenaReward         = NUITAG_BEGIN + 207,          --跨服竞技场奖励查看
+	
+	
+	
 	CommonDlg				= NDLGTAG_BEGIN,						--通用对话框
 	CommonDlgNew              = NDLGTAGNEW_BEGIN,                     --新通用对话框
 	--后面都被对话框占用了,请不要使用

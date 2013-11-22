@@ -26,6 +26,9 @@ p.pBtnCompose						= nil;	-- 写邮件按钮
 p.pEditName							= nil;	-- 名字编辑框
 p.pEditSubject						= nil;	-- 主题编辑框
 p.pEditContent						= nil;	-- 内容编辑框
+--
+p.nRecEmailID						= nil;	-- 正在查看接收的邮件的EmailID
+p.nSenEmailID						= nil;	-- 正在查看发送的邮件的EmailID
 
 ---------------------------------------------------
 -- 菜单按钮控件ID
@@ -62,6 +65,7 @@ local ID_READ_LABEL_SUBJECT			= 11;	-- 标题
 local ID_READ_LABEL_CONTENT			= 12;	-- 内容
 local ID_READ_BTN_BACK				= 13;	-- 返回
 local ID_READ_BTN_REPLY				= 35;	-- 回复
+local ID_READ_BTN_DELETE			= 225;	-- 回复
 
 ---------------------------------------------------
 local szSEND_ERROR_00				= GetTxtPri("EL2_T1");
@@ -85,7 +89,21 @@ local CONTENT_LENGTH_LIMIT			= 255;	-- 内容限制字数
 
 
 ---------------------------------------------------
-function p.LoadUI()	
+function p.LoadUI()
+p.pLayerInbox						= nil;
+p.pLayerReceivedMail				= nil;
+p.pLayerOutbox						= nil;
+p.pLayerSentMail					= nil;
+p.pLayerComposeMail					= nil;
+p.pBtnInbox							= nil;
+p.pBtnOutbox						= nil;
+p.pBtnCompose						= nil;
+p.pEditName							= nil;
+p.pEditSubject						= nil;
+p.pEditContent						= nil;
+p.nRecEmailID						= nil;
+p.nSenEmailID						= nil;
+
 	--LogInfo( "EmailList: LoadUI()" );
 	local scene = GetSMGameScene();
 	if not CheckP(scene) then
@@ -220,6 +238,19 @@ function p.OnUIEventMenu( uiNode, uiEventType, param )
 			local scene = GetSMGameScene();
 			if ( scene ~= nil ) then
 				scene:RemoveChildByTag( NMAINSCENECHILDTAG.EmailList, true );
+p.pLayerInbox						= nil;
+p.pLayerReceivedMail				= nil;
+p.pLayerOutbox						= nil;
+p.pLayerSentMail					= nil;
+p.pLayerComposeMail					= nil;
+p.pBtnInbox							= nil;
+p.pBtnOutbox						= nil;
+p.pBtnCompose						= nil;
+p.pEditName							= nil;
+p.pEditSubject						= nil;
+p.pEditContent						= nil;
+p.nRecEmailID						= nil;
+p.nSenEmailID						= nil;
 				return true;
 			end
 		elseif ( ID_BTN_INBOX == tag ) then
@@ -522,7 +553,7 @@ function p.OnUIEventReceivedMailsListItem( uiNode, uiEventType, param )
 				local szName		= tEmail[EmailDataIndex.EDI_NAME];
 				local szSubject		= tEmail[EmailDataIndex.EDI_SUBJECT];
 				-- 内容非空，显示
-				p.ShowReceivedMail( szName, szSubject, szContent );
+				p.ShowReceivedMail( szName, szSubject, szContent, nEmailID );
 			end
 			--CommonDlg.ShowWithConfirm( szName.."发来:"..szSubject, nil );
 		end
@@ -598,15 +629,16 @@ end
 
 ---------------------------------------------------
 -- 显示收件箱邮件内容
-function p.ShowReceivedMail( szName, szSubject, szContent )
+function p.ShowReceivedMail( szName, szSubject, szContent, nEmailID )
 	if ( nil == p.pLayerReceivedMail ) then
 		return false;
 	end
-	local pLabelName = GetLabel( p.pLayerReceivedMail, ID_READ_LABEL_NAME );
+	p.nRecEmailID		= nEmailID;
+	local pLabelName	= GetLabel( p.pLayerReceivedMail, ID_READ_LABEL_NAME );
 	pLabelName:SetText( szName );
-	local pLabelSubject = GetLabel( p.pLayerReceivedMail, ID_READ_LABEL_SUBJECT );
+	local pLabelSubject	= GetLabel( p.pLayerReceivedMail, ID_READ_LABEL_SUBJECT );
 	pLabelSubject:SetText( szSubject );
-	local pLabelContent = GetLabel( p.pLayerReceivedMail, ID_READ_LABEL_CONTENT );
+	local pLabelContent	= GetLabel( p.pLayerReceivedMail, ID_READ_LABEL_CONTENT );
 	pLabelContent:SetText( szContent );
 	
 	p.pLayerInbox:SetVisible( false );
@@ -622,11 +654,16 @@ function p.OnUIEventDispInEmail( uiNode, uiEventType, param )
 			-- 按下“返回”
 			p.pLayerInbox:SetVisible( true );
 			p.pLayerReceivedMail:SetVisible( false );
+			p.nRecEmailID		= nil;
 		elseif ( tag == ID_READ_BTN_REPLY ) then
 			local pLabelName = GetLabel( p.pLayerReceivedMail, ID_READ_LABEL_NAME );
 			local szName = pLabelName:GetText();
 			p.RefreshWithButtonTag( ID_BTN_COMPOSE );
 			p.pEditName:SetText( szName );
+		elseif ( tag == ID_READ_BTN_DELETE ) then
+			if ( p.nRecEmailID ~= nil ) then
+				MsgUserEmail.DelEmail( p.nRecEmailID );
+			end
 		end
 	end
 	return true;
@@ -814,7 +851,7 @@ function p.OnUIEventSentMailsListItem( uiNode, uiEventType, param )
 				local szName	= tEmail[EmailDataIndex.EDI_NAME];
 				local szSubject	= tEmail[EmailDataIndex.EDI_SUBJECT];
 				-- 内容非空，显示
-				p.ShowSentMail( szName, szSubject, szContent );
+				p.ShowSentMail( szName, szSubject, szContent, nEmailID );
 			end
 		end
 	elseif ( uiEventType == NUIEventType.TE_TOUCH_CHECK_CLICK ) then
@@ -888,15 +925,16 @@ function p.CreateReadSentMail( pParentLayer )
 end
 
 -- 显示收件箱邮件内容
-function p.ShowSentMail( szName, szSubject, szContent )
+function p.ShowSentMail( szName, szSubject, szContent, nEmailID )
 	if ( nil == p.pLayerSentMail ) then
 		return false;
 	end
-	local pLabelName = GetLabel( p.pLayerSentMail, ID_READ_LABEL_NAME );
+	p.nSenEmailID		= nEmailID;
+	local pLabelName	= GetLabel( p.pLayerSentMail, ID_READ_LABEL_NAME );
 	pLabelName:SetText( szName );
-	local pLabelSubject = GetLabel( p.pLayerSentMail, ID_READ_LABEL_SUBJECT );
+	local pLabelSubject	= GetLabel( p.pLayerSentMail, ID_READ_LABEL_SUBJECT );
 	pLabelSubject:SetText( szSubject );
-	local pLabelContent = GetLabel( p.pLayerSentMail, ID_READ_LABEL_CONTENT );
+	local pLabelContent	= GetLabel( p.pLayerSentMail, ID_READ_LABEL_CONTENT );
 	pLabelContent:SetText( szContent );
 	
 	p.pLayerOutbox:SetVisible( false );
@@ -913,6 +951,11 @@ function p.OnUIEventDispOutEmail( uiNode, uiEventType, param )
 			-- 按下“返回”
 			p.pLayerOutbox:SetVisible( true );
 			p.pLayerSentMail:SetVisible( false );
+			p.nSenEmailID = nil;
+		elseif ( tag == ID_READ_BTN_DELETE ) then
+			if ( p.nSenEmailID ~= nil ) then
+				MsgUserEmail.DelEmail( p.nSenEmailID );
+			end
 		end
 	end
 	return true;
@@ -1020,7 +1063,7 @@ function p.ShowEmail( tMail )
 	local szContent		= tMail[EmailDataIndex.EDI_CONTENT];
 	if ( nEmailType == EmailType.ET_RECEIVED ) then
 		-- 收件
-		p.ShowReceivedMail( szName, szSubject, szContent );
+		p.ShowReceivedMail( szName, szSubject, szContent, nEmailID );
 		local pListReceivedMails = GetScrollViewContainer( p.pLayerInbox, ID_LIST_MAILS );
 		if ( nil ~= pListReceivedMails ) then
 			local pListItem = pListReceivedMails:GetViewById( nEmailID );
@@ -1031,7 +1074,7 @@ function p.ShowEmail( tMail )
 		end
 	else
 		-- 发件
-		p.ShowSentMail( szName, szSubject, szContent );
+		p.ShowSentMail( szName, szSubject, szContent, nEmailID );
 	end
 end
 
@@ -1041,9 +1084,19 @@ function p.Callback_DeleteRecord( nEmailID, nEmailType )
 	if ( EmailType.ET_RECEIVED == nEmailType ) then
 		-- 收件
 		p.DeleteInboxListItem( nEmailID );
+		if ( p.pLayerReceivedMail:IsVisibled() ) then
+			p.pLayerInbox:SetVisible( true );
+			p.pLayerReceivedMail:SetVisible( false );
+			p.nRecEmailID = nil;
+		end
 	else
 		-- 发件
 		p.DeleteOutboxListItem( nEmailID );
+		if ( p.pLayerSentMail:IsVisibled() ) then
+			p.pLayerOutbox:SetVisible( true );
+			p.pLayerSentMail:SetVisible( false );
+			p.nSenEmailID = nil;
+		end
 	end
 end
 

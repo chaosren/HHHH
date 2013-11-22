@@ -361,6 +361,22 @@ function GetGetVipLevel_ELITE_MAP_RESET_NUM()
     return 0;
 end
 
+
+
+--獲取玩家對應vip等級的背包容量
+function GetVipBgNum()
+	local CurVipLev = GetRoleBasicDataN( GetPlayerId(), USER_ATTR.USER_ATTR_VIP_RANK );
+	local ids = GetDataBaseIdList("vip_config");
+	for i,v in ipairs(ids) do
+		if v == CurVipLev then
+			local val = GetDataBaseDataN("vip_config",v,DB_VIP_CONFIG.BAG_NUM);
+			return val;
+		end
+	end
+	return 0;
+end
+
+
 --获得需要多少VIP才可自动战斗 
 function GetGetVipLevel_FIGHT_AUTO()
     local ids = GetDataBaseIdList("vip_config");

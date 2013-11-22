@@ -356,8 +356,11 @@ function p.ProcessPetInfoUpdate(netdata)
 			--成功音效    
     		Music.PlayEffectSound(Music.SoundEffect.LEVUP);
     		
-    		--Buff刷新
-    		Buff.SendRequest();
+    			--Buff刷新
+    			Buff.SendRequest();
+
+			--主界面活动提示按钮刷新
+			MainUI.RefreshFuncIsOpen();
 		end
 		
 		--主角切换技能

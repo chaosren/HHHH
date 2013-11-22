@@ -43,7 +43,13 @@ end
 function p.GetPropType(nItemType)
     local nType	= 0;
 	if CheckN(nItemType) then
-		nType	= Num7(nItemType);
+		if nItemType == 40000001 then
+			nType = 10;
+		elseif nItemType == 40000002 then
+			nType = 11;
+		else
+			nType	= Num7(nItemType);
+		end
 	end
 	return nType;
 end

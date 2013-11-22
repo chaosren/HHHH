@@ -149,8 +149,7 @@ function p.GetItemAmount( nItemType )
 	for i,v in ipairs( tItemIDList ) do
 		local nItemTypeTmp	= Item.GetItemInfoN( v, Item.ITEM_TYPE );
 		if( nItemTypeTmp == nItemType ) then
-            nCount = Item.GetItemInfoN( v, Item.ITEM_AMOUNT );
-			break;
+            nCount = nCount + Item.GetItemInfoN( v, Item.ITEM_AMOUNT );
 		end
 	end
 	return nCount;

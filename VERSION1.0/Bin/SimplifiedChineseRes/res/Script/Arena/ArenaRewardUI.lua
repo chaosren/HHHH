@@ -53,6 +53,12 @@ function p.LoadUI()
 		local pLabel	= GetLabel( layer, ID_FIGHTEVALUATE_CTRL_TEXT_INFO );
 		local szPrize	= MsgTreasureHunt.GetPrizeString()
 		pLabel:SetText( szPrize );
+    elseif  ArenaUI.isInChallenge == 10 then
+    	-- 血战
+		uiLoad:Load("SM_FIGHT_RESULT.ini",layer,p.OnUIEvent,0,0);
+		local pLabel	= GetLabel( layer, ID_FIGHTEVALUATE_CTRL_TEXT_INFO );
+		local szPrize	= MsgTreasureHunt.GetPrizeString()
+		pLabel:SetText( szPrize );
     else
 		uiLoad:Load("SM_FIGHT_RESULT.ini",layer,p.OnUIEvent,0,0);
 	end
@@ -225,6 +231,19 @@ function p.SetResult(result,money,repute,soph,emoney)
 		elseif result ==0 then --战斗失败
 			bg:SetPicture(pool:AddPicture(GetSMImg00Path("battle/battle_icon2.png"), false), true);
 		end
+    elseif  ArenaUI.isInChallenge == 10 then
+		-- 血战
+        local layer	= p.GetParent();
+        if nil == layer then
+            return;
+        end
+        local bg	= GetImage(layer,ID_FIGHTEVALUATE_CTRL_PICTURE_STATE);
+        local pool	= DefaultPicPool();
+		if result ==1 then --战斗胜利
+			bg:SetPicture(pool:AddPicture(GetSMImg00Path("battle/battle_icon3.png"), false), true);
+		elseif result ==0 then --战斗失败
+			bg:SetPicture(pool:AddPicture(GetSMImg00Path("battle/battle_icon2.png"), false), true);
+		end
 
     elseif 7 == ArenaUI.isInChallenge then
     --斗地主
@@ -256,7 +275,7 @@ function p.SetResult(result,money,repute,soph,emoney)
         local str="";
         
         if result ==1 then         
-            if ArenaUI.isInChallenge == 1 then    
+            if ArenaUI.isInChallenge == 1 or ArenaUI.isInChallenge == 9 then    
                 bg:SetPicture(pool:AddPicture(GetSMImg00Path("battle/battle_icon4.png"), false), true);
             elseif ArenaUI.isInChallenge == 2 then
                 bg:SetPicture(pool:AddPicture(GetSMImg00Path("transport/icon_transport3.png"), false), true);
@@ -267,7 +286,7 @@ function p.SetResult(result,money,repute,soph,emoney)
             Music.PlayEffectSound(1094);
 
         elseif result ==0 then   
-          if ArenaUI.isInChallenge == 1 then    
+          if ArenaUI.isInChallenge == 1  or ArenaUI.isInChallenge == 9 then    
                 bg:SetPicture(pool:AddPicture(GetSMImg00Path("battle/battle_icon5.png"), false),true);
           elseif  ArenaUI.isInChallenge == 2 then
                 bg:SetPicture(pool:AddPicture(GetSMImg00Path("transport/icon_transport4.png"), false), true);

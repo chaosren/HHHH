@@ -20,6 +20,7 @@ local ID_FOSTER_B_CTRL_PICTURE_22					= 23;
 local ID_FOSTER_B_CTRL_PICTURE_1					= 1;
 
 --合成界面
+local ID_NEEDED_GOD_STONE_VALUE						= 39;--神铸需要的神元石数量标签
 local ID_FOSTER_B_R_CTRL_PICTURE_37					= 38;
 local ID_FOSTER_B_R_CTRL_TEXT_36						= 37;
 local ID_FOSTER_B_R_CTRL_TEXT_35						= 36;
@@ -166,7 +167,8 @@ function p.LoadUI(nStoneId)
     
     
     SetArrow(p.GetLayer(),p.GetPetNameContainer(),1,TAG_BEGIN_ARROW,TAG_END_ARROW);
-    
+    p.RefreshMoney();--
+    p.RefreshGodStone();--
 	return true;
 end
 
@@ -307,14 +309,22 @@ function p.RefreshComposeInfoLayer()
 	
 	
 	if formulaID == 0 then
-		
 		SetLabel(Infolayer,ID_FOSTER_B_R_CTRL_TEXT_24,"");
 		SetLabel(Infolayer,ID_FOSTER_B_R_CTRL_TEXT_26,"");
 		SetLabel(Infolayer,ID_FOSTER_B_R_CTRL_TEXT_32,"");
 		SetLabel(Infolayer,ID_FOSTER_B_R_CTRL_TEXT_34,"");
 		SetLabel(Infolayer,ID_FOSTER_B_R_CTRL_TEXT_36,"");
 		SetLabel(Infolayer,ID_FOSTER_B_R_CTRL_TEXT_3,"");
-		SetLabel(Infolayer,ID_FOSTER_B_R_CTRL_TEXT_4,"");		
+		SetLabel(Infolayer,ID_FOSTER_B_R_CTRL_TEXT_4,"");
+		SetLabel(Infolayer,ID_NEEDED_GOD_STONE_VALUE,"");
+		local itemBtn=GetItemButton(Infolayer,ID_FOSTER_B_R_CTRL_EQUIP_BUTTON_2);
+		if CheckP(itemBtn) then
+			itemBtn:ChangeItemType(0);
+		end	
+		local itemBtnPROD=GetItemButton(Infolayer,ID_FOSTER_B_R_CTRL_EQUIP_BUTTON_32);
+		if CheckP(itemBtnPROD) then
+			itemBtnPROD:ChangeItemType(0);
+		end	
 		return;
 	end
 	
@@ -325,6 +335,7 @@ function p.RefreshComposeInfoLayer()
 	local nItemType=GetDataBaseDataN("formulatype",formulaID,DB_FORMULATYPE.MATERIAL1);
 	local productItemType=GetDataBaseDataN("formulatype",formulaID,DB_FORMULATYPE.PRODUCT);
 	local nNeedMoney 		= GetDataBaseDataN("formulatype",formulaID,DB_FORMULATYPE.FEE_MONEY);
+	local nNeededStone		= GetDataBaseDataN("formulatype",formulaID,DB_FORMULATYPE.NUM2);--所需神元石数量
 
 	--根据装备类型显示属性
     local equipLv = Item.GetItemInfoN(g_ItemId, Item.ITEM_ADDITION);
@@ -383,6 +394,7 @@ function p.RefreshComposeInfoLayer()
 	SetLabel(Infolayer,ID_FOSTER_B_R_CTRL_TEXT_33,""..nAdvanceLevNew);
 	SetLabel(Infolayer,ID_FOSTER_B_R_CTRL_TEXT_34,""..nAttackNew 	);
 	SetLabel(Infolayer,ID_FOSTER_B_R_CTRL_TEXT_36,""..nNeedMoney..GetTxtPub("coin"));
+	SetLabel(Infolayer,ID_NEEDED_GOD_STONE_VALUE,""..nNeededStone..GetTxtPub("GodStone"));
 		
 	local l_name = SetLabel(Infolayer,ID_FOSTER_B_R_CTRL_TEXT_3,""..sItemName 	);
     
@@ -515,33 +527,41 @@ function p.EquipGlid()
 		return;
 	end
 
-  local formulaEmoney1 = p.GetFormulaEmoney(DB_FORMULATYPE.MATERIAL1,DB_FORMULATYPE.NUM1);
-  local formulaEmoney2 = p.GetFormulaEmoney(DB_FORMULATYPE.MATERIAL2,DB_FORMULATYPE.NUM2);
-  local formulaEmoney3 = p.GetFormulaEmoney(DB_FORMULATYPE.MATERIAL3,DB_FORMULATYPE.NUM3);
-  local formulaEmoney4 = p.GetFormulaEmoney(DB_FORMULATYPE.MATERIAL4,DB_FORMULATYPE.NUM4);
-  local formulaEmoney5 = p.GetFormulaEmoney(DB_FORMULATYPE.MATERIAL5,DB_FORMULATYPE.NUM5);
-  local formulaEmoney6 = p.GetFormulaEmoney(DB_FORMULATYPE.MATERIAL6,DB_FORMULATYPE.NUM6);
-  if formulaEmoney1 > 0 
-     or formulaEmoney2 > 0 
-	 or formulaEmoney3 > 0 
-	 or formulaEmoney4 > 0 
-	 or formulaEmoney5 > 0 
-	 or formulaEmoney6 > 0 then
-	local needEmoney =  formulaEmoney1 + formulaEmoney2 + formulaEmoney3 + formulaEmoney4 + formulaEmoney5 + formulaEmoney6;
-	CommonDlg.ShowNoPrompt(string.format(GetTxtPri("PLAYER_T10"),needEmoney), p.OnCommonDlg,true);
-  else
-    MsgCompose.SendGlidAction(formulaID,g_ItemId);
-  end	
+--  local formulaEmoney1 = p.GetFormulaEmoney(DB_FORMULATYPE.MATERIAL1,DB_FORMULATYPE.NUM1);
+--  local formulaEmoney2 = p.GetFormulaEmoney(DB_FORMULATYPE.MATERIAL2,DB_FORMULATYPE.NUM2);
+--  local formulaEmoney3 = p.GetFormulaEmoney(DB_FORMULATYPE.MATERIAL3,DB_FORMULATYPE.NUM3);
+--  local formulaEmoney4 = p.GetFormulaEmoney(DB_FORMULATYPE.MATERIAL4,DB_FORMULATYPE.NUM4);
+--  local formulaEmoney5 = p.GetFormulaEmoney(DB_FORMULATYPE.MATERIAL5,DB_FORMULATYPE.NUM5);
+--  local formulaEmoney6 = p.GetFormulaEmoney(DB_FORMULATYPE.MATERIAL6,DB_FORMULATYPE.NUM6);
+--  if formulaEmoney1 > 0 
+--     or formulaEmoney2 > 0 
+--	 or formulaEmoney3 > 0 
+--	 or formulaEmoney4 > 0 
+--	 or formulaEmoney5 > 0 
+--	 or formulaEmoney6 > 0 then
+--	local needEmoney =  formulaEmoney1 + formulaEmoney2 + formulaEmoney3 + formulaEmoney4 + formulaEmoney5 + formulaEmoney6;
+--	CommonDlg.ShowNoPrompt(string.format(GetTxtPri("PLAYER_T10"),needEmoney), p.OnCommonDlg,true);
+--  else
+--    MsgCompose.SendGlidAction(formulaID,g_ItemId);
+--  end
+	local nStoneItemType	= GetDataBaseDataN("formulatype",formulaID,DB_FORMULATYPE.MATERIAL2);--神元石ID--
+	local nNeededStone		= GetDataBaseDataN("formulatype",formulaID,DB_FORMULATYPE.NUM2);--所需神元石数量
+	local nStoneAmount		= Banquet.GetItemAmount(nStoneItemType);
+	if ( nNeededStone > nStoneAmount ) then
+		CommonDlgNew.ShowYesDlg(ItemFunc.GetName(nStoneItemType)..GetTxtPri("EM_I2"));
+	else
+		MsgCompose.SendGlidAction(formulaID,g_ItemId);
+	end
 
 end
 
 
 
-function p.OnCommonDlg(nId, nEvent, param)
-  if nEvent == CommonDlg.EventOK then
-    MsgCompose.SendGlidAction(formulaID,g_ItemId);
-  end
-end
+--function p.OnCommonDlg(nId, nEvent, param)
+--  if nEvent == CommonDlg.EventOK then
+--    MsgCompose.SendGlidAction(formulaID,g_ItemId);
+--  end
+--end
 
 function p.GetFormulaEmoney(material,num)
   local formulaEmoney = 0;
@@ -598,13 +618,17 @@ function p.SuccGetProduct(nProductType)
 	local scene = GetSMGameScene();
 	p.initData();
 	CommonDlgNew.ShowYesDlg(GetTxtPri("PLAYER_T11")..ItemFunc.GetName(nProductType));
-	scene:RemoveChildByTag(NMAINSCENECHILDTAG.PlayerEquipGlidUI, true);
+	--scene:RemoveChildByTag(NMAINSCENECHILDTAG.PlayerEquipGlidUI, true);--不關閉神鑄界面
+	p.RefreshEquipInfo();
+	formulaID = 0;
+	p.RefreshComposeInfoLayer();
 	
     if(IsUIShow(NMAINSCENECHILDTAG.PlayerBackBag)) then
         PlayerUIBackBag.RefreshCurrentBack();
     elseif(IsUIShow(NMAINSCENECHILDTAG.PlayerAttr)) then
         PlayerUIAttr.RefreshCurrentBack();
     end
+    p.RefreshGodStone();--
 end
 
 
@@ -860,6 +884,8 @@ function p.RefreshPetInfo()
 		--return;
 	end
     
+    idTable = RolePet.OrderPets(idTable);
+    
     --遍历伙伴
 	for i, v in ipairs(idTable) do
         --顶部角色名称
@@ -916,6 +942,7 @@ function p.refreshPetInfoListItem(view,nPetId)
     else
         local strPetName = ConvertS(RolePetFunc.GetPropDesc(nPetId, PET_ATTR.PET_ATTR_NAME));
         labelName:SetText(strPetName);
+        ItemPet.SetLabelColor(labelName, nPetId);
     end
 end
 
@@ -965,3 +992,48 @@ end
 
 
 GameDataEvent.Register(GAMEDATAEVENT.PETATTR, "PlayerUIBackBag.GameDataPetAttrRefresh", p.GameDataPetAttrRefresh);
+
+
+---------------------------------------------------
+--++Guosen 2013.10.14
+local ID_LABEL_SELVER				= 243;	-- 银币数量标签
+local ID_LABEL_GOLD					= 242;	-- 金币数量标签
+local ID_LABEL_STONE				= 77;	-- 神元石数量标签
+
+p.GOD_STONE_ITEM_TYPE_ID			= 35000000;	-- "神元石"物品类型ID
+---------------------------------------------------
+--刷新金钱
+function p.RefreshMoney()
+	--LogInfo("PlayerEquipGlidUI: RefreshMoney");
+	local pScene = GetSMGameScene();
+	if( pScene == nil ) then
+		return;
+	end
+	local pLayer = GetUiLayer( pScene, NMAINSCENECHILDTAG.PlayerEquipGlidUI );
+	if( not CheckP(pLayer) ) then
+		return;
+	end
+	local nUserID		= GetPlayerId();
+	local szSilver		= SafeN2S( GetRoleBasicDataN( nUserID, USER_ATTR.USER_ATTR_MONEY ) );--MoneyFormat( GetRoleBasicDataN( nUserID, USER_ATTR.USER_ATTR_MONEY ) );
+	local szGold		= SafeN2S( GetRoleBasicDataN( nUserID, USER_ATTR.USER_ATTR_EMONEY ) );
+	
+	_G.SetLabel( pLayer, ID_LABEL_SELVER, szSilver);
+	_G.SetLabel( pLayer, ID_LABEL_GOLD, szGold);
+end
+GameDataEvent.Register( GAMEDATAEVENT.USERATTR, "PlayerEquipGlidUI.RefreshMoney", p.RefreshMoney );
+
+---------------------------------------------------
+--刷新魔晶
+function p.RefreshGodStone()
+	--LogInfo("PlayerEquipGlidUI: RefreshEvilCrystal");
+	local pScene = GetSMGameScene();
+	if( pScene == nil ) then
+		return;
+	end
+	local pLayer = GetUiLayer( pScene, NMAINSCENECHILDTAG.PlayerEquipGlidUI );
+	if( not CheckP(pLayer) ) then
+		return;
+	end
+	local nStoneAmount	= Banquet.GetItemAmount(p.GOD_STONE_ITEM_TYPE_ID);
+	_G.SetLabel( pLayer, ID_LABEL_STONE, SafeN2S(nStoneAmount) );
+end

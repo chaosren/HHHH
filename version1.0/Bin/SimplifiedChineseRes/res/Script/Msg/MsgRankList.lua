@@ -25,10 +25,9 @@ p.RANKING_ACT = {
     ACT_EMONEY      = 7,    --金币排名
     ACT_ELITE_STAGE = 8,    --精英副本
     ACT_REFRESHTIME = 9,    --剩余刷新时间
-    ATC_ACTIVITY_CODE = 10, --激活码获取礼包接口
     
-    RANKING_ACT_CURRENT_EVENT = 11,  --当前活动查询
-    ATC_RANK_COMMON_INFO = 12, --公共数据接收
+    RANKING_ACT_CURRENT_EVENT = 10,  --当前活动查询
+    ATC_RANK_COMMON_INFO = 11, --公共数据接收
 }
 p.Action = p.RANKING_ACT.ACT_NONE;
 p.btActionType = p.RANKING_ACT.ACT_NONE;
@@ -60,18 +59,30 @@ function p.GetRankType()
 end
 
 
-function p.ProcessGetListInfo(netdata) 
-    CloseLoadBar();
-    --获取活动类型
-    local btAction = netdata:ReadByte();
-    
-    if(btAction == p.RANKING_ACT.ACT_REFRESHTIME) then
-        local nTime = netdata:ReadInt();
-        RankListUI.RefreshTime(nTime);
-        return;
-    --激活码礼包使用接口
-    elseif(btAction == p.RANKING_ACT.ATC_ACTIVITY_CODE) then
-        local nStatus = netdata:ReadInt();
+--发送检测激活码
+function p.SendActivityCodeInfoMsg(val)
+    ShowLoadBar();
+    local netdata = createNDTransData(NMSG_Type._MSG_ACTIVITY_CODE);
+    if nil == netdata then
+        return false;
+    end
+    netdata:WriteByte(1);
+    if( CheckS(val) ) then
+        netdata:WriteStr(val);
+    end
+    SendMsg(netdata);
+    netdata:Free();
+    return true;
+end
+
+
+--激活码消息返回
+function p.ProcessGetActivityInfo(netdata)
+	CloseLoadBar();
+
+	local btAction = netdata:ReadByte();
+    local nStatus = netdata:ReadByte();  
+    LogInfo("qbw btAction nStatus"..btAction.." "..nStatus);
         if(nStatus == 0) then
             CommonDlgNew.ShowYesDlg(GetTxtPri("RLUI_T8"));
         elseif(nStatus == 1) then
@@ -82,8 +93,18 @@ function p.ProcessGetListInfo(netdata)
             CommonDlgNew.ShowYesDlg(GetTxtPri("RLUI_T11"));
         elseif(nStatus == 4) then
             CommonDlgNew.ShowYesDlg(GetTxtPri("RLUI_T12"));
-        end
-        CloseLoadBar();
+        end   	 
+end
+
+
+function p.ProcessGetListInfo(netdata) 
+    CloseLoadBar();
+    --获取活动类型
+    local btAction = netdata:ReadByte();
+    
+    if(btAction == p.RANKING_ACT.ACT_REFRESHTIME) then
+        local nTime = netdata:ReadInt();
+        RankListUI.RefreshTime(nTime);
         return;
     end
     
@@ -104,6 +125,8 @@ function p.ProcessGetListInfo(netdata)
        return;
     end
     
+    
+    
     --包类型
     local btPackageType = netdata:ReadByte();   
     --初始包数据清空
@@ -114,7 +137,13 @@ function p.ProcessGetListInfo(netdata)
 	--记录条数
     local nRecordCount = netdata:ReadShort();
     
-    local nt = #RankListUI.tbRankInfo.tbRankList;
+	local nt = 0; 
+	if RankListUI.tbRankInfo.tbRankList ~= nil then
+		nt = #RankListUI.tbRankInfo.tbRankList;
+	else
+		RankListUI.tbRankInfo.tbRankList = {};
+	end
+	
     for i=1,nRecordCount do
         local tbRank = {};
         tbRank.nRank = nt + i;    --获取排名
@@ -142,80 +171,6 @@ function p.ProcessGetListInfo(netdata)
     end
 
 end
-
---[[
-function p.ProcessGetListInfo(netdata) 
-    LogInfo("p.ProcessGetListInfo");
-    local nAction = netdata:ReadByte();
-    
-    if(nAction == p.RANKING_ACT.ACT_REFRESHTIME) then
-        local nTime = netdata:ReadInt();
-        LogInfo("p.ProcessGetListInfo ACT_REFRESHTIME:[%d]",nTime);
-        RankListUI.RefreshTime(nTime);
-        return;
-    elseif(nAction == p.RANKING_ACT.ATC_ACTIVITY_CODE) then
-        local nStatus = netdata:ReadInt();
-        if(nStatus == 0) then
-            CommonDlgNew.ShowYesDlg(GetTxtPri("RLUI_T8"));
-        elseif(nStatus == 1) then
-            CommonDlgNew.ShowYesDlg(GetTxtPri("RLUI_T9"));
-        elseif(nStatus == 2) then
-            CommonDlgNew.ShowYesDlg(GetTxtPri("RLUI_T10"));
-        elseif(nStatus == 3) then
-            CommonDlgNew.ShowYesDlg(GetTxtPri("RLUI_T11"));
-        elseif(nStatus == 4) then
-            CommonDlgNew.ShowYesDlg(GetTxtPri("RLUI_T12"));
-        end
-        CloseLoadBar();
-        return;
-    end
-    
-    
-    local nPackageType = netdata:ReadByte();
-    local nRecordCount = netdata:ReadShort();
-    LogInfo("nAction:[%d],nPackageType:[%d],nRecordCount:[%d]",nAction,nPackageType,nRecordCount);
-    p.Action = nAction;
-    
-    if nPackageType == PACKAGE_BEGIN or nPackageType == PACKAGE_SINGLE then
-        LogInfo("p.RankLists clear");
-        p.RankLists = {};
-    end
-    local nt = #p.RankLists;
-    for i=1,nRecordCount do
-        local pRank = {};
-        
-        pRank.nRank = nt + i;
-        pRank.nNum = netdata:ReadInt();
-        
-        LogInfo("pRank.nRank:[%d],pRank.nNum:[%d]",pRank.nRank,pRank.nNum);
-        if(p.RANKING_ACT.ACT_SOPH == nAction) then
-            if(pRank.nNum == 0) then
-                pRank.nNum = 1;
-            end
-            pRank.nStar = netdata:ReadInt();
-            pRank.nSoph = netdata:ReadInt();
-            
-            LogInfo("pRank.nStar:[%d],pRank.nSoph:[%d]",pRank.nStar,pRank.nSoph);
-        end
-        
-        pRank.sName = netdata:ReadUnicodeString();
-        
-        LogInfo("pRank.sName:[%s]",pRank.sName);
-        
-        table.insert(p.RankLists, pRank);
-    end
-    
-    if nPackageType == PACKAGE_END or nPackageType == PACKAGE_SINGLE then
-        if(p.mUIListener) then
-            p.mUIListener(NMSG_Type._MSG_RANKING,p.RankLists);
-        end
-    end
-    
-    CloseLoadBar();
-end
-]]
-
-
 
 DAILYTASK_ACTION = {
     OPEN = 1,               --打开界面
@@ -424,3 +379,7 @@ RegisterNetMsgHandler(NMSG_Type._MSG_DAILYTASK, "p.ProcessSendDailytaskMsg", p.P
 
 
 RegisterNetMsgHandler(NMSG_Type._MSG_RANKING, "p.ProcessGetListInfo", p.ProcessGetListInfo);
+
+
+RegisterNetMsgHandler(NMSG_Type._MSG_ACTIVITY_CODE, "p.ProcessGetActivityInfo", p.ProcessGetActivityInfo);
+

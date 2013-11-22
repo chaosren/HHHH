@@ -506,6 +506,15 @@ function p.SetRightListFocus(nIndex)
         ShowText = ShowText .."  "..GetTxtPub("ShenWan").."X"..Info.Repute.."\n";
     end  
     
+    --武魂
+    if Info.Spirit ~= 0 then
+        ShowText = ShowText .."  "..GetTxtPub("Spirit").."X"..Info.Spirit.."\n";
+    end
+    --军功
+    if Info.Exploits ~= 0 then
+        ShowText = ShowText .."  "..GetTxtPub("Exploit").."X"..Info.Exploits.."\n";
+    end  
+    
     if InfoLeft.Type == p.ActionType.DAILY_RETURN 
        or InfoLeft.Type == p.ActionType.ONLINE_RETURN  then
        ShowText = ShowText ..string.format(GetTxtPri("Return_day"), Info.Param1).."\n";

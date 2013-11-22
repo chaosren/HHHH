@@ -69,6 +69,17 @@ local ID_EDIT_TRAIN_AMOUNT				= 501;	-- 培养次数输入框
 
 
 ---------------------------------------------------
+local ID_LABEL_GODHORSEWHIP_AMOUNT			= 60;	-- 神马鞭数量
+local ID_LABEL_MOUNTSOULPILL_A_AMOUNT		= 61;	-- 高级兽魂丹数量
+local ID_LABEL_MOUNTSOULPILL_P_AMOUNT		= 62;	-- 白金兽魂丹数量
+local ID_LABEL_MOUNTSOULPILL_I_AMOUNT		= 63;	-- 至尊兽魂丹数量
+
+local GodHorsewhip_ITEM_TYPE			= 36000000;	-- 神马鞭 物品类型ID
+local MountSoulPill_ADVANCED_ITEM_TYPE	= 36000001;	-- 高级兽魂丹 物品类型ID
+local MountSoulPill_PLATINIC_ITEM_TYPE	= 36000002;	-- 白金兽魂丹 物品类型ID
+local MountSoulPill_IMPERIAL_ITEM_TYPE	= 36000003;	-- 至尊兽魂丹 物品类型ID
+
+---------------------------------------------------
 local SZ_STRONG				= GetTxtPri("MS_T1");	-- "力量+"
 local SZ_AGILE				= GetTxtPri("MS_T2");	-- "敏捷+"
 local SZ_INTELLIGENCE		= GetTxtPri("MS_T3");	-- "智力+"
@@ -96,6 +107,12 @@ local tTagBtn = {
 	ID_CB_MOUNTSOUL2,
 	ID_CB_MOUNTSOUL3,
 	ID_CB_MOUNTSOUL4,
+};
+local tMountSoulBtnList = {
+	ID_BTN_MOUNTSOUL11,
+	ID_BTN_MOUNTSOUL12,
+	ID_BTN_MOUNTSOUL13,
+	ID_BTN_MOUNTSOUL14,
 };
 -- 兽魂名
 local tSZName = {
@@ -249,11 +266,23 @@ function p.ShowMountSoulMainUI()
 	uiLoad:Load( "MountSoul/MountSoul.ini", layer, p.OnUIEventMain, 0, 0 );
 	uiLoad:Free();
 	
+	-- 重设按钮ZOrder
+	for i, v in ipairs(tTagBtn) do
+    	local pMountSoulBtn = GetButton( layer, v );
+		pMountSoulBtn:RemoveFromParent( false );
+		layer:AddChildZ( pMountSoulBtn, 1 );
+	end
+	for i, v in ipairs(tMountSoulBtnList) do
+    	local pMountSoulBtn = GetButton( layer, v );
+		pMountSoulBtn:RemoveFromParent( false );
+		layer:AddChildZ( pMountSoulBtn, 1 );
+	end
+	
 	p.pLayerMountSoulUI = layer;
 	p.SetMountSoulBtn();
 	p.SetMountSoulExp();
 	p.ShowProPic();
-	
+	p.ShowMountSoulPillAmount();--显示兽魂丹数量
 	p.RefreshMoney();--显示银币与金币
 	--
 end
@@ -285,7 +314,7 @@ function p.OnUIEventMain( uiNode, uiEventType, param )
 			if ( p.tProperty ~= nil ) then
 	LogInfo( "MountSoul: LevelLimit:%d, nCurrentLevel:%d", N_LEVEL_LIMITED, p.tProperty.nCurrentLevel );
 				if ( p.tProperty.nCurrentLevel < N_LEVEL_LIMITED ) then
-					local nDlgTag, pDlgLayer = CommonDlgNew.ShowInputDlg( p.tProperty.nNSilver .. GetTxtPri("MS_T15"), p.CallBack_NormalTrainInputUI, nil, N_DEFAULT_AMOUNT, 2, GetTxtPri("MS_T18") );
+					local nDlgTag, pDlgLayer = CommonDlgNew.ShowInputDlg( p.tProperty.nNSilver .. GetTxtPri("MS_T15").."\n"..GetTxtPri("MS_T25"), p.CallBack_NormalTrainInputUI, nil, N_DEFAULT_AMOUNT, 2, GetTxtPri("MS_T18") );
 					if ( pDlgLayer ~= nil ) then
 						local pInputBox = ConverToEdit( GetUiNode( pDlgLayer, CommonDlgNew.InputNum ) );
 						if ( pInputBox ~= nil ) then
@@ -469,9 +498,10 @@ function p.CallBack_NormalTrainInputUI( eventType, param, val )
 		if ( nAmount <= 0 ) then
 			return;
 		end
+		local nWhipAmount	= Banquet.GetItemAmount( GodHorsewhip_ITEM_TYPE );--神马鞭
 		local nPlayerSilver	= GetRoleBasicDataN( GetPlayerId(), USER_ATTR.USER_ATTR_MONEY );
 		local nNeededSilver = p.tProperty.nNSilver * nAmount;
-		if ( nPlayerSilver < nNeededSilver ) then
+		if ( (nPlayerSilver+p.tProperty.nNSilver*nWhipAmount) < nNeededSilver ) then
 			CommonDlgNew.ShowYesDlg( GetTxtPri("Common_TongQianBuZhu"), nil, nil, 3 );
 		else
 			MsgMountSoul.SendMsgCultivate( MSTM.Normal, nAmount );
@@ -963,19 +993,51 @@ function p.OnUIEventSelectTrainType( uiNode, uiEventType, param )
 		elseif ( ID_BTN_OK == tag ) then
 			if ( p.nTranAmount <= 0 ) then
 			else
+				local nWhipAmount	= 0;	--
+				local nAPillAmount	= 0;	--
+				local nPPillAmount	= 0;	--
+				local nIPillAmount	= 0;	--
+				local nPlayerId		= ConvertN(GetPlayerId());
+				local tItemIDList	= ItemUser.GetBagItemList(nPlayerId);
+				for i, v in ipairs(tItemIDList) do
+					local nItemType	= Item.GetItemInfoN( v, Item.ITEM_TYPE );
+					if ( nItemType == GodHorsewhip_ITEM_TYPE ) then
+						nWhipAmount = nWhipAmount + Item.GetItemInfoN( v, Item.ITEM_AMOUNT );
+					end
+					if ( nItemType == MountSoulPill_ADVANCED_ITEM_TYPE ) then
+						nAPillAmount = nAPillAmount + Item.GetItemInfoN( v, Item.ITEM_AMOUNT );
+    			    end
+					if ( nItemType == MountSoulPill_PLATINIC_ITEM_TYPE ) then
+						nPPillAmount = nPPillAmount + Item.GetItemInfoN( v, Item.ITEM_AMOUNT );
+    			    end
+					if ( nItemType == MountSoulPill_IMPERIAL_ITEM_TYPE ) then
+						nIPillAmount = nIPillAmount + Item.GetItemInfoN( v, Item.ITEM_AMOUNT );
+    			    end
+				end
 				local nPlayerSilver	= GetRoleBasicDataN( GetPlayerId(), USER_ATTR.USER_ATTR_MONEY );
-				local nNeededSilver = p.tProperty.nNSilver * p.nTranAmount;
+				local nGoldTranAmount	= 0; -- 消耗金币银币培养的次数
+				if ( p.nTranMode == MSTM.Advanced ) then
+					nGoldTranAmount	= p.nTranAmount - nAPillAmount;
+				elseif ( p.nTranMode == MSTM.Platinic ) then
+					nGoldTranAmount	= p.nTranAmount - nPPillAmount;
+				elseif ( p.nTranMode == MSTM.Imperial ) then
+					nGoldTranAmount	= p.nTranAmount - nIPillAmount;
+				end
+				if ( nGoldTranAmount < 0 ) then
+					nGoldTranAmount = 0;
+				end
+				local nNeededSilver = p.tProperty.nNSilver * nGoldTranAmount;
 				if ( nPlayerSilver < nNeededSilver ) then
 					CommonDlgNew.ShowYesDlg( GetTxtPri("Common_TongQianBuZhu"), nil, nil, 3 );
 				else
 					local nPlayerGold	= GetRoleBasicDataN( GetPlayerId(), USER_ATTR.USER_ATTR_EMONEY );
 					local nNeededGold	= 0;
 					if ( p.nTranMode == MSTM.Advanced ) then
-						nNeededGold	= p.tProperty.nAGold * p.nTranAmount;
+						nNeededGold	= p.tProperty.nAGold * nGoldTranAmount;
 					elseif ( p.nTranMode == MSTM.Platinic ) then
-						nNeededGold	= p.tProperty.nPGold * p.nTranAmount;
+						nNeededGold	= p.tProperty.nPGold * nGoldTranAmount;
 					elseif ( p.nTranMode == MSTM.Imperial ) then
-						nNeededGold	= p.tProperty.nIGold * p.nTranAmount;
+						nNeededGold	= p.tProperty.nIGold * nGoldTranAmount;
 					end
 					if ( nPlayerGold < nNeededGold ) then
 						CommonDlgNew.ShowYesDlg( GetTxtPri("Common_JinBiBuZhu"), nil, nil, 3 );
@@ -1092,6 +1154,9 @@ local TipTxt ={
 	GetTxtPri("MS_I12"),
 	GetTxtPri("MS_I13"),
 	GetTxtPri("MS_I14"),
+	GetTxtPri("MS_I15"),
+	GetTxtPri("MS_I16"),
+	GetTxtPri("MS_I17"),
 };
 
 
@@ -1179,3 +1244,53 @@ function p.OnUIEventIntro(uiNode, uiEventType, param)
     	end
 	end
 end
+
+
+---------------------------------------------------
+-- 显示各类兽魂丹数量
+function p.ShowMountSoulPillAmount()
+	if ( p.pLayerMountSoulUI == nil ) then
+		return;
+	end
+	
+	--local nWhipName		= ItemFunc.GetName( GodHorsewhip_ITEM_TYPE );	--
+	--local szAPillName	= ItemFunc.GetName( MountSoulPill_ADVANCED_ITEM_TYPE );	--
+	--local szPPillName	= ItemFunc.GetName( MountSoulPill_PLATINIC_ITEM_TYPE );	--
+	--local szIPillName	= ItemFunc.GetName( MountSoulPill_IMPERIAL_ITEM_TYPE );	--
+	local nWhipAmount	= 0;	--
+	local nAPillAmount	= 0;	--
+	local nPPillAmount	= 0;	--
+	local nIPillAmount	= 0;	--
+	local nPlayerId		= ConvertN(GetPlayerId());
+	local tItemIDList	= ItemUser.GetBagItemList(nPlayerId);
+	for i, v in ipairs(tItemIDList) do
+		local nItemType		= Item.GetItemInfoN( v, Item.ITEM_TYPE );
+		if ( nItemType == GodHorsewhip_ITEM_TYPE ) then
+			nWhipAmount = nWhipAmount + Item.GetItemInfoN( v, Item.ITEM_AMOUNT );
+		end       
+		if ( nItemType == MountSoulPill_ADVANCED_ITEM_TYPE ) then
+			nAPillAmount = nAPillAmount + Item.GetItemInfoN( v, Item.ITEM_AMOUNT );
+        end
+		if ( nItemType == MountSoulPill_PLATINIC_ITEM_TYPE ) then
+			nPPillAmount = nPPillAmount + Item.GetItemInfoN( v, Item.ITEM_AMOUNT );
+        end
+		if ( nItemType == MountSoulPill_IMPERIAL_ITEM_TYPE ) then
+			nIPillAmount = nIPillAmount + Item.GetItemInfoN( v, Item.ITEM_AMOUNT );
+        end
+	end
+	--local szInfor = "";
+	--szInfor = szInfor.. nWhipName .. ":" .. nWhipAmount .. "\n";
+	--szInfor = szInfor.. szAPillName .. ":" .. nAPillAmount .. "\n";
+	--szInfor = szInfor.. szPPillName .. ":" .. nPPillAmount .. "\n";
+	--szInfor = szInfor.. szIPillName .. ":" .. nIPillAmount;
+	--SetLabel( p.pLayerMountSoulUI, ID_LABEL_MOUNTSOULPILL_INFOR, szInfor);
+	SetLabel( p.pLayerMountSoulUI, ID_LABEL_GODHORSEWHIP_AMOUNT, SafeN2S(nWhipAmount) );
+	SetLabel( p.pLayerMountSoulUI, ID_LABEL_MOUNTSOULPILL_A_AMOUNT, SafeN2S(nAPillAmount) );
+	SetLabel( p.pLayerMountSoulUI, ID_LABEL_MOUNTSOULPILL_P_AMOUNT, SafeN2S(nPPillAmount) );
+	SetLabel( p.pLayerMountSoulUI, ID_LABEL_MOUNTSOULPILL_I_AMOUNT, SafeN2S(nIPillAmount) );
+end
+
+-- 有物品改变事件发生时的回调
+GameDataEvent.Register( GAMEDATAEVENT.ITEMATTR, "MountSoul.ShowMountSoulPillAmount", p.ShowMountSoulPillAmount );
+GameDataEvent.Register( GAMEDATAEVENT.ITEMINFO, "MountSoul.ShowMountSoulPillAmount", p.ShowMountSoulPillAmount );
+GlobalEvent.Register( GLOBALEVENT.GE_ITEM_UPDATE, "MountSoul.ShowMountSoulPillAmount", p.ShowMountSoulPillAmount );
