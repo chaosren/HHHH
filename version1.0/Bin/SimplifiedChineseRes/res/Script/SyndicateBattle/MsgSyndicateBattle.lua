@@ -36,7 +36,29 @@ Leave = 3,
 EndBattle = 4,
 CloseUI = 5,
 GetStepInfo = 6,
+ActivityStatus = 7, --军团战状态
 }
+
+
+local StatusType = 
+{
+		ActivityStateNotOpen = 0,	--活动未开启
+		ActivityStatePrepare =1,	--进入活动准备阶段，截止报名了
+		ActivityStateOpen =2,		--活动开启
+		ActivityStateClose=3,		--活动关闭	
+}
+
+
+p.DailyActivityStatus = StatusType.ActivityStateNotOpen
+
+--是否可以显示主界面提示按钮
+function p.IfcanShowTipButton()
+	if p.DailyActivityStatus == StatusType.ActivityStateOpen then
+		return true
+	else
+		return false
+	end
+end
 
 function p.GetStepInfo()
 	local netdata = createNDTransData(NMSG_Type._MSG_SYNDICATEBATTLE_ACTION);
@@ -109,13 +131,27 @@ end
 	LogInfo("qboy  SendCampBattleGetCampList");
 	ShowLoadBar();
 ]]
+
+
+function p.ProcessActivityStatus(netdata)
+	local action = netdata:ReadByte()
+    local status = netdata:ReadInt()
+
+	p.DailyActivityStatus = status
+	--主界面刷新提示按钮
+	MainUI.RefreshFuncIsOpen();
+	
+    LogInfo("ProcessActivityStatus status"..status)
+end
+
 function p.ProcessActionRet(netdata)
     CloseLoadBar();
     LogInfo("qboy SyndicateBattle::ProcessActionRet")
     local action = netdata:ReadByte()
     local ret = netdata:ReadByte()
     LogInfo("qboy data:action="..action..",ret="..ret)
-    if(action == ActionType.SignUp) then
+	
+	if(action == ActionType.SignUp) then
         if(SyndicateBattle.SignUpRet ~= nil) then
             SyndicateBattle.SignUpRet(ret)
         end
@@ -380,6 +416,7 @@ end
 
 
 
+RegisterNetMsgHandler(NMSG_Type._MSG_SYNDICATEBATTLE_ACTION, "p.ProcessActionRet", p.ProcessActivityStatus);
 
 RegisterNetMsgHandler(NMSG_Type._MSG_SYNDICATEBATTLE_STEPS_INFO, "p.ProcessStepsInfo", p.ProcessStepsInfo);
 RegisterNetMsgHandler(NMSG_Type._MSG_SYNDICATEBATTLE_SIGNUP_INFO, "p.ProcessSignUpInfo", p.ProcessSignUpInfo);
