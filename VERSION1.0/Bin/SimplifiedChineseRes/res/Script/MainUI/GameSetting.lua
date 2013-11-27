@@ -13,10 +13,10 @@ local p = GameSetting;
 
 ---------------------------------------------------
 local ID_BTN_CLOSE					= 6;	-- X
-local ID_BTN_CHANGE_ACCOUNT			= 1;	-- 更换账号按钮ID
+local ID_BTN_CHANGE_ACCOUNT			= 1;	-- 修改密码按钮ID
 local ID_BTN_CHANGE_SERVER			= 2;	-- 更换服务器按钮ID
 local ID_BTN_CALL_GM				= 3;	-- 联系GM按钮ID
-local ID_BTN_VISIT_GAME_FORUM		= 4;	-- 访问游戏论坛按钮ID
+local ID_BTN_VISIT_GAME_FORUM		= 4;	-- 绑定账号按钮ID
 local ID_CHECK_PLAY_BGM				= 15;	-- 播放背景音乐选择控件ID
 local ID_CHECK_PLAY_EFFECT			= 16;	-- 播放音效选择控件ID
 local ID_CHECK_SHOW_OTHER_PLAYER	= 17;	-- 查看其它玩家选择控件ID
@@ -153,15 +153,17 @@ function p.OnUIEvent( uiNode, uiEventType, param )
 		if ( ID_BTN_CLOSE == tag ) then
 			p.CloseUI();
 		elseif ( ID_BTN_CHANGE_ACCOUNT == tag ) then
-			p.OnBtnChangeAccount();
-			--LoginChgPassWord.LoadUI();
-			--p.CloseUI()
+			--p.OnBtnChangeAccount();
+			LoginChgPassWord.LoadUI();
+			p.CloseUI()
 		elseif ( ID_BTN_CHANGE_SERVER == tag ) then
 			p.OnBtnChangeServer();
 		elseif ( ID_BTN_CALL_GM == tag ) then
 			p.OnBtnCallGM();
 		elseif ( ID_BTN_VISIT_GAME_FORUM == tag ) then
-			p.OnBtnVisitGameForum();
+			--p.OnBtnVisitGameForum();
+			LoginBindAccount.LoadUI();
+			p.CloseUI()
 		end
 	elseif ( uiEventType == NUIEventType.TE_TOUCH_CHECK_CLICK ) then
 		if ( ID_CHECK_PLAY_BGM == tag ) then

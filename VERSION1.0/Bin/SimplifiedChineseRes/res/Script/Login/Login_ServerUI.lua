@@ -560,15 +560,7 @@ function p.LoginOK_Guest(param)
 end
 
 function p.LoginOK_Normal(param)
-	p.UIN = param;
-	
-	if p.UIN == 0 then
-		p.GUIN = nil;
-	end
-	
 	p.Refresh();
-	
-
 	p.RunGetServerListTimer();
 end
 
@@ -612,7 +604,7 @@ function p.TimerGetServerList(nTimer)
     end
        
     if bIsSwichKey == false and p.GUIN ~= nil then
-    	sendMsgConnect(p.worldIP, p.worldPort, p.GUIN);	 	
+    	sendMsgConnect(p.worldIP, p.worldPort, p.UIN);	 	
     end
     	--bIsSwichKey = false;
 
@@ -822,7 +814,7 @@ function p.LoginGameNew()
 	Music.PlayLoginMusic()
 	p.LoadUI();
 	--p.LoginOK_Normal( p.UIN );
-	p.LoginOK_Normal( p.GUIN )
+	p.LoginOK_Normal( p.UIN )
 end
 RegisterGlobalEventHandler( GLOBALEVENT.GE_LOGIN_GAME,"Login_ServerUI.LoginGame", p.LoginGameNew );
 

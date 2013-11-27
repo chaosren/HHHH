@@ -52,6 +52,17 @@ p.CHECK_FLAG =
 	TYPE_CHG_PWD_FST = 11,   --修改密码第一次输入密码校验
 	TYPE_CHG_PWD_SND = 12,   --修改密码第二次输入密码校验
 	TYPE_CHG_OLD_NEW = 13,   --新旧密码相同性校验
+	TYPE_CHG_PWD_ERROR = 14,   --输入的旧密码有误
+	TYPE_CHG_FAILED = 15,   --修改密码错误
+	
+	TYPE_BIND_ACNT = 16,	   --绑定账号校验
+	TYPE_BIND_PWD_FST = 17,   --绑定第一个密码校验
+	TYPE_BIND_PWD_SND = 18,   --绑定第二个密码校验
+	
+	TYPE_BIND_SAME_ACUNT = 19,  --绑定的号码与原号码相同
+	TYPE_BIND_ACUNT_EXIT = 20,   --绑定帳號时账号已存在
+	TYPE_BIND_FAILED = 21,     --绑定账号失败
+	
 };
 
 --获取的数据段对应CommonDataInit中每条记录的每个字段例如 nTipId,nCtrId等
@@ -89,7 +100,18 @@ function p.CommonDataInit()
 	{nCheckFlag = 11, nTipId = 2, nCtrId = 8, nUITag = NMAINSCENECHILDTAG.LoginChgPassWord, nEditId1 = 89, nEditId2 = 90},
 	{nCheckFlag = 12, nTipId = 5, nCtrId = 8, nUITag = NMAINSCENECHILDTAG.LoginChgPassWord, nEditId1 = 89, nEditId2 = 90},
 	{nCheckFlag = 13, nTipId = 8, nCtrId = 8, nUITag = NMAINSCENECHILDTAG.LoginChgPassWord, nEditId1 = 89, nEditId2 = 90},
-
+	{nCheckFlag = 14, nTipId = 11, nCtrId = 8, nUITag = NMAINSCENECHILDTAG.LoginChgPassWord, nEditId1 = 88, nEditId2 = 89, nEditId3 = 90},
+	{nCheckFlag = 15, nTipId = 12, nCtrId = 8, nUITag = NMAINSCENECHILDTAG.LoginChgPassWord, nEditId1 = 88, nEditId2 = 89, nEditId3 = 90},
+	
+	--绑定页面用到的
+	{nCheckFlag = 16, nTipId = 1, nCtrId = 16, nUITag = NMAINSCENECHILDTAG.LoginBindAccountUI, nEditId1 = 88, nEditId2 = 89, nEditId3 = 90},
+	{nCheckFlag = 17, nTipId = 2, nCtrId = 16, nUITag = NMAINSCENECHILDTAG.LoginBindAccountUI, nEditId1 = 89, nEditId2 = 90},
+	{nCheckFlag = 18, nTipId = 5, nCtrId = 16, nUITag = NMAINSCENECHILDTAG.LoginBindAccountUI, nEditId1 = 90},
+	{nCheckFlag = 19, nTipId = 13, nCtrId = 16, nUITag = NMAINSCENECHILDTAG.LoginBindAccountUI, nEditId1 = 88, nEditId2 = 89, nEditId3 = 90},
+	{nCheckFlag = 20, nTipId = 14, nCtrId = 16, nUITag = NMAINSCENECHILDTAG.LoginBindAccountUI, nEditId1 = 88, nEditId2 = 89, nEditId3 = 90},
+	{nCheckFlag = 21, nTipId = 15, nCtrId = 16, nUITag = NMAINSCENECHILDTAG.LoginBindAccountUI, nEditId1 = 88, nEditId2 = 89, nEditId3 = 90},
+	
+	
 	};
 end
 
@@ -197,7 +219,7 @@ function p.CheckDataValidity(Pdata, nFlag)
 	
 	local bGameSceneFlag = nil;
 	if nFlag >= p.CHECK_FLAG.TYPE_CHG_PWD_OLD and
-	   nFlag <= p.CHECK_FLAG.TYPE_CHG_OLD_NEW then
+	   nFlag <= p.CHECK_FLAG.TYPE_BIND_PWD_SND then
 	   bGameSceneFlag = true;
 	end
 	
@@ -226,7 +248,8 @@ function p.CheckDataValidity(Pdata, nFlag)
 	local nMax = 0;
 	
 	if p.CHECK_FLAG.TYPE_LOG_ACNT == nFlag 
-		or p.CHECK_FLAG.TYPE_REG_ACNT == nFlag then --账号校验
+		or p.CHECK_FLAG.TYPE_REG_ACNT == nFlag 
+		or p.CHECK_FLAG.TYPE_BIND_ACNT == nFlag then --账号校验
 		nMin = p.NUM_LIMITE.ACCOUNT_NUM_MIN;
 		nMax = p.NUM_LIMITE.ACCOUNT_NUM_MAX;
 	else

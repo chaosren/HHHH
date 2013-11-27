@@ -2702,6 +2702,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\Bin\SimplifiedChineseRes\res\Script\SelfSdk\LoginBindAccount.lua"
+				>
+			</File>
+			<File
 				RelativePath="..\Bin\SimplifiedChineseRes\res\Script\SelfSdk\LoginChgPassWord.lua"
 				>
 			</File>

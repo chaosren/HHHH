@@ -6,3 +6,4 @@ DoFile("SelfSdk/LoginChgPassWord.lua");
 DoFile("SelfSdk/LoginGuest.lua");
 DoFile("SelfSdk/MsgSelfSdkLogin.lua");
 DoFile("SelfSdk/SendHttpMsglogin.lua");
+DoFile("SelfSdk/LoginBindAccount.lua");

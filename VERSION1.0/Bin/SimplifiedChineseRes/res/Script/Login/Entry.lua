@@ -103,8 +103,9 @@ function p.OnUIEvent( uiNode, uiEventType, param )
 				SqliteConfig.InitDataBaseTable();
 				Login_ServerUI.worldIP	= EXTERNAL_WORLD_SERVER_IP;
 				Login_ServerUI.worldPort = EXTERNAL_WORLD_SERVER_PORT;
+				
 				--Login_ServerUI.LoadUI();
-				Login_ServerUI.LoginOK_Normal( 0 )
+				--Login_ServerUI.LoginOK_Normal( nAccountID)
 				SelfSdkLogin.LoginControl();
 			end
 		elseif ( ID_BTN_LOCAL_SERVER == tag ) then
@@ -124,22 +125,7 @@ end
 function p.ProcessGameAccount(netdatas)
 	CloseLoadBar();
 	local nGameAccount = netdatas:ReadInt();
-	
-	local nGuestFlag = LoginGuest.GetGuestLoginFlag();
-	if nGuestFlag then
-		LoginGuest.LoginSuccess();
-	else
-		--seft sdk 登入成功调用
-		local nAutoFlag = SelfSdkLogin.GetAutoFlag();
-		
-		if nAutoFlag ~= 1 then
-			LoginUI.LoginSuccess();
-		end
-	end
-	
 	Login_ServerUI.SetGameAccountID(nGameAccount);
-	p.CloseUI();
-	Login_ServerUI.LoadUI();
 end
 
 ---------------------------------------------------

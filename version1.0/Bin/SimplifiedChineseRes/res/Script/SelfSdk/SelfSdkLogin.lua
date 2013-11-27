@@ -19,7 +19,7 @@ function p.LoginControl()
 		record = SqliteConfig.SelectSelfLogin(1);
 	else
 		record.nAutoLogin = 0;
-		record.Account = "qqqqqq";
+		record.Account = "ababab";
 		record.PassWord = "aaaaaa";
 	end
 	

@@ -20,7 +20,8 @@ p.Account = nil;
 function p.LoadUI()
 	
 	--local scene = GetSMLoginScene();	
-	local scene = GetSMGameScene();
+	--local scene = GetSMGameScene();
+	local scene = GetRunningScene();
 	
 	if scene == nil then
 		return;
@@ -167,5 +168,6 @@ end
 
 --修改密码成功保存至数据库
 function p.LoginChgSuccess()
+	CloseUI(NMAINSCENECHILDTAG.LoginChgPassWord);
 	local record = {};	record.ID = 0;	record.nAutoLogin = 0;	record.Account = p.Account;	record.PassWord = p.FstPassWord;	SqliteConfig.InsertSelfLogin(record);
 end

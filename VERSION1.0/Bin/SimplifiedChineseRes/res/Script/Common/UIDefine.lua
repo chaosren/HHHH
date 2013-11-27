@@ -170,6 +170,7 @@ NMAINSCENECHILDTAG =
     LoginUI                          = NUITAG_BEGIN + 122,                  --SDK登入页面  
     LoginRegisterUI                   = NUITAG_BEGIN + 123,                  --SDK登入注册页面  
     LoginChgPassWord                  = NUITAG_BEGIN + 124,                  --SDK登入修改密码页面  
+    LoginBindAccountUI                  = NUITAG_BEGIN + 125,                  --SDK绑定账号页面    
     
     
     TopBar                  = NUITAG_BEGIN + 158,

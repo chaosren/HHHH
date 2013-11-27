@@ -6,10 +6,8 @@
 SendHttpMsgLogin = {}
 local p = SendHttpMsgLogin;
 
---http://host:9009/process_rename_account?account=xx&pwd=xx&new_account=xx
 
-
-p.strHttpIpPort = "http://192.168.243.54:9009/";           --ip，端口
+p.strHttpIpPort = "http://121.197.11.39:9009/";           --ip，端口
 p.strHttpLogin = "process_login_account";        --登入账号
 p.strHttpRnameAcnt = "process_rename_account";   --绑定账号
 p.strHttpRegister = "process_register_account";  --注册账号
@@ -68,6 +66,20 @@ function p.HttpSendChangePassWord(Account, OldPassWord, NewPassWord)
 	strSendData = strSendData.."?account="..Account.."&pwd="..OldPwd.."&new_pwd="..NewPwd;
 	SendHttpLoginMsg(strSendData);
 end
+
+--发送绑定账号请求消息
+--http://host:9009/process_rename_account?account=xx&pwd=xx&new_account=xx
+function p.HttpSendBindAccount(Account, PassWord, NewAccount) 
+	ShowLoadBar()
+	p.MsgType = p.NUM_MSG_TYPE.MSG_TYPE_RENAME;
+		
+	local NewPwd = LoginCommon.GetEncryptString(PassWord);
+	
+	local strSendData = p.strHttpIpPort..p.strHttpRnameAcnt;      
+	strSendData = strSendData.."?account="..Account.."&pwd="..NewPwd.."&new_account="..NewAccount;
+	SendHttpLoginMsg(strSendData);
+end
+
 
 --去掉空格，"号
 function p.RmvSpAnd(szInfo)  
@@ -142,8 +154,14 @@ function p.MsgRcvControl(szFstName, szFstValue, szSndName, szSndValue)
 		if szFstName == p.strAccount_id and szSndName == p.strResult then
 			p.MsgRcvLogCtl(szFstValue, szSndValue);
 		end
-	elseif p.MsgType == p.NUM_MSG_TYPE.MSG_TYPE_GUESS_LOGIN then
-	
+	elseif p.MsgType == p.NUM_MSG_TYPE.MSG_TYPE_CHG_PWD then
+		if szFstName == p.strResult then
+			p.MsgRcvChgPwdCtl(szFstValue);
+		end
+	elseif p.MsgType == p.NUM_MSG_TYPE.MSG_TYPE_RENAME then
+		if szFstName == p.strResult then
+			p.MsgRcvBindAcuntCtl(szFstValue);
+		end
 	end
 end
 
@@ -219,8 +237,60 @@ function p.MsgRcvLogCtl(strAcntId, strResult)
 			end
 		end
 		
-		Login_ServerUI.SetGameAccountID(nAcntId);
+		Login_ServerUI.SetAccountID(nAcntId);
 		Login_ServerUI.LoadUI();
 		Login_ServerUI.LoginOK_Normal(nAcntId)
 	end	 
 end
+
+
+--修改密码请求返回枚举
+p.ENUM_CHG_PWD =
+{
+	CHG_OK = 0,   --修改成功
+	ACNT_NOT_EXIT = 1, --账号不存在
+	SAME_PWD = 2, --相同密码
+	PWD_ERROR = 3, --
+	FAILED = 4, -- 
+};
+
+function p.MsgRcvChgPwdCtl(strResult)
+	local nResult = SafeS2N(strResult);
+	if nResult == p.ENUM_CHG_PWD.CHG_OK then
+		LoginChgPassWord.LoginChgSuccess();
+		CommonDlgNew.ShowYesDlg(GetTxtPri("SELF_SDK_TIP10"), nil, nil, 10);
+	elseif nResult == p.ENUM_CHG_PWD.PWD_ERROR then
+		LoginCommon.ShowErrorTipInfo(LoginCommon.CHECK_FLAG.TYPE_CHG_PWD_ERROR, true); 
+	else
+		LoginCommon.ShowErrorTipInfo(LoginCommon.CHECK_FLAG.TYPE_CHG_FAILED, true); 
+	end
+end
+
+
+--綁定帳號返回枚举
+p.ENUM_BIND_ACUNT =
+{
+	OK = 0,                  --修改成功
+	ACCOUNT_NOT_EXIST = 1,    --账号不存在
+	SAME_ACCOUNT = 2,        
+	INVALID_PASSWORD = 3, 
+	FAIL = 4, 
+	ACCOUNT_NAME_EXIST = 5, 
+};
+
+function p.MsgRcvBindAcuntCtl(strResult)
+	local nResult = SafeS2N(strResult);
+	if nResult == p.ENUM_BIND_ACUNT.OK then
+		LoginBindAccount.LoginBindSuccess();
+		CommonDlgNew.ShowYesDlg(GetTxtPri("SELF_SDK_TIP16"), nil, nil, 10);
+	elseif nResult == p.ENUM_BIND_ACUNT.SAME_ACCOUNT then
+		LoginCommon.ShowErrorTipInfo(LoginCommon.CHECK_FLAG.TYPE_BIND_SAME_ACUNT, true); 
+	elseif nResult == p.ENUM_BIND_ACUNT.ACCOUNT_NAME_EXIST then
+		LoginCommon.ShowErrorTipInfo(LoginCommon.CHECK_FLAG.TYPE_BIND_ACUNT_EXIT, true); 
+	else
+		LoginCommon.ShowErrorTipInfo(LoginCommon.CHECK_FLAG.TYPE_BIND_FAILED, true);
+	end
+end
+
+
+
