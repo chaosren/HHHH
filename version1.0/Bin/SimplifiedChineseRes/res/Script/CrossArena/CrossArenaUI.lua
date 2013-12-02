@@ -421,7 +421,11 @@ end
 
 
 function p.RefreshMoney()
-    local nPlayerId = GetPlayerId();
+	if  ArenaUI.isInChallenge ~= 11 then
+		return;
+	end
+	
+	local nPlayerId = GetPlayerId();
 	if nil == nPlayerId then
 		return;
 	end
