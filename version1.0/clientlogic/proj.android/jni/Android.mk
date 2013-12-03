@@ -27,6 +27,7 @@ LOCAL_SRC_FILES := \
 ../../GameScene/src/SMGameScene.cpp \
 ../../GameScene/src/SMLoginScene.cpp \
 ../../GameScene/src/WorldMapScene.cpp \
+../../GameScene/src/DenaSdkLoginScene.cpp \
 ../../Item/src/EnhancedObj.cpp \
 ../../Item/src/Item.cpp \
 ../../Item/src/ItemImage.cpp \

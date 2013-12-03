@@ -38,7 +38,7 @@ NS_NDENGINE_BGN
 //#define NDPath_SoundPath			 "/sdcard/dhlj/SimplifiedChineseRes/res/sound/"
 //#define NDPath_UIPath			 "/sdcard/dhlj/SimplifiedChineseRes/res/UI/"
 //#define NDPath_ScriptPath		 "/sdcard/dhlj/SimplifiedChineseRes/res/Script/"
-#define NDPath_LogPath			 "/sdcard/dhlj/log"
+#define NDPath_LogPath			 "/sdcard/dhlj_dena/log"
 #else
 #define  LOG_TAG    "DaHuaLongJiang"
 #define  LOGD(...)
@@ -84,7 +84,7 @@ const string NDPath::GetAppPath()
     return std::string([[[NSBundle mainBundle] resourcePath] UTF8String]) + "/";
 #endif
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
-	return "/sdcard/dhlj/";
+	return "/sdcard/dhlj_dena/";
 #endif
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
 	return "../../Bin/";
@@ -102,7 +102,7 @@ const string NDPath::GetCashesPath()
      return std::string([CashesDirectory UTF8String]) +"/";
 #endif
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
-	return "/sdcard/dhlj/";
+	return "/sdcard/dhlj_dena/";
 #endif
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
 	return "../../Bin/";
@@ -119,7 +119,7 @@ const string NDPath::GetDocumentPath()
 //	return std::string([documentsDirectory UTF8String]) + "/";
 //
 //#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
-//	return "/sdcard/dhlj/";
+//	return "/sdcard/dhlj_dena/";
 //#endif
 //#if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
 //	return "./";
@@ -314,7 +314,7 @@ void NDPath::SetResDirPos( int iPos )
 const string NDPath::GetDBPath()
 {
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
-	return "/sdcard/dhlj/";
+	return "/sdcard/dhlj_dena/";
 #else
 	return "";
 #endif

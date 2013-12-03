@@ -7,7 +7,9 @@ SendHttpMsgLogin = {}
 local p = SendHttpMsgLogin;
 
 
-p.strHttpIpPort = "http://121.197.11.39:9009/";           --ip，端口
+--p.strHttpIpPort = "http://112.124.57.245:9009/";           --ip，端口
+
+p.strHttpIpPort = "http://dhlj.cn03.91dena.com:9009/";           --ip，端口
 p.strHttpLogin = "process_login_account";        --登入账号
 p.strHttpRnameAcnt = "process_rename_account";   --绑定账号
 p.strHttpRegister = "process_register_account";  --注册账号
