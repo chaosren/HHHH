@@ -233,12 +233,12 @@ function p.OnUIEvent(uiNode, uiEventType, param)
         elseif TOOL_BTN[9].Tag == tag then          --名人堂
             _G.CloseMainUI();
             local btRankType = MsgRankList.GetRankType();
-            LogInfo("tzqtzqtzq btRankType = %d", btRankType);
+            LogInfo("btRankType = %d", btRankType);
             
             if btRankType >= MsgRankList.RANKING_ACT.ACT_PET_LEVEL and
                btRankType <= MsgRankList.RANKING_ACT.ACT_ELITE_STAGE  then
                 ShowLoadBar();  
-                LogInfo("tzqtzqtzq MsgRankList.SendGetListInfoMsg");
+                LogInfo("MsgRankList.SendGetListInfoMsg");
                 MsgRankList.SendGetListInfoMsg(btRankType);       
             end
             

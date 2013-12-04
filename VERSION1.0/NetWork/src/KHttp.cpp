@@ -63,7 +63,6 @@ void KHttp::clear()
 	m_iNotifyGap = 0;
 	m_iNotifyPos = 0;
 }
-
 void KHttp::setCookie(KData cookie)
 {
 	m_dtCookie = cookie;
@@ -137,7 +136,7 @@ std::string KHttp::UrlEncode(const std::string& str)
 	return strTemp;  
 }
 
-int KHttp::getHttpFile( const KData& fullUrl, char*& saveBuf)
+int KHttp::getHttpBuffer(const KData& fullUrl, char*& saveBuf)
 {
 	string strPath = fullUrl;
 	Trim(strPath);
@@ -200,7 +199,7 @@ int KHttp::getHttpFile(const KData& fullUrl, const KData& savefile,
 	KData dtTemp;
 	m_bWriteBufFlag = false;
 
-	LOGD("kDTFullUrl is %s",kDTFullUrl.getDataBuf());
+	LOGD("11kDTFullUrl is %s",kDTFullUrl.getDataBuf());
 
 	if (isEqualNoCase(kDTFullUrl.substr(0, 7), "http://"))
 	{

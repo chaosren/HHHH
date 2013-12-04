@@ -160,8 +160,11 @@ LOCAL_LDLIBS := -L$(call host-path, $(LOCAL_PATH)/../../proj.android/libs/$(TARG
 
 LOCAL_WHOLE_STATIC_LIBRARIES += ClientEngine
 LOCAL_WHOLE_STATIC_LIBRARIES += Sqlite3
+LOCAL_WHOLE_STATIC_LIBRARIES += NetWork
 
 include $(BUILD_STATIC_LIBRARY)
 
+
+$(call import-module,NetWork/proj.android/jni)
 $(call import-module,ClientEngine/proj.android/jni)
 $(call import-module,Sqlite3/proj.android/jni)

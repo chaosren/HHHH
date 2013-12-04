@@ -17,7 +17,7 @@ public:
 	void setCookie( KData cookie );
 	int getHttpFile( const KData& fullUrl, const KData& savefile, int startpos=0 );
 	int getHttpFile( const KData& server, const KData& httpfile, const KData& savefile, int startpos=0 );
-	int getHttpFile( const KData& fullUrl, char*& saveBuf);
+	int getHttpBuffer(const KData& fullUrl, char*& saveBuf);
 
 	int getHttpFileMemory( const KData& server, const KData& httpfile, char** pKData );
 	void setNotifyCallback( NotifyCallback callback, void* param, int percent=10 );

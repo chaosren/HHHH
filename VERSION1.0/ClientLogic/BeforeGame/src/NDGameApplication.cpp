@@ -254,7 +254,7 @@ bool NDGameApplication::applicationDidFinishLaunching()
 
 	// set FPS. the default value is 1.0/60 if you don't call this
 	//pDirector->setAnimationInterval(1.0 / 60);
-	LOGD("tzqtzqtzq pDirector->setAnimationInterval() value is %d", (int) pDirector);
+	LOGD("pDirector->setAnimationInterval() value is %d", (int) pDirector);
 	pDirector->setAnimationInterval(1.0 / 24.0);
 
 #if 0 //@todo @hello

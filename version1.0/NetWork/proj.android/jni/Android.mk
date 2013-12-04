@@ -14,7 +14,7 @@ LOCAL_SRC_FILES := \
 ../../src/KNetworkAddress.cpp \
 ../../src/KTcpClientSocket.cpp \
 ../../src/StringData.cpp \
-../../src/KHTTP.cpp
+../../src/KHttp.cpp
 
 LOCAL_C_INCLUDES := \
 $(LOCAL_PATH)/../../inc \

@@ -84,7 +84,9 @@ LOCAL_LDLIBS := -L$(call host-path, $(LOCAL_PATH)/../../proj.android/libs/$(TARG
                 -L$(call host-path, $(LOCAL_PATH)/../../../cocos2d-x/cocos2dx/platform/third_party/android/libraries/$(TARGET_ARCH_ABI))
 
 LOCAL_WHOLE_STATIC_LIBRARIES += ClientLogic
+LOCAL_WHOLE_STATIC_LIBRARIES += NetWork
 
 include $(BUILD_SHARED_LIBRARY)
 
 $(call import-module,ClientLogic/proj.android/jni)
+$(call import-module,NetWork/proj.android/jni)
