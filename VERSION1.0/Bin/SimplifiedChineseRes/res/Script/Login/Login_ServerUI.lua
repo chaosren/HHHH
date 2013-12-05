@@ -10,7 +10,7 @@ local p = Login_ServerUI;
 p.curSel=0;
 p.Account=nil;
 p.Pwd="";
-p.UIN=317003333;
+p.UIN=317003331;
 
 p.LoginWait = true;
 p.LoginUiUpdate = false;          --在服务器列表是否要检测版本更新的标志
