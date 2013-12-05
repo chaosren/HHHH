@@ -24,10 +24,11 @@ p.RANKING_ACT = {
     ACT_MONEY       = 6,    --银币排名
     ACT_EMONEY      = 7,    --金币排名
     ACT_ELITE_STAGE = 8,    --精英副本
-    ACT_REFRESHTIME = 9,    --剩余刷新时间
-    
-    RANKING_ACT_CURRENT_EVENT = 10,  --当前活动查询
-    ATC_RANK_COMMON_INFO = 11, --公共数据接收
+	
+	ACT_EMONEY_CONSUME = 9,    --金币消耗
+    ACT_REFRESHTIME = 10,    --剩余刷新时间
+    RANKING_ACT_CURRENT_EVENT = 11,  --当前活动查询
+    ATC_RANK_COMMON_INFO = 12, --公共数据接收
 }
 p.Action = p.RANKING_ACT.ACT_NONE;
 p.btActionType = p.RANKING_ACT.ACT_NONE;

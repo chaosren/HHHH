@@ -79,6 +79,8 @@ function p.MsgReciveDailyAcionInfo(netdatas)
        --刷新活动页面
        DailyAction.RefreshUI(DailyAction.CurFocusBtnId);
     end    
+	
+	MainUI.RefreshFuncIsOpen();
 end
 
 
