@@ -61,10 +61,10 @@ function p.MsgReciveDailyAcionInfo(netdatas)
 			if record.bStatus == 3 then
 				--开启，则获取剩余次数
 				--MsgBloodBattle.SendMsgLeftTimes();
-				MsgBloodBattle.DailyActionUpdate(false);
+				MsgBloodBattle.DailyActionUpdate(true);
 			else
 				--关闭,
-				MsgBloodBattle.DailyActionUpdate(true);
+				MsgBloodBattle.DailyActionUpdate(false);
 				
 			end	
 		end
