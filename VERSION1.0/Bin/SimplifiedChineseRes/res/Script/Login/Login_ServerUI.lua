@@ -815,6 +815,7 @@ end
 function p.LoginGameNew()
 	--切换账号的处理
 	if GameSetting.bChangeAcount then
+		LoginCommon.LoginChgAcuntSuccess();
 		GameSetting.bChangeAcount = false;
 		Entry.ShowUI(0);
 		SelfSdkLogin.LoginControl();

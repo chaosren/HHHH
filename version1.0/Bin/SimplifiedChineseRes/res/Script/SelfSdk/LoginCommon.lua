@@ -361,3 +361,11 @@ end
 
 
 
+
+--修改密码成功保存至数据库
+function p.LoginChgAcuntSuccess()
+	local record = {};	record.ID = 1;	record.nAutoLogin = 0;	record.Account = "";	record.PassWord = "";	SqliteConfig.InsertSelfLogin(record);
+end
+
+
+
