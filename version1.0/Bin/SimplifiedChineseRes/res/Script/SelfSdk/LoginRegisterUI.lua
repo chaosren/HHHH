@@ -162,5 +162,5 @@ end
 
 --注册成功保存至数据库
 function p.LoginRegSuccess()
-	local record = {};	record.ID = 0;	record.nAutoLogin = p.nAutoLogin;	record.Account = p.Account;	record.PassWord = p.FstPassWord;	SqliteConfig.InsertSelfLogin(record);
+	local record = {};	record.ID = 1;	record.nAutoLogin = p.nAutoLogin;	record.Account = p.Account;	record.PassWord = p.FstPassWord;	SqliteConfig.InsertSelfLogin(record);
 end

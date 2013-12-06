@@ -11,7 +11,7 @@ p.nAutoFlag = 0;
 function p.LoginControl()
 	
 	p.nAutoFlag = 0;
-	local nTestFlag = 1;
+	local nTestFlag = 0;
 	local record = {};
 	
 	--首先查找本地数据库,
@@ -19,23 +19,23 @@ function p.LoginControl()
 		record = SqliteConfig.SelectSelfLogin(1);
 	else
 		record.nAutoLogin = 0;
-		record.Account = "ababab";
-		record.PassWord = "aaaaaa";
+		record.Account = "aassdd";
+		record.PassWord = "aassdd";
 	end
 	
+	LoginCommon.CommonDataInit();
+		
 	if record == nil then
 		--在数据库中读取不到记录，进入自己的登入界面
-		LoginCommon.CommonDataInit();
 		LoginUI.LoadUI();	
 	else
 		local nAutoLogin = record.nAutoLogin;
 		local Account = record.Account;
 		local PassWord = record.PassWord;
-		nAutoLogin = 0;
 		
 		if nAutoLogin == 0 then  		--非自动登入
 			LoginCommon.CommonDataInit();
-			LoginUI.LoadUI(Account, PassWord);
+			LoginUI.LoadUI(Account);
 		else                         --自动登入
 			p.nAutoFlag = 1;
 			--MsgSelfSdkLogin.MsgSendLoginAccount(Account, PassWord);

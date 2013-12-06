@@ -237,7 +237,10 @@ function p.OnUIEventClose(uiNode, uiEventType, param)
     LogInfo("p.OnUIEventClose tag:[%d]",tag);
 	if uiEventType == NUIEventType.TE_TOUCH_BTN_CLICK then
         if(TAG_Close_BTN == tag) then
-            doNDSdkChangeLogin();
+            --doNDSdkChangeLogin();
+           GameSetting.bChangeAcount = true;
+			CloseUI(NMAINSCENECHILDTAG.Login_ServerUI);
+			QuitGame();
         end
 	end
 	return true;
@@ -810,11 +813,16 @@ end
 
 --++Guosen 2012.8.4
 function p.LoginGameNew()
-	LogInfo( "@@ Login_ServerUI: LoginGameNew()" );
-	Music.PlayLoginMusic()
-	p.LoadUI();
-	--p.LoginOK_Normal( p.UIN );
-	p.LoginOK_Normal( p.UIN )
+	--切换账号的处理
+	if GameSetting.bChangeAcount then
+		GameSetting.bChangeAcount = false;
+		Entry.ShowUI(0);
+		SelfSdkLogin.LoginControl();
+	else
+		Music.PlayLoginMusic()
+		p.LoadUI();
+		p.LoginOK_Normal( p.UIN )
+	end
 end
 RegisterGlobalEventHandler( GLOBALEVENT.GE_LOGIN_GAME,"Login_ServerUI.LoginGame", p.LoginGameNew );
 

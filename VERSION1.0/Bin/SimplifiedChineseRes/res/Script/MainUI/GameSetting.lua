@@ -43,6 +43,8 @@ p.iPlayBGMEnable					= nil;	-- 能否播放背景音乐
 p.iPlayEffectEnable					= nil;	-- 能否播放音效
 p.iShowOtherPlayerEnable			= nil;	-- 能否显示其他玩家
 
+
+p.bChangeAcount			= false;	-- 能否显示其他玩家
 ---------------------------------------------------
 function p.GetCurrentScene()
 	--local pDirector = DefaultDirector();
@@ -103,7 +105,7 @@ function p.ShowUI()
 	p.InitializeUI( pLayer );
 	local pBtn = GetButton( pLayer, ID_BTN_CALL_GM );
 	if ( pBtn ~= nil ) then
-		pBtn:SetVisible( false );
+		--pBtn:SetVisible( false );
 	end
 
     local closeBtn=GetButton(pLayer,ID_BTN_CLOSE);
@@ -158,8 +160,9 @@ function p.OnUIEvent( uiNode, uiEventType, param )
 			p.CloseUI()
 		elseif ( ID_BTN_CHANGE_SERVER == tag ) then
 			p.OnBtnChangeServer();
-		elseif ( ID_BTN_CALL_GM == tag ) then
-			p.OnBtnCallGM();
+		elseif ( ID_BTN_CALL_GM == tag ) then --切换账号
+			--p.OnBtnCallGM();
+			p.OnDenaChangeAccount();
 		elseif ( ID_BTN_VISIT_GAME_FORUM == tag ) then
 			--p.OnBtnVisitGameForum();
 			LoginBindAccount.LoadUI();
@@ -218,6 +221,14 @@ function p.OnBtnChangeAccount()
 	p.CloseUI();
 	doNDSdkChangeLogin();
 end
+
+---------------------------------------------------
+function p.OnDenaChangeAccount()
+	p.bChangeAcount = true;
+	p.CloseUI();
+	QuitGame();
+end
+
 
 ---------------------------------------------------
 function p.OnBtnChangeServer()

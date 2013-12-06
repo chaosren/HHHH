@@ -165,5 +165,5 @@ end
 --注册成功保存至数据库
 function p.LoginBindSuccess()
 	CloseUI(NMAINSCENECHILDTAG.LoginBindAccountUI);
-	local record = {};	record.ID = 0;	record.nAutoLogin = 0;	record.Account = p.Account;	record.PassWord = p.FstPassWord;	SqliteConfig.InsertSelfLogin(record);
+	local record = {};	record.ID = 1;	record.nAutoLogin = 0;	record.Account = p.Account;	record.PassWord = p.FstPassWord;	SqliteConfig.InsertSelfLogin(record);
 end
