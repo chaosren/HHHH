@@ -25,7 +25,7 @@ function p.LoginControl()
 	
 	LoginCommon.CommonDataInit();
 		
-	if record == nil then
+	if record == nil or record.Account == nil then
 		--在数据库中读取不到记录，进入自己的登入界面
 		LoginUI.LoadUI();	
 	else

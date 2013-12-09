@@ -38,7 +38,7 @@ function p.HttpSendLoginAccount(Account, PassWord)
 	p.MsgType = p.NUM_MSG_TYPE.MSG_TYPE_LOGIN;
 	local strPwd = LoginCommon.GetEncryptString(PassWord);
 	local strSendData = p.strHttpIpPort..p.strHttpLogin;      
-	strSendData = strSendData.."?account="..Account.."&pwd="..PassWord;
+	strSendData = strSendData.."?account="..Account.."&pwd="..strPwd;
 	SendHttpLoginMsg(strSendData);
 end
 
