@@ -14,7 +14,7 @@ local ID_EDIT_CONTENT				= 22;	-- 编辑控件-内容
 local ID_BTN_SEND					= 10;	-- 按钮-发送
 
 ---------------------------------------------------
-local SUBJECT_LENGTH_LIMIT			= 20;	-- 主题限制字数
+local SUBJECT_LENGTH_LIMIT			= 60;	-- 主题限制字数
 local CONTENT_LENGTH_LIMIT			= 255;	-- 内容限制字数
 
 
@@ -50,7 +50,7 @@ function p.CreateMassEmailDlg( pParentLayer )
 	p.pLayerMassEmailDlg = layer;
 	
 	-- 标题编辑框
-	pUINode			= GetUiNode( layer, ID_EDIT_SUBJECT );
+	local pUINode			= GetUiNode( layer, ID_EDIT_SUBJECT );
 	p.pEditSubject	= ConverToEdit( pUINode );
 	p.pEditSubject:SetMaxLength(SUBJECT_LENGTH_LIMIT);
 	

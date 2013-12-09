@@ -1008,8 +1008,8 @@ function p.OnUIEventProp(uiNode, uiEventType, param)
 					end
 
 				elseif nType == 11 then  --8格行囊擴充卡
-					if nHasAddNum == 192 then
-						nCanAdd = 0;
+					if math.fmod(200 - nHasAddNum, 8) == 0 then
+						nCanAdd = (200 - nHasAddNum) / 8;
 					else
 						nCanAdd = (196 - nHasAddNum) / 8;
 					end
