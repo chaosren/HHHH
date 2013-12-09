@@ -203,7 +203,7 @@ function p.InitialFuctionButton()
 		btn:CloseFrame();
 		btn:SetTag(v.Tag);
 		btn:SetImage(norPic);
-		btn:SetFrameRect(CGRectMake(0, 0, sizeBtn.w*CoordScaleY_960, sizeBtn.h*CoordScaleY_960));
+		btn:SetFrameRect(CGRectMake(-200, -200, sizeBtn.w*CoordScaleY_960, sizeBtn.h*CoordScaleY_960));
 		btn:SetLuaDelegate(p.OnUIEvent);
 		bglayer:AddChild(btn);
 		--设置隐藏
@@ -221,7 +221,7 @@ function p.InitialFuctionButton()
 		btn:CloseFrame();
 		btn:SetTag(v.Tag);
 		btn:SetImage(norPic);
-		btn:SetFrameRect(CGRectMake(0, 0, sizeBtn.w*CoordScaleY_960, sizeBtn.h*CoordScaleY_960));
+		btn:SetFrameRect(CGRectMake(-200, -200, sizeBtn.w*CoordScaleY_960, sizeBtn.h*CoordScaleY_960));
 		btn:SetLuaDelegate(p.OnUIEventDailyActionTip);
 		bglayer:AddChild(btn);
 		--设置隐藏
@@ -675,9 +675,16 @@ function p.AdjustToolPos()
     end
 
     for i,v in ipairs(btns) do
-        local rect = TOOL_BTN[i].Rect;
-        LogInfo("x:[%d],y:[%d],w:[%d],h:[%d]",rect.origin.x,rect.origin.y,rect.size.w,rect.size.h);
-        v:SetFrameRect(rect);
+		--只显示10个按钮
+		if i<= 10 then 
+			local rect = TOOL_BTN[i].Rect;
+			LogInfo("x:[%d],y:[%d],w:[%d],h:[%d]",rect.origin.x,rect.origin.y,rect.size.w,rect.size.h);
+			v:SetFrameRect(rect);
+		else
+			local rect =CGRectMake(-200, -200, 40*fScalex, 40*fScaley);
+			
+			v:SetFrameRect(rect);
+		end	
     end
 end
 
