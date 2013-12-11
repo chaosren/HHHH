@@ -125,9 +125,29 @@ function p.OnUIEvent(uiNode, uiEventType, param)
 			--LoginCommon.CloseUI(NMAINSCENECHILDTAG.LoginChgPassWord);
 			--LoginUI.LoadUI();
 			CloseUI(NMAINSCENECHILDTAG.LoginChgPassWord);
+			
+		elseif 	(ID_EDIT_OLD_PASSWORD == tag 
+		        or ID_EDIT_NEW_PASSWORD == tag 
+		        or ID_EDIT_SEC_PASSWORD == tag) then
+		        
+			local uiNode1 = GetUiNode(p.CurLayer, ID_EDIT_OLD_PASSWORD);
+			local uiNode2 = GetUiNode(p.CurLayer, ID_EDIT_NEW_PASSWORD);
+			local uiNode3 = GetUiNode(p.CurLayer, ID_EDIT_SEC_PASSWORD);	
+			local edit1 = ConverToEdit(uiNode1);
+			local edit2 = ConverToEdit(uiNode2);
+			local edit3 = ConverToEdit(uiNode3);
+			edit1:SetFocus(false);
+			edit2:SetFocus(false);
+			edit3:SetFocus(false);
+			
+			if ID_EDIT_OLD_PASSWORD == tag then
+				edit1:SetFocus(true);
+			elseif ID_EDIT_NEW_PASSWORD == tag then
+				edit2:SetFocus(true);
+			elseif ID_EDIT_SEC_PASSWORD == tag then
+				edit3:SetFocus(true);
+			end
 		end
-		
-		
 		--输入键盘回调响应
 	elseif uiEventType == NUIEventType.TE_TOUCH_EDIT_INPUT_FINISH then
 

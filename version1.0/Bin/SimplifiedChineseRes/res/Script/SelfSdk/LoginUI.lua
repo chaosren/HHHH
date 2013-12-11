@@ -57,7 +57,7 @@ function p.LoadUI(Account, PassWord, AutoLogin)
 	
     local uiLoad = createNDUILoad();
 	if nil == uiLoad then
-		layer:Free();
+		layer:Free();                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
 		return;
 	end
 	uiLoad:Load("Login/login_1.ini", layer, p.OnUIEvent, 0, 0);
@@ -136,6 +136,21 @@ function p.OnUIEvent(uiNode, uiEventType, param)
 			--p.CloseLoginUI();
 			--LoginChgPassWord.LoadUI();
 			
+		elseif 	(ID_EDIT_ACCOUNT == tag 
+		        or ID_EDIT_PASSWORD == tag then
+		        
+			local uiNode1 = GetUiNode(p.CurLayer, ID_EDIT_ACCOUNT);
+			local uiNode2 = GetUiNode(p.CurLayer, ID_EDIT_PASSWORD);
+			local edit1 = ConverToEdit(uiNode1);
+			local edit2 = ConverToEdit(uiNode2);
+			edit1:SetFocus(false);
+			edit2:SetFocus(false);
+			
+			if ID_EDIT_ACCOUNT == tag then
+				edit1:SetFocus(true);
+			elseif ID_EDIT_PASSWORD == tag then
+				edit2:SetFocus(true);
+			end				
 		end
 	elseif ( uiEventType == NUIEventType.TE_TOUCH_CHECK_CLICK ) then
 		--自动登入单选框点击操作
@@ -163,7 +178,7 @@ function p.OnUIEvent(uiNode, uiEventType, param)
 				p.PassWord = edit:GetText();
 				LogInfo("eidt text [%s][%s]", edit:GetText(), p.PassWord);
 			end			
-		end		
+		end	
 	end
      
 	return true;

@@ -290,7 +290,7 @@ void CUIEdit::draw()
 #if WITH_NEW_IME
 	
 	NDPicture* pic = m_picImage;
-	if (m_bIMEOpen && m_picFocusImage)
+	if ((m_bIMEOpen || m_bFocus) && m_picFocusImage)
 	{
 		pic	= m_picFocusImage;
 	}
@@ -430,6 +430,11 @@ void CUIEdit::InitInput()
 #endif
 
 	this->SetTextColor(m_colorText);
+}
+
+void CUIEdit::SetFocus( bool bFocus )
+{ 
+	m_bFocus = bFocus; 
 }
 
 //点击打开/关闭输入法

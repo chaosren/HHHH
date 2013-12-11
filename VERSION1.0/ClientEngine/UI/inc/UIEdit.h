@@ -72,6 +72,8 @@ public:
     void SetFlag( int iFlag ){ m_iFlag = iFlag; }
     int GetFlag(){ return m_iFlag; }
 	void SetTextAlignment(int alignment);
+
+	void SetFocus( bool bFocus ); 
 	
 private:
 	static CUIEdit*             g_pCurUIEdit;
@@ -94,6 +96,8 @@ private:
 
 	int							m_curInputCount;
 	int							m_curStrCount;
+
+	bool                     m_bFocus;
 
 private:
 	void InitInput();

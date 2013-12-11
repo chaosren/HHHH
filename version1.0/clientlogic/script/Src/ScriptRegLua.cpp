@@ -638,7 +638,7 @@ void NDScriptRegLua::doReg()
 	ETMEMBERFUNC("SetTextColor",					&CUIEdit::SetTextColor)
     ETMEMBERFUNC("SetFlag",                         &CUIEdit::SetFlag)
 	ETMEMBERFUNC("GetFlag",                         &CUIEdit::GetFlag)
-    
+ 	ETMEMBERFUNC("SetFocus",                         &CUIEdit::SetFocus)   
 	ETCLASSEND(CUIEdit)
 	
 //#pragma mark ±à¼­¿ò¿Ø¼þ "UIList.h"

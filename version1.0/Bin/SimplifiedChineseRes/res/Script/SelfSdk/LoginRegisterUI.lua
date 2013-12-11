@@ -109,6 +109,29 @@ function p.OnUIEvent(uiNode, uiEventType, param)
 		elseif ID_BTN_CANCEL == tag then          --离开            
 			LoginCommon.CloseUI(NMAINSCENECHILDTAG.LoginRegisterUI);
 			LoginUI.LoadUI();
+
+		elseif 	(ID_EDIT_ACCOUNT == tag 
+		        or ID_EDIT_FST_PASSWORD == tag 
+		        or ID_EDIT_SED_PASSWORD == tag) then
+		        
+			local uiNode1 = GetUiNode(p.CurLayer, ID_EDIT_ACCOUNT);
+			local uiNode2 = GetUiNode(p.CurLayer, ID_EDIT_FST_PASSWORD);
+			local uiNode3 = GetUiNode(p.CurLayer, ID_EDIT_SED_PASSWORD);	
+			local edit1 = ConverToEdit(uiNode1);
+			local edit2 = ConverToEdit(uiNode2);
+			local edit3 = ConverToEdit(uiNode3);
+			edit1:SetFocus(false);
+			edit2:SetFocus(false);
+			edit3:SetFocus(false);
+			
+			if ID_EDIT_ACCOUNT == tag then
+				edit1:SetFocus(true);
+			elseif ID_EDIT_FST_PASSWORD == tag then
+				edit2:SetFocus(true);
+			elseif ID_EDIT_SED_PASSWORD == tag then
+				edit3:SetFocus(true);
+			end			
+
 		end
 		
 	--输入键盘回调响应
