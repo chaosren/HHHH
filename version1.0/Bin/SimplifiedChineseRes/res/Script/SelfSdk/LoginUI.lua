@@ -137,7 +137,7 @@ function p.OnUIEvent(uiNode, uiEventType, param)
 			--LoginChgPassWord.LoadUI();
 			
 		elseif 	(ID_EDIT_ACCOUNT == tag 
-		        or ID_EDIT_PASSWORD == tag then
+		        or ID_EDIT_PASSWORD == tag) then
 		        
 			local uiNode1 = GetUiNode(p.CurLayer, ID_EDIT_ACCOUNT);
 			local uiNode2 = GetUiNode(p.CurLayer, ID_EDIT_PASSWORD);

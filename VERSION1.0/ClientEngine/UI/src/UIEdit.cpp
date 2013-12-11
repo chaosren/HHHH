@@ -44,6 +44,7 @@ CUIEdit::CUIEdit()
 #endif
 
 	m_bIMEOpen				= false;
+	m_bFocus = false;
 }
 
 void CUIEdit::Initialization()
@@ -297,7 +298,12 @@ void CUIEdit::draw()
 
 	if (pic)
 	{
-		pic->DrawInRect( this->GetScreenRect() );
+		CCRect rRect = GetScreenRect();
+		rRect.origin.x   -= 5;
+		rRect.origin.y   -= 7;
+		rRect.size.width   += 10;
+		rRect.size.height   += 3;
+		pic->DrawInRect(rRect);
 	}
 
 	if (m_lbText)
