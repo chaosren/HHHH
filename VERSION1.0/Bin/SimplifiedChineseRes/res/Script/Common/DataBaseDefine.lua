@@ -2268,6 +2268,16 @@ DB_WORLDBATTLE_CONFIG = {
 }
 
 
+DB_BLOODBATTLE_CONFIG = {
+	ID = 0,       
+	BLOOD_LEVEL = 1,   
+	MODE_TYPE = 2,   
+	REQ_MONEY = 3,   
+	JUMP_LAYER1 = 4, 
+	REQ_EMONEY = 5,   
+	JUMP_LAYER2 = 6, 
+}
+
 
 
 

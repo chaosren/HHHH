@@ -58,6 +58,8 @@ local SZ_REWARD_TITLE				= GetTxtPri("BB_D6");--"恭喜您过关！获得：";
 local SZ_PROMPT_00					= GetTxtPri("BB_D7");--"您此次挑战已通过了所有的关卡！";
 local SZ_PROMPT_01					= GetTxtPri("BB_D8");--"恭喜您通关！获得："
 local SZ_DESCRIPTION				= GetTxtPri("BB_I1").."\n"..GetTxtPri("BB_I2").."\n"..GetTxtPri("BB_I3").."\n"..GetTxtPri("BB_I4").."\n"..GetTxtPri("BB_I5").."\n"..GetTxtPri("BB_I6").."\n"..GetTxtPri("BB_I7").."\n"..GetTxtPri("BB_I8");--"血战说明……";
+
+local SZ_ERROR_01					= GetTxtPri("BB_I9");--
 local PLAYER_LEVEL_LIMITE			= 30;	--玩家等级限制
 
 -- BloodBattleDifficulty
@@ -195,6 +197,7 @@ function p.RefreshMainUI( tUserInfor )
 	p.ShowRivalName();
 	--
 	p.ShowClearStagePicture();
+
 end
 
 ---------------------------------------------------
@@ -315,17 +318,29 @@ function p.OnUIEventMain( uiNode, uiEventType, param )
 		if ( ID_BTN_CLOSE == tag ) then
 			p.CloseUI();
 		elseif ( tag == ID_BTN_START_CHALLENGE ) then
+		
 			if ( p.tUserInfor.nChallCount < p.tUserInfor.uChallMax ) then
 				if ( p.tUserInfor.nClimbLayer < p.tUserInfor.nLvLmt ) then--
-					MsgBloodBattle.SendMsgChallenge( p.nDifficulty );
+					--提示跳關
+					if p.tUserInfor.nClimbLayer == 0 and p.tUserInfor.nJumpId ~= 0 then
+						BloodBattleJump.LoadUI();
+					else
+						MsgBloodBattle.SendMsgChallenge( p.nDifficulty );
+					end
 				else
 					CommonDlgNew.ShowYesDlg( SZ_PROMPT_00, nil, nil, 3 );
 				end
 			else
 				CommonDlgNew.ShowYesDlg( SZ_ERROR_00, nil, nil, 3 );
 			end
+			
 		elseif ( tag == ID_BTN_RESTART ) then
-			MsgBloodBattle.SendMsgReset();
+			if ( p.tUserInfor.nChallCount >= p.tUserInfor.uChallMax - 1) then
+				CommonDlgNew.ShowYesDlg( SZ_ERROR_01, nil, nil, 3 );
+			else
+				MsgBloodBattle.SendMsgReset();	
+			end
+
 		elseif ( tag == ID_BTN_RULE_DESCRIPTION ) then
 			p.ShowRuleDescriptionUI();
 		--测试--直接显示奖励窗口

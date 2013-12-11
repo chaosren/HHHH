@@ -236,7 +236,7 @@ NMAINSCENECHILDTAG =
 	CrossArenaRule           = NUITAG_BEGIN + 206,          --跨服竞技场规则界面
 	CrossArenaReward         = NUITAG_BEGIN + 207,          --跨服竞技场奖励查看
 	
-	
+	BloodBattleJumpUI        = NUITAG_BEGIN + 208,          --跳關提示界面
 	
 	CommonDlg				= NDLGTAG_BEGIN,						--通用对话框
 	CommonDlgNew              = NDLGTAGNEW_BEGIN,                     --新通用对话框

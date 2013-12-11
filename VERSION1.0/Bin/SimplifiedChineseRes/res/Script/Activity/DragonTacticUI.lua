@@ -17,7 +17,7 @@ p.TabInfo = { TacticTabInfo = {LayerTag = 1001, tabBtnId = 24,  focusIndex = 1, 
              GameAssisInfo = {LayerTag = 1002,  tabBtnId = 25,  focusIndex = 2, FucInit = nil, 
                             FucRefresh = nil, FucOnEvent = nil, viewId = 7,},
                        
-			  --現在為精英特權	
+			  --現在為副本成就
              EveryDayActInfo  =  {LayerTag = 1003,  tabBtnId = 26,  focusIndex = 1, FucInit = nil, 
                                 FucRefresh = nil, FucOnEvent = nil, viewId = 7,},
 }
@@ -132,7 +132,7 @@ function p.LoadUI()
 	uiLoad:Load("achieve_2.ini", layerGameAssis,  p.TabInfo.GameAssisInfo.FucOnEvent, CONTAINTER_X, CONTAINTER_Y);
     uiLoad:Free();
 
-    ------------------------------------------------------------------添加精英特權层-----------------------------------------------------------------------
+    ------------------------------------------------------------------添加副本成就层-----------------------------------------------------------------------
     local layerEveryDayAct = createNDUILayer();
 	if layerEveryDayAct == nil then
 		return false;
@@ -265,7 +265,7 @@ end
 function p.initData()
     p.TacticInfoList = {};                 --大话兵法要显示的信息列表
     p.GameAssisInfoList = {};       --游戏助手要显示的信息列表
-    p.EveryDayActList = {};           --日常活动要显示的信息列表
+    p.EveryDayActList = {};           --副本成就要显示的信息列表
     p.CurFocusBtnId   = 0;             --默认的当前page页面
    
     for i, v in pairs(p.TabInfo) do 
@@ -334,17 +334,13 @@ end
 
 ---------------------------获取当前数据列表-------------------------------------
 function p.GetCurDataInfoList()
-    
-    local List = {};
     if p.CurFocusBtnId == p.TabInfo.TacticTabInfo.tabBtnId then
-        List = p.TacticInfoList;
+        return p.TacticInfoList;
     elseif p.CurFocusBtnId == p.TabInfo.GameAssisInfo.tabBtnId then
-        List = p.GameAssisInfoList;
+        return p.GameAssisInfoList;
     elseif p.CurFocusBtnId == p.TabInfo.EveryDayActInfo.tabBtnId then    
-        List = p.EveryDayActList;
+        return p.EveryDayActList;
     end
-    
-    return List;
 end
 
 
@@ -507,6 +503,38 @@ function p.TacticInit()
 end
 
 
+function sortData(a, b)
+	if a.Status == b.Status then
+		return a.id < b.id
+	elseif a.Status == 0 then
+		if b.Status == 1 then
+			--1排0前
+			return a.Status > b.Status;
+		elseif b.Status == 2 then
+			--0排2前
+			return a.Status < b.Status;
+		end 
+	
+	elseif a.Status == 1 then
+		if b.Status == 0 then
+			--1排0前
+			return a.Status > b.Status;
+		elseif b.Status == 2 then
+			--1排2前
+			return a.Status < b.Status;
+		end	
+	elseif a.Status == 2 then
+		return a.Status < b.Status;
+	end
+end
+
+
+--对数据进行排序,首先以id排序，先可领取在可完成之后已完成
+function p.DragonSortData()
+    local CurFocus = 1;
+    local DataList = p.GetCurDataInfoList();
+	table.sort(DataList, sortData);
+end
 
 
 --设置大话兵法当前焦点
@@ -517,9 +545,6 @@ function p.TacticSetCurFocus()
         return
     end
     
-    LogInfo("p.TacticSetCurFocus begin"); 
-    CurFocus = 1;
-
     --先获取第一个可领取的
     for i, v in pairs(DataList) do
         if v.Status == 1 then
@@ -536,7 +561,7 @@ function p.TacticSetCurFocus()
         end
     end
     
-    return CurFocus;
+    return CurFocus;   
 end
 
 function p.TacticRefresh()
@@ -551,18 +576,22 @@ function p.TacticRefresh()
     ListContainer:SetViewSize(TacticListSize);
     ListContainer:EnableScrollBar(true);
     ListContainer:RemoveAllView();
+    
     --设置当前要显示的说明信息
     local ToltalNum = table.getn(p.TacticInfoList);
+    
+    --对数据进行排序(优先可领取，其次未完成，再次已完成)
+	p.DragonSortData();
+	--local CurFocus  = p.TacticSetCurFocus(); 
+    local CurFocus  = 1; 
     
     --添加list列表元素
     for i = 1, ToltalNum do
       p.AddViewItem(ListContainer, i, "achieve_1_L.ini");
     end
 
-    LogInfo("begin focusindex = %d", p.TabInfo.TacticTabInfo.focusIndex); 
-    local CurFocus  = p.TacticSetCurFocus();
-    LogInfo("sec CurFocus = %d", CurFocus); 
-        
+
+
     p.SetListFocus(CurFocus); 
     
     p.TabInfo.TacticTabInfo.focusIndex = CurFocus;
@@ -875,15 +904,15 @@ function p.EveryDayActRefresh()
     --设置当前要显示的说明信息
     local ToltalNum = table.getn(p.EveryDayActList);
     
+    p.DragonSortData();
+	--local CurFocus  = p.TacticSetCurFocus(); 
+    local CurFocus  = 1; 
+    
     --添加list列表元素
     for i = 1, ToltalNum do
       p.AddViewItem(ListContainer, i, "achieve_1_L.ini");
     end
 
-    LogInfo("begin focusindex = %d", p.TabInfo.EveryDayActInfo.focusIndex); 
-    local CurFocus  = p.TacticSetCurFocus();
-    LogInfo("sec CurFocus = %d", CurFocus); 
-        
     p.SetListFocus(CurFocus); 
     
     p.TabInfo.EveryDayActInfo.focusIndex = CurFocus;

@@ -88,3 +88,4 @@ LoadDataBaseTable("worldbattle_config","worldbattle_configTable");
 LoadDataBaseTable("itemtype_evilmelt","itemtype_evilmeltTable");
 LoadDataBaseTable("bloodbattle_monster_generate","bloodbattle_monster_generateTable");
 LoadDataBaseTable("bloodbattle_monster_addition","bloodbattle_monster_additionTable");
+LoadDataBaseTable("bloodbattle_config","bloodbattle_configTable");

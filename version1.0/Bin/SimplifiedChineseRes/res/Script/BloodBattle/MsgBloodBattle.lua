@@ -20,6 +20,7 @@ local BBMA_UserInfor				= 3;	-- 玩家信息
 local BBMA_Reward					= 4;	-- 奖励信息
 local BBMA_TimeOut					= 5;	-- 不在时间点
 local BBMA_LeftTimes				= 6;	-- 剩余挑战次数
+local BBMA_JUMP					    = 6;	-- 跳關
 
 
 
@@ -104,6 +105,8 @@ function p.HandleMsUserInfor( tNetDataPackete )
 	local nLvLmt		= tNetDataPackete:ReadInt();--当前阶段关卡限制
 	local nPoints		= tNetDataPackete:ReadInt();--今日最高积分
 	local nBuffLv		= tNetDataPackete:ReadInt();--BUFF等级
+	
+	local nJumpId		= tNetDataPackete:ReadInt();--nJumpId对应bloodbattle_jump_config表的id
 	--
 	local tUserInfor = {};
 	tUserInfor.nChallCount	= nChallCount;
@@ -115,9 +118,12 @@ function p.HandleMsUserInfor( tNetDataPackete )
 	tUserInfor.nLvLmt		= nLvLmt;
 	tUserInfor.nPoints		= nPoints;
 	tUserInfor.nBuffLv		= nBuffLv;
+	tUserInfor.nJumpId		= nJumpId;
 	--LogInfo( "MsgBloodBattle: HandleMsUserInfor nChallCount:%d, nClimbLayer:%d, nMaxLayer:%d, nGrade:%d, uChallMax:%d, nGID:%d",nChallCount,nClimbLayer,nMaxLayer,nGrade,uChallMax,nGID );
 	if IsUIShow( NMAINSCENECHILDTAG.BloodBattle ) then
-		BloodBattle.RefreshMainUI( tUserInfor );
+		if ArenaUI.isInChallenge == 10 then
+			BloodBattle.RefreshMainUI( tUserInfor );
+		end
 	else
 		BloodBattle.ShowBloodBattleMainUI( tUserInfor );
 	end
@@ -195,6 +201,30 @@ function p.HandleMsTimeOut( tNetDataPackete )
 	CloseLoadBar();--
 end
 
+
+
+---------------------------------------------------
+-- 发送跳關请求 
+function p.SendMsgJump( nCheck )
+	local netdata = createNDTransData(NMSG_Type._MSG_BLOODBATTLE);
+	if nil == netdata then
+		return false;
+	end
+	netdata:WriteByte( BBMA_JUMP );
+	netdata:WriteByte( nCheck );
+	
+	SendMsg( netdata );
+	netdata:Free();
+	ShowLoadBar();
+end
+---------------------------------------------------
+-- 跳關请求消息分发处理
+function p.HandleNetMessageJump( tNetDataPackete )
+	--p.SendMsgChallenge( BloodBattle.nDifficulty );
+	CloseLoadBar();--
+end
+
+
 ---------------------------------------------------
 -- 血战消息分发处理
 function p.HandleNetMessage( tNetDataPackete )
@@ -213,6 +243,9 @@ function p.HandleNetMessage( tNetDataPackete )
 		p.HandleMsTimeOut( tNetDataPackete );
 	elseif 	( nActionID == BBMA_LeftTimes ) then
 		p.HandleMsLeftTimes( tNetDataPackete );
+	elseif ( nActionID == BBMA_JUMP ) then
+		p.HandleNetMessageJump( tNetDataPackete );
+
 	end
 end
 
