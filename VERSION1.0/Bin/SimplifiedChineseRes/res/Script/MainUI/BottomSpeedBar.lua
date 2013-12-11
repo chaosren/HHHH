@@ -427,8 +427,8 @@ function p.OnUIEvent(uiNode, uiEventType, param)
         elseif( p.BtnFunc[8] == tag ) then   --奖励
             GiftPackUI.LoadUI();
         elseif( p.BtnFunc[9] == tag ) then   --助手
-            Battle_Boss.LoadUI();
-            --DragonTacticUI.LoadUI();      
+            --AssistantUI.LoadUI();
+            DragonTacticUI.LoadUI();      
         elseif( p.BtnFunc[10] == tag ) then  --任务
             TaskUI.LoadUI();
         elseif( p.BtnFunc[11] == tag ) then  --设置
