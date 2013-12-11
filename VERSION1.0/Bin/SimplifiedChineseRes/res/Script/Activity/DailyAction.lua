@@ -9,11 +9,12 @@ local p = DailyAction;
 p.dbEnventActivicyInfo = {};  --静态表event_activity的数据
 p.TimerActions = {};    --定時活動活动信息
 p.DailyActions = {};     --每日活動
-
+p.ArmyActions = {};		--軍團活動
 
 p.CurFocusBtnId   = 0;    --当前的焦点按钮
 p.TabInfo = { WorldInfo       =  {LayerTag = 1001, tabBtnId = 24, focusIndex = 1, FucRefresh = nil, viewId = 101,},     
              ClassInfo       =  {LayerTag = 1002, tabBtnId = 25, focusIndex = 2, FucRefresh = nil, viewId = 101,},
+             ArmyInfo       =  {LayerTag = 1004, tabBtnId = 16, focusIndex = 2, FucRefresh = nil, viewId = 101,},
              EveryDayActInfo  =  {LayerTag = 1003,  tabBtnId = 26, focusIndex = 1, FucRefresh = nil, FucOnEvent = nil, },
 }
 
@@ -121,7 +122,29 @@ function p.LoadUI()
 
 	uiLoad:Load("event/event_1.ini", layer2,  p.TabInfo.EveryDayActInfo.FucOnEvent, CONTAINTER_X, CONTAINTER_Y);
     uiLoad:Free();
+ 
+
+   ------------------------------------------------------------------添加軍團活动层-----------------------------------------------------------------------
+    local layer3 = createNDUILayer();
+	if layer3 == nil then
+		return false;
+	end
     
+	layer3:Init();
+	layer3:SetTag(p.TabInfo.ArmyInfo.LayerTag);
+	layer3:SetFrameRect(RectSubUILayer);
+    layer3:SetVisible(false);
+	layer:AddChild(layer3);
+    
+    --初始化ui添加到 layer 层上
+    local uiLoad = createNDUILoad();
+	if nil == uiLoad then
+		layer:Free();
+		return false;
+	end
+
+	uiLoad:Load("event/event_1.ini", layer3,  nil, CONTAINTER_X, CONTAINTER_Y);
+    uiLoad:Free();   
     -------------------------------初始化数据------------------------------------     
     p.initData();
     p.ChangeTab(p.TabInfo.WorldInfo.tabBtnId);
@@ -280,8 +303,20 @@ function p.refreshViewItem(view, nId)
                 break;
             end
         end
+	elseif 	p.CurFocusBtnId == p.TabInfo.ArmyInfo.tabBtnId then
+		local DataList = p.ArmyActions;
+        for i, v in pairs(DataList) do
+            if v.nId == nId then
+                if v.bStatus ~= 3 then  --未开启
+                    btn:EnalbeGray(true);    
+                end
+                break;
+            end
+        end		
     end
-    
+
+	
+	
     if  p.dbEnventActivicyInfo ~= nil then
         local info = p.dbEnventActivicyInfo[nId]; 
         local pool = _G.DefaultPicPool();
@@ -376,6 +411,7 @@ function p.initData()
     
    p.TabInfo.WorldInfo.FucRefresh = p.WorldRefresh;
    p.TabInfo.ClassInfo.FucRefresh = p.ClassRefresh;
+   p.TabInfo.ArmyInfo.FucRefresh = p.ArmyRefresh;
    
    p.TabInfo.EveryDayActInfo.FucRefresh = p.EveryDayActRefresh;
    p.TabInfo.EveryDayActInfo.FucOnEvent = p.EveryDayActOnEvent;
@@ -408,6 +444,26 @@ function p.WorldRefresh()
     end
 end
 
+
+function p.ArmyRefresh()
+    local layer = p.GetLayerByTag(p.TabInfo.ArmyInfo.LayerTag);    
+    local ListContainer  = GetScrollViewContainer(layer, p.TabInfo.ArmyInfo.viewId);
+    
+    if (ListContainer == nil) then 
+        return;
+    end
+
+    ListContainer:SetViewSize(ListViewSize);
+    ListContainer:EnableScrollBar(true);
+    ListContainer:RemoveAllView();
+    ListContainer:SetDebugName( "ScrollViewContainer" );
+    
+    --设置当前要显示的说明信息
+    for i, v in pairs(p.ArmyActions) do
+        LogInfo("refresh i = %d  nId = %d", i, v.nId); 
+        p.AddViewItem(ListContainer, v.nId, "event/event_1_L.ini");
+    end
+end
 
 function p.ClassRefresh()
     local layer = p.GetLayerByTag(p.TabInfo.ClassInfo.LayerTag);    

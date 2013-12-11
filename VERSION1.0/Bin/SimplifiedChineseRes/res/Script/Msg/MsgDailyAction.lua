@@ -19,6 +19,7 @@ function p.MsgReciveDailyAcionInfo(netdatas)
     if actionType == 1 then
         DailyAction.TimerActions = {};    --定時活動活动信息
         DailyAction.DailyActions = {};     --每日活动信息  
+		DailyAction.ArmyActions = {};		--軍團活動信息
     end
     
     --获取所有要更新的信息
@@ -37,6 +38,8 @@ function p.MsgReciveDailyAcionInfo(netdatas)
         --定時活動 9.12改註釋
         elseif  nGroup == 2 then
             tbInfos = DailyAction.TimerActions;
+		elseif nGroup== 3 then
+			tbInfos = DailyAction.ArmyActions;
         end
         
         if actionType == 1 then
@@ -74,6 +77,7 @@ function p.MsgReciveDailyAcionInfo(netdatas)
     
     table.sort(DailyAction.TimerActions, function(a,b) return a.nId < b.nId   end);
     table.sort(DailyAction.DailyActions, function(a,b) return a.nId < b.nId   end);    
+	table.sort(DailyAction.ArmyActions, function(a,b) return a.nId < b.nId   end);    
 
     if IsUIShow(NMAINSCENECHILDTAG.DailyActionUI) then
        --刷新活动页面
