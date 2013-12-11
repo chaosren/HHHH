@@ -1990,6 +1990,30 @@
 				</File>
 			</Filter>
 		</Filter>
+		<Filter
+			Name="CrossArena"
+			>
+			<File
+				RelativePath="..\Bin\SimplifiedChineseRes\res\Script\CrossArena\CrossArenaReward.lua"
+				>
+			</File>
+			<File
+				RelativePath="..\Bin\SimplifiedChineseRes\res\Script\CrossArena\CrossArenaRule.lua"
+				>
+			</File>
+			<File
+				RelativePath="..\Bin\SimplifiedChineseRes\res\Script\CrossArena\CrossArenaUI.lua"
+				>
+			</File>
+			<File
+				RelativePath="..\Bin\SimplifiedChineseRes\res\Script\CrossArena\define.lua"
+				>
+			</File>
+			<File
+				RelativePath="..\Bin\SimplifiedChineseRes\res\Script\CrossArena\MsgCrossArena.lua"
+				>
+			</File>
+		</Filter>
 		<File
 			RelativePath="..\Bin\SimplifiedChineseRes\res\Script\DBLoad.lua"
 			>
