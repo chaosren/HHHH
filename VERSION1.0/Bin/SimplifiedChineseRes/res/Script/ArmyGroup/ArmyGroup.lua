@@ -53,6 +53,7 @@ local tItemBtnList = {
 };
 
 local ID_BTN_DISTRIBUTE_RECORD		= 199;	-- “分配信息”按钮
+local ID_BTN_MASS_EMAIL				= 494;	-- “群发邮件”按钮
 
 ---------------------------------------------------
 -- 选择成员（分配奖励）界面控件ID
@@ -337,6 +338,10 @@ function p.CreateArmyGroupInformationUI( pParentLayer )
 	if ( pBtnEdit ~= nil and ( nUserArmyGroupID ~= p.nArmyGroupID or nPosition == ArmyGroupPositionGrade.AGPG_NONE  ) ) then
 		pBtnEdit:SetVisible( false );
 	end
+	local pBtnMassEmail = GetButton( layer, ID_BTN_MASS_EMAIL );
+	if ( pBtnMassEmail ~= nil and ( nUserArmyGroupID ~= p.nArmyGroupID or nPosition == ArmyGroupPositionGrade.AGPG_NONE  ) ) then
+		pBtnMassEmail:SetVisible( false );
+	end
 	
 	if ( nUserArmyGroupID ~= p.nArmyGroupID ) then
 		pLabelJob:SetVisible( false );
@@ -481,6 +486,8 @@ function p.OnUIEventInformation( uiNode, uiEventType, param )
 			end
 		elseif ( ID_BTN_DISTRIBUTE_RECORD == tag ) then
 			DistributeRecordDlg.CreateDistributeRecordDlg( p.pLayerMainUI );
+		elseif ( ID_BTN_MASS_EMAIL == tag ) then
+			MassEmailDlg.CreateMassEmailDlg( p.pLayerMainUI );
         end
     end
     return true;

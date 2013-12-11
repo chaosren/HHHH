@@ -55,6 +55,20 @@ function p.MsgReciveDailyAcionInfo(netdatas)
                 table.insert(tbInfos, record);
             end
         end
+        
+		--过关斩将 并刷新显示提示按钮
+		if record.nId == 14  then
+			if record.bStatus == 3 then
+				--开启，则获取剩余次数
+				--MsgBloodBattle.SendMsgLeftTimes();
+				MsgBloodBattle.DailyActionUpdate(true);
+			else
+				--关闭,
+				MsgBloodBattle.DailyActionUpdate(false);
+				
+			end	
+		end
+		
      
     end
     
@@ -65,6 +79,8 @@ function p.MsgReciveDailyAcionInfo(netdatas)
        --刷新活动页面
        DailyAction.RefreshUI(DailyAction.CurFocusBtnId);
     end    
+	
+	MainUI.RefreshFuncIsOpen();
 end
 
 

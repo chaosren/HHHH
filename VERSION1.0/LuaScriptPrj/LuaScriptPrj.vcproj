@@ -1266,6 +1266,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\Bin\SimplifiedChineseRes\res\Script\ArmyGroup\MassEmailDlg.lua"
+				>
+			</File>
+			<File
 				RelativePath="..\Bin\SimplifiedChineseRes\res\Script\ArmyGroup\Member.lua"
 				>
 			</File>
@@ -1418,7 +1422,7 @@
 			Name="CheckIn"
 			>
 			<File
-				RelativePath="..\Bin\SimplifiedChineseRes\res\Script\CheckIn\checkincommon.lua"
+				RelativePath="..\Bin\SimplifiedChineseRes\res\Script\CheckIn\CheckInCommon.lua"
 				>
 			</File>
 			<File

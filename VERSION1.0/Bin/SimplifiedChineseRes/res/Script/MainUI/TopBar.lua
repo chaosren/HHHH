@@ -17,17 +17,29 @@ local fScaley = CoordScaleY;
 
 
 local TOOL_BTN = {
-    {Tag=14,Rect=CGRectMake(345*fScalex,30*fScaley,40*fScalex,40*fScaley)},--竞技场
-    {Tag=20,Rect=CGRectMake(305*fScalex,30*fScaley,40*fScalex,40*fScaley)},--征收
-    {Tag=35,Rect=CGRectMake(265*fScalex,30*fScaley,40*fScalex,40*fScaley)},--祭祀 
-    {Tag=19,Rect=CGRectMake(225*fScalex,30*fScaley,40*fScalex,40*fScaley)},--礼包
-    {Tag=29,Rect=CGRectMake(185*fScalex,30*fScaley,40*fScalex,40*fScaley)},--每日签到  
-    {Tag=38,Rect=CGRectMake(345*fScalex,70*fScaley,40*fScalex,40*fScaley)},--充值礼包  
-    {Tag=39,Rect=CGRectMake(305*fScalex,70*fScaley,40*fScalex,40*fScaley)},--在线礼包 
-    {Tag=40,Rect=CGRectMake(265*fScalex,70*fScaley,40*fScalex,40*fScaley)},--运粮活动   
-    {Tag=41,Rect=CGRectMake(225*fScalex,70*fScaley,40*fScalex,40*fScaley)},--名人堂
-    {Tag=42,Rect=CGRectMake(185*fScalex,70*fScaley,40*fScalex,40*fScaley)},--内政
+    {Tag=14,Rect=CGRectMake(345*fScalex,30*fScaley,40*fScalex,40*fScaley),PicName = "activityduel.png"},--竞技场
+    {Tag=20,Rect=CGRectMake(305*fScalex,30*fScaley,40*fScalex,40*fScaley),PicName = "activitylevy.png"},--征收
+    {Tag=35,Rect=CGRectMake(265*fScalex,30*fScaley,40*fScalex,40*fScaley),PicName = "activityfete.png"},--祭祀 
+    {Tag=19,Rect=CGRectMake(225*fScalex,30*fScaley,40*fScalex,40*fScaley),PicName = "activitygift.png"},--礼包
+    {Tag=29,Rect=CGRectMake(185*fScalex,30*fScaley,40*fScalex,40*fScaley),PicName = "DailyCheckIn.png"},--每日签到  
+    {Tag=38,Rect=CGRectMake(345*fScalex,70*fScaley,40*fScalex,40*fScaley),PicName = "rechargegift.png"},--充值礼包  
+    {Tag=39,Rect=CGRectMake(305*fScalex,70*fScaley,40*fScalex,40*fScaley),PicName = "onlinegift.png"},--在线礼包 
+    {Tag=40,Rect=CGRectMake(265*fScalex,70*fScaley,40*fScalex,40*fScaley),PicName = "activitylist.png"},--运粮活动   
+    {Tag=41,Rect=CGRectMake(225*fScalex,70*fScaley,40*fScalex,40*fScaley),PicName = "ranklist.png"},--名人堂
+    {Tag=42,Rect=CGRectMake(185*fScalex,70*fScaley,40*fScalex,40*fScaley),PicName = "administration.png"},--内政
 };
+
+--活动提示按钮 TAG%1000 = 活动ID
+local DailyActionTipBtn = {
+	{Tag=1001,Rect=CGRectMake(185*fScalex,70*fScaley,40*fScalex,40*fScaley),PicName = "activity111.png"},--BOSS战吕布
+	{Tag=1002,Rect=CGRectMake(185*fScalex,70*fScaley,40*fScalex,40*fScaley),PicName = "activity211.png"},--BOSS战于击
+	{Tag=1003,Rect=CGRectMake(185*fScalex,70*fScaley,40*fScalex,40*fScaley),PicName = "activity311.png"},--大乱斗
+	{Tag=1005,Rect=CGRectMake(185*fScalex,70*fScaley,40*fScalex,40*fScaley),PicName = "activity611.png"},--午宴
+	{Tag=1006,Rect=CGRectMake(185*fScalex,70*fScaley,40*fScalex,40*fScaley),PicName = "activity611.png"},--晚宴
+	{Tag=1007,Rect=CGRectMake(185*fScalex,70*fScaley,40*fScalex,40*fScaley),PicName = "activity511.png"},--军团战
+	{Tag=1014,Rect=CGRectMake(185*fScalex,70*fScaley,40*fScalex,40*fScaley),PicName = "activity1411.png"},--过关斩将
+}
+
 
 local MAIN_UI_BUTTON_TOPUP = 17; 
 
@@ -113,6 +125,9 @@ function p.LoadUI()
 	end
 
 	uiLoad:Load("MainUI.ini", layer, p.OnUIEvent, CONTAINTER_X, CONTAINTER_Y);
+	
+	p.InitialFuctionButton()
+	
 	local pBtnNewEmail = GetUiNode( layer, ID_MAINUI_BTN_NEW_EMAIL );
 	if ( nil ~= pBtnNewEmail ) then
 		local rectForm		= pBtnNewEmail:GetFrameRect();
@@ -168,6 +183,52 @@ function p.LoadUI()
 	return;
 end
 
+--初始化功能按钮
+--[[
+TOOL_BTN = {
+    {Tag=14,Rect=CGRectMake(345*fScalex,30*fScaley,40*fScalex,40*fScaley),PicName = "activityduel"},--竞技场
+]]
+function p.InitialFuctionButton()
+	local scene = GetSMGameScene();
+	local bglayer = p.GetTopBar()
+	
+	local pool = DefaultPicPool();
+	for i,v in pairs(TOOL_BTN) do
+		local norPic	= pool:AddPicture(GetSMImg00Path("action/"..v.PicName), false);
+		local selPic	= pool:AddPicture(GetSMImg00Path("action/"..v.PicName), false);
+		local btn	= createNDUIButton();
+		local sizeBtn	= norPic:GetSize();
+	
+		btn:Init();
+		btn:CloseFrame();
+		btn:SetTag(v.Tag);
+		btn:SetImage(norPic);
+		btn:SetFrameRect(CGRectMake(-200, -200, sizeBtn.w*CoordScaleY_960, sizeBtn.h*CoordScaleY_960));
+		btn:SetLuaDelegate(p.OnUIEvent);
+		bglayer:AddChild(btn);
+		--设置隐藏
+		btn:SetVisible(false);	
+ 	end
+
+	--活动提示按钮
+	for i,v in pairs(DailyActionTipBtn) do
+		local norPic	= pool:AddPicture(GetSMImg00Path("action/"..v.PicName), false);
+		local selPic	= pool:AddPicture(GetSMImg00Path("action/"..v.PicName), false);
+		local btn	= createNDUIButton();
+		local sizeBtn	= norPic:GetSize();
+	
+		btn:Init();
+		btn:CloseFrame();
+		btn:SetTag(v.Tag);
+		btn:SetImage(norPic);
+		btn:SetFrameRect(CGRectMake(-200, -200, sizeBtn.w*CoordScaleY_960, sizeBtn.h*CoordScaleY_960));
+		btn:SetLuaDelegate(p.OnUIEventDailyActionTip);
+		bglayer:AddChild(btn);
+		--设置隐藏
+		btn:SetVisible(false);	
+ 	end	
+end
+
 function p.GetBnttonByTag(nTag)
 	local layer = p.GetTopBar() ;
 	if layer == nil then
@@ -177,6 +238,18 @@ function p.GetBnttonByTag(nTag)
 	return GetButton(layer, nTag);
 end
 
+--活动提示按钮
+function p.OnUIEventDailyActionTip(uiNode, uiEventType, param)
+	local tag = uiNode:GetTag();
+	local id  = tag%1000;
+	if uiEventType == NUIEventType.TE_TOUCH_BTN_CLICK then
+		 _G.CloseMainUI();
+		DailyAction.SendActionInfo(id);
+        ShowLoadBar();
+		return true;
+	end
+	
+end
 
 function p.OnUIEvent(uiNode, uiEventType, param)
 	local tag = uiNode:GetTag();
@@ -236,7 +309,7 @@ function p.OnUIEvent(uiNode, uiEventType, param)
             LogInfo("tzqtzqtzq btRankType = %d", btRankType);
             
             if btRankType >= MsgRankList.RANKING_ACT.ACT_PET_LEVEL and
-               btRankType <= MsgRankList.RANKING_ACT.ACT_ELITE_STAGE  then
+               btRankType <= MsgRankList.RANKING_ACT.ACT_EMONEY_CONSUME  then
                 ShowLoadBar();  
                 LogInfo("tzqtzqtzq MsgRankList.SendGetListInfoMsg");
                 MsgRankList.SendGetListInfoMsg(btRankType);       
@@ -440,6 +513,7 @@ function p.RefreshFuncIsOpen()
         btnFamous:SetVisible(false);
     else    
         --名人堂功能暂时屏蔽暂时屏蔽
+		btnFamous:SetVisible(true);
         local pool = DefaultPicPool();
         local rankPic = nil;
         if bIcon < 10 then
@@ -470,8 +544,11 @@ function p.RefreshFuncIsOpen()
     btnArena:SetVisible(IsFunctionOpen(StageFunc.Arena));
     btnFete:SetVisible(IsFunctionOpen(StageFunc.Fete));
     
+	--功能开启 并且可以签到则显示
     local type = MsgPlayerAction.PLAYER_ACTION_TYPE.CHECK_IN;
-    btnSign:SetVisible(MsgPlayerAction.IsActionOpen(type));
+    btnSign:SetVisible(MsgPlayerAction.IsActionOpen(type) and CheckInReward.IsCanCheckIn());
+	
+	
     btnRecharge:SetVisible(MsgPlayerAction.IsActionOpen(MsgPlayerAction.RechargeRewardActionType));
     
     local nPlayerStage      = _G.ConvertN(_G.GetRoleBasicDataN(GetPlayerId(), USER_ATTR.USER_ATTR_STAGE));
@@ -481,6 +558,50 @@ function p.RefreshFuncIsOpen()
 	btnOL:SetVisible(bShow);
     
     btnDailyAct:SetVisible(true);
+	
+	
+	
+	--============================活动快捷按钮刷新==============================--
+	local nUserID		= GetPlayerId();
+    local nPlayerPetID	= RolePetFunc.GetMainPetId( nUserID );
+	local nPlayerLevel	= RolePet.GetPetInfoN( nPlayerPetID, PET_ATTR.PET_ATTR_LEVEL );
+		
+	for i,v in pairs(DailyActionTipBtn) do
+		local tag = v.Tag
+		local btnDailyActionTip = GetButton(topBarLayer,tag);
+		local id  =tag%1000
+		local status  = DailyAction.GetDailyActionStatus(id)
+		btnDailyActionTip:SetVisible(true);
+		
+		--活动配置关闭
+		if status ~= 3 then
+			btnDailyActionTip:SetVisible(false);
+		end
+		
+		--玩家等级不足关闭
+		local levellimit = GetDataBaseDataN("event_activity", id, DB_EVENT_ACTIVITY.DATA3);    
+        if nPlayerLevel < levellimit then
+			btnDailyActionTip:SetVisible(false);
+		end
+	end
+
+	--军团战只有在准备时才能显示
+	local btnSyndicateBattle = GetButton(topBarLayer,1007);
+	if MsgSyndicateBattle.IfcanShowTipButton() == false then
+		btnSyndicateBattle:SetVisible(false);
+	end
+	
+	--过关斩将剩余次数0 则不显示
+	local btnBloodBattle = GetButton(topBarLayer,1014);
+	local nLefttimes = MsgBloodBattle.GetLeftTimes()
+	if nLefttimes <= 0 then
+		btnBloodBattle:SetVisible(false);
+	end
+	--============================XXXXXXXXXXXXXXXX==============================--
+	
+	
+	
+	
     p.AdjustToolPos();
     
 end
@@ -499,9 +620,23 @@ function p.AdjustToolPos()
     local btnRankList = GetButton(topBarLayer,TOOL_BTN[9].Tag);
     --btnRankList:SetVisible(false);
     local btnMission = GetButton(topBarLayer,TOOL_BTN[10].Tag);
-
+	
+	
+	
     
     local btns = {};
+	
+	
+	--活动快捷按钮
+	for i,v in pairs(DailyActionTipBtn) do
+		local tag = v.Tag
+		local btnDailyActionTip = GetButton(topBarLayer,tag);
+		if(btnDailyActionTip:IsVisibled()) then
+			table.insert(btns,btnDailyActionTip);
+		end
+	end
+	
+	
     if(btnArena:IsVisibled()) then
         table.insert(btns,btnArena);
     end
@@ -540,9 +675,16 @@ function p.AdjustToolPos()
     end
 
     for i,v in ipairs(btns) do
-        local rect = TOOL_BTN[i].Rect;
-        LogInfo("x:[%d],y:[%d],w:[%d],h:[%d]",rect.origin.x,rect.origin.y,rect.size.w,rect.size.h);
-        v:SetFrameRect(rect);
+		--只显示10个按钮
+		if i<= 10 then 
+			local rect = TOOL_BTN[i].Rect;
+			LogInfo("x:[%d],y:[%d],w:[%d],h:[%d]",rect.origin.x,rect.origin.y,rect.size.w,rect.size.h);
+			v:SetFrameRect(rect);
+		else
+			local rect =CGRectMake(-200, -200, 40*fScalex, 40*fScaley);
+			
+			v:SetFrameRect(rect);
+		end	
     end
 end
 

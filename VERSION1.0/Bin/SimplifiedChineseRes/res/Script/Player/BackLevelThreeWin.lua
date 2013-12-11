@@ -521,7 +521,8 @@ function p.ShowUIProp(nItemId, nCurrPetId)
     local nType = ItemFunc.GetPropType(nItemType);
     
 
-    if(nType == 1 or nType == 4 or nType == 5 or nType == 6 or nType == 7 or  nType == 8 or nType == 9) then
+    if(nType == 1 or nType == 4 or nType == 5 or nType == 6 or nType == 7 
+	   or  nType == 8 or nType == 9 or nType == 10 or nType == 11) then
         btn:SetVisible(true);
     else
         btn:SetVisible(false);
@@ -986,8 +987,43 @@ function p.OnUIEventProp(uiNode, uiEventType, param)
             elseif(nType == 9) then     --改名道具使用
 					--字符个数暂时不去限制，服务端限制
                  p.nTagId = CommonDlgNew.ShowInputDlg(GetTxtPri("REALLY_CHANGE_NAME"), p.OnUIEventChangeName, {nItemId}, nil, 20, GetTxtPri("NEW_NAME"));
-            end
-            
+				
+			elseif (nType == 10 or nType == 11) then   --4, 8 格行囊擴充卡
+				--獲取已通過擴充卡獲得的背包數
+				local nCurBgNum = ItemFunc.getBackBagCapability();
+				local nCurVipBgNum = GetVipBgNum();
+				local nHasAddNum = nCurBgNum - nCurVipBgNum;
+				local count = Item.GetItemInfoN(nItemId, Item.ITEM_AMOUNT);
+				local nCanAdd = 0;
+				
+				if nType == 10 then  --4格行囊擴充卡 
+					nCanAdd = (100 - nHasAddNum) / 4;
+					if nCanAdd > 0 then
+						if count > nCanAdd then
+							count = nCanAdd;
+						end
+						CommonDlgNew.ShowInputDlg(GetTxtPri("PLAYER_T3"), p.OnUIEventUseNum, {nItemId}, count, 2);
+					else
+						CommonDlgNew.ShowYesDlg(string.format(GetTxtPri("BG_NUM_ADD_01"), 4), nil, nil, 10);
+					end
+
+				elseif nType == 11 then  --8格行囊擴充卡
+					if math.fmod(200 - nHasAddNum, 8) == 0 then
+						nCanAdd = (200 - nHasAddNum) / 8;
+					else
+						nCanAdd = (196 - nHasAddNum) / 8;
+					end
+					
+					if nCanAdd > 0 then
+						if count > nCanAdd then
+							count = nCanAdd;
+						end
+						CommonDlgNew.ShowInputDlg(GetTxtPri("PLAYER_T3"), p.OnUIEventUseNum, {nItemId}, count, 2);
+					else
+						CommonDlgNew.ShowYesDlg(string.format(GetTxtPri("BG_NUM_ADD_01"), 8), nil, nil, 10);
+					end
+				end
+           end
             
         elseif(tag == TAG_PROP_SELL) then           --出售
             p.layerShowOrHide(PROP_LAYER, false);

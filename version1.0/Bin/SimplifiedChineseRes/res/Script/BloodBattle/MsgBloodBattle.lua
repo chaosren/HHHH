@@ -19,6 +19,7 @@ local BBMA_Reset					= 2;	-- 重置
 local BBMA_UserInfor				= 3;	-- 玩家信息
 local BBMA_Reward					= 4;	-- 奖励信息
 local BBMA_TimeOut					= 5;	-- 不在时间点
+local BBMA_LeftTimes				= 6;	-- 剩余挑战次数
 
 
 
@@ -141,7 +142,49 @@ function p.HandleMsReward( tNetDataPackete )
 	end
 end
 
+
 ---------------------------------------------------
+
+local g_LeftTimes = 0;
+--获取剩余调战次数
+function p.SendMsgLeftTimes()
+	LogInfo( "MsgBloodBattle: SendMsgLeftTimes" );
+	local netdata = createNDTransData(NMSG_Type._MSG_BLOODBATTLE);
+	if nil == netdata then
+		LogInfo("memory is not enough");
+		return false;
+	end
+	netdata:WriteByte( BBMA_LeftTimes );
+	SendMsg( netdata );
+	netdata:Free();	
+end
+
+function p.GetLeftTimes()
+	return g_LeftTimes;
+end
+
+
+--刷新主界面提示按钮
+function p.HandleMsLeftTimes( tNetDataPackete )
+	g_LeftTimes = tNetDataPackete:ReadInt();
+	local test = g_LeftTimes
+	
+	MainUI.RefreshFuncIsOpen()
+end
+
+--活动数据更新 bOpen: true-活动开启  false-活动结束
+function p.DailyActionUpdate(bOpen)
+	if bOpen then
+		p.SendMsgLeftTimes()
+	else
+		g_LeftTimes = 0
+		MainUI.RefreshFuncIsOpen()
+	end
+end
+
+
+
+
 -- 处理不在时间点信息
 function p.HandleMsTimeOut( tNetDataPackete )
 	--LogInfo( "MsgBloodBattle: HandleMsTimeOut" );
@@ -168,6 +211,8 @@ function p.HandleNetMessage( tNetDataPackete )
 		p.HandleMsReward( tNetDataPackete );
 	elseif ( nActionID == BBMA_TimeOut ) then
 		p.HandleMsTimeOut( tNetDataPackete );
+	elseif 	( nActionID == BBMA_LeftTimes ) then
+		p.HandleMsLeftTimes( tNetDataPackete );
 	end
 end
 

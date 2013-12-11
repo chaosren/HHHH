@@ -251,6 +251,18 @@ function p.AddViewItem(container, nId, uiFile)
     
     p.refreshViewItem(view, nId);
 end
+
+--根据活动Id获取活动状态
+function p.GetDailyActionStatus(nId)
+	local DataList = p.TimerActions;
+    for i, v in pairs(DataList) do
+        if v.nId == nId then
+			return v.bStatus;
+        end
+    end
+	return nil
+end
+
 ---------------------------刷新控件元素-------------------------------------
 function p.refreshViewItem(view, nId)
 

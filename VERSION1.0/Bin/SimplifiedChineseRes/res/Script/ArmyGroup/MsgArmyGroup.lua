@@ -153,6 +153,7 @@ ArmyGroupMsgAction = {
 	--AGMA_BeRemoval				= 100,	-- 被解除副军团长
 	--AGMA_BeMember				= 100,	-- 成为某军团成员了……
 	AGMA_ErrorCode				= 100,	-- 错误码
+	AGMA_MassEmail				= 22,	-- 群发邮件
 };
 
 -- 军团信息变更事件类型
@@ -1432,6 +1433,32 @@ function p.HandleMsgDelivery( tNetDataPackete )
 		CommonDlgNew.ShowYesDlg( tArmyGroupErrorString[nFlag], nil, nil, 3 );
 	end
 end
+
+---------------------------------------------------
+-- 群发邮件
+function p.SendMsgMassEmail( szSubject, szContent )
+	LogInfo( "MsgArmyGroup: SendMsgMassEmail: szSubject:%s szContent:%s",szSubject,szContent );
+	local netdata = createNDTransData(NMSG_Type._MSG_ARMYGROUP);
+	if nil == netdata then
+		LogInfo("memory is not enough");
+		return false;
+	end
+	netdata:WriteByte( ArmyGroupMsgAction.AGMA_MassEmail );
+	netdata:WriteStr( szSubject );
+	netdata:WriteStr( szContent );
+	SendMsg( netdata );
+	netdata:Free();
+    ShowLoadBar();--
+	return true;
+end
+
+---------------------------------------------------
+-- 群发邮件
+function p.HandleMsgMassEmail( tNetDataPackete )
+	LogInfo( "MsgArmyGroup: HandleMsgMassEmail" );
+    CloseLoadBar();--
+    MassEmailDlg.Callback_MassEmail();
+end
 	
 ---------------------------------------------------
 -- 玩家信息
@@ -1522,6 +1549,8 @@ function p.HandleNetMessage( tNetDataPackete )
 		p.HandleMsgGetStorage( tNetDataPackete );
 	elseif ( nActionID == ArmyGroupMsgAction.AGMA_Delivery ) then
 		p.HandleMsgDelivery( tNetDataPackete );
+	elseif ( nActionID == ArmyGroupMsgAction.AGMA_MassEmail ) then
+		p.HandleMsgMassEmail( tNetDataPackete );
 	end
 end
 
