@@ -20,7 +20,7 @@ local BBMA_UserInfor				= 3;	-- 玩家信息
 local BBMA_Reward					= 4;	-- 奖励信息
 local BBMA_TimeOut					= 5;	-- 不在时间点
 local BBMA_LeftTimes				= 6;	-- 剩余挑战次数
-local BBMA_JUMP					    = 6;	-- 跳關
+local BBMA_JUMP					    = 7;	-- 跳關
 
 
 

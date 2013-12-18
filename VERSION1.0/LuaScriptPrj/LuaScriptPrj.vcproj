@@ -2718,6 +2718,26 @@
 				>
 			</File>
 		</Filter>
+		<Filter
+			Name="BloodBattle"
+			>
+			<File
+				RelativePath="..\Bin\SimplifiedChineseRes\res\Script\BloodBattle\BloodBattle.lua"
+				>
+			</File>
+			<File
+				RelativePath="..\Bin\SimplifiedChineseRes\res\Script\BloodBattle\BloodBattleJump.lua"
+				>
+			</File>
+			<File
+				RelativePath="..\Bin\SimplifiedChineseRes\res\Script\BloodBattle\define.lua"
+				>
+			</File>
+			<File
+				RelativePath="..\Bin\SimplifiedChineseRes\res\Script\BloodBattle\MsgBloodBattle.lua"
+				>
+			</File>
+		</Filter>
 		<File
 			RelativePath="..\Bin\SimplifiedChineseRes\res\Script\DBLoad.lua"
 			>
