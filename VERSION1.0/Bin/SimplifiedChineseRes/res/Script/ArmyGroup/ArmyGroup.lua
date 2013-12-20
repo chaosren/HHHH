@@ -145,16 +145,16 @@ p.tChosenMember			= nil;
     if ( nArmyGroupID == nil ) then
 		return false;
 	end
-	--LogInfo( "ArmyGroup: LoadUI()" );
+	----LogInfo( "ArmyGroup: LoadUI()" );
 	local scene = GetSMGameScene();
 	if not CheckP(scene) then
-	LogInfo( "ArmyGroup: ShowArmyGroupMainUI failed! scene is nil" );
+	--LogInfo( "ArmyGroup: ShowArmyGroupMainUI failed! scene is nil" );
 		return false;
 	end
 	
 	local layer = createNDUILayer();
 	if not CheckP(layer) then
-		LogInfo( "ArmyGroup: ShowArmyGroupMainUI failed! layer is nil" );
+		--LogInfo( "ArmyGroup: ShowArmyGroupMainUI failed! layer is nil" );
 		return false;
 	end
 	layer:Init();
@@ -166,7 +166,7 @@ p.tChosenMember			= nil;
 	local uiLoad = createNDUILoad();
 	if ( nil == uiLoad ) then
 		layer:Free();
-		LogInfo( "ArmyGroup: ShowArmyGroupMainUI failed! uiLoad is nil" );
+		--LogInfo( "ArmyGroup: ShowArmyGroupMainUI failed! uiLoad is nil" );
 		return false;
 	end
 	uiLoad:Load( "ArmyGroup/ArmyGroupUI_Main.ini", layer, p.OnUIEventMain, 0, 0 );
@@ -226,7 +226,7 @@ end
 function p.CreateArmyGroupMenu( pParentLayer )
 	local layer = createNDUILayer();
 	if not CheckP(layer) then
-		LogInfo( "ArmyGroup: CreateArmyGroupMenu failed! layer is nil" );
+		--LogInfo( "ArmyGroup: CreateArmyGroupMenu failed! layer is nil" );
 		return false;
 	end
 	layer:Init();
@@ -237,7 +237,7 @@ function p.CreateArmyGroupMenu( pParentLayer )
 	local uiLoad = createNDUILoad();
 	if ( nil == uiLoad ) then
 		layer:Free();
-		LogInfo( "ArmyGroup: CreateArmyGroupMenu failed! uiLoad is nil" );
+		--LogInfo( "ArmyGroup: CreateArmyGroupMenu failed! uiLoad is nil" );
 		return false;
 	end
 	uiLoad:Load( "ArmyGroup/ArmyGroupUI_Menu.ini", layer, p.OnUIEventMain, 0, 0 );
@@ -308,7 +308,7 @@ end
 function p.CreateArmyGroupInformationUI( pParentLayer )
 	local layer = createNDUILayer();
 	if not CheckP(layer) then
-		LogInfo( "ArmyGroup: ShowArmyGroupInformationUI failed! layer is nil" );
+		--LogInfo( "ArmyGroup: ShowArmyGroupInformationUI failed! layer is nil" );
 		return false;
 	end
 	layer:Init();
@@ -319,7 +319,7 @@ function p.CreateArmyGroupInformationUI( pParentLayer )
 	local uiLoad = createNDUILoad();
 	if ( nil == uiLoad ) then
 		layer:Free();
-		LogInfo( "ArmyGroup: ShowArmyGroupInformationUI failed! uiLoad is nil" );
+		--LogInfo( "ArmyGroup: ShowArmyGroupInformationUI failed! uiLoad is nil" );
 		return false;
 	end
 	uiLoad:Load( "ArmyGroup/ArmyGroupUI_Information.ini", layer, p.OnUIEventInformation, 0, 0 );
@@ -359,11 +359,11 @@ end
 -- 填充军团信息
 function p.FillInformation( pLayer, tArmyGroupInformation )
 	if ( pLayer == nil ) then
-		LogInfo( "ArmyGroup: FillInformation failed! pLayer is nil" );
+		--LogInfo( "ArmyGroup: FillInformation failed! pLayer is nil" );
 		return false;
 	end
 	if ( tArmyGroupInformation == nil ) then
-		LogInfo( "ArmyGroup: FillInformation failed! tArmyGroupInformation is nil" );
+		--LogInfo( "ArmyGroup: FillInformation failed! tArmyGroupInformation is nil" );
 		return false;
 	end
 	
@@ -388,11 +388,11 @@ end
 -- 刷新军团信息
 function p.RefreshInformation( tArmyGroupInformation )
 	if ( tArmyGroupInformation == nil ) then
-		LogInfo( "ArmyGroup: RefreshInformation failed! tArmyGroupInformation is nil" );
+		--LogInfo( "ArmyGroup: RefreshInformation failed! tArmyGroupInformation is nil" );
 		return false;
 	end
 	if ( p.pLayerInformation == nil ) then
-		LogInfo( "ArmyGroup: RefreshInformation failed!  is nil" );
+		--LogInfo( "ArmyGroup: RefreshInformation failed!  is nil" );
 		return false;
 	end
 	
@@ -408,11 +408,11 @@ end
 -- 刷新成员列表
 function p.RefreshMemberlist( tArmyGroupMemberList, nArmyGroupID )
     --if ( p.pLayerInformation == nil ) then
-	--	LogInfo( "ArmyGroup: RefreshMemberlist failed! p.pLayerInformation is nil" );
+	--	--LogInfo( "ArmyGroup: RefreshMemberlist failed! p.pLayerInformation is nil" );
 	--	return false;
 	--end
 	if ( tArmyGroupMemberList == nil ) then
-		LogInfo( "ArmyGroup: RefreshMemberlist failed! tArmyGroupMemberList is nil" );
+		--LogInfo( "ArmyGroup: RefreshMemberlist failed! tArmyGroupMemberList is nil" );
 		return false;
 	end
 	
@@ -507,7 +507,7 @@ end
 function p.CreateArmyGroupMemberUI( pParentLayer )
 	local layer = createNDUILayer();
 	if not CheckP(layer) then
-		LogInfo( "ArmyGroup: ShowArmyGroupMemberUI failed! layer is nil" );
+		--LogInfo( "ArmyGroup: ShowArmyGroupMemberUI failed! layer is nil" );
 		return false;
 	end
 	layer:Init();
@@ -523,7 +523,7 @@ end
 function p.CreateSolicitMemberUI( pParentLayer )
 	local layer = createNDUILayer();
 	if not CheckP(layer) then
-		LogInfo( "ArmyGroup: ShowArmyGroupMemberUI failed! layer is nil" );
+		--LogInfo( "ArmyGroup: ShowArmyGroupMemberUI failed! layer is nil" );
 		return false;
 	end
 	layer:Init();
@@ -539,7 +539,7 @@ end
 function p.CreateArmyGroupList( pParentLayer )
 	local layer = createNDUILayer();
 	if not CheckP(layer) then
-		LogInfo( "ArmyGroup: ShowArmyGroupMemberUI failed! layer is nil" );
+		--LogInfo( "ArmyGroup: ShowArmyGroupMemberUI failed! layer is nil" );
 		return false;
 	end
 	layer:Init();
@@ -555,7 +555,7 @@ end
 function p.CreateEditNoticeDlg( pParentLayer )
 	local layer = createNDUILayer();
 	if not CheckP(layer) then
-		LogInfo( "ArmyGroup: ShowArmyGroupMemberUI failed! layer is nil" );
+		--LogInfo( "ArmyGroup: ShowArmyGroupMemberUI failed! layer is nil" );
 		return false;
 	end
 	layer:Init();
@@ -598,11 +598,11 @@ end
 -- 公告更改成功后刷新
 function p.RefreshEditNotice()
 	if ( p.pLayerEditNotice	== nil ) then
-		LogInfo( "ArmyGroup: RefreshNotice failed! p.pLayerEditNotice is nil" );
+		--LogInfo( "ArmyGroup: RefreshNotice failed! p.pLayerEditNotice is nil" );
 		return false;
 	end
 	if ( p.pLayerInformation == nil ) then
-		LogInfo( "ArmyGroup: RefreshNotice failed! p.pLayerInformation is nil" );
+		--LogInfo( "ArmyGroup: RefreshNotice failed! p.pLayerInformation is nil" );
 		return false;
 	end
 	--local pNode			= GetUiNode( p.pLayerEditNotice, ID_EDITNOTICEEDLG_BTN_EDIT );
@@ -696,7 +696,7 @@ function p.RefreshStorage( tStorage )
 	if ( nItemAmount == 0 ) then
 		return;
 	end
-	LogInfo( "ArmyGroup: RefreshStorage:"..nItemAmount );
+	--LogInfo( "ArmyGroup: RefreshStorage:"..nItemAmount );
 	if ( nItemAmount > table.getn( tItemBtnList ) ) then
 		nItemAmount = table.getn( tItemBtnList );
 	end
@@ -723,7 +723,7 @@ function p.ShowChooseMemberPanel( nOrdinal )
 	end
 	local layer = createNDUILayer();
 	if not CheckP(layer) then
-		LogInfo( "ArmyGroup: ShowChooseMemberPanel failed! layer is nil" );
+		--LogInfo( "ArmyGroup: ShowChooseMemberPanel failed! layer is nil" );
 		return false;
 	end
 	layer:Init();
@@ -734,7 +734,7 @@ function p.ShowChooseMemberPanel( nOrdinal )
 	local uiLoad = createNDUILoad();
 	if ( nil == uiLoad ) then
 		layer:Free();
-		LogInfo( "ArmyGroup: ShowChooseMemberPanel failed! uiLoad is nil" );
+		--LogInfo( "ArmyGroup: ShowChooseMemberPanel failed! uiLoad is nil" );
 		return false;
 	end
 	uiLoad:Load( "ArmyGroup/ArmyGroupUI_ChooseMember.ini", layer, p.OnUIEventChooseMemberPanel, 0, 0 );
@@ -775,7 +775,7 @@ end
 -- 填充成员列表
 function p.FillMemberListOnChooseMemberPanel( pLayer, tArmyGroupMemberList )
 	if ( pLayer == nil ) then
-		LogInfo( "ArmyGroup: FillMemberList() failed! pLayer is nil" );
+		--LogInfo( "ArmyGroup: FillMemberList() failed! pLayer is nil" );
 		return false;
 	end
 	
@@ -791,7 +791,7 @@ function p.FillMemberListOnChooseMemberPanel( pLayer, tArmyGroupMemberList )
 	-- 获得滚屏容器
 	local pScrollViewContainer = GetScrollViewContainer( pLayer, ID_LIST_CM_MEMBER );
 	if ( nil == pScrollViewContainer ) then
-		LogInfo( "ArmyGroup: FillMemberList() failed! pScrollViewContainer is nil" );
+		--LogInfo( "ArmyGroup: FillMemberList() failed! pScrollViewContainer is nil" );
 		return false;
 	end
     pScrollViewContainer:EnableScrollBar(true);
@@ -800,13 +800,13 @@ function p.FillMemberListOnChooseMemberPanel( pLayer, tArmyGroupMemberList )
 	pScrollViewContainer:RemoveAllView();
 	
 	if ( tArmyGroupMemberList == nil ) then
-		LogInfo( "ArmyGroup: FillMemberListOnChooseMemberPanel() failed! tArmyGroupMemberList is nil" );
+		--LogInfo( "ArmyGroup: FillMemberListOnChooseMemberPanel() failed! tArmyGroupMemberList is nil" );
 		return false;
 	end
 	
 	local nMemberAmount = table.getn( tArmyGroupMemberList );
 	if ( nMemberAmount == 0 ) then
-		LogInfo( "ArmyGroup: FillMemberListOnChooseMemberPanel() failed! nMemberAmount is 0" );
+		--LogInfo( "ArmyGroup: FillMemberListOnChooseMemberPanel() failed! nMemberAmount is 0" );
 		return false;
 	end
 	local nUserID	= GetPlayerId();
@@ -814,7 +814,7 @@ function p.FillMemberListOnChooseMemberPanel( pLayer, tArmyGroupMemberList )
 		local pListItem = createUIScrollView();
 	
 		if not CheckP( pListItem ) then
-			LogInfo( "ArmyGroup: pListItem == nil" );
+			--LogInfo( "ArmyGroup: pListItem == nil" );
 			return false;
 		end
 	
@@ -827,7 +827,7 @@ function p.FillMemberListOnChooseMemberPanel( pLayer, tArmyGroupMemberList )
 		--初始化ui
 		local uiLoad = createNDUILoad();
 		if not CheckP(uiLoad) then
-			LogInfo( "ArmyGroup: FillMemberListOnChooseMemberPanel failed! uiLoad is nil" );
+			--LogInfo( "ArmyGroup: FillMemberListOnChooseMemberPanel failed! uiLoad is nil" );
 			return false;
 		end
 		uiLoad:Load( "ArmyGroup/ArmyGroupUI_MemberListItem2.ini", pListItem, p.OnUIEventMemberListItem, 0, 0 );

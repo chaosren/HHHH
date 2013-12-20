@@ -46,16 +46,16 @@ p.pLayerCreateOrJoinArmyGroup	= nil;
 ---------------------------------------------------
 function p.ShowUI()
 p.pLayerCreateOrJoinArmyGroup	= nil;
-	--LogInfo( "CreateOrJoinArmyGroup: ShowUI()" );
+	----LogInfo( "CreateOrJoinArmyGroup: ShowUI()" );
 	local scene = GetSMGameScene();
 	if not CheckP(scene) then
-	LogInfo( "CreateOrJoinArmyGroup: ShowUI failed! scene is nil" );
+	--LogInfo( "CreateOrJoinArmyGroup: ShowUI failed! scene is nil" );
 		return false;
 	end
 	
 	local layer = createNDUILayer();
 	if not CheckP(layer) then
-		LogInfo( "CreateOrJoinArmyGroup: ShowUI failed! layer is nil" );
+		--LogInfo( "CreateOrJoinArmyGroup: ShowUI failed! layer is nil" );
 		return false;
 	end
 	layer:Init();
@@ -66,7 +66,7 @@ p.pLayerCreateOrJoinArmyGroup	= nil;
 	local uiLoad = createNDUILoad();
 	if ( nil == uiLoad ) then
 		layer:Free();
-		LogInfo( "CreateOrJoinArmyGroup: ShowUI failed! uiLoad is nil" );
+		--LogInfo( "CreateOrJoinArmyGroup: ShowUI failed! uiLoad is nil" );
 		return false;
 	end
 	uiLoad:Load( "ArmyGroup/ArmyGroupUI_CreateOrJoin.ini", layer, p.OnUIEventArmyGroupList, 0, 0 );
@@ -166,7 +166,7 @@ function p.FillArmyGroupList( pParentLayer, tArmyGroupList )
 	-- 获得滚屏容器
 	local pScrollViewContainer = GetScrollViewContainer( pParentLayer, ID_LIST_CONTAINER );
 	if nil == pScrollViewContainer then
-		LogInfo( "CreateOrJoinArmyGroup: FillArmyGroupList() failed! pScrollViewContainer is nil" );
+		--LogInfo( "CreateOrJoinArmyGroup: FillArmyGroupList() failed! pScrollViewContainer is nil" );
 		return false;
 	end
     pScrollViewContainer:EnableScrollBar(true);
@@ -177,7 +177,7 @@ function p.FillArmyGroupList( pParentLayer, tArmyGroupList )
 		local pListItem = createUIScrollView();
 	
 		if not CheckP( pListItem ) then
-			LogInfo( "CreateOrJoinArmyGroup: pListItem == nil" );
+			--LogInfo( "CreateOrJoinArmyGroup: pListItem == nil" );
 			return false;
 		end
 	
@@ -189,7 +189,7 @@ function p.FillArmyGroupList( pParentLayer, tArmyGroupList )
 		--初始化ui
 		local uiLoad = createNDUILoad();
 		if not CheckP(uiLoad) then
-			LogInfo( "CreateOrJoinArmyGroup: FillArmyGroupList failed! uiLoad is nil" );
+			--LogInfo( "CreateOrJoinArmyGroup: FillArmyGroupList failed! uiLoad is nil" );
 			return false;
 		end
 		uiLoad:Load( "ArmyGroup/ArmyGroupUI_ArmyGroupListItem.ini", pListItem, p.OnUIEventArmyGroupListItem, 0, 0 );
@@ -343,7 +343,7 @@ end
 function p.ShowCreateArmyGroupUI( pParentLayer )
 	local layer = createNDUILayer();
 	if not CheckP(layer) then
-		LogInfo( "CreateOrJoinArmyGroup: ShowArmyGroupListUI failed! layer is nil" );
+		--LogInfo( "CreateOrJoinArmyGroup: ShowArmyGroupListUI failed! layer is nil" );
 		return false;
 	end  
 	layer:Init();
@@ -354,7 +354,7 @@ function p.ShowCreateArmyGroupUI( pParentLayer )
 	local uiLoad = createNDUILoad();
 	if ( nil == uiLoad ) then
 		layer:Free();
-		LogInfo( "CreateOrJoinArmyGroup: ShowArmyGroupListUI failed! uiLoad is nil" );
+		--LogInfo( "CreateOrJoinArmyGroup: ShowArmyGroupListUI failed! uiLoad is nil" );
 		return false;
 	end
 	uiLoad:Load( "ArmyGroup/ArmyGroupUI_CreateDlg.ini", layer, p.OnUIEventCreateArmyGroupDlg, 0, 0 );
