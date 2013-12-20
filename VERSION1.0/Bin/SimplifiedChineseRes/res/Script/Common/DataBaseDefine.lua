@@ -1,4 +1,18 @@
 
+DB_SYNDICATE_DINNER_CONFIG=
+{
+	ID					= 0;
+	DINNER_NAME         = 1;
+	LAUNCH_MONEY_NEED   = 2;
+	JOIN_MONEY_NEED     = 3;
+	REPUTE_NEED         = 4;
+	MAX_NUM             = 5;
+	LACKMONEY_PER_NEED  = 6;
+	AWARD_MONEY         = 7;
+	AWARD_STAMINA       = 8;
+}
+
+
 DB_GSCONFIG=
 {
 	ID 				= 0;

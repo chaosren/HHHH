@@ -237,6 +237,7 @@ NMAINSCENECHILDTAG =
 	CrossArenaReward         = NUITAG_BEGIN + 207,          --跨服竞技场奖励查看
 	
 	BloodBattleJumpUI        = NUITAG_BEGIN + 208,          --跳關提示界面
+	ArmyBanquet				= NUITAG_BEGIN + 209, 	--軍團宴會
 	
 	CommonDlg				= NDLGTAG_BEGIN,						--通用对话框
 	CommonDlgNew              = NDLGTAGNEW_BEGIN,                     --新通用对话框

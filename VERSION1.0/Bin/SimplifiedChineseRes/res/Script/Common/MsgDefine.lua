@@ -311,5 +311,9 @@ NMSG_Type =
     _MSG_BATTLECITY_BATTLERECORD      = _MSG_GENERAL+8182,        --战斗结果
     
    _MSG_ACTIVITY_CODE      				= _MSG_GENERAL+8112,        --激活码
+
+   _MSG_SYNDICATE_DINNER_OPERATE      				= _MSG_GENERAL+6051,        --军团宴会
+
+
       
 };
