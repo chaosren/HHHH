@@ -197,7 +197,7 @@ end
 function p.OnUIEvent(uiNode, uiEventType, param)
 
     local tag = uiNode:GetTag();
-    LogInfo("p.OnUIEvent hit tag = %d", tag);
+    --LogInfo("p.OnUIEvent hit tag = %d", tag);
     
 	if uiEventType == NUIEventType.TE_TOUCH_BTN_CLICK then
         
@@ -255,7 +255,7 @@ function p.GetLayerByTag(SublayerTag)
     local layer = p.GetMainLayer();
     local Sublayer = GetUiLayer(layer, SublayerTag);
     if(Sublayer == nil) then
-        LogInfo("p.GetLayerByTag:[%d] is nil!", SublayerTag);
+        --LogInfo("p.GetLayerByTag:[%d] is nil!", SublayerTag);
     end
     return Sublayer;
 end
@@ -302,7 +302,7 @@ function p.AddViewItem(container, nIndex, uiFile)
     
     local view = createUIScrollView();
     if view == nil then
-        LogInfo("p.LoadUI createUIScrollView failed");
+        --LogInfo("p.LoadUI createUIScrollView failed");
         return;
     end
     
@@ -323,7 +323,7 @@ function p.AddViewItem(container, nIndex, uiFile)
     
     --游戏助手的标题界面添加不同的ini
     if (p.CurFocusBtnId == p.TabInfo.GameAssisInfo.tabBtnId) and (p.GameAssisInfoList[nIndex].Type > 10) then
-        LogInfo("Type = %d, nIndex = %d", p.GameAssisInfoList[nIndex].Type, nIndex);  
+        --LogInfo("Type = %d, nIndex = %d", p.GameAssisInfoList[nIndex].Type, nIndex);  
         uiLoad:Load("achieve_2_L.ini", view, 0, 0, 0);
     else
         uiLoad:Load(uiFile, view, p.OnViewUIEvent, 0, 0);
@@ -367,7 +367,7 @@ function p.refreshViewItem(view, iNum)
         SetLabel(view, CTR_TEXT_3, info.Title); 
         
         if ( p.CurFocusBtnId == p.TabInfo.TacticTabInfo.tabBtnId ) or ( p.CurFocusBtnId == p.TabInfo.EveryDayActInfo.tabBtnId ) then
-            LogInfo("info.Status = %d", info.Status);  
+            --LogInfo("info.Status = %d", info.Status);  
             local PicFinish = GetImage(view, CTR_PIC_FINISH);    
             if info.Status ~= 2 then
                 PicFinish:SetVisible(false);
@@ -383,7 +383,7 @@ end
 ------------------列表控件按键响应-------------------------------
 function p.OnViewUIEvent(uiNode, uiEventType, param)
  
-    LogInfo("p.OnViewUIEvent, p.CurFocusBtnId = %d, CTR_BTN_22 = %d", p.CurFocusBtnId, CTR_BTN_22); 
+    --LogInfo("p.OnViewUIEvent, p.CurFocusBtnId = %d, CTR_BTN_22 = %d", p.CurFocusBtnId, CTR_BTN_22); 
     
 	if uiEventType == NUIEventType.TE_TOUCH_BTN_CLICK then
         local btn = ConverToButton(uiNode);
@@ -391,7 +391,7 @@ function p.OnViewUIEvent(uiNode, uiEventType, param)
         --btn:SetFocus(true);
         
         if(btn == nil) then
-            LogInfo("btn is nil!");
+            --LogInfo("btn is nil!");
             return;
         end
         
@@ -484,7 +484,7 @@ function p.TacticInit()
             Record.AwardItemCount2 = GetDataBaseDataN("achievement_config", v, DB_ACHIEVEMENT_CONFIG.ITEM_COUNT2);      
             Record.Title = GetDataBaseDataS("achievement_config", v, DB_ACHIEVEMENT_CONFIG.TITLE);   
             Record.Describe = GetDataBaseDataS("achievement_config", v, DB_ACHIEVEMENT_CONFIG.DESCRIBE);    
-            LogInfo("p.TacticInit() id  = %d, Status = %d, nType = %d, Money = %d, Item = %d, Count = %d, Title = %s, Describe = %s", Record.id, Record.Status, nType, Record.AwardMoney, Record.AwardItem, Record.AwardItemCount, Record.Title, Record.Describe);          
+            --LogInfo("p.TacticInit() id  = %d, Status = %d, nType = %d, Money = %d, Item = %d, Count = %d, Title = %s, Describe = %s", Record.id, Record.Status, nType, Record.AwardMoney, Record.AwardItem, Record.AwardItemCount, Record.Title, Record.Describe);          
             
             table.insert(p.TacticInfoList, Record);
         end
@@ -492,7 +492,7 @@ function p.TacticInit()
     
     for i, v in pairs(p.TacticStatusList) do
         for j, k in pairs(p.TacticInfoList) do
-            LogInfo("function p.RefreshTacticListInfo id = %d, Type = %d, Status = %d", k.id,  v.Type, v.Status); 
+            --LogInfo("function p.RefreshTacticListInfo id = %d, Type = %d, Status = %d", k.id,  v.Type, v.Status); 
             if (k.id == v.Type) then
                 --改变兵法状态
                 k.Status = v.Status;
@@ -585,7 +585,12 @@ function p.TacticRefresh()
 	--local CurFocus  = p.TacticSetCurFocus(); 
     local CurFocus  = 1; 
     
+    
     --添加list列表元素
+	if ToltalNum > 20 then
+		ToltalNum = 20;
+	end
+	
     for i = 1, ToltalNum do
       p.AddViewItem(ListContainer, i, "achieve_1_L.ini");
     end
@@ -633,7 +638,7 @@ function p.SetListFocus(nIndex)
     local ScrollView = nil;
     local BtnFocus = nil; 
     
-    LogInfo("p.SetListFocus newIndex = %d", nIndex); 
+    ----LogInfo("p.SetListFocus newIndex = %d", nIndex); 
         
     if p.CurFocusBtnId == p.TabInfo.TacticTabInfo.tabBtnId then
 
@@ -642,10 +647,10 @@ function p.SetListFocus(nIndex)
             BtnFocus = GetButton(ScrollView, CTR_BTN_2);
             BtnFocus: TabSel(false);
             BtnFocus: SetFocus(false);
-            LogInfo("p.SetListFocus  oldIndex = %d set false", p.TabInfo.TacticTabInfo.focusIndex); 
+            ----LogInfo("p.SetListFocus  oldIndex = %d set false", p.TabInfo.TacticTabInfo.focusIndex); 
         end
         
-         LogInfo("p.SetListFocus  newindex = %d set true", nIndex); 
+         ----LogInfo("p.SetListFocus  newindex = %d set true", nIndex); 
         ScrollView = ListContainer:GetViewById(nIndex);
         BtnFocus = GetButton(ScrollView, CTR_BTN_2);
         BtnFocus: TabSel(true);
@@ -669,10 +674,10 @@ function p.SetListFocus(nIndex)
             BtnFocus = GetButton(ScrollView, CTR_BTN_2);
             BtnFocus: TabSel(false);
             BtnFocus: SetFocus(false);
-            LogInfo("p.SetListFocus  oldIndex = %d set false", p.TabInfo.EveryDayActInfo.focusIndex); 
+            --LogInfo("p.SetListFocus  oldIndex = %d set false", p.TabInfo.EveryDayActInfo.focusIndex); 
         end
         
-         LogInfo("p.SetListFocus  newindex = %d set true", nIndex); 
+         --LogInfo("p.SetListFocus  newindex = %d set true", nIndex); 
         ScrollView = ListContainer:GetViewById(nIndex);
         BtnFocus = GetButton(ScrollView, CTR_BTN_2);
         BtnFocus: TabSel(true);
@@ -684,7 +689,7 @@ end
 function p.TacticOnEvent(uiNode, uiEventType, param)
 
     local tag = uiNode:GetTag();
-    LogInfo("p.OnViewUIEvent, tag = %d, p.CurFocusBtnId = %d, CTR_BTN_22 = %d", tag, p.CurFocusBtnId, CTR_BTN_22); 
+    --LogInfo("p.OnViewUIEvent, tag = %d, p.CurFocusBtnId = %d, CTR_BTN_22 = %d", tag, p.CurFocusBtnId, CTR_BTN_22); 
     
 	if uiEventType == NUIEventType.TE_TOUCH_BTN_CLICK then
         if tag == CTR_BTN_22 then
@@ -692,8 +697,8 @@ function p.TacticOnEvent(uiNode, uiEventType, param)
             local DataList = p.GetCurDataInfoList();
             local Info = DataList[p.TabInfo.TacticTabInfo.focusIndex];
             
-            LogInfo("focusIndex = %d, Status = %d, Type = %d, count = %d", 
-                            p.TabInfo.TacticTabInfo.focusIndex, Info.Status, Info.AwardItem, Info.AwardItemCount); 
+            --LogInfo("focusIndex = %d, Status = %d, Type = %d, count = %d", 
+                           -- p.TabInfo.TacticTabInfo.focusIndex, Info.Status, Info.AwardItem, Info.AwardItemCount); 
                             
               --判断当前按钮是否可响应
             if Info.Status == 1 then
@@ -737,20 +742,20 @@ function p.GameAssisInitDataList(nTypeIndex)
                 Record.Describe = "";
                 nTitleAddFlag = 1;
                 table.insert(p.GameAssisInfoList, Record);
-                LogInfo("p.GameAssisInit() nType = %d, Title = %s, Describe = %s", Record.Type, Record.Title, Record.Describe);          
+                --LogInfo("p.GameAssisInit() nType = %d, Title = %s, Describe = %s", Record.Type, Record.Title, Record.Describe);          
             end
             local Record = {};
             Record.Type = nType;
             Record.Title = GetDataBaseDataS("achievement_config", v, DB_ACHIEVEMENT_CONFIG.TITLE);   
             Record.Describe = GetDataBaseDataS("achievement_config", v, DB_ACHIEVEMENT_CONFIG.DESCRIBE);             
-            LogInfo("p.GameAssisInit() nType = %d, Title = %s, Describe = %s", Record.Type, Record.Title, Record.Describe);          
+            --LogInfo("p.GameAssisInit() nType = %d, Title = %s, Describe = %s", Record.Type, Record.Title, Record.Describe);          
             table.insert(p.GameAssisInfoList, Record);
         end
     end
 end
 --------------------------------------游戏助手基本函数定义----------初始化时按照类型排好序----------------------
 function p.GameAssisInit()
-    LogInfo("function p.GameAssisInit() begin");
+    --LogInfo("function p.GameAssisInit() begin");
     
     p.GameAssisInfoList = {};
     
@@ -769,7 +774,7 @@ end
 function p.GetGameAssisViewInfoFromIndex(nIndex)
     local nNum = 1;
     for i, v in pairs(p.GameAssisInfoList) do
-        LogInfo("p.GetGameAssisViewInfoFromIndex v.Type = %d", v.Type);
+        --LogInfo("p.GetGameAssisViewInfoFromIndex v.Type = %d", v.Type);
         if v.Type < 10 then
             if nNum == nIndex then
                 return v;
@@ -783,22 +788,22 @@ end
 
 --------------------------------------是否有可以领取奖励的东西--------------------------------
 function p.IsCanGetRewards()
-    LogInfo("functionp.IsCanGetRewards"); 
+    --LogInfo("functionp.IsCanGetRewards"); 
     
     if p.TacticStatusList == nil then
-        LogInfo("functionp.IsCanGetRewards nil"); 
+        --LogInfo("functionp.IsCanGetRewards nil"); 
         return false;
     end
     
     for i, v in pairs(p.TacticStatusList) do
-        LogInfo("function p.TacticStatusList Status = %d",  v.Status); 
+        --LogInfo("function p.TacticStatusList Status = %d",  v.Status); 
         if v.Status == 1 then
-            LogInfo("return true");
+            --LogInfo("return true");
             return true;
         end
     end
     
-    LogInfo("return false");
+    --LogInfo("return false");
     return false;
 end
 
@@ -806,7 +811,7 @@ end
 
 
 function p.GameAssisRefresh()
-    LogInfo("p.GameAssisRefresh begin");
+    --LogInfo("p.GameAssisRefresh begin");
     local layer = p.GetLayerByTag(p.TabInfo.GameAssisInfo.LayerTag);    
     local ListContainer  = p.GetViewContainer(p.TabInfo.GameAssisInfo.tabBtnId);
    
@@ -823,15 +828,15 @@ function p.GameAssisRefresh()
     if p.TabInfo.GameAssisInfo.focusIndex > ToltalNum then
         return
     end
-    LogInfo("p.GameAssisRefresh begin ToltalNum = %d", ToltalNum);
+    --LogInfo("p.GameAssisRefresh begin ToltalNum = %d", ToltalNum);
     
     --显示当前的提示信息
     local Info = p.GameAssisInfoList[p.TabInfo.GameAssisInfo.focusIndex];
-    LogInfo("p.GameAssisRefresh begin focusIndex = %d", p.TabInfo.GameAssisInfo.focusIndex);
+    --LogInfo("p.GameAssisRefresh begin focusIndex = %d", p.TabInfo.GameAssisInfo.focusIndex);
     --local Info = p.GetGameAssisViewInfoFromIndex(p.TabInfo.GameAssisInfo.focusIndex); 
     
     SetLabel(layer, CTR_TEXT_23, Info.Describe);
-    LogInfo("p.GameAssisRefresh ToltalNum = %d, focusIndex = %d, Describe = %s",ToltalNum, p.TabInfo.GameAssisInfo.focusIndex, Info.Describe);
+    --LogInfo("p.GameAssisRefresh ToltalNum = %d, focusIndex = %d, Describe = %s",ToltalNum, p.TabInfo.GameAssisInfo.focusIndex, Info.Describe);
     
     --添加list列表元素
     for i = 1, ToltalNum do
@@ -870,7 +875,7 @@ function p.EveryDayActicInit()
             Record.AwardItemCount2 = GetDataBaseDataN("achievement_config", v, DB_ACHIEVEMENT_CONFIG.ITEM_COUNT2);      
             Record.Title = GetDataBaseDataS("achievement_config", v, DB_ACHIEVEMENT_CONFIG.TITLE);   
             Record.Describe = GetDataBaseDataS("achievement_config", v, DB_ACHIEVEMENT_CONFIG.DESCRIBE);    
-            LogInfo("p.EveryDayActicInit() id  = %d, Status = %d, nType = %d, Money = %d, Item = %d, Count = %d, Title = %s, Describe = %s", Record.id, Record.Status, nType, Record.AwardMoney, Record.AwardItem, Record.AwardItemCount, Record.Title, Record.Describe);          
+            --LogInfo("p.EveryDayActicInit() id  = %d, Status = %d, nType = %d, Money = %d, Item = %d, Count = %d, Title = %s, Describe = %s", Record.id, Record.Status, nType, Record.AwardMoney, Record.AwardItem, Record.AwardItemCount, Record.Title, Record.Describe);          
             
             table.insert(p.EveryDayActList, Record);
         end
@@ -878,7 +883,7 @@ function p.EveryDayActicInit()
     
     for i, v in pairs(p.TacticStatusList) do
         for j, k in pairs(p.EveryDayActList) do
-            LogInfo("function p.RefreshTacticListInfo id = %d, Type = %d, Status = %d", k.id,  v.Type, v.Status); 
+            --LogInfo("function p.RefreshTacticListInfo id = %d, Type = %d, Status = %d", k.id,  v.Type, v.Status); 
             if (k.id == v.Type) then
                 --改变兵法状态
                 k.Status = v.Status;
@@ -952,7 +957,7 @@ end
 function p.EveryDayActOnEvent(uiNode, uiEventType, param)
 
     local tag = uiNode:GetTag();
-    LogInfo("p.OnViewUIEvent, tag = %d, p.CurFocusBtnId = %d, CTR_BTN_22 = %d", tag, p.CurFocusBtnId, CTR_BTN_22); 
+    --LogInfo("p.OnViewUIEvent, tag = %d, p.CurFocusBtnId = %d, CTR_BTN_22 = %d", tag, p.CurFocusBtnId, CTR_BTN_22); 
     
 	if uiEventType == NUIEventType.TE_TOUCH_BTN_CLICK then
         if tag == CTR_BTN_22 then
@@ -960,8 +965,8 @@ function p.EveryDayActOnEvent(uiNode, uiEventType, param)
             local DataList = p.GetCurDataInfoList();
             local Info = DataList[p.TabInfo.EveryDayActInfo.focusIndex];
             
-            LogInfo("focusIndex = %d, Status = %d, Type = %d, count = %d", 
-                            p.TabInfo.EveryDayActInfo.focusIndex, Info.Status, Info.AwardItem, Info.AwardItemCount); 
+            --LogInfo("focusIndex = %d, Status = %d, Type = %d, count = %d", 
+                           -- p.TabInfo.EveryDayActInfo.focusIndex, Info.Status, Info.AwardItem, Info.AwardItemCount); 
                             
               --判断当前按钮是否可响应
             if Info.Status == 1 then
@@ -999,7 +1004,7 @@ local PacketFlag = {
 };
 --------------------------------------当大话兵法中具体兵法项状态改变的时候信息刷新 --------------------------------
 function p.RefreshTacticListInfo(netdata)  
-    LogInfo("function p.RefreshTacticListInfo begin"); 
+    --LogInfo("function p.RefreshTacticListInfo begin"); 
     
 	local nPacketFlag = netdata:ReadByte();
 	if ( nPacketFlag == PacketFlag.PF_BEGIN ) then
@@ -1015,7 +1020,7 @@ function p.RefreshTacticListInfo(netdata)
         record.Type = netdata:ReadInt();
         record.Status = netdata:ReadInt();
         table.insert(p.TacticStatusList, record);
-        LogInfo("msg  count = %d, Type = %d, Status = %d", count, record.Type,  record.Status); 
+        --LogInfo("msg  count = %d, Type = %d, Status = %d", count, record.Type,  record.Status); 
     end
     
 	if ( nPacketFlag == PacketFlag.PF_BEGIN ) then
@@ -1025,7 +1030,7 @@ function p.RefreshTacticListInfo(netdata)
     	if IsUIShow(NMAINSCENECHILDTAG.DragonTactic) then
     	    for i, v in pairs(p.TacticStatusList) do
     	        for j, k in pairs(p.TacticInfoList) do
-    	            LogInfo("function p.RefreshTacticListInfo id = %d, Type = %d, Status = %d", k.id,  v.Type, v.Status); 
+    	            --LogInfo("function p.RefreshTacticListInfo id = %d, Type = %d, Status = %d", k.id,  v.Type, v.Status); 
     	            if (k.id == v.Type) then
     	                --改变兵法状态
     	                k.Status = v.Status;
@@ -1046,7 +1051,7 @@ function p.RefreshTacticListInfo(netdata)
     	if IsUIShow(NMAINSCENECHILDTAG.DragonTactic) then
     	    for i, v in pairs(p.TacticStatusList) do
     	        for j, k in pairs(p.TacticInfoList) do
-    	            LogInfo("function p.RefreshTacticListInfo id = %d, Type = %d, Status = %d", k.id,  v.Type, v.Status); 
+    	            --LogInfo("function p.RefreshTacticListInfo id = %d, Type = %d, Status = %d", k.id,  v.Type, v.Status); 
     	            if (k.id == v.Type) then
     	                --改变兵法状态
     	                k.Status = v.Status;
@@ -1067,26 +1072,26 @@ function p.RefreshTacticListInfo(netdata)
 end
 
 function p.SendTacticListViewStatus(nId)  
-    LogInfo("function p.SendTacticListViewStatus()  begin nId = %d", nId); 
+    --LogInfo("function p.SendTacticListViewStatus()  begin nId = %d", nId); 
 
 	local netdata = createNDTransData(NMSG_Type._MSG_ACHIEVEMENT_GET_PRIZE);
 	netdata:WriteInt(nId);	
 	SendMsg(netdata);	
 	netdata:Free();	
-    LogInfo("function p.SendTacticListViewStatus()  end"); 
+    --LogInfo("function p.SendTacticListViewStatus()  end"); 
 	return true;	
 end
 
 
 --助手任务完成但还没领取奖励
 function p.DTStarTip()
-    LogInfo("DragonTacticUI.DTStarTip");
+    --LogInfo("DragonTacticUI.DTStarTip");
 	if p.IsCanGetRewards() then
-        LogInfo("DragonTacticUI.IsCanGetRewards true");
+        --LogInfo("DragonTacticUI.IsCanGetRewards true");
 		local btn = MainUIBottomSpeedBar.GetFuncBtn(119);
 		
 		if btn == nil then
-			LogInfo("p.DTStarTip 1")
+			--LogInfo("p.DTStarTip 1")
 			return;
 		end
 		
@@ -1116,7 +1121,7 @@ function p.DTStarTip()
     	btn:AddChild( pSpriteNode );
     	p.EffectSprite = pSpriteNode;
 	else
-		LogInfo("DragonTacticUI.IsCanGetRewards false");
+		--LogInfo("DragonTacticUI.IsCanGetRewards false");
 		p.RemoveEffect();
 	end
 end
@@ -1127,7 +1132,7 @@ function p.RemoveEffect()
 	end
     
     local effectspr = p.EffectSprite;
-    LogInfo("DragonTacticUI RemoveEffect 1");
+    --LogInfo("DragonTacticUI RemoveEffect 1");
     effectspr:RemoveFromParent( true );
     p.EffectSprite	= nil;
 end

@@ -90,3 +90,6 @@ LoadDataBaseTable("bloodbattle_monster_generate","bloodbattle_monster_generateTa
 LoadDataBaseTable("bloodbattle_monster_addition","bloodbattle_monster_additionTable");
 LoadDataBaseTable("bloodbattle_config","bloodbattle_configTable");
 LoadDataBaseTable("syndicate_dinner_config","syndicate_dinner_configTable");
+LoadDataBaseTable("bloodbattle_jump_config","bloodbattle_jump_configTable");
+
+

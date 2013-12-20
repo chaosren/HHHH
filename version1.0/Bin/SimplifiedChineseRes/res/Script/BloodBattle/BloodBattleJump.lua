@@ -58,15 +58,15 @@ function p.InitData()
 	p.nSelFlag = 0;
 	p.tbJumpStatic = {};  
  
-    local Idlist = GetDataBaseIdList("bloodbattle_config");
+    local Idlist = GetDataBaseIdList("bloodbattle_jump_config.ini");
     
     for i, v in pairs(Idlist) do
         local Record = {}; 
         Record.id = v;
-        Record.nReqMoney = GetDataBaseDataN("bloodbattle_config", v, DB_BLOODBATTLE_CONFIG.REQ_MONEY);                --截粮次数上限
-        Record.nJumpLayer1 = GetDataBaseDataN("bloodbattle_config", v, DB_BLOODBATTLE_CONFIG.JUMP_LAYER1);           --单次被截上限       
-        Record.nReqEmoney = GetDataBaseDataN("bloodbattle_config", v, DB_BLOODBATTLE_CONFIG.REQ_EMONEY);                --护送次数上限 
-        Record.nJumpLayer2 = GetDataBaseDataN("bloodbattle_config", v, DB_BLOODBATTLE_CONFIG.JUMP_LAYER2);                --刷新粮车品质次数上限
+        Record.nReqMoney = GetDataBaseDataN("bloodbattle_jump_config", v, DB_BLOODBATTLE_CONFIG.REQ_MONEY);                --截粮次数上限
+        Record.nJumpLayer1 = GetDataBaseDataN("bloodbattle_jump_config", v, DB_BLOODBATTLE_CONFIG.JUMP_LAYER1);           --单次被截上限       
+        Record.nReqEmoney = GetDataBaseDataN("bloodbattle_jump_config", v, DB_BLOODBATTLE_CONFIG.REQ_EMONEY);                --护送次数上限 
+        Record.nJumpLayer2 = GetDataBaseDataN("bloodbattle_jump_config", v, DB_BLOODBATTLE_CONFIG.JUMP_LAYER2);                --刷新粮车品质次数上限
 		 table.insert(p.tbJumpStatic, Record);        
     end
 end
