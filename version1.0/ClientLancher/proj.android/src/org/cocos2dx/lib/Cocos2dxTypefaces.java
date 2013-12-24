@@ -71,7 +71,7 @@ public class Cocos2dxTypefaces {
 			catch (final Exception e)
 			{
 				//Log.d("Typeface get", "error get typeface:");
-				typeface = Typeface.createFromFile("/sdcard/dhlj_dena/SimplifiedChineseRes/res/fonts/LiSu.ttf");
+				typeface = Typeface.createFromFile("/sdcard/dhlj_mobile/SimplifiedChineseRes/res/fonts/LiSu.ttf");
 			}
 			//final Typeface typeface = Typeface.createFromAsset(pContext.getAssets(), pAssetName);
 			//Log.d("Typeface get", "typeface: " + typeface);

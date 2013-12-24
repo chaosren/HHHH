@@ -85,7 +85,7 @@ void PlayVideo(const char* videofilepath, bool bSkip)
 		return ;
 	}
 
-	VideoMgrPtr->PlayVideo("/sdcard/dhlj_dena/SimplifiedChineseRes/res/Video/480_0.mp4");
+	VideoMgrPtr->PlayVideo("/sdcard/dhlj_mobile/SimplifiedChineseRes/res/Video/480_0.mp4");
 
 #if 0
 	if(!videofilepath || 0 == strlen(videofilepath))

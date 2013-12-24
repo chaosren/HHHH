@@ -91,7 +91,7 @@ public class VideoActivity extends Activity
 		pkVideoControl.setVideoActivity(this);
 		pkVideoControl.hide();
 
-		m_pkView.setVideoPath("/sdcard/dhlj_dena/SimplifiedChineseRes/res/Video/480_0.mp4");
+		m_pkView.setVideoPath("/sdcard/dhlj_mobile/SimplifiedChineseRes/res/Video/480_0.mp4");
 		m_pkView.setBackgroundColor(0);
 		// m_pkView.setMediaController(pkVideoControl);
 		m_pkView.setOnCompletionListener(pkVideoControl);

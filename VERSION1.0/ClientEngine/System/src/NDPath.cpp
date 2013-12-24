@@ -29,16 +29,16 @@ NS_NDENGINE_BGN
 #define  LOG_TAG    "DaHuaLongJiang"
 #define  LOGD(...)  __android_log_print(ANDROID_LOG_DEBUG,LOG_TAG,__VA_ARGS__)
 #define  LOGERROR(...)  __android_log_print(ANDROID_LOG_ERROR,LOG_TAG,__VA_ARGS__)
-//#define NDPath_ResPath		      "/sdcard/dhlj/SimplifiedChineseRes/res/"
-//#define NDPath_ImgPath			 "/sdcard/dhlj/SimplifiedChineseRes/res/Image/"
-//#define NDPath_ImgPath_BattleUI	 "/sdcard/dhlj/SimplifiedChineseRes/res/Image/battle_ui/"
-//#define NDPath_ImgPath_UINew		 "/sdcard/dhlj/SimplifiedChineseRes/res/Image/ui_new/"
-//#define NDPath_MapPath			 "/sdcard/dhlj/SimplifiedChineseRes/res/map/"
-//#define NDPath_AniPath			 "/sdcard/dhlj/SimplifiedChineseRes/res/animation/"
-//#define NDPath_SoundPath			 "/sdcard/dhlj/SimplifiedChineseRes/res/sound/"
-//#define NDPath_UIPath			 "/sdcard/dhlj/SimplifiedChineseRes/res/UI/"
-//#define NDPath_ScriptPath		 "/sdcard/dhlj/SimplifiedChineseRes/res/Script/"
-#define NDPath_LogPath			 "/sdcard/dhlj_dena/log"
+//#define NDPath_ResPath		      "/sdcard/dhlj_mobile/SimplifiedChineseRes/res/"
+//#define NDPath_ImgPath			 "/sdcard/dhlj_mobile/SimplifiedChineseRes/res/Image/"
+//#define NDPath_ImgPath_BattleUI	 "/sdcard/dhlj_mobile/SimplifiedChineseRes/res/Image/battle_ui/"
+//#define NDPath_ImgPath_UINew		 "/sdcard/dhlj_mobile/SimplifiedChineseRes/res/Image/ui_new/"
+//#define NDPath_MapPath			 "/sdcard/dhlj_mobile/SimplifiedChineseRes/res/map/"
+//#define NDPath_AniPath			 "/sdcard/dhlj_mobile/SimplifiedChineseRes/res/animation/"
+//#define NDPath_SoundPath			 "/sdcard/dhljdhlj_mobileSimplifiedChineseRes/res/sound/"
+//#define NDPath_UIPath			 "/sdcard/dhlj_mobile/SimplifiedChineseRes/res/UI/"
+//#define NDPath_ScriptPath		 "/sdcard/dhlj_mobile/SimplifiedChineseRes/res/Script/"
+#define NDPath_LogPath			 "/sdcard/dhlj_mobile/log"
 #else
 #define  LOG_TAG    "DaHuaLongJiang"
 #define  LOGD(...)
@@ -84,7 +84,7 @@ const string NDPath::GetAppPath()
     return std::string([[[NSBundle mainBundle] resourcePath] UTF8String]) + "/";
 #endif
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
-	return "/sdcard/dhlj_dena/";
+	return "/sdcard/dhlj_mobile/";
 #endif
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
 	return "../../Bin/";
@@ -102,7 +102,7 @@ const string NDPath::GetCashesPath()
      return std::string([CashesDirectory UTF8String]) +"/";
 #endif
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
-	return "/sdcard/dhlj_dena/";
+	return "/sdcard/dhlj_mobile/";
 #endif
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
 	return "../../Bin/";
@@ -119,7 +119,7 @@ const string NDPath::GetDocumentPath()
 //	return std::string([documentsDirectory UTF8String]) + "/";
 //
 //#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
-//	return "/sdcard/dhlj_dena/";
+//	return "/sdcard/dhlj_mobile/";
 //#endif
 //#if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
 //	return "./";
@@ -314,7 +314,7 @@ void NDPath::SetResDirPos( int iPos )
 const string NDPath::GetDBPath()
 {
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
-	return "/sdcard/dhlj_dena/";
+	return "/sdcard/dhlj_mobile/";
 #else
 	return "";
 #endif
