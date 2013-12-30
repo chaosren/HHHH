@@ -58,15 +58,15 @@ function p.InitData()
 	p.nSelFlag = 0;
 	p.tbJumpStatic = {};  
  
-    local Idlist = GetDataBaseIdList("bloodbattle_jump_config.ini");
+    local Idlist = GetDataBaseIdList("bloodbattle_jump_config");
     
     for i, v in pairs(Idlist) do
         local Record = {}; 
         Record.id = v;
-        Record.nReqMoney = GetDataBaseDataN("bloodbattle_jump_config", v, DB_BLOODBATTLE_CONFIG.REQ_MONEY);                --截粮次数上限
-        Record.nJumpLayer1 = GetDataBaseDataN("bloodbattle_jump_config", v, DB_BLOODBATTLE_CONFIG.JUMP_LAYER1);           --单次被截上限       
-        Record.nReqEmoney = GetDataBaseDataN("bloodbattle_jump_config", v, DB_BLOODBATTLE_CONFIG.REQ_EMONEY);                --护送次数上限 
-        Record.nJumpLayer2 = GetDataBaseDataN("bloodbattle_jump_config", v, DB_BLOODBATTLE_CONFIG.JUMP_LAYER2);                --刷新粮车品质次数上限
+        Record.nReqMoney = GetDataBaseDataN("bloodbattle_jump_config", v, DB_BLOODBATTLE_CONFIG.REQ_MONEY);
+        Record.nJumpLayer1 = GetDataBaseDataN("bloodbattle_jump_config", v, DB_BLOODBATTLE_CONFIG.JUMP_LAYER1);   
+        Record.nReqEmoney = GetDataBaseDataN("bloodbattle_jump_config", v, DB_BLOODBATTLE_CONFIG.REQ_EMONEY);    
+        Record.nJumpLayer2 = GetDataBaseDataN("bloodbattle_jump_config", v, DB_BLOODBATTLE_CONFIG.JUMP_LAYER2);  
 		 table.insert(p.tbJumpStatic, Record);        
     end
 end
@@ -96,8 +96,8 @@ function p.RefreshUI()
 	end
 	
 	--顯示提示語
-	local strPmt1 = string.format(GetTxtPri("BB_I10"), nReqMoney, nJumpLayer1);
-	local strPmt2 = string.format(GetTxtPri("BB_I11"), nReqEmoney, nJumpLayer2);
+	local strPmt1 = string.format(GetTxtPri("BB_I10"), nReqMoney, nJumpLayer1 + 1);
+	local strPmt2 = string.format(GetTxtPri("BB_I11"), nReqEmoney, nJumpLayer2 + 1);
 	
 	SetLabel(p.Layer, ID_TEXT_MONEY_JUMP, strPmt1);
 	SetLabel(p.Layer, ID_TEXT_EMONEY_JUMP, strPmt2);
