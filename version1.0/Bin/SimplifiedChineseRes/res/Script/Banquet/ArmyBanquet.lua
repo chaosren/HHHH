@@ -55,8 +55,8 @@ local LEVEL_LIMIT					= 40;	-- 等级限制
 
 
 ---------------------------------------------------
-local SZ_ERROR_00				= GetTxtPri("MB_T5");
-local SZ_ERROR_06				= GetTxtPri("MB_T11");
+local SZ_ERROR_00				= GetTxtPri("ARMYBANQUET_09");
+local SZ_ERROR_06				= GetTxtPri("ARMYBANQUET_10");
 
 
 ---------------------------------------------------
@@ -64,9 +64,11 @@ local SZ_ERROR_06				= GetTxtPri("MB_T11");
 ---------------------------------------------------
 local SZ_START_SUCCEED			= GetTxtPri("MB_T20");
 local SZ_GOLD_START_SUCCEED		= GetTxtPri("MB_T21");
-local SZ_CANCEL_SUCCEED			= GetTxtPri("MB_T22");
+local SZ_CANCEL_SUCCEED			= GetTxtPri("ARMYBANQUET_07");
 local SZ_TIME_OUT				= GetTxtPri("MB_T23");
-local SZ_SHOW_THE_DOOR			= GetTxtPri("MB_T24");
+local SZ_SHOW_THE_DOOR			= GetTxtPri("ARMYBANQUET_08");
+
+
 
 ---------------------------------------------------
 
@@ -526,7 +528,9 @@ function p.OnUIEventArmyBanquetInforLayer_Host( uiNode, uiEventType, param )
 				if p.PrePareGrade == nil then
 					return true;
 				end
-				local lackmoney =  GetDataBaseDataN("syndicate_dinner_config",p.PrePareGrade,DB_SYNDICATE_DINNER_CONFIG.LACKMONEY_PER_NEED);
+				
+				local lackUserCount = MsgArmyBanquet.BanquetLimit - nAmount --缺席數量
+				local lackmoney =  lackUserCount*GetDataBaseDataN("syndicate_dinner_config",p.PrePareGrade,DB_SYNDICATE_DINNER_CONFIG.LACKMONEY_PER_NEED);
 			
 				CommonDlgNew.ShowYesOrNoDlg(string.format( GetTxtPri("ARMYBANQUET_05"), lackmoney), p.CallBack_StartArmyBanquet );
 				return true;
@@ -1058,7 +1062,7 @@ function p.CallBack_TimeOut()
 	p.tArmyBanquetInfor	= nil;
 	p.ArmyBanquetStatus = ArmyBanquetStatus.BS_NONE;
 	p.pLayerPlayerInfor:SetVisible( true );
-	p.pLayerNotice:SetVisible( true );
+	--p.pLayerNotice:SetVisible( true );
 	p.pLayerArmyBanquetList:SetVisible( false );
 	p.pLayerArmyBanquetInfor_Host:SetVisible( false );
 	p.pLayerArmyBanquetInfor_Guest:SetVisible( false );
