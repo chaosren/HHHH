@@ -233,6 +233,7 @@ function CloseMainUI()
             and i ~= "RaidersLoad" 
             and i ~= "ArenaRewardUI" 
             and i ~= "BattleUI_Title" 
+			and i ~= "ArmyBanquet"
             and v ~= 2015    
             then
             
