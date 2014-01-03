@@ -115,7 +115,14 @@ function p.MsgGetPlayerActionInfo(netdatas)
 			iType = GetDataBaseDataN("event_config", p.StrActionInfo.iDb_event_config_id, DB_EVENT_CONFIG.TYPE);
 		end
 		 
-		 
+		--更新用户是否存在这张表
+        if iType > p.PLAYER_ACTION_TYPE.BEGIN  and iType < p.PLAYER_ACTION_TYPE.END then
+            if cActionType == p.EVENT_ACTION_TYPE.ACTION_INFO then  --下发活动信息
+                p.PLAYER_ACTION_STATION[iType].IsExit = 1;
+            else
+                p.PLAYER_ACTION_STATION[iType].IsExit = 0;     --下发删除活动信息
+            end
+        end
 
         if cActionType == p.EVENT_ACTION_TYPE.ACTION_INFO then   --要启用的活动
             if (p.PLAYER_ACTION_TYPE.CHECK_IN == iType) then   --登入签到
@@ -136,14 +143,6 @@ function p.MsgGetPlayerActionInfo(netdatas)
 			 end
         end
         
-        --更新用户是否存在这张表
-        if iType > p.PLAYER_ACTION_TYPE.BEGIN  and iType < p.PLAYER_ACTION_TYPE.END then
-            if cActionType == p.EVENT_ACTION_TYPE.ACTION_INFO then  --下发活动信息
-                p.PLAYER_ACTION_STATION[iType].IsExit = 1;
-            else
-                p.PLAYER_ACTION_STATION[iType].IsExit = 0;     --下发删除活动信息
-            end
-        end
     end
 
     MainUI.RefreshFuncIsOpen();

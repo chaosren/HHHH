@@ -14,9 +14,21 @@ rightListTitleText = 31,};
 p.UiList = {ListLeft = {ListContaner = nil, ListCtrId = 20, btnId = 2, crtlText = 3, CurFocus = 1,}, 
                    ListRight = {ListContaner = nil, ListCtrId = 30, btnId = 4, crtlText = 3, CurFocus = 1, listTitle = 31, }};
                                       
-                                      
+   
+
+p.ShowRewardTxtID = {
+						{TxtTipId = 21, TxtContentID = 31,},
+						{TxtTipId = 24, TxtContentID = 34,},
+						{TxtTipId = 22, TxtContentID = 32,},
+						{TxtTipId = 25, TxtContentID = 35,},
+						{TxtTipId = 23, TxtContentID = 33,},};
+local ITEM_BTN_ID1 = 11;
+local ITEM_TXT_ID1 = 26;
+
+						
+                                 
 local LeftListSize = CGSizeMake(110*CoordScaleX, 40*CoordScaleY);              
-local RightListSize = CGSizeMake(100*CoordScaleX, 28*CoordScaleY);                      
+local RightListSize = CGSizeMake(320*CoordScaleX, 65*CoordScaleY);                      
                    
 p.LeftTitleLIst = {};   --存储左边列表数据
 p.EventConfig = {};   
@@ -34,6 +46,9 @@ p.RechargeState = { First = {Num = 0, Flag = 0,},
 
 p.RechargeTimeBegin = {First = 0,  OnceFlag = 0, TotalFlag = 0, DailyFlag = 0,};                                
 
+
+p.bFisrtPayFlag = true;          
+p.bIfFisrtPayCanOpen = true;           
                    
 --活动类型
 p.ActionType =
@@ -48,8 +63,12 @@ p.ActionType =
 };           
 
 --加载充值活动主界面
-function p.LoadUI()
+function p.LoadUI(bFstFlag)
    
+   p.bFisrtPayFlag = false;
+	if bFstFlag ~= nil then
+		p.bFisrtPayFlag = bFstFlag;
+	end
     --------------------获得游戏主场景------------------------------------------
     local scene = GetSMGameScene();	
 	if scene == nil then
@@ -105,6 +124,18 @@ function p.InitDataWhenDown()
     for i,v in pairs(p.EventConfig) do
         --获取活动的类型
         local nType = v.Type;
+        local bShowFlag = true;
+        
+        --是否显示首充值
+        if p.bFisrtPayFlag then
+			if nType ~= p.ActionType.FIRST_PAY then
+				bShowFlag = false;
+			end
+		else
+			if nType == p.ActionType.FIRST_PAY then
+				bShowFlag = false;
+			end
+		end
         
         local delFlag = 0;
         for j, k in pairs(MsgPlayerAction.PLAYER_ACTION_STATION) do
@@ -114,10 +145,10 @@ function p.InitDataWhenDown()
                 break;
             end
         end 
-
+        
         --获取所有活动所属的组别,同一组别在同一个列表显示
         local nUiGroup = v.Group;
-        if nUiGroup == 3 and delFlag ~= 1 then   
+        if nUiGroup == 3 and delFlag ~= 1 and bShowFlag then   
 			 v.RightListTable = {}; 
 		      --获取右侧列表要显示的内容      
             for j, k in pairs(p.EventReward) do
@@ -238,7 +269,7 @@ function p.OnUIEvent(uiNode, uiEventType, param)
             PlayerVIPUI.LoadUI();    
         
         elseif p.UiCtr.btnGet == tag then  
-            p.SendRechargeInfo();        
+            --p.SendRechargeInfo();        
         end  
         
     end
@@ -305,7 +336,7 @@ function p.RefreshRightListContainer()
     end
     
     p.UiList.ListRight.CurFocus = 1;
-    p.SetRightListFocus(p.UiList.ListRight.CurFocus);
+    --p.SetRightListFocus(p.UiList.ListRight.CurFocus);
 end
 ---------------------------将int型时间转换成string类型-------------------------------------
 function p.ConvertIntTimeToString(nBegin, nEnd)  
@@ -363,7 +394,9 @@ function p.SetLeftListFocus(nIndex)
         return;
     end
     SetLabel(layer, p.UiCtr.contText, Info.Content);
-    SetLabel(layer, p.UiCtr.broadText, Info.Broad);    
+    --SetLabel(layer, p.UiCtr.broadText, Info.Broad);   
+     
+    --[[
 	if Info.Type ==  p.ActionType.VIP_RETURN  then -- vip累计礼包
 		SetLabel(layer, p.UiCtr.rightListTitleText, GetTxtPub("vip_grade")); 
 	elseif Info.Type ==  p.ActionType.DAILY_RETURN  then -- 每日返还
@@ -372,12 +405,11 @@ function p.SetLeftListFocus(nIndex)
 		SetLabel(layer, p.UiCtr.rightListTitleText, GetTxtPri("recharge_num")); 		
 	else
 		SetLabel(layer, p.UiCtr.rightListTitleText, Info.Name .. GetTxtPub("shoe")); 
-	end    
+	end  
+	]]  
 
     local strTime = "";    
-    LogInfo("TimeType = %d, InfoType = %d, First = %d, once = %d, total = %d", 
-                    Info.TimeType, Info.Type, p.RechargeTimeBegin.First, p.RechargeTimeBegin.OnceFlag, p.RechargeTimeBegin.TotalFlag);
-    
+
   
     --if Info.TimeType == 0 then --永久
     if Info.TimeType == 1 then --服务端配置起始结束时间
@@ -415,6 +447,7 @@ function p.SetRightListFocus(nIndex)
     local ScrollView = nil;
     local BtnFocus = nil; 
 
+   --[[
     if p.UiList.ListRight.CurFocus ~= nIndex then
         ScrollView = p.UiList.ListRight.ListContaner:GetViewById(p.UiList.ListRight.CurFocus);
         BtnFocus = GetButton(ScrollView, p.UiList.ListRight.btnId);
@@ -427,6 +460,7 @@ function p.SetRightListFocus(nIndex)
     BtnFocus = GetButton(ScrollView, p.UiList.ListRight.btnId);
     BtnFocus: TabSel(true);
     BtnFocus: SetFocus(true); 
+    ]]
     
     local Info = p.LeftTitleLIst[p.UiList.ListLeft.CurFocus].RightListTable[p.UiList.ListRight.CurFocus];    
     if Info == nil then
@@ -437,7 +471,7 @@ function p.SetRightListFocus(nIndex)
     local InfoLeft = p.LeftTitleLIst[p.UiList.ListLeft.CurFocus];
 
     --获取领取按钮控件
-    local btnGet = GetButton(layer, p.UiCtr.btnGet);
+    local btnGet = GetButton(layer, p.UiList.ListRight.btnId);
     
     if InfoLeft.Type ==  p.ActionType.FIRST_PAY  then -- 首次充值
        --如果首充已领取或者充值金额不足那么置灰
@@ -580,24 +614,192 @@ end
 
 ---------------------------刷新控件元素-------------------------------------
 function p.refreshRightListViewItem(view, iNum)
-    LogInfo("p.refreshRightListViewItem Emoney = %d", p.LeftTitleLIst[p.UiList.ListLeft.CurFocus].RightListTable[iNum].StageCondition);
-    SetLabel(view, p.UiList.ListRight.crtlText, SafeN2S(p.LeftTitleLIst[p.UiList.ListLeft.CurFocus].RightListTable[iNum].StageCondition)); 
-    local btn = GetButton(view, p.UiList.ListRight.btnId);
-    btn:SetParam1(iNum);   
+	LogInfo("p.refreshRightListViewItem Emoney = %d", p.LeftTitleLIst[p.UiList.ListLeft.CurFocus].RightListTable[iNum].StageCondition);
+	local strTitle = "";
+	local InfoLeft = p.LeftTitleLIst[p.UiList.ListLeft.CurFocus];  
+	if InfoLeft.Type ==  p.ActionType.VIP_RETURN  then -- vip累计礼包
+		strTitle = GetTxtPub("vip_grade"); 
+	elseif InfoLeft.Type ==  p.ActionType.DAILY_RETURN  then -- 每日返还
+		strTitle = GetTxtPri("recharge_num"); 
+	elseif InfoLeft.Type ==  p.ActionType.ONLINE_RETURN  then -- 在线返还
+		strTitle = GetTxtPri("recharge_num"); 		
+	else
+		strTitle = InfoLeft.Name .. GetTxtPub("shoe"); 
+	end  
+	
+	strTitle = strTitle .. SafeN2S(InfoLeft.RightListTable[iNum].StageCondition);
+	SetLabel(view, p.UiList.ListRight.crtlText, strTitle); 
+	local btn = GetButton(view, p.UiList.ListRight.btnId);
+	btn:SetParam1(iNum);   
+	--local  Textlabel = GetLabel(view, p.UiList.ListRight.crtlText); 
+	--Textlabel:SetFontColor(ccc4(255,255,255, 255));
+	
+    local InfoRight = InfoLeft.RightListTable[iNum];    
+    if InfoRight == nil then
+        return;
+    end
+  
+    --获取领取按钮控件
+    local btnGet = GetButton(view, p.UiList.ListRight.btnId);
     
-    local  Textlabel = GetLabel(view, p.UiList.ListRight.crtlText); 
-    --Textlabel:SetFontColor(ccc4(255,255,255, 255));
+    if InfoLeft.Type ==  p.ActionType.FIRST_PAY  then -- 首次充值
+       --如果首充已领取或者充值金额不足那么置灰
+       if p.RechargeState.First.Flag > 0 or p.RechargeState.First.Num <  InfoRight.StageCondition  then
+            btnGet:EnalbeGray(true);
+       else
+            btnGet:EnalbeGray(false);
+       end
+    elseif InfoLeft.Type ==  p.ActionType.ONCE_PAY  then -- 单次充值
+        if p.RechargeState.OnceFlag[iNum] < 1 then 
+            btnGet:EnalbeGray(true);
+       else
+            btnGet:EnalbeGray(false);
+       end
+    elseif InfoLeft.Type ==  p.ActionType.TOTAL_PAY  then -- 累计充值
+        if p.RechargeState.TotalFlag[iNum] < 1 then 
+            btnGet:EnalbeGray(true);
+       else
+            btnGet:EnalbeGray(false);
+       end
+    elseif InfoLeft.Type ==  p.ActionType.DAILY_PAY  then -- 每日充值
+        if p.RechargeState.DailyFlag[iNum] < 1 then 
+            btnGet:EnalbeGray(true);
+       else
+            btnGet:EnalbeGray(false);
+       end  
+	elseif InfoLeft.Type ==  p.ActionType.VIP_RETURN  then -- VIP充值禮包
+		if p.RechargeState.VipFlag[iNum] < 1 then 
+			btnGet:EnalbeGray(true);
+		else
+			btnGet:EnalbeGray(false);
+		end         
+    end
     
+	
+								
+	local tbShowContent = {}
+	local tbRecord = {};
+	local nShowNum = 1;
+	local Info = InfoRight;
+	
+	--[[
+	--显示物品
+	local ITEM_BTN_ID1 = 11;
+local ITEM_BTN_ID2 = 12;
+local ITEM_BTN_ID3 = 13;
+local ITEM_TXT_ID1 = 26;
+local ITEM_TXT_ID2 = 27;
+local ITEM_TXT_ID3 = 28;
+]]
+
+	 --奖励物品
+    if (Info.ItemType ~= 0) and  (Info.ItemCount ~= 0) then
+        --ShowText = ShowText .."  ".. ItemFunc.GetName(Info.ItemType) .."X"..Info.ItemCount.."\n";
+       local l_pic = GetItemButton(view, ITEM_BTN_ID1);
+		l_pic:ChangeItemType(Info.ItemType);
+		
+		SetLabel(view, ITEM_TXT_ID1, SafeN2S(Info.ItemCount));
+		--local  Textlabel = GetLabel(view, ITEM_TXT_ID1); 
+		--Textlabel:SetFontColor(ccc4(255,0,0, 255));
+	else
+	   local l_pic = GetItemButton(view, ITEM_BTN_ID1);
+	   l_pic:SetVisible(false);
+	end
+
+	
+    --金币
+    if Info.Emoney ~= 0 then
+		tbRecord = {};
+		tbRecord.strTip = GetTxtPub("shoe") .. ":";
+		tbRecord.strCnt = SafeN2S(Info.Emoney);
+		table.insert(tbShowContent, tbRecord);
+		nShowNum = nShowNum + 1;
+    end
+    
+    --军令
+    if Info.Stamina ~= 0 then
+    	tbRecord = {};
+		tbRecord.strTip = GetTxtPub("Stamina") .. ":";
+		tbRecord.strCnt = SafeN2S(Info.Stamina);
+		table.insert(tbShowContent, tbRecord);
+		nShowNum = nShowNum + 1;
+    end
+    
+    --银币
+    if Info.Money ~= 0 then
+       tbRecord = {};
+		tbRecord.strTip = GetTxtPub("coin") .. ":";
+		tbRecord.strCnt = SafeN2S(Info.Money);
+		table.insert(tbShowContent, tbRecord);
+		nShowNum = nShowNum + 1;
+    end
+    
+    --将魂
+    if Info.Soph ~= 0 then
+       tbRecord = {};
+		tbRecord.strTip = GetTxtPub("JianHun") .. ":";
+		tbRecord.strCnt = SafeN2S(Info.Soph);
+		table.insert(tbShowContent, tbRecord);
+		nShowNum = nShowNum + 1; 
+    end
+    
+    
+    --声望
+    if Info.Repute ~= 0 then
+       tbRecord = {};
+		tbRecord.strTip = GetTxtPub("ShenWan") .. ":";
+		tbRecord.strCnt = SafeN2S(Info.Repute);
+		table.insert(tbShowContent, tbRecord);
+		nShowNum = nShowNum + 1; 
+    end  
+    
+    --武魂
+    if Info.Spirit ~= 0 then
+       tbRecord = {};
+		tbRecord.strTip = GetTxtPub("Spirit") .. ":";
+		tbRecord.strCnt = SafeN2S(Info.Spirit);
+		table.insert(tbShowContent, tbRecord);
+		nShowNum = nShowNum + 1; 
+    end
+    
+    --军功
+    if Info.Exploits ~= 0 then
+       tbRecord = {};
+		tbRecord.strTip = GetTxtPub("Exploit") .. ":";
+		tbRecord.strCnt = SafeN2S(Info.Exploits);
+		table.insert(tbShowContent, tbRecord);
+		nShowNum = nShowNum + 1; 
+    end  
+
+	for i, v in pairs(tbShowContent) do
+		if i <= 5 then
+			SetLabel(view, p.ShowRewardTxtID[i].TxtTipId, v.strTip);
+			SetLabel(view, p.ShowRewardTxtID[i].TxtContentID, v.strCnt);
+		end
+	end
+	
+	
+	for i = nShowNum, 5 do
+		local labelTip = GetLabel(view, p.ShowRewardTxtID[i].TxtTipId);
+		local labelCnt = GetLabel(view, p.ShowRewardTxtID[i].TxtContentID);	
+		
+		labelTip:SetVisible(false);
+		labelCnt:SetVisible(false);
+	end
+	
+
     return;
 end
   
   
 ---------------------------刷新控件元素-------------------------------------
 function p.refreshLeftListViewItem(view, iNum)
-    local  Textlabel = GetLabel(view, p.UiList.ListLeft.crtlText); 
-    SetLabel(view, p.UiList.ListLeft.crtlText, p.LeftTitleLIst[iNum].Name); 
-    Textlabel:SetFontColor(ccc4(255,255,255, 255));
+    --local  Textlabel = GetLabel(view, p.UiList.ListLeft.crtlText); 
+    --SetLabel(view, p.UiList.ListLeft.crtlText, p.LeftTitleLIst[iNum].Name); 
+    --Textlabel:SetFontColor(ccc4(255,255,255, 255));
     local btn = GetButton(view, p.UiList.ListLeft.btnId);
+    btn:SetTitle( p.LeftTitleLIst[iNum].Name );
+    btn:SetFontColor(ccc4(255,255,255, 255));
     btn:SetParam1(iNum);   
     
     return;
@@ -640,7 +842,8 @@ function p.OnRightListViewUIEvent(uiNode, uiEventType, param)
                 return;
             end
             
-            p.SetRightListFocus(btn:GetParam1()); 
+            p.SendRechargeInfo(btn:GetParam1());
+            --p.SetRightListFocus(btn:GetParam1()); 
         end
     end
 	return true;
@@ -653,8 +856,37 @@ function p.SetFirstRechargeInfo(iRechNum, iHasGet, iBeginTime)
     p.RechargeState.First.Flag = iHasGet;
     p.RechargeTimeBegin.First = iBeginTime;
     p.Refresh();       
+   
+	p.SetIfFirstRechargeCanOpen(iHasGet);
     LogInfo("First end");
 end
+
+--iHasGet是否已领取
+function p.SetIfFirstRechargeCanOpen(iHasGet)
+	p.bIfFisrtPayCanOpen = true;
+	
+	--首充已经领取
+	if iHasGet > 0 then
+		p.bIfFisrtPayCanOpen = false;
+	end
+	
+	--首先判断活动是否存在
+
+
+	for i, v in pairs(MsgPlayerAction.PLAYER_ACTION_STATION) do
+		if v.type == p.ActionType.FIRST_PAY then
+			if v.IsExit == 0 then
+				p.bIfFisrtPayCanOpen = false;  --说明这个活动已经删除
+			end
+		end
+	end 
+end
+
+function p.GetIfFirstRechargeCanOpen()
+	return p.bIfFisrtPayCanOpen;
+end
+
+
 
 ------------------单次充值消息响应-----------iData从后开始每一位代表一个阶梯是否已经领取--------------------
 function p.SetOnceRechargeInfo(iData, iBeginTime)
@@ -778,7 +1010,7 @@ function p.SetVipReturnInfo(iData, iBeginTime)
     LogInfo("daily end");                                                                                                                                                                                              
 end
 ------------------首次充值消息响应-------------------------------
-function p.SendRechargeInfo()  
+function p.SendRechargeInfo(nNum)  
     LogInfo("send begin"); 
 
 	local netdata = createNDTransData(NMSG_Type._MSG_PLAYER_ACTION_OPERATE);
@@ -804,8 +1036,8 @@ function p.SendRechargeInfo()
 		netdata:WriteByte(11);   
     end
     
-    local Num = p.UiList.ListRight.CurFocus;
-    netdata:WriteInt(Num);	
+    --local Num = p.UiList.ListRight.CurFocus;
+    netdata:WriteInt(nNum);	
     netdata:WriteInt(0);	   
 	SendMsg(netdata);	
 	netdata:Free();	

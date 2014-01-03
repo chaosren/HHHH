@@ -27,6 +27,8 @@ local TOOL_BTN = {
     {Tag=40,Rect=CGRectMake(265*fScalex,70*fScaley,40*fScalex,40*fScaley),PicName = "activitylist.png"},--运粮活动   
     {Tag=41,Rect=CGRectMake(225*fScalex,70*fScaley,40*fScalex,40*fScaley),PicName = "ranklist.png"},--名人堂
     {Tag=42,Rect=CGRectMake(185*fScalex,70*fScaley,40*fScalex,40*fScaley),PicName = "administration.png"},--内政
+    {Tag=45,Rect=CGRectMake(-200, -200, 40*fScalex, 40*fScaley),PicName = "fristrechargegift.png"},--首充独立按钮  
+    
 };
 
 --活动提示按钮 TAG%1000 = 活动ID
@@ -321,6 +323,12 @@ function p.OnUIEvent(uiNode, uiEventType, param)
             _G.CloseMainUI();
             MsgRankList.SendDailytaskMsg(DAILYTASK_ACTION.OPEN);
             return ture;  
+            
+       elseif TOOL_BTN[11].Tag == tag then          --首充按钮
+            _G.CloseMainUI();
+            RechargeReward.LoadUI(true);
+            return ture;       
+            
         elseif ID_MAINUI_BTN_NEW_EMAIL == tag then          -- 新邮件
             _G.CloseMainUI();
             EmailList.LoadUI();
@@ -503,7 +511,8 @@ function p.RefreshFuncIsOpen()
     local btnRecharge = GetButton(topBarLayer,TOOL_BTN[6].Tag);
     local btnOL = 	GetButton(topBarLayer,TOOL_BTN[7].Tag);
     local btnDailyAct = 	GetButton(topBarLayer,TOOL_BTN[8].Tag); 
-    local btnMission = 	GetButton(topBarLayer,TOOL_BTN[10].Tag);         
+    local btnMission = 	GetButton(topBarLayer,TOOL_BTN[10].Tag);     
+    local btnFstCharge = 	GetButton(topBarLayer,TOOL_BTN[11].Tag);      
 	
 	--名人堂图标显示
 	local btnFamous = 	GetButton(topBarLayer,TOOL_BTN[9].Tag); 
@@ -527,8 +536,7 @@ function p.RefreshFuncIsOpen()
         end
     end
 
-	
-
+	btnFstCharge:SetVisible(RechargeReward.GetIfFirstRechargeCanOpen());
     
     btnLevy:SetVisible(IsFunctionOpen(StageFunc.Levy));
     
@@ -621,12 +629,27 @@ function p.AdjustToolPos()
     --btnRankList:SetVisible(false);
     local btnMission = GetButton(topBarLayer,TOOL_BTN[10].Tag);
 	
-	
+    local btnFstCharge = GetButton(topBarLayer,TOOL_BTN[11].Tag);	
 	
     
     local btns = {};
 	
+	if(btnArena:IsVisibled()) then
+        table.insert(btns,btnArena);
+    end
 	
+	if(btnFstCharge:IsVisibled()) then
+        table.insert(btns,btnFstCharge);
+    end
+    
+	if(btnRecharge:IsVisibled()) then
+        table.insert(btns, btnRecharge);
+    end
+    
+    if(btnOL:IsVisibled()) then
+        table.insert(btns, btnOL);
+    end
+    
 	--活动快捷按钮
 	for i,v in pairs(DailyActionTipBtn) do
 		local tag = v.Tag
@@ -635,17 +658,15 @@ function p.AdjustToolPos()
 			table.insert(btns,btnDailyActionTip);
 		end
 	end
-	
-	
-    if(btnArena:IsVisibled()) then
-        table.insert(btns,btnArena);
-    end
+    
     if(btnLevy:IsVisibled()) then
         table.insert(btns,btnLevy);
     end
+    
     if(btnFete:IsVisibled()) then
         table.insert(btns,btnFete);
     end
+    
     if(btnGift:IsVisibled()) then
         table.insert(btns,btnGift);
     end
@@ -654,15 +675,7 @@ function p.AdjustToolPos()
         table.insert(btns, btnSign);
     end
     
-    if(btnRecharge:IsVisibled()) then
-        table.insert(btns, btnRecharge);
-    end
- 
-    if(btnOL:IsVisibled()) then
-        table.insert(btns, btnOL);
-    end
-    
-     if(btnDailyAct:IsVisibled()) then
+    if(btnDailyAct:IsVisibled()) then
         table.insert(btns, btnDailyAct);
     end   
     
